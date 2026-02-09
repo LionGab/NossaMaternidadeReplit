@@ -23,6 +23,7 @@
 import { supabase } from "@/api/supabase";
 import { FloHeader } from "@/components/ui/FloHeader";
 import { FloScreenWrapper } from "@/components/ui/FloScreenWrapper";
+import { ListSkeleton } from "@/components/ui";
 import { getSupabaseFunctionsUrl } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
 import { useAppStore } from "@/state";
@@ -281,24 +282,8 @@ export default function NotificationPreferencesScreen({
   if (isLoading) {
     return (
       <FloScreenWrapper>
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <ActivityIndicator size="large" color={accentColor} />
-          <Text
-            style={{
-              marginTop: spacing.lg,
-              fontSize: 14,
-              fontFamily: typography.fontFamily.medium,
-              color: textSecondary,
-            }}
-          >
-            Carregando preferências...
-          </Text>
+        <View style={{ padding: spacing.lg }}>
+          <ListSkeleton type="row" count={6} />
         </View>
       </FloScreenWrapper>
     );

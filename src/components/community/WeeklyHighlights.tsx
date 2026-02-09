@@ -14,14 +14,8 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Crown, Flame, Heart, MessageCircle, Sparkles } from "lucide-react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Dimensions, Pressable, ScrollView, StyleSheet, View } from "react-native";
+import { CardSkeleton } from "@/components/ui";
 import Animated, {
   FadeInDown,
   FadeInRight,
@@ -303,9 +297,15 @@ export const WeeklyHighlights: React.FC<WeeklyHighlightsProps> = ({ onPostPress,
           </LinearGradient>
           <Subtitle style={{ color: textPrimary }}>Destaques da Semana</Subtitle>
         </View>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="small" color={brand.accent[500]} />
-        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={{ marginTop: spacing.md }}
+        >
+          <CardSkeleton />
+          <CardSkeleton />
+          <CardSkeleton />
+        </ScrollView>
       </Animated.View>
     );
   }
