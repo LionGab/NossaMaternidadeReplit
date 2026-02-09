@@ -22,14 +22,11 @@
  */
 
 import { Ionicons } from "@expo/vector-icons";
-import * as Haptics from "expo-haptics";
 import React from "react";
-import { Pressable, Text, View, ViewStyle } from "react-native";
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
+import { Text, View, ViewStyle } from "react-native";
 import { useTheme } from "../../hooks/useTheme";
 import { Tokens, shadows, spacing, typography } from "../../theme/tokens";
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+import { PressableScale } from "./PressableScale";
 
 interface FloActionCardProps {
   /** Ionicons icon name */
@@ -82,9 +79,6 @@ export function FloActionCard({
 }: FloActionCardProps) {
   const { isDark } = useTheme();
 
-  const scale = useSharedValue(1);
-  const opacity = useSharedValue(1);
-
   // Default colors
   const defaultIconColor = iconColor || Tokens.brand.accent[500];
   const defaultIconBgColor =
@@ -97,37 +91,15 @@ export function FloActionCard({
   const textPrimary = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
 
-  const handlePressIn = () => {
-    scale.value = withSpring(0.98, { damping: 15, stiffness: 400 });
-    opacity.value = withSpring(0.9, { damping: 15, stiffness: 400 });
-  };
-
-  const handlePressOut = () => {
-    scale.value = withSpring(1, { damping: 15, stiffness: 400 });
-    opacity.value = withSpring(1, { damping: 15, stiffness: 400 });
-  };
-
-  const handlePress = async () => {
-    if (!disabled) {
-      await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      onPress();
-    }
-  };
-
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    opacity: opacity.value,
-  }));
-
   return (
-    <AnimatedPressable
-      onPress={handlePress}
-      onPressIn={handlePressIn}
-      onPressOut={handlePressOut}
+    <PressableScale
+      onPress={onPress}
       disabled={disabled}
-      accessibilityRole="button"
+      spring="snappy"
+      scale={0.98}
+      haptic="light"
       accessibilityLabel={title}
-      style={[animatedStyle, { opacity: disabled ? 0.5 : 1 }]}
+      style={{ opacity: disabled ? 0.5 : 1 }}
     >
       <View
         style={[
@@ -255,7 +227,7 @@ export function FloActionCard({
           </View>
         )}
       </View>
-    </AnimatedPressable>
+    </PressableScale>
   );
 }
 

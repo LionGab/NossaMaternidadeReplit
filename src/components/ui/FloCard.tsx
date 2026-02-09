@@ -1,7 +1,8 @@
 import React from "react";
-import { Pressable, View, type StyleProp, type ViewStyle } from "react-native";
+import { View, type StyleProp, type ViewStyle } from "react-native";
 import { Tokens } from "@/theme/tokens";
 import { cn } from "@/utils/cn";
+import { PressableScale } from "./PressableScale";
 
 interface FloCardProps {
   children: React.ReactNode;
@@ -20,13 +21,13 @@ export function FloCard({
   accessibilityLabel,
   testID,
 }: FloCardProps) {
-  const Component = onPress ? Pressable : View;
+  const Component = onPress ? PressableScale : View;
 
   return (
     <Component
       testID={testID}
       onPress={onPress}
-      accessibilityRole={onPress ? "button" : undefined}
+      spring="snappy"
       accessibilityLabel={onPress ? accessibilityLabel : undefined}
       className={cn("rounded-2xl bg-white p-4", "border border-neutral-100", className)}
       style={[Tokens.shadows.floClean.card, style]}
