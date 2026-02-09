@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "WebFetch",
+      "WebSearch",
+      "Task",
+      "TodoWrite",
+      "NotebookEdit",
+      "mcp__*",
+      "mcp__github__get_issue",
+      "mcp__memory-keeper__context_save",
+      "mcp__sequential-thinking__sequentialthinking",
+      "mcp__memory-keeper__context_session_start",
+      "mcp__memory-keeper__context_batch_save",
+      "mcp__memory-keeper__context_checkpoint",
+      "Skill(ralph-auto)",
+      "Skill(ralph-auto:*)",
+      "Skill(commit-commands:commit-push-pr)",
+      "Skill(commit-commands:commit-push-pr:*)",
+      "Skill(build-ios)",
+      "Skill(build-ios:*)",
+      "Skill(ralph-wiggum:ralph-loop)",
+      "Skill(ralph-wiggum:ralph-loop:*)",
+      "Skill(audit-colors)",
+      "Skill(audit-colors:*)",
+      "Skill(gates)",
+      "Skill(gates:*)",
+      "Bash(tree:*)",
+      "Bash(chmod:*)"
+    ],
+    "deny": [],
+    "defaultMode": "bypassPermissions"
+  },
+  "enableAllProjectMcpServers": false
+}

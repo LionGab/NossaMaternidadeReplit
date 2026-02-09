@@ -1,0 +1,20 @@
+'area:ui':
+  - 'src/components/**'
+  - 'src/screens/**'
+  - 'src/theme/**'
+
+'area:backend':
+  - 'supabase/**'
+  - 'src/api/**'
+
+'area:ai':
+  - 'src/ai/**'
+  - 'supabase/functions/ai/**'
+
+'area:docs':
+  - 'docs/**'
+  - '**/*.md'
+
+'priority:high':
+  - 'src/services/auth/**'
+  - 'src/state/premium/**'

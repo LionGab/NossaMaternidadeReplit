@@ -1,0 +1,42 @@
+---
+description: "Logger obrigatório - proibido console.log"
+alwaysApply: true
+priority: high
+---
+
+# Logging - Usar logger.* sempre
+
+## Regra Fundamental
+
+- **PROIBIDO**: `console.log`, `console.error`, `console.warn`, `console.info`
+- **OBRIGATÓRIO**: Usar `logger.*` de `src/utils/logger.ts`
+
+## Padrão de Uso
+
+```typescript
+import { logger } from '@/utils/logger';
+
+// ✅ CORRETO
+logger.info('Mensagem informativa', 'Contexto', { metadata });
+logger.error('Erro ocorrido', 'Contexto', { error, stack });
+logger.warn('Aviso importante', 'Contexto', { data });
+logger.debug('Debug info', 'Contexto', { details });
+```
+
+## Estrutura
+
+- **Mensagem**: Descrição clara e concisa
+- **Contexto**: Módulo/função onde ocorreu (ex: 'AuthService', 'HomeScreen')
+- **Metadata** (opcional): Objeto com dados adicionais relevantes
+
+## Exceções
+
+- Apenas no próprio `src/utils/logger.ts` pode usar `console.*` diretamente
+- Logs temporários de debug devem ser removidos antes de commit
+
+## Benefícios
+
+- Logs estruturados e rastreáveis
+- Controle de nível de log por ambiente
+- Integração com serviços de monitoramento (Sentry)
+- Facilita debugging em produção

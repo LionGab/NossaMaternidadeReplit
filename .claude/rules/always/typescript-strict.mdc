@@ -1,0 +1,35 @@
+---
+description: "TypeScript strict mode - zero any, zero @ts-ignore"
+alwaysApply: true
+priority: critical
+---
+
+# TypeScript Strict Mode
+
+## Regras Obrigatórias
+
+- **ZERO `any`**: Use `unknown` + type guards quando necessário
+- **ZERO `@ts-ignore`/`@ts-expect-error`**: Proibido sem justificativa explícita em comentário
+- **TypeScript strict mode**: Sempre habilitado no `tsconfig.json`
+- **Tipos explícitos**: Evitar inferência quando reduz clareza
+
+## Boas Práticas
+
+- Use `unknown` para valores de origem desconhecida
+- Implemente type guards para validação: `function isType(value: unknown): value is Type`
+- Prefira tipos union explícitos: `type Status = 'pending' | 'success' | 'error'`
+- Documente tipos complexos com JSDoc quando necessário
+
+## Exemplos
+
+```typescript
+// ❌ ERRADO
+function processData(data: any) { ... }
+
+// ✅ CORRETO
+function processData(data: unknown) {
+  if (isValidData(data)) {
+    // type guard garante tipo
+  }
+}
+```

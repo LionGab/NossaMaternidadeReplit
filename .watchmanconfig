@@ -1,0 +1,22 @@
+{
+  "ignore_dirs": [
+    ".git",
+    "node_modules",
+    ".expo",
+    "dist",
+    "build",
+    "coverage",
+    ".metro-cache",
+    "ios/Pods",
+    "android/.gradle",
+    "android/app/build",
+    ".vscode",
+    "__mocks__",
+    ".bundle",
+    ".claude",
+    "archive",
+    "reports"
+  ],
+  "settle": 1500,
+  "timeout": 60000
+}

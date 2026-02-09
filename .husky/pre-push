@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Running pre-push validation..."
+
+# Run full quality gate
+npm run quality-gate || exit 1
+
+echo "Ready to push!"

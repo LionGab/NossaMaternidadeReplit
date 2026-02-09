@@ -1,0 +1,225 @@
+---
+description: "New feature development workflow with design review and gates"
+priority: high
+---
+
+# New Feature Workflow
+
+## 1. Plan (Plan Mode)
+
+```
+Shift+Tab (2x) → Plan Mode
+```
+
+### Research
+- Read design/requirements
+- Identify affected files
+- Check similar patterns
+- Create step-by-step plan
+
+## 2. Design Review
+
+### Design System
+- Colors: `Tokens.*` ou `useThemeColors()`
+- Typography: `Tokens.typography.*`
+- Spacing: Grid 8pt
+- Components: Reuse `src/components/ui/`
+
+### Accessibility
+- WCAG AAA (preferred) ou AA (minimum)
+- Tap targets >= 44pt
+- Labels em elementos interativos
+- Dark mode support
+
+## 3. Implement
+
+### Order
+1. **Data layer** (store, service)
+2. **UI layer** (component, screen)
+3. **Tests** (incremental, não esperar até fim)
+
+### Example: New Screen
+
+```typescript
+// 1. Store (src/state/my-feature-store.ts)
+export const useMyFeatureStore = create<State>()(
+  persist(/* ... */)
+);
+
+// 2. Service (src/services/my-feature-service.ts)
+export const myFeatureService = {
+  async fetchData() {
+    const { data, error } = await supabase.from('table').select();
+    return { data, error };
+  },
+};
+
+// 3. Component (src/components/MyFeatureCard.tsx)
+export function MyFeatureCard({ data }: Props) {
+  return (
+    <Pressable
+      className="p-4 bg-primary-50"
+      accessibilityLabel={data.title}
+      accessibilityRole="button"
+      style={{ minHeight: 44 }}
+    >
+      <Text className="text-primary-900">{data.title}</Text>
+    </Pressable>
+  );
+}
+
+// 4. Screen (src/screens/MyFeatureScreen.tsx)
+export function MyFeatureScreen() {
+  const data = useMyFeatureStore((s) => s.data);
+
+  return (
+    <SafeAreaView>
+      <FlashList
+        data={data}
+        renderItem={({ item }) => <MyFeatureCard data={item} />}
+      />
+    </SafeAreaView>
+  );
+}
+
+// 5. Test (src/screens/__tests__/MyFeatureScreen.test.tsx)
+describe('MyFeatureScreen', () => {
+  it('renders data', () => {
+    render(<MyFeatureScreen />);
+    expect(screen.getByText(/feature/i)).toBeTruthy();
+  });
+});
+```
+
+## 4. Premium Check
+
+### Is Premium Feature?
+
+```typescript
+// Se sim, usar PremiumGate
+import { PremiumGate } from '@/components/premium/PremiumGate';
+
+<PremiumGate>
+  <MyPremiumFeature />
+</PremiumGate>
+
+// Ou hook
+const isPremium = useIsPremium();
+if (!isPremium) return <Paywall />;
+```
+
+## 5. Navigation
+
+### New Screen
+
+```typescript
+// 1. Add to types (src/types/navigation.ts)
+export type RootStackParamList = {
+  MyFeature: undefined;
+  // ...
+};
+
+// 2. Add to navigator
+<Stack.Screen
+  name="MyFeature"
+  component={MyFeatureScreen}
+  options={{ title: 'Minha Feature' }}
+/>
+
+// 3. Navigate
+navigation.navigate('MyFeature');
+```
+
+## 6. Verify
+
+```bash
+# Quality gate
+npm run quality-gate
+
+# Platform testing
+npm run ios      # Mac only
+npm run android
+
+# Accessibility
+# VoiceOver (iOS) ou TalkBack (Android)
+```
+
+## 7. Gates
+
+```bash
+# Run applicable gates
+npm run quality-gate  # G1
+npm run test:oauth    # G2 (se auth)
+npm run test:gemini   # G5 (se AI)
+
+# Full gates
+npm run gates
+```
+
+## 8. Documentation
+
+### CHANGELOG.md
+```markdown
+## [Unreleased]
+
+### Added
+- Nova tela de acompanhamento de hábitos (#456)
+```
+
+### Screenshots
+- Capturar tela antes de PR
+- Salvar em `docs/screenshots/`
+
+## Patterns por Feature Type
+
+### Auth Feature
+- Verificar: `src/screens/auth/`, `src/api/auth-service.ts`
+- Gate: G2 (`npm run test:oauth`)
+- Supabase RLS: Sempre habilitado
+
+### AI Feature
+- Verificar: `src/ai/`, `supabase/functions/ai/`
+- Gate: G5 (`npm run test:gemini`)
+- Subagent: `nathia-expert` para review
+
+### Premium Feature
+- Verificar: `src/state/premium-store.ts`
+- Gate: G4 (manual RevenueCat check)
+- Usar: `PremiumGate` ou `useIsPremium()`
+
+### Community Feature
+- Verificar: `src/state/community-store.ts`
+- Store: Não persistir (sempre fresh)
+- Moderation: Edge function `moderate-content`
+
+## Checklist
+
+- [ ] Plan criado em Plan Mode
+- [ ] Design segue design system
+- [ ] Accessibility checklist OK
+- [ ] Data layer implementado
+- [ ] UI layer implementado
+- [ ] Tests escritos
+- [ ] Premium check (se aplicável)
+- [ ] Navigation atualizada
+- [ ] `npm run quality-gate` passa
+- [ ] Teste iOS + Android
+- [ ] Gates aplicáveis passam
+- [ ] CHANGELOG atualizado
+- [ ] Screenshots capturados
+
+## Anti-Patterns
+
+❌ Hardcode colors/spacing
+❌ Esquecer tap targets (min 44pt)
+❌ Não testar dark mode
+❌ ScrollView + map() para listas
+❌ Esquecer accessibility labels
+❌ Não verificar premium status
+
+## Recursos
+
+- Components: `src/components/ui/`
+- Patterns: `docs/claude/code-patterns.md`
+- Design: `docs/claude/design-system.md`
+- Gates: `docs/claude/release-gates.md`

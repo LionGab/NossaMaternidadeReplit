@@ -1,0 +1,162 @@
+# Nossa Maternidade - Preview Deployment
+# Creates preview builds for PRs using EAS Update
+
+name: Preview
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened]
+
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.11.1'
+
+jobs:
+  preview:
+    name: EAS Update Preview
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    # Only run on PRs from the same repo (not forks)
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Validate before preview
+        run: |
+          npm run typecheck
+          npm run lint
+
+      - name: Create EAS Update
+        id: eas-update
+        run: |
+          UPDATE_OUTPUT=$(npx eas-cli update --branch=pr-${{ github.event.pull_request.number }} --message="PR #${{ github.event.pull_request.number }}: ${{ github.event.pull_request.title }}" --non-interactive 2>&1)
+          echo "$UPDATE_OUTPUT"
+
+          # Extract update group ID
+          UPDATE_GROUP=$(echo "$UPDATE_OUTPUT" | grep -oP 'Update group ID: \K[a-f0-9-]+' || true)
+          echo "update_group=$UPDATE_GROUP" >> $GITHUB_OUTPUT
+
+          # Generate QR code URL
+          if [ -n "$UPDATE_GROUP" ]; then
+            echo "qr_url=https://qr.expo.dev/eas-update?updateId=$UPDATE_GROUP" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Comment on PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const updateGroup = '${{ steps.eas-update.outputs.update_group }}';
+            const qrUrl = '${{ steps.eas-update.outputs.qr_url }}';
+
+            let body = `## Preview Ready
+
+            A preview build has been created for this PR.
+
+            **Branch:** \`pr-${{ github.event.pull_request.number }}\`
+            `;
+
+            if (updateGroup) {
+              body += `
+            **Update Group ID:** \`${updateGroup}\`
+
+            ### How to test:
+            1. Install **Expo Go** on your device
+            2. Scan the QR code below or open [this link](${qrUrl})
+
+            ![QR Code](${qrUrl}&qr=1)
+            `;
+            }
+
+            body += `
+            ---
+            _Updated at ${new Date().toISOString()}_
+            `;
+
+            // Find existing comment
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+
+            const botComment = comments.find(comment =>
+              comment.user.type === 'Bot' &&
+              comment.body.includes('## Preview Ready')
+            );
+
+            if (botComment) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: botComment.id,
+                body: body
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: body
+              });
+            }
+
+  # Optional: Build native preview for significant PRs
+  build-preview:
+    name: Build Preview (Native)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: preview
+
+    # Only build native on PRs with 'build-preview' label
+    if: contains(github.event.pull_request.labels.*.name, 'build-preview')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build iOS Preview
+        run: npx eas-cli build --profile preview --platform ios --non-interactive --no-wait
+
+      - name: Build Android Preview
+        run: npx eas-cli build --profile preview --platform android --non-interactive --no-wait

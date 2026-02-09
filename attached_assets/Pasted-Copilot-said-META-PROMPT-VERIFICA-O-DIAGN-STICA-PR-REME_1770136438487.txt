@@ -1,0 +1,332 @@
+Copilot said: # 🔍 META-PROMPT — VERIFICAÇÃO DIAGNÓSTICA PRÉ-REMEDIAÇÃO --- ##
+🔍 META-PROMPT — VERIFICAÇÃO DIAGNÓSTICA PRÉ-REMEDIAÇÃO
+Objetivo
+Antes de executar qualquer correção, você deve mapear o estado atual do repositório para confirmar quais riscos identificados na auditoria realmente existem e qual a severidade real de cada um.
+
+NÃO execute correções nesta fase. Apenas colete evidências.
+
+Contexto
+Repositório: LionGab/NossaMaternidade
+Branch principal: main
+Stack: React Native + Expo SDK 54 + TypeScript strict + NativeWind v4
+
+Auditoria identificou 5 riscos críticos/altos. Sua missão é validar cada risco com evidência concreta antes de planejar remediação.
+
+Instruções de Execução
+Princípios
+Evidência > Suposição — Sempre rodar comando/busca antes de afirmar
+Quantificar — Não diga "vários arquivos"; diga "12 arquivos em src/components/"
+Priorizar por impacto real — Um risco com severidade "crítica" mas probabilidade "zero" não é P0
+Reportar "não encontrado" — Se um risco não existe, diga explicitamente (é boa notícia)
+FASE 0 — DIAGNÓSTICO COMPLETO
+Execute as verificações abaixo na ordem. Para cada verificação, reporte:
+
+✅ Status: CONFIRMADO | NÃO ENCONTRADO | PARCIAL
+📊 Métrica: Número exato (ex: "3 ocorrências", "0 matches")
+📁 Arquivos afetados: Lista completa com paths
+🎯 Severidade real: CRÍTICA | ALTA | MÉDIA | BAIXA (baseado em impacto × probabilidade)
+💡 Recomendação: REMEDIAR AGORA | REMEDIAR EM SPRINT | ACEITAR RISCO
+VERIFICAÇÃO #1 — Secrets no Histórico Git
+Objetivo
+Confirmar se API keys ainda estão acessíveis no histórico Git (mesmo após remoção no PR #24).
+
+Comandos
+bash
+# 1. Buscar padrões de API keys no histórico completo
+git log --all -p -S "OPENAI_API_KEY" | head -100
+git log --all -p -S "GEMINI_API_KEY" | head -50
+git log --all -p -S "CLAUDE_API_KEY" | head -50
+git log --all -p -S "sk-proj-" | head -50
+git log --all -p -S "AIza" | head -50  # Gemini key prefix
+
+# 2. Contar commits que tocaram eas.json
+git log --all --oneline -- eas.json | wc -l
+
+# 3. Verificar se eas.json atual está limpo
+cat eas.json | grep -E "(API_KEY|SECRET|TOKEN)" | wc -l
+Critérios de Avaliação
+Cenário	Status	Severidade	Ação
+Keys encontradas em ≥1 commit antigo	✅ CONFIRMADO	CRÍTICA	REMEDIAR AGORA
+Keys NÃO encontradas no histórico	❌ NÃO ENCONTRADO	N/A	✅ PASSOU
+eas.json atual contém keys	✅ CONFIRMADO	CRÍTICA	BLOQUEAR DEPLOY
+Reporte Esperado
+Code
+## VERIFICAÇÃO #1 — Secrets no Histórico Git
+
+Status: [CONFIRMADO/NÃO ENCONTRADO]
+Métrica: [X commits com secrets / 0 ocorrências]
+
+Arquivos/Commits afetados:
+- commit abc123: eas.json linha 45 (OPENAI_API_KEY=sk-proj-...)
+- commit def456: eas.json linha 89 (GEMINI_API_KEY=AIza...)
+[OU]
+- Nenhum secret encontrado no histórico ✅
+
+Severidade real: [CRÍTICA/BAIXA]
+Recomendação: [REMEDIAR AGORA / PASSOU]
+VERIFICAÇÃO #2 — StyleSheet.create em Uso
+Objetivo
+Quantificar quantos arquivos violam a regra "NativeWind only" usando StyleSheet.create.
+
+Comandos
+bash
+# 1. Buscar todos os StyleSheet.create em src/
+rg "StyleSheet\.create" src/ --type tsx --type ts -l
+
+# 2. Contar ocorrências totais
+rg "StyleSheet\.create" src/ --type tsx --type ts | wc -l
+
+# 3. Agrupar por pasta
+rg "StyleSheet\.create" src/components/ --type tsx --type ts -l | wc -l
+rg "StyleSheet\.create" src/screens/ --type tsx --type ts -l | wc -l
+
+# 4. Verificar se ESLint bloqueia
+cat .eslintrc.js | grep -A5 "no-restricted-imports"
+npm run lint 2>&1 | grep -i "stylesheet"
+Critérios de Avaliação
+Cenário	Status	Severidade	Ação
+≥10 arquivos com StyleSheet	✅ CONFIRMADO	ALTA	REMEDIAR EM SPRINT
+1-9 arquivos	PARCIAL	MÉDIA	REMEDIAR EM SPRINT
+0 arquivos	❌ NÃO ENCONTRADO	N/A	✅ PASSOU
+ESLint NÃO bloqueia	✅ CONFIRMADO	MÉDIA	CONFIGURAR LINT RULE
+Reporte Esperado
+Code
+## VERIFICAÇÃO #2 — StyleSheet.create
+
+Status: [CONFIRMADO/PARCIAL/NÃO ENCONTRADO]
+Métrica: [X arquivos / Y ocorrências totais]
+
+Arquivos afetados (top 10):
+1. src/components/login/GlassCard.tsx (3 ocorrências)
+2. src/screens/home/HomeScreen.tsx (15 ocorrências)
+[...]
+
+Distribuição por pasta:
+- src/components/: 7 arquivos
+- src/screens/: 5 arquivos
+
+ESLint bloqueando? [SIM/NÃO]
+
+Severidade real: [ALTA/MÉDIA]
+Recomendação: [REMEDIAR EM SPRINT / CONFIGURAR LINT]
+VERIFICAÇÃO #3 — Cores Hardcoded
+Objetivo
+Identificar cores hardcoded fora de tokens.ts (hexadecimal, rgba).
+
+Comandos
+bash
+# 1. Buscar hex colors (#fff, #FF5733)
+rg "#[0-9a-fA-F]{3,6}" src/ --type tsx --type ts -g '!tokens.ts' -g '!__tests__' -n
+
+# 2. Buscar rgba/rgb
+rg "rgba?\([0-9]" src/ --type tsx --type ts -g '!tokens.ts' -g '!__tests__' -n
+
+# 3. Verificar ESLint rule
+cat .eslintrc.js | grep -i "hardcoded.*color"
+npm run lint 2>&1 | grep -i "color"
+
+# 4. Contar violações
+rg "#[0-9a-fA-F]{3,6}" src/ -g '!tokens.ts' | wc -l
+Critérios de Avaliação
+Cenário	Status	Severidade	Ação
+≥20 ocorrências	✅ CONFIRMADO	MÉDIA	REMEDIAR EM SPRINT
+1-19 ocorrências	PARCIAL	BAIXA	REMEDIAR EM SPRINT
+0 ocorrências	❌ NÃO ENCONTRADO	N/A	✅ PASSOU
+Reporte Esperado
+Code
+## VERIFICAÇÃO #3 — Cores Hardcoded
+
+Status: [CONFIRMADO/PARCIAL/NÃO ENCONTRADO]
+Métrica: [X ocorrências hex / Y ocorrências rgba]
+
+Top violadores:
+1. src/screens/home/HomeScreen.tsx:659 — rgba(254, 205, 211, 0.4)
+2. src/screens/home/HomeScreen.tsx:666 — rgba(233, 213, 255, 0.3)
+[...]
+
+ESLint bloqueando? [SIM/NÃO]
+
+Severidade real: [MÉDIA/BAIXA]
+Recomendação: [REMEDIAR EM SPRINT / PASSOU]
+VERIFICAÇÃO #4 — Testes de Infraestrutura Crítica
+Objetivo
+Confirmar ausência de testes para rate-limiter.ts e usePremiumListener.
+
+Comandos
+bash
+# 1. Verificar existência de testes
+ls -la src/utils/__tests__/rate-limiter.test.ts 2>&1
+ls -la src/hooks/__tests__/usePremiumListener.test.ts 2>&1
+
+# 2. Rodar coverage em utils e hooks
+npm test -- --coverage --collectCoverageFrom='src/utils/rate-limiter.ts' --collectCoverageFrom='src/hooks/usePremiumListener.ts' 2>&1
+
+# 3. Coverage geral de /utils e /hooks
+npm test -- --coverage --collectCoverageFrom='src/utils/**/*.ts' --collectCoverageFrom='src/hooks/**/*.ts' --coverageReporters=text-summary 2>&1 | grep -E "(Statements|Branches|Functions|Lines)"
+
+# 4. Listar arquivos críticos sem testes
+find src/utils -name "*.ts" ! -name "*.test.ts" ! -name "*.d.ts" -exec basename {} \; | while read file; do
+  testfile="src/utils/__tests__/${file%.ts}.test.ts"
+  [ ! -f "$testfile" ] && echo "❌ $file (sem teste)"
+done
+Critérios de Avaliação
+Cenário	Status	Severidade	Ação
+rate-limiter.ts sem testes	✅ CONFIRMADO	ALTA	REMEDIAR AGORA
+usePremiumListener sem testes	✅ CONFIRMADO	ALTA	REMEDIAR AGORA
+Coverage /utils < 80%	✅ CONFIRMADO	MÉDIA	REMEDIAR EM SPRINT
+Coverage /hooks < 80%	✅ CONFIRMADO	MÉDIA	REMEDIAR EM SPRINT
+Reporte Esperado
+Code
+## VERIFICAÇÃO #4 — Testes de Infraestrutura
+
+Status: [CONFIRMADO/PARCIAL/NÃO ENCONTRADO]
+
+Arquivos críticos sem testes:
+- ❌ src/utils/rate-limiter.ts
+- ❌ src/hooks/usePremiumListener.ts
+[OU]
+- ✅ Todos os arquivos críticos possuem testes
+
+Coverage atual:
+- src/utils/: [X%] statements, [Y%] branches
+- src/hooks/: [X%] statements, [Y%] branches
+
+Severidade real: [ALTA/MÉDIA]
+Recomendação: [REMEDIAR AGORA / REMEDIAR EM SPRINT]
+VERIFICAÇÃO #5 — Observabilidade de New Architecture
+Objetivo
+Verificar se crashes relacionados à New Architecture podem ser rastreados no Sentry.
+
+Comandos
+bash
+# 1. Verificar se New Architecture está habilitada
+cat app.json | grep -A2 "newArchEnabled"
+
+# 2. Buscar tags Sentry no código
+rg "Sentry\.(init|setTag)" src/ --type tsx --type ts -A3
+rg "architecture.*new" src/ --type tsx --type ts
+
+# 3. Verificar se existe runbook de rollback
+ls -la docs/release/*ARCHITECTURE* docs/release/*ROLLBACK* 2>&1
+
+# 4. Buscar uso de TurboModules/Fabric
+rg "TurboModule|Fabric" src/ --type tsx --type ts -l
+Critérios de Avaliação
+Cenário	Status	Severidade	Ação
+New Arch habilitada + Sem tag Sentry	✅ CONFIRMADO	MÉDIA	REMEDIAR EM SPRINT
+New Arch habilitada + Sem runbook	✅ CONFIRMADO	BAIXA	CRIAR DOCS
+New Arch desabilitada	❌ NÃO APLICÁVEL	N/A	N/A
+Reporte Esperado
+Code
+## VERIFICAÇÃO #5 — New Architecture Observability
+
+Status: [CONFIRMADO/NÃO APLICÁVEL]
+
+New Architecture habilitada? [SIM/NÃO]
+Tag Sentry configurada? [SIM/NÃO]
+Runbook de rollback existe? [SIM/NÃO]
+
+Severidade real: [MÉDIA/BAIXA/N/A]
+Recomendação: [REMEDIAR EM SPRINT / N/A]
+VERIFICAÇÃO BÔNUS — Quality Gate Atual
+Objetivo
+Baseline da qualidade geral do projeto.
+
+Comandos
+bash
+# 1. Rodar quality gate
+npm run quality-gate 2>&1
+
+# 2. TypeScript
+npm run typecheck 2>&1 | tail -20
+
+# 3. ESLint
+npm run lint 2>&1 | grep -E "(warning|error)" | wc -l
+
+# 4. Testes
+npm test 2>&1 | grep -E "(Tests|Suites)"
+
+# 5. Build readiness
+npm run diagnose:production 2>&1 | tail -10
+Reporte Esperado
+Code
+## VERIFICAÇÃO BÔNUS — Quality Gate
+
+Quality Gate Status: [PASSED/FAILED]
+
+TypeScript: [X errors / Y warnings]
+ESLint: [X errors / Y warnings]
+Tests: [X/Y passed]
+Build Ready: [YES/NO]
+
+Observações:
+[listar bloqueadores se houver]
+FORMATO DE ENTREGA FINAL
+Após executar todas as verificações, compile um relatório consolidado:
+
+Markdown
+# 🔍 RELATÓRIO DE VERIFICAÇÃO DIAGNÓSTICA
+
+**Repositório:** LionGab/NossaMaternidade  
+**Data:** YYYY-MM-DD  
+**Executor:** [seu nome/agente]
+
+---
+
+## RESUMO EXECUTIVO
+
+| Risco | Status Confirmado | Severidade Real | Prioridade |
+|-------|-------------------|-----------------|------------|
+| #1 Secrets no Git | [✅/❌] | [CRÍTICA/BAIXA] | [P0/P1/P2] |
+| #2 StyleSheet | [✅/❌] | [ALTA/MÉDIA] | [P0/P1/P2] |
+| #3 Cores Hardcoded | [✅/❌] | [MÉDIA/BAIXA] | [P0/P1/P2] |
+| #4 Testes Faltando | [✅/❌] | [ALTA/MÉDIA] | [P0/P1/P2] |
+| #5 New Arch Obs | [✅/❌] | [MÉDIA/N/A] | [P0/P1/P2] |
+
+**Total de riscos confirmados:** X/5  
+**Bloqueadores P0:** X  
+**Itens P1:** X
+
+---
+
+## DETALHAMENTO POR RISCO
+
+[colar todos os reportes individuais das verificações #1-#5]
+
+---
+
+## QUALITY GATE BASELINE
+
+[colar verificação bônus]
+
+---
+
+## RECOMENDAÇÃO FINAL
+
+**Ordem de execução sugerida:**
+
+1. [Risco com prioridade P0 #1]
+2. [Risco com prioridade P0 #2]
+3. [Risco com prioridade P1 #1]
+...
+
+**Riscos que NÃO precisam remediação:**
+- [listar riscos com status "NÃO ENCONTRADO"]
+
+**Estimativa de esforço total:** X horas
+
+---
+
+## PRÓXIMOS PASSOS
+
+[ ] Aprovar ordem de remediação
+[ ] Executar FASE 1 (P0)
+[ ] Executar FASE 2 (P1)
+[ ] Validação final (quality-gate + coverage)
+[ ] Abrir PR de remediação
+REGRAS CRÍTICAS DE EXECUÇÃO
+❌ NÃO execute correções — apenas diagnóstico
+✅ SEMPRE rode o comando antes de reportar
+✅ Quantifique tudo — "12 arquivos", não "vários"
+✅ Se não encontrar, diga explicitamente — "0 ocorrências ✅"
+✅ Priorize por (severidade × probabilidade) — não só severidade teórica

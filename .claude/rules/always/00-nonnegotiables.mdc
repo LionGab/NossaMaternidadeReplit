@@ -1,0 +1,103 @@
+---
+description: "Regras não-negociáveis do projeto - Lists, Security, Code Quality, Constants"
+alwaysApply: true
+priority: critical
+---
+
+# Non-Negotiables - Nossa Maternidade
+
+> **Nota:** Para regras de TypeScript, Logging, Accessibility e Design System,
+> veja os arquivos específicos em `.claude/rules/always/*.mdc`.
+
+## Lists & Layout
+
+- **OBRIGATÓRIO**: Use `FlashList` ou `FlatList` para listas
+- **PROIBIDO**: `ScrollView` + `.map()` (causa performance issues)
+- Use `SafeAreaView` de `react-native-safe-area-context`
+- Prefira `Pressable` sobre `TouchableOpacity`
+
+### Exemplo Correto
+
+```typescript
+import { FlashList } from '@shopify/flash-list';
+
+// ✅ CORRETO
+<FlashList
+  data={items}
+  renderItem={({ item }) => <ItemComponent item={item} />}
+  estimatedItemSize={100}
+/>
+
+// ❌ ERRADO
+<ScrollView>
+  {items.map(item => <ItemComponent key={item.id} item={item} />)}
+</ScrollView>
+```
+
+## Security
+
+- **PROIBIDO**: Modificar arquivos `.env*` sem aprovação explícita
+- **PROIBIDO**: Expor secrets/API keys em código
+- **OBRIGATÓRIO**: Supabase sempre com RLS (Row Level Security) habilitado
+- **OBRIGATÓRIO**: Proteger dados pessoais (compliance LGPD)
+- **OBRIGATÓRIO**: Usar EAS Secrets para configurações sensíveis
+
+### Validação RLS
+
+```sql
+-- Verificar se tabela tem RLS
+SELECT tablename, rowsecurity
+FROM pg_tables
+WHERE schemaname = 'public' AND rowsecurity = false;
+
+-- Resultado deve ser VAZIO
+```
+
+## Code Quality
+
+- **Preferido**: Arquivos < 250 linhas (extrair subcomponentes/hooks se exceder)
+- **Padrão de retorno**: Services/APIs retornam `{ data, error }` pattern
+- **Commits atômicos**: 1 propósito por commit (não misturar features + fixes)
+- **PROIBIDO**: Hardcoded secrets (usar `process.env` + EAS Secrets)
+
+### Exemplo Service Pattern
+
+```typescript
+// ✅ CORRETO
+export async function fetchUserData(userId: string): Promise<{
+  data: User | null;
+  error: Error | null;
+}> {
+  try {
+    const response = await supabase.from('users').select('*').eq('id', userId);
+    return { data: response.data, error: null };
+  } catch (error) {
+    return { data: null, error: error as Error };
+  }
+}
+```
+
+## Immutable Constants
+
+**CRITICAL:** These values are IMMUTABLE across the project. Do NOT modify without explicit approval.
+
+- **Bundle ID**: `br.com.nossamaternidade.app`
+- **RevenueCat Product ID**: `premium`
+- **RevenueCat Offering ID**: `default`
+
+### Verification
+
+```bash
+# Verify Bundle ID (iOS)
+grep -r "br.com.nossamaternidade.app" app.json
+
+# Verify RevenueCat IDs
+grep -r "premium\|default" src/services/revenuecat.ts
+```
+
+## Benefícios
+
+- Performance garantida (FlashList)
+- Segurança robusta (RLS + secrets)
+- Código manutenível (qualidade + atomic commits)
+- Consistência de configuração (immutable constants)

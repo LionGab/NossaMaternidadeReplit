@@ -1,0 +1,64 @@
+---
+paths:
+  - "src/screens/**/*.{ts,tsx}"
+---
+
+# Screens - Telas do App
+
+## Estrutura
+
+- Screens devem usar `SafeAreaView` de `react-native-safe-area-context`
+- Sempre incluir loading states e error states
+- Implementar tratamento de erros
+
+## Padrão de Screen
+
+```typescript
+import React from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, ActivityIndicator } from 'react-native';
+import { useThemeColors } from '@/hooks/useThemeColors';
+
+export const ExampleScreen: React.FC = () => {
+  const colors = useThemeColors();
+  const [loading, setLoading] = React.useState(true);
+
+  if (loading) {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+        <ActivityIndicator />
+      </SafeAreaView>
+    );
+  }
+
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: colors.background }}>
+      {/* Conteúdo */}
+    </SafeAreaView>
+  );
+};
+```
+
+## Navegação
+
+- Usar hooks de navegação do React Navigation
+- Tipos corretos para `navigation` e `route`
+- Evitar navegação imperativa quando possível
+
+## Estado
+
+- Usar Zustand stores para estado global
+- Estado local com `useState` quando apropriado
+- Evitar prop drilling (usar Context ou store)
+
+## Performance
+
+- Lazy load de dados pesados
+- Usar `FlashList` para listas
+- Implementar paginação quando necessário
+
+## Acessibilidade
+
+- Screen deve ter `accessibilityLabel` apropriado
+- Navegação acessível (VoiceOver/TalkBack)
+- Feedback visual em ações

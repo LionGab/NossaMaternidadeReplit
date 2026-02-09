@@ -1,0 +1,42 @@
+# .cursorignore
+# Otimizado para MacBook 8GB RAM - Reduz indexação e busca
+
+# Archive (features removidas do escopo Store Launch)
+archive/
+docs/archive/
+
+# Dependências e Builds
+node_modules/
+.expo/
+dist/
+build/
+ios/Pods/
+android/.gradle/
+android/app/build/
+
+# Segredos e Configurações Sensíveis
+.env*
+!.env.example # Permite o .env.example
+*.key
+*.pem
+google-services.json
+GoogleService-Info.plist
+supabase/.env # Exclui credenciais do Supabase
+
+# Logs e Cache
+*.log
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+.vscode/ # Pode conter configurações de usuário ou secrets
+
+# Coverage e Testes
+coverage/
+.nyc_output/
+
+# Metro Cache
+.metro-cache/
+
+# Build Artifacts
+web-build/
+.expo-shared/

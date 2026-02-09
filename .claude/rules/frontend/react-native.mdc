@@ -1,0 +1,74 @@
+---
+paths:
+  - "src/**/*.{ts,tsx}"
+  - "App.tsx"
+  - "app.config.js"
+---
+
+# React Native - Performance e Boas Práticas
+
+## Performance (8GB RAM)
+
+- **Otimizar memória**: Evitar processamento pesado em main thread
+- **Lazy loading**: Componentes grandes devem ser lazy-loaded
+- **Memoização**: Usar `memo()` quando render repetitivo
+
+## Listas
+
+- **NUNCA**: `ScrollView + map()`
+- **SEMPRE**: `FlatList` ou `FlashList` para listas grandes
+- **Performance**: `FlashList` preferido para listas com muitos itens
+
+```typescript
+// ❌ ERRADO
+<ScrollView>
+  {items.map(item => <ItemCard key={item.id} item={item} />)}
+</ScrollView>
+
+// ✅ CORRETO
+<FlashList
+  data={items}
+  renderItem={({ item }) => <ItemCard item={item} />}
+  estimatedItemSize={100}
+/>
+```
+
+## Safe Area
+
+- **SEMPRE**: Usar `SafeAreaView` de `react-native-safe-area-context`
+- **Nunca**: `SafeAreaView` do React Native (deprecated)
+
+```typescript
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+// ✅ CORRETO
+<SafeAreaView edges={['top', 'bottom']} style={styles.container}>
+  {content}
+</SafeAreaView>
+```
+
+## Navegação
+
+- Usar `@react-navigation/native` com tipos corretos
+- Evitar navegação imperativa quando possível
+- Preferir navegação declarativa
+
+## Imports
+
+- Imports não utilizados: prefixar com `_` (ex: `AgentContext as _AgentContext`)
+- Usar barrel exports quando apropriado
+- Evitar imports circulares
+
+## Estado
+
+- **Zustand selectors**: Usar selectores individuais (evitar objeto que cria nova ref)
+- Evitar desestruturar objeto inteiro da store
+
+```typescript
+// ❌ ERRADO - cria nova ref a cada render
+const { user, settings } = useStore();
+
+// ✅ CORRETO - selectores específicos
+const user = useStore(state => state.user);
+const settings = useStore(state => state.settings);
+```

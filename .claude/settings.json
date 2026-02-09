@@ -1,0 +1,195 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "project": "Nossa Maternidade",
+  "version": "2.0.0",
+
+  "model": "sonnet",
+  "language": "pt-BR",
+
+  "autoCompact": {
+    "enabled": true,
+    "triggerTokens": 40000
+  },
+
+  "statusline": {
+    "enabled": true,
+    "command": "bash .claude/statusline.sh",
+    "refreshIntervalMs": 10000
+  },
+
+  "limits": {
+    "maxTurns": 100,
+    "timeoutMinutes": 120
+  },
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 .claude/hooks/validate-sensitive-files.py"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/auto-format.sh"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"Session started: $(date)\" >> .claude/session.log"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"Session completed: $(date)\" >> .claude/session.log"
+          }
+        ]
+      }
+    ]
+  },
+
+  "mcp": {
+    "servers": {
+      "supabase": {
+        "command": "npx",
+        "args": ["-y", "@supabase/mcp-server"],
+        "env": {
+          "SUPABASE_DB_URL": "${env:SUPABASE_DB_URL}",
+          "SUPABASE_ACCESS_TOKEN": "${env:SUPABASE_ACCESS_TOKEN}"
+        }
+      },
+      "context7": {
+        "command": "npx",
+        "args": ["-y", "@upstash/context7-mcp"],
+        "description": "Documentação atualizada: React, Expo, Supabase"
+      }
+    }
+  },
+
+  "skills": {
+    "deploy-testflight": ".claude/skills/release/deploy-testflight.md",
+    "deploy-android": ".claude/skills/release/deploy-android.md",
+    "pre-commit": ".claude/skills/quality/pre-commit.md",
+    "fix-types": ".claude/skills/quality/fix-types.md",
+    "review": ".claude/skills/quality/review.md",
+    "verify": ".claude/skills/quality/verify.md",
+    "nathia": ".claude/skills/domain/nathia.md",
+    "gates": ".claude/skills/workflow/gates.md"
+  },
+
+  "agents": {
+    "mobile-deployer": ".claude/agents/mobile-deployer.md",
+    "mobile-debugger": ".claude/agents/mobile-debugger.md",
+    "type-checker": ".claude/agents/type-checker.md",
+    "code-reviewer": ".claude/agents/code-reviewer.md",
+    "performance": ".claude/agents/performance.md",
+    "design-ui": ".claude/agents/design-ui.md",
+    "database": ".claude/agents/database.md",
+    "nathia-expert": ".claude/agents/nathia-expert.md",
+    "nm-release-operator": ".claude/agents/nm-release-operator.md"
+  },
+
+  "commands": {
+    "verify": ".claude/commands/verify.md",
+    "typecheck": ".claude/commands/typecheck.md",
+    "test": ".claude/commands/test.md",
+    "fix-lint": ".claude/commands/fix-lint.md",
+    "build-ios": ".claude/commands/build-ios.md",
+    "build-android": ".claude/commands/build-android.md",
+    "build-testflight": ".claude/commands/build-testflight.md",
+    "gates": ".claude/commands/gates.md",
+    "db-types": ".claude/commands/db-types.md",
+    "db-migrate": ".claude/commands/db-migrate.md",
+    "rules": ".claude/commands/rules.md"
+  },
+
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-bash.sh",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-edit-check.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-edit-format.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-stop-check.sh",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/prompt-context.sh",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}

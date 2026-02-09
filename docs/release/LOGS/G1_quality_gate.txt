@@ -1,0 +1,120 @@
+
+> template-app-53@1.0.0 quality-gate
+> bash scripts/quality-gate.sh
+
+🚀 Running quality gates for Nossa Maternidade...
+
+📝 [1/4] TypeScript type check...
+
+> template-app-53@1.0.0 typecheck
+> tsc --noEmit
+
+✅ TypeScript check passed
+
+🔧 [2/4] ESLint check...
+
+> template-app-53@1.0.0 lint
+> npx expo lint
+
+env: load .env.local
+env: export EXPO_PUBLIC_SUPABASE_URL EXPO_PUBLIC_SUPABASE_ANON_KEY EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL EXPO_PUBLIC_ELEVENLABS_API_KEY EXPO_PUBLIC_ELEVENLABS_VOICE_ID EXPO_PUBLIC_SENTRY_DSN SENTRY_ORG SENTRY_PROJECT EXPO_PUBLIC_REVENUECAT_IOS_KEY EXPO_PUBLIC_REVENUECAT_ANDROID_KEY EXPO_PUBLIC_ENABLE_AI_FEATURES EXPO_PUBLIC_ENABLE_GAMIFICATION EXPO_PUBLIC_ENABLE_ANALYTICS SENTRY_AUTH_TOKEN EXPO_PUBLIC_FEATURE_MUNDO_NATH EXPO_PUBLIC_FEATURE_COMMUNITY EXPO_PUBLIC_FEATURE_NATHIA_NEW_UI
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/components/community/CommunityPostCard.tsx
+  175:8  warning  React Hook useCallback has a missing dependency: 'handleBlockUser'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/components/community/ReportModal.tsx
+  105:6  warning  React Hook useCallback has a missing dependency: 'handleClose'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/components/onboarding/AnimatedCounter.tsx
+  60:6  warning  React Hook useEffect has a missing dependency: 'scale'. Either include it or remove the dependency array  react-hooks/exhaustive-deps
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/AffirmationsScreenRedesign.tsx
+  108:15  warning  Unexpected any. Specify a different type  @typescript-eslint/no-explicit-any
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/AssistantScreenRedesign.tsx
+   81:15  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+   82:11  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  333:26  warning  Hardcoded color '#000' detected. Use Tokens.* or colors.* from useTheme() instead     design-system/no-hardcoded-colors
+  453:22  warning  Hardcoded color '#000' detected. Use Tokens.* or colors.* from useTheme() instead     design-system/no-hardcoded-colors
+  485:32  warning  Hardcoded color '#34C759' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  487:28  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  507:32  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/CommunityScreenRedesign.tsx
+  285:32  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  318:36  warning  Hardcoded color '#F5F5F5' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  337:30  warning  Hardcoded color '#E5E5E5' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  468:22  warning  Hardcoded color '#000' detected. Use Tokens.* or colors.* from useTheme() instead     design-system/no-hardcoded-colors
+  554:24  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  573:23  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/CycleTrackerScreenRedesign.tsx
+  106:4   warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  265:26  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  383:24  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/HomeScreenRedesign.tsx
+  404:29  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  488:68  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  567:68  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/MundoDaNathScreenRedesign.tsx
+  387:24  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  408:22  warning  Hardcoded color '#000' detected. Use Tokens.* or colors.* from useTheme() instead     design-system/no-hardcoded-colors
+  469:66  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/ProfileScreenRedesign.tsx
+  161:45  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  334:26  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  514:26  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  537:32  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  585:34  warning  Hardcoded color '#E5E5E5' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  602:40  warning  Hardcoded color '#F5F5F5' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  621:76  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  665:74  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  705:34  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/onboarding/OnboardingWelcomeRedesign.tsx
+  409:28  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/screens/premium/PaywallScreenRedesign.tsx
+  318:61  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  411:74  warning  Unexpected any. Specify a different type                                              @typescript-eslint/no-explicit-any
+  470:71  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+  621:30  warning  Hardcoded color '#FFFFFF' detected. Use Tokens.* or colors.* from useTheme() instead  design-system/no-hardcoded-colors
+
+/Users/lion/Documents/Lion/NossaMaternidade/src/services/moderation.ts
+  22:6  warning  Use an `interface` instead of a `type`  @typescript-eslint/consistent-type-definitions
+
+✖ 41 problems (0 errors, 41 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.
+
+✅ ESLint check passed
+
+🏗️  [3/4] Build readiness check...
+
+> template-app-53@1.0.0 check-build-ready
+> bash scripts/check-build-ready.sh
+
+🔍 Verificando prontidão para build...
+[0;32m✅ eas.json encontrado[0m
+[0;32m✅ app.config.js encontrado (dynamic config)[0m
+[0;32m✅ bundleIdentifier iOS configurado[0m
+[0;32m✅ package Android configurado[0m
+[0;32m✅ Ícone do app encontrado[0m
+[0;32m✅ Splash screen encontrado[0m
+🔍 Verificando tipos TypeScript...
+[0;32m✅ TypeScript sem erros[0m
+🔍 Verificando ESLint...
+[0;32m✅ ESLint sem erros e warnings[0m
+[0;32m✅ EAS CLI instalado[0m
+[0;32m✅ Logado no EAS[0m
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+[0;32m✅ Projeto pronto para build![0m
+✅ Build readiness check passed
+
+🔍 [4/4] Checking for console.log usage...
+✅ No console.log found (using logger instead)
+
+🎉 All quality gates passed! Ready for PR/build.

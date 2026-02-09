@@ -1,0 +1,184 @@
+name: 📱 iOS Preview Release
+description: Preparar e distribuir versão preview do iOS para teste (influenciadora)
+title: "[iOS Preview] Release v"
+labels: ["release", "ios", "preview"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🎯 Objetivo
+        Criar um build iOS Ad Hoc (preview) para distribuição interna e teste com influenciadora.
+        
+        **IMPORTANTE**: Este build NÃO será publicado na App Store. É apenas para testes internos.
+
+  - type: input
+    id: version
+    attributes:
+      label: Versão do App
+      description: Versão que será gerada (formato semantic versioning)
+      placeholder: "1.0.0"
+    validations:
+      required: true
+
+  - type: input
+    id: build_number
+    attributes:
+      label: Build Number (iOS)
+      description: Número do build que será incrementado
+      placeholder: "3"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: release_type
+    attributes:
+      label: Tipo de Release
+      description: Qual perfil EAS será usado?
+      options:
+        - ios_preview (Ad Hoc - Teste Interno)
+        - ios_testflight (TestFlight - Store)
+    validations:
+      required: true
+
+  - type: textarea
+    id: test_devices
+    attributes:
+      label: Dispositivos de Teste (UDIDs)
+      description: Lista de UDIDs que devem ter acesso a este build
+      value: |
+        - 00008140-001655C03C50801C (Influenciadora)
+      placeholder: "- UDID1\n- UDID2"
+    validations:
+      required: true
+
+  - type: textarea
+    id: features
+    attributes:
+      label: Novas Features / Mudanças
+      description: O que há de novo nesta versão?
+      placeholder: |
+        - Feature 1
+        - Feature 2
+        - Correção de bug X
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: pre_build_checklist
+    attributes:
+      label: ✅ Checklist Pré-Build
+      description: Itens obrigatórios antes de iniciar o build
+      options:
+        - label: Versão atualizada em `app.config.js`
+          required: true
+        - label: Build number incrementado em `app.config.js`
+          required: true
+        - label: Changelog atualizado em `CHANGELOG.md`
+          required: false
+        - label: Secrets do EAS configurados (EXPO_PUBLIC_*, RevenueCat, Supabase)
+          required: true
+        - label: Testes locais passando
+          required: false
+        - label: Code review aprovado
+          required: false
+
+  - type: checkboxes
+    id: apple_developer_checklist
+    attributes:
+      label: 🍎 Apple Developer Portal
+      description: Configurações necessárias no portal da Apple
+      options:
+        - label: UDID(s) adicionado(s) ao provisioning profile
+          required: true
+        - label: Certificado de distribuição válido
+          required: true
+        - label: Profile Ad Hoc criado/atualizado (para ios_preview)
+          required: false
+
+  - type: textarea
+    id: build_commands
+    attributes:
+      label: 📦 Comandos de Build
+      description: Comandos que serão executados
+      value: |
+        ```bash
+        # Verificar configuração
+        npm run prepare-ios-preview
+        
+        # Executar build no EAS
+        eas build --platform ios --profile ios_preview
+        
+        # Após aprovação, build para TestFlight
+        # eas build --platform ios --profile ios_testflight
+        ```
+      render: bash
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: post_build_checklist
+    attributes:
+      label: 🚀 Checklist Pós-Build
+      description: Após o build completar no EAS
+      options:
+        - label: Build completado com sucesso no EAS
+        - label: Link de instalação obtido
+        - label: QR Code gerado (se aplicável)
+        - label: Link enviado para influenciadora
+        - label: Instruções de instalação enviadas (IOS_PREVIEW_INFLUENCER.md)
+
+  - type: checkboxes
+    id: smoke_tests
+    attributes:
+      label: 🧪 Smoke Tests
+      description: Testes básicos após instalação
+      options:
+        - label: App instala corretamente
+        - label: App abre sem crashes
+        - label: Login/Signup funciona
+        - label: Navegação principal funciona
+        - label: Features críticas testadas
+
+  - type: textarea
+    id: distribution_info
+    attributes:
+      label: 📲 Informações de Distribuição
+      description: Será preenchido após o build
+      placeholder: |
+        **EAS Build ID**: [id]
+        **Link de Instalação**: [url]
+        **QR Code**: [url]
+        **Enviado para**: 
+        - Influenciadora (via WhatsApp/Email)
+        - Testadores internos
+      render: markdown
+
+  - type: textarea
+    id: test_results
+    attributes:
+      label: 📋 Resultados dos Testes
+      description: Feedback da influenciadora e testadores
+      placeholder: |
+        - ✅ Funcionalidade X testada - OK
+        - ⚠️ Bug encontrado em Y
+        - 💡 Sugestão de melhoria em Z
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: 📝 Notas Adicionais
+      description: Qualquer informação adicional relevante
+      placeholder: "Observações, problemas conhecidos, próximos passos..."
+
+  - type: markdown
+    attributes:
+      value: |
+        ---
+        ## 📚 Documentação de Referência
+        
+        - [RELEASE_PACKET.md](../docs/RELEASE_PACKET.md) - Template completo de release
+        - [IOS_PREVIEW_INFLUENCER.md](../docs/IOS_PREVIEW_INFLUENCER.md) - Guia de instalação
+        - [EAS Documentation](https://docs.expo.dev/build/introduction/)
+        - [App Store Connect](https://appstoreconnect.apple.com/apps/6756980888)

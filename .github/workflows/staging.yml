@@ -1,0 +1,182 @@
+# Nossa Maternidade - Staging Deployment
+# Builds and deploys to staging/internal testing
+
+name: Staging
+
+on:
+  push:
+    branches:
+      - develop
+
+  workflow_dispatch:
+    inputs:
+      build_native:
+        description: 'Build native apps'
+        required: true
+        default: false
+        type: boolean
+
+concurrency:
+  group: staging-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.11.1'
+
+jobs:
+  validate:
+    name: Validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Quality Gate
+        run: |
+          echo "📝 TypeScript check..."
+          npm run typecheck
+          echo "✅ TypeScript OK"
+          
+          echo "🔧 ESLint check..."
+          npm run lint
+          echo "✅ ESLint OK"
+
+      - name: Run tests
+        run: npm run test:ci
+
+  eas-update-staging:
+    name: EAS Update (Staging)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    needs: validate
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Publish to Staging
+        run: |
+          npx eas-cli update \
+            --branch=staging \
+            --message="Staging: ${{ github.event.head_commit.message }}" \
+            --non-interactive
+
+  build-staging:
+    name: Build Staging (Native)
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    needs: validate
+
+    # Only build native when manually triggered with build_native=true
+    if: github.event.inputs.build_native == 'true'
+
+    strategy:
+      matrix:
+        platform: [ios, android]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build ${{ matrix.platform }}
+        run: |
+          npx eas-cli build \
+            --profile staging \
+            --platform ${{ matrix.platform }} \
+            --non-interactive \
+            --no-wait
+
+  submit-staging:
+    name: Submit to Internal Testing
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    needs: build-staging
+
+    if: github.event.inputs.build_native == 'true'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Wait for builds
+        run: |
+          echo "Waiting for builds to complete..."
+          sleep 60
+
+      - name: Submit iOS to TestFlight
+        continue-on-error: true
+        run: |
+          npx eas-cli submit \
+            --profile staging \
+            --platform ios \
+            --latest \
+            --non-interactive
+
+      - name: Decode Google Play credentials
+        run: |
+          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}" | base64 -d > google-play-service-account.json
+
+      - name: Submit Android to Internal Testing
+        continue-on-error: true
+        run: |
+          npx eas-cli submit \
+            --profile internal \
+            --platform android \
+            --latest \
+            --non-interactive

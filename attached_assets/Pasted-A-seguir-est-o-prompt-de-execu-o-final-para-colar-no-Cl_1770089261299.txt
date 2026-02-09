@@ -1,0 +1,402 @@
+A seguir está o **prompt de execução final** (para colar no Cloud Code) implementando a **Fase 1: Insight do Dia na Home**, seguindo o template e as regras do projeto. 
+
+---
+
+## Prompt para o Cloud Code
+
+````markdown
+**[FASE 1 — INSIGHT DO DIA NA HOME]**
+
+**Objetivo:** Implementar um sistema de “Insight do Dia” que aparece na `HomeScreen` para todos os usuários, usando os dados já coletados no onboarding (jornada/estágio atual). O insight deve ser selecionado com base em (jornada + dia) e persistir diariamente (não mudar ao abrir/fechar o app no mesmo dia). Incluir: banco de insights (60+), hook `useDailyInsight`, componente `DailyInsightCard`, e integração na `HomeScreen` acima do conteúdo atual.
+
+**Contexto Técnico:**
+- Stack: Expo SDK 54 + React Native + TypeScript.
+- Estilização: NativeWind v4 (NUNCA usar StyleSheet).
+- Estado/persistência: Zustand + AsyncStorage (via middleware `persist`), seguindo o padrão já usado em `src/state/store.ts`.
+- Design System: “Calm FemTech” (tokens em `src/theme/tokens.ts`). Não usar hex direto.
+- A11y obrigatório: `accessibilityRole` e `accessibilityLabel` em componentes interativos.
+- A `HomeScreen` já existe e é a entrada principal; o card deve aparecer acima do conteúdo atual.
+
+---
+
+**Passos de Execução:**
+
+### 1) Criar banco de insights (mínimo 60)
+**Criar Arquivo:** `src/content/insights.ts`
+- **Instruções:**
+  - Criar um banco com pelo menos **60 insights** (ideal: **10+ por jornada**, total 60+).
+  - Estrutura: jornadas (ex: `pregnancy`, `postpartum`, `cycle`) — mas **não inventar novas jornadas** se o app já usa nomes específicos.
+  - Cada insight deve ter: `id`, `journey`, `dayIndex` (1..N), `title`, `message`, `ctaLabel?`, `ctaAction?` (opcional).
+  - Textos em PT-BR, tom acolhedor, curto, e acionável.
+  - Não depender de backend; é local/offline.
+- **Código (arquivo completo):**
+  ```ts
+  // src/content/insights.ts
+  export type JourneyKey = 'pregnancy' | 'postpartum' | 'cycle';
+
+  export type DailyInsight = {
+    id: string;
+    journey: JourneyKey;
+    dayIndex: number; // 1..N (por jornada)
+    title: string;
+    message: string;
+    ctaLabel?: string;
+    ctaAction?: 'open_affirmations' | 'open_daily_log' | 'open_cycle' | 'open_assistant' | 'open_care';
+  };
+
+  // Observação: manter pelo menos 10+ por jornada (60+ total).
+  // Se o app já tiver outros nomes de jornada, ajuste JourneyKey para refletir exatamente os valores existentes no onboarding/store.
+  export const INSIGHTS: DailyInsight[] = [
+    // Pregnancy (exemplos — completar até 20+)
+    { id: 'preg-01', journey: 'pregnancy', dayIndex: 1, title: 'Um passo por vez', message: 'Hoje, escolha uma coisa pequena para cuidar de você: água, respiração, ou um banho mais calmo.', ctaLabel: 'Fazer check-in', ctaAction: 'open_daily_log' },
+    { id: 'preg-02', journey: 'pregnancy', dayIndex: 2, title: 'Seu corpo está trabalhando', message: 'Se bater cansaço, lembre: descansar também é parte do cuidado. Um cochilo curto já ajuda.' },
+    { id: 'preg-03', journey: 'pregnancy', dayIndex: 3, title: 'Conexão com o bebê', message: 'Coloque a mão na barriga e respire 5 vezes devagar. Isso já é vínculo.' },
+    // ... (adicionar mais)
+
+    // Postpartum (exemplos — completar até 20+)
+    { id: 'post-01', journey: 'postpartum', dayIndex: 1, title: 'Você pertence aqui', message: 'No puerpério, tudo muda rápido. Você não precisa dar conta de tudo sozinha.', ctaLabel: 'Ver afirmações', ctaAction: 'open_affirmations' },
+    { id: 'post-02', journey: 'postpartum', dayIndex: 2, title: 'Um cuidado possível', message: 'Hoje, qual é o cuidado mais possível? 2 copos de água, uma refeição simples ou pedir ajuda.' },
+    // ... (adicionar mais)
+
+    // Cycle (exemplos — completar até 20+)
+    { id: 'cycle-01', journey: 'cycle', dayIndex: 1, title: 'Observe sem julgar', message: 'Perceba seu humor e energia hoje. Só observar já é autocuidado.', ctaLabel: 'Registrar hoje', ctaAction: 'open_daily_log' },
+    { id: 'cycle-02', journey: 'cycle', dayIndex: 2, title: 'Ritmo do corpo', message: 'Seu corpo tem ciclos. Planeje o dia com gentileza: 1 prioridade e o resto é bônus.' },
+    // ... (adicionar mais)
+  ];
+
+  export const getInsightsByJourney = (journey: JourneyKey) =>
+    INSIGHTS.filter((i) => i.journey === journey).sort((a, b) => a.dayIndex - b.dayIndex);
+
+  export const getMaxDayIndex = (journey: JourneyKey) => {
+    const list = getInsightsByJourney(journey);
+    return list.length ? list[list.length - 1]!.dayIndex : 1;
+  };
+````
+
+---
+
+### 2) Criar store de persistência diária (garante “não muda no mesmo dia”)
+
+**Modificar Arquivo:** `src/state/store.ts`
+
+* **Instruções:**
+
+  * Adicionar um pequeno store `useDailyInsightStore` (Zustand + persist) para guardar:
+
+    * `lastShownDate` (YYYY-MM-DD)
+    * `lastInsightId` (string | null)
+    * `lastJourney` (journey atual quando escolheu)
+  * Expor ações:
+
+    * `setDailyInsightCache({ date, insightId, journey })`
+    * `resetDailyInsightCache()` (opcional, para debug)
+  * IMPORTANTE: não quebrar stores existentes (`useCycleStore`, `useAffirmationsStore`, etc.). Apenas adicionar.
+* **Código (trecho a inserir — adaptar ao arquivo real):**
+
+  ```ts
+  // Dentro de src/state/store.ts (manter padrão existente do projeto)
+  import AsyncStorage from '@react-native-async-storage/async-storage';
+  import { create } from 'zustand';
+  import { persist, createJSONStorage } from 'zustand/middleware';
+
+  type DailyInsightCache = {
+    lastShownDate: string | null; // YYYY-MM-DD
+    lastInsightId: string | null;
+    lastJourney: string | null;
+    setDailyInsightCache: (payload: { date: string; insightId: string; journey: string }) => void;
+    resetDailyInsightCache: () => void;
+  };
+
+  export const useDailyInsightStore = create<DailyInsightCache>()(
+    persist(
+      (set) => ({
+        lastShownDate: null,
+        lastInsightId: null,
+        lastJourney: null,
+        setDailyInsightCache: ({ date, insightId, journey }) =>
+          set({ lastShownDate: date, lastInsightId: insightId, lastJourney: journey }),
+        resetDailyInsightCache: () => set({ lastShownDate: null, lastInsightId: null, lastJourney: null }),
+      }),
+      {
+        name: 'daily-insight-storage',
+        storage: createJSONStorage(() => AsyncStorage),
+      }
+    )
+  );
+  ```
+
+---
+
+### 3) Criar hook `useDailyInsight` (seleção baseada em jornada + dia)
+
+**Criar Arquivo:** `src/hooks/useDailyInsight.ts`
+
+* **Instruções:**
+
+  * Responsável por:
+
+    1. Descobrir a **jornada atual** a partir dos dados já coletados no onboarding/store.
+    2. Calcular o **dayIndex** (dia relativo) com base em uma data inicial já existente (ex: data de conclusão do onboarding, data de início do ciclo, data do parto etc.).
+    3. Selecionar um insight determinístico: (journey + dayIndex) com fallback (ciclo) se passar do limite.
+    4. Garantir persistência diária via `useDailyInsightStore`:
+
+       * Se `lastShownDate` for hoje e existir `lastInsightId`, retornar o mesmo insight.
+       * Se mudou o dia, calcular e salvar novo.
+  * Como não temos certeza do nome dos campos atuais do onboarding/store, implemente o hook com uma função `resolveJourneyAndStartDate()` que:
+
+    * tenta ler do(s) store(s) existente(s) (ex: `useCycleStore`, `useProfileStore`, `useOnboardingStore`, etc.),
+    * se não existir, usar fallback sensato: `journey='postpartum'` e `startDate=today`.
+  * **Não quebrar build**: tipar tudo e evitar imports inexistentes. Se o store exato não existir, o Cloud Code deve localizar o store correto no projeto e ajustar o resolver.
+* **Código (arquivo completo):**
+
+  ```ts
+  // src/hooks/useDailyInsight.ts
+  import { useMemo } from 'react';
+  import { format } from 'date-fns';
+  import { INSIGHTS, type DailyInsight, type JourneyKey, getInsightsByJourney, getMaxDayIndex } from '../content/insights';
+  import { useDailyInsightStore } from '../state/store';
+
+  type UseDailyInsightResult = {
+    insight: DailyInsight | null;
+    journey: JourneyKey;
+    dayIndex: number;
+  };
+
+  function toISODate(d: Date): string {
+    return format(d, 'yyyy-MM-dd');
+  }
+
+  function clampDayIndex(day: number): number {
+    if (Number.isNaN(day) || day < 1) return 1;
+    return Math.floor(day);
+  }
+
+  function daysBetween(start: Date, end: Date): number {
+    // Dia 1 = mesmo dia do start
+    const ms = end.getTime() - start.getTime();
+    const raw = Math.floor(ms / (1000 * 60 * 60 * 24)) + 1;
+    return clampDayIndex(raw);
+  }
+
+  /**
+   * Resolver de jornada + data inicial usando dados já coletados.
+   * IMPORTANTE: o Cloud Code deve ajustar esta função para ler os stores reais do app.
+   */
+  function resolveJourneyAndStartDate(): { journey: JourneyKey; startDate: Date } {
+    // TODO: Ajustar para o store real do onboarding/perfil.
+    // Exemplos possíveis:
+    // - journeyKey salvo no onboarding (ex: 'pregnancy' | 'postpartum' | 'cycle')
+    // - startDate = data de conclusão do onboarding / data do parto / etc.
+
+    // Fallback seguro (não quebra)
+    return { journey: 'postpartum', startDate: new Date() };
+  }
+
+  function pickInsight(journey: JourneyKey, dayIndex: number): DailyInsight | null {
+    const list = getInsightsByJourney(journey);
+    if (!list.length) return null;
+
+    const max = getMaxDayIndex(journey);
+    const normalized = ((dayIndex - 1) % max) + 1; // loop
+    const found = list.find((i) => i.dayIndex === normalized);
+    return found ?? list[0] ?? null;
+  }
+
+  export function useDailyInsight(): UseDailyInsightResult {
+    const { lastShownDate, lastInsightId, lastJourney, setDailyInsightCache } = useDailyInsightStore();
+
+    return useMemo(() => {
+      const today = new Date();
+      const todayISO = toISODate(today);
+
+      const { journey, startDate } = resolveJourneyAndStartDate();
+      const dayIndex = daysBetween(startDate, today);
+
+      // Se já escolheu hoje, retorna o mesmo (se existir no banco)
+      if (lastShownDate === todayISO && lastInsightId) {
+        const cached = INSIGHTS.find((i) => i.id === lastInsightId);
+        if (cached) {
+          return { insight: cached, journey: (cached.journey as JourneyKey) ?? journey, dayIndex };
+        }
+      }
+
+      // Se mudou a jornada mas ainda é o mesmo dia, priorizar cache se consistente
+      if (lastShownDate === todayISO && lastInsightId && lastJourney) {
+        const cached = INSIGHTS.find((i) => i.id === lastInsightId);
+        if (cached) return { insight: cached, journey: cached.journey, dayIndex };
+      }
+
+      // Escolhe novo insight e persiste para hoje
+      const picked = pickInsight(journey, dayIndex);
+      if (picked) {
+        setDailyInsightCache({ date: todayISO, insightId: picked.id, journey: picked.journey });
+      }
+
+      return { insight: picked, journey, dayIndex };
+    }, [lastShownDate, lastInsightId, lastJourney, setDailyInsightCache]);
+  }
+  ```
+
+---
+
+### 4) Criar componente `DailyInsightCard` (UI bonita + CTA opcional)
+
+**Criar Arquivo:** `src/components/home/DailyInsightCard.tsx`
+
+* **Instruções:**
+
+  * Card bonito seguindo Calm FemTech: fundo claro, bordas arredondadas generosas, sombra suave.
+  * Exibir:
+
+    * “Insight do Dia”
+    * `title` e `message`
+    * Um chip discreto com “Dia X” (dayIndex)
+    * Botão CTA opcional se `ctaLabel` existir.
+  * O CTA deve disparar `onPressCTA` (passado via props). A navegação fica com a `HomeScreen`.
+  * Usar apenas NativeWind (`className`), sem StyleSheet.
+  * A11y: botão com `accessibilityRole="button"` e `accessibilityLabel`.
+* **Código (arquivo completo):**
+
+  ```tsx
+  // src/components/home/DailyInsightCard.tsx
+  import React from 'react';
+  import { Pressable, Text, View } from 'react-native';
+  import type { DailyInsight } from '../../content/insights';
+
+  type Props = {
+    insight: DailyInsight;
+    dayIndex: number;
+    onPressCTA?: (action: NonNullable<DailyInsight['ctaAction']>) => void;
+  };
+
+  export function DailyInsightCard({ insight, dayIndex, onPressCTA }: Props) {
+    const showCTA = Boolean(insight.ctaLabel && insight.ctaAction && onPressCTA);
+
+    return (
+      <View className="bg-white rounded-2xl p-4 shadow-sm border border-black/5">
+        <View className="flex-row items-center justify-between mb-2">
+          <Text className="text-base font-semibold text-slate-900">Insight do Dia</Text>
+
+          <View className="px-2 py-1 rounded-full bg-slate-100">
+            <Text className="text-xs font-medium text-slate-700" accessibilityRole="text">
+              Dia {dayIndex}
+            </Text>
+          </View>
+        </View>
+
+        <Text className="text-lg font-bold text-slate-900 mb-1" accessibilityRole="text">
+          {insight.title}
+        </Text>
+
+        <Text className="text-sm leading-5 text-slate-700" accessibilityRole="text">
+          {insight.message}
+        </Text>
+
+        {showCTA ? (
+          <Pressable
+            onPress={() => onPressCTA?.(insight.ctaAction!)}
+            className="mt-4 bg-slate-900 rounded-xl px-4 py-3 active:opacity-90"
+            accessibilityRole="button"
+            accessibilityLabel={insight.ctaLabel!}
+          >
+            <Text className="text-white font-semibold text-center">{insight.ctaLabel}</Text>
+          </Pressable>
+        ) : null}
+      </View>
+    );
+  }
+  ```
+
+> Nota: as classes de cor acima usam nomes utilitários; o Cloud Code deve ajustar para refletir as classes/tokens já existentes no projeto (ex: `bg-primary-50`, `text-primary-900`, etc.), respeitando o design system.
+
+---
+
+### 5) Integrar na HomeScreen (acima do conteúdo atual)
+
+**Modificar Arquivo:** `src/screens/HomeScreen.tsx`
+
+* **Instruções:**
+
+  * Importar `useDailyInsight` e `DailyInsightCard`.
+  * Renderizar o card **acima** do conteúdo atual da Home.
+  * Implementar o handler de CTA:
+
+    * `open_affirmations` → navegar para tela/rota de Afirmações
+    * `open_daily_log` → abrir modal/tela de DailyLog
+    * `open_cycle` → tab Ciclo
+    * `open_assistant` → tab NathIA
+    * `open_care` → tab Meus Cuidados
+  * Como os nomes das rotas podem variar, o Cloud Code deve usar as rotas reais em `src/navigation/*`.
+  * O card só deve aparecer quando `insight != null`.
+* **Código (trecho orientativo — adaptar ao arquivo real):**
+
+  ```tsx
+  // Imports
+  import { useDailyInsight } from '../hooks/useDailyInsight';
+  import { DailyInsightCard } from '../components/home/DailyInsightCard';
+
+  // Dentro do componente HomeScreen:
+  const { insight, dayIndex } = useDailyInsight();
+
+  const handleInsightCTA = (action: 'open_affirmations' | 'open_daily_log' | 'open_cycle' | 'open_assistant' | 'open_care') => {
+    // TODO: Ajustar nomes de rotas reais do app
+    switch (action) {
+      case 'open_affirmations':
+        navigation.navigate('Affirmations'); // ou stack/modal
+        break;
+      case 'open_daily_log':
+        navigation.navigate('DailyLog'); // ou open modal
+        break;
+      case 'open_cycle':
+        navigation.navigate('Cycle');
+        break;
+      case 'open_assistant':
+        navigation.navigate('Assistant');
+        break;
+      case 'open_care':
+        navigation.navigate('Care');
+        break;
+    }
+  };
+
+  // No JSX, acima do conteúdo atual:
+  {insight ? (
+    <View className="mb-4">
+      <DailyInsightCard insight={insight} dayIndex={dayIndex} onPressCTA={handleInsightCTA} />
+    </View>
+  ) : null}
+  ```
+
+---
+
+### 6) Ajuste do “resolver” do onboarding (passo obrigatório de alinhamento)
+
+**Modificar Arquivo:** `src/hooks/useDailyInsight.ts`
+
+* **Instruções:**
+
+  * Localizar no projeto o store/dados reais do onboarding que indicam:
+
+    * jornada/estágio do usuário (ex: grávida / pós-parto / ciclo)
+    * data inicial para calcular o dayIndex (ex: onboardingCompletedAt, createdAt do perfil, etc.)
+  * Substituir `resolveJourneyAndStartDate()` para usar esses dados reais.
+  * Garantir que o app continue funcionando mesmo se algum dado estiver ausente (fallback).
+
+---
+
+**Critérios de Aceitação:**
+
+* O card “Insight do Dia” aparece na `HomeScreen` acima do conteúdo atual para todos os usuários.
+* O insight **não muda** ao reabrir o app no mesmo dia (persistência por data).
+* A seleção muda ao trocar o dia (baseado na data local), mantendo coerência por jornada.
+* Código 100% TypeScript, sem `StyleSheet`, usando NativeWind.
+* Acessibilidade: botões com `accessibilityRole` e `accessibilityLabel`.
+* Sem dependência de backend: funciona offline.
+* Não quebra nenhuma navegação/store existente (apenas adiciona).
+
+```
+
+---
+
+Se você quiser, na próxima etapa eu também consigo te mandar um **mini-plano de conteúdo** (ex.: 20 insights por jornada com temas bem distribuídos) — mas com o prompt acima o Cloud Code já consegue implementar a feature inteira e você só complementa os textos.
+```

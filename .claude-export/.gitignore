@@ -1,0 +1,5 @@
+# NUNCA commitar credenciais
+.env
+*.key
+*.pem
+*.p12

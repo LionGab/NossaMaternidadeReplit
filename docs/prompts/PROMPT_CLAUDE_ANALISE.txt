@@ -1,0 +1,109 @@
+# PROMPT PARA ANÁLISE DO PROJETO - NOSSA MATERNIDADE
+
+Analise o projeto React Native "Nossa Maternidade" (Expo SDK 54 + TypeScript Strict) focando em:
+
+## CONTEXTO
+- App mobile para gestantes e mães (iOS + Android)
+- Stack: Expo SDK 54, React Native 0.81, TypeScript strict, Supabase, RevenueCat
+- Design System: Calm FemTech (Azul Pastel + Rosa Vibrante)
+- Acessibilidade: WCAG AAA obrigatório
+
+## REGRAS CRÍTICAS (VERIFICAR COMPLIANCE)
+
+### TypeScript
+- ❌ ZERO `any` types (usar `unknown` + type guards)
+- ❌ ZERO `@ts-ignore` sem justificativa explícita
+- ✅ Tipos explícitos quando reduz clareza
+
+### Logging
+- ❌ PROIBIDO: `console.log`, `console.error`, `console.warn`
+- ✅ OBRIGATÓRIO: Usar `logger.*` de `src/utils/logger.ts`
+
+### Design System
+- ❌ PROIBIDO: Cores hardcoded (`#xxx`, `rgba()`, `'white'`, `'black'`)
+- ✅ OBRIGATÓRIO: Usar `Tokens.*` de `src/theme/tokens.ts` OU `useThemeColors()`
+
+### Acessibilidade
+- ✅ Contraste mínimo: 7:1 (texto normal), 4.5:1 (texto grande 18pt+)
+- ✅ Touch targets: mínimo 44pt (iOS) / 48dp (Android)
+- ✅ Sempre `accessibilityLabel` e `accessibilityRole` em elementos interativos
+
+### Zustand
+- ❌ Evitar seletores que retornam objetos inteiros
+- ✅ Preferir seletores individuais
+
+## ESTRUTURA PRINCIPAL
+
+```
+src/
+├── screens/          # 55+ telas (Home, NathIA, Comunidade, etc.)
+├── components/       # Componentes reutilizáveis
+├── navigation/       # RootNavigator → MainTabNavigator → Stacks
+├── state/            # 9 stores Zustand (com AsyncStorage)
+├── api/              # Supabase, AI, Community, etc.
+├── hooks/            # 28+ hooks customizados
+├── theme/            # Design System (tokens.ts)
+└── utils/            # Logger, helpers, etc.
+```
+
+## FUNCIONALIDADES PRINCIPAIS
+
+1. **Home Screen**: Saudação, check-in emocional, acesso rápido
+2. **NathIA**: Chat com IA (Gemini/Claude/GPT), histórico, voz/imagens
+3. **Comunidade Mães Valente**: Feed, criar posts, likes/comentários
+4. **Mundo da Nath**: Conteúdos exclusivos premium
+5. **Meus Cuidados**: 8 cuidados diários, afirmações, hábitos
+
+## ANÁLISE SOLICITADA
+
+### 1. Auditoria de Compliance
+- [ ] Mapear violações de regras (any, console.log, cores hardcoded)
+- [ ] Verificar uso correto de Design System
+- [ ] Validar acessibilidade WCAG AAA
+- [ ] Verificar TypeScript strict mode
+
+### 2. Performance
+- [ ] Componentes pesados usam `React.memo()`?
+- [ ] Listas grandes usam `FlashList`?
+- [ ] Hooks otimizados (`useMemo`, `useCallback`)?
+- [ ] Lazy loading onde apropriado?
+
+### 3. Arquitetura
+- [ ] Separação de responsabilidades clara?
+- [ ] Componentes reutilizáveis?
+- [ ] Stores Zustand bem estruturados?
+- [ ] Navegação tipada corretamente?
+
+### 4. Segurança
+- [ ] AI Consent implementado (`usePrivacyStore`)?
+- [ ] RLS policies no Supabase?
+- [ ] Validação de dados?
+- [ ] Tratamento de erros robusto?
+
+## OUTPUT ESPERADO
+
+1. **Relatório de Violações**: Lista de problemas encontrados com localização exata
+2. **Priorização**: Classificar por criticidade (crítico, alto, médio, baixo)
+3. **Recomendações**: Sugestões específicas de correção
+4. **Métricas**: Quantidade de violações por categoria
+
+## COMANDOS ÚTEIS
+
+```bash
+npm run validate          # TypeScript + Lint
+npm run quality-gate      # Validação completa
+npm run typecheck         # Apenas TypeScript
+npx expo-doctor          # Verificar instalação
+```
+
+## DOCUMENTAÇÃO DE REFERÊNCIA
+
+- `README.md` - Visão geral
+- `claude.md` - Regras para agentes
+- `docs/PROJECT_COMPLETE_REFERENCE.md` - Referência completa
+- `docs/DESIGN_SYSTEM_CALM_FEMTECH.md` - Design System
+- `docs/ATIVAR_IA_GUIA.md` - Guia NathIA
+
+---
+
+**INSTRUÇÃO FINAL**: Analise o projeto sistematicamente, identifique TODAS as violações das regras acima, priorize por criticidade e forneça um plano de ação detalhado para correção.

@@ -1,0 +1,49 @@
+---
+description: "Design tokens e cores - proibido hardcoded"
+alwaysApply: true
+priority: high
+---
+
+# Design System - Tokens e Tema
+
+## Regra Fundamental
+
+- **PROIBIDO**: Cores hardcoded (`#xxx`, `rgba()`, `'white'`, `'black'`)
+- **OBRIGATÓRIO**: Usar `Tokens.*` de `src/theme/tokens.ts` OU `useThemeColors()` hook
+
+## Fonte Única de Verdade
+
+- **Tokens**: `src/theme/tokens.ts`
+- **Presets**: `src/theme/presets/` (ex: `calmFemtech.ts`)
+- **Hook de tema**: `useThemeColors()` para cores dinâmicas
+
+## Uso Correto
+
+```typescript
+import { Tokens } from '@/theme/tokens';
+import { useThemeColors } from '@/hooks/useThemeColors';
+
+// ✅ CORRETO - Tokens estáticos
+<View style={{ backgroundColor: Tokens.neutral[50] }} />
+
+// ✅ CORRETO - Hook para cores dinâmicas
+const colors = useThemeColors();
+<View style={{ backgroundColor: colors.background }} />
+```
+
+## Overlays e Shadows
+
+- **Overlays**: Usar `Tokens.overlay.light/medium/dark/heavy/backdrop`
+- **Shadows**: Usar `Tokens.neutral[900]` como `shadowColor`
+
+## Exceções
+
+- Apenas em arquivos de tokens/presets pode haver cores hardcoded
+- `src/utils/colors.ts` existe como compat/deprecado (não usar em código novo)
+
+## Benefícios
+
+- Consistência visual
+- Suporte a dark mode automático
+- Manutenção centralizada
+- Acessibilidade (contraste garantido)

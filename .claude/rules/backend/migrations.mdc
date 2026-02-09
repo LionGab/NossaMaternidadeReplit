@@ -1,0 +1,54 @@
+---
+paths:
+  - "supabase/migrations/**/*.sql"
+---
+
+# Migrations - Plan Mode Obrigatório
+
+## Regra Crítica
+
+- **SEMPRE**: Usar plan mode antes de criar/executar migrations
+- **NUNCA**: Executar migrations sem revisão
+- **SEMPRE**: Testar em desenvolvimento primeiro
+
+## Processo
+
+1. **Planejar**: Descrever mudanças no schema
+2. **Revisar**: Verificar impacto em dados existentes
+3. **Backup**: Criar backup antes de migrations destrutivas
+4. **Testar**: Executar em ambiente de desenvolvimento
+5. **Aplicar**: Aplicar em produção após validação
+
+## Boas Práticas
+
+- Uma migration = uma mudança lógica
+- Nomear migrations descritivamente: `YYYYMMDDHHMMSS_description.sql`
+- Incluir rollback quando possível
+- Documentar migrations complexas
+
+## Operações Perigosas
+
+- **DROP TABLE**: Sempre requer confirmação explícita
+- **ALTER COLUMN**: Verificar impacto em aplicação
+- **DELETE/TRUNCATE**: Sempre com WHERE ou backup
+
+## Exemplo
+
+```sql
+-- ✅ CORRETO - Migration com rollback
+BEGIN;
+
+-- Adicionar coluna
+ALTER TABLE users ADD COLUMN IF NOT EXISTS phone TEXT;
+
+-- Rollback (comentado)
+-- ALTER TABLE users DROP COLUMN IF EXISTS phone;
+
+COMMIT;
+```
+
+## Validação
+
+- Verificar se migration não quebra queries existentes
+- Testar com dados de produção (cópia)
+- Validar performance após migration

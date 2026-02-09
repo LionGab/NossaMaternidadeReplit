@@ -1,0 +1,129 @@
+~/workspace$ git remote set-url origin https://github.com/LionGab/NossaMaternidadeSLC.git
+git push origin main
+error: could not lock config file .git/config: File exists
+fatal: could not set 'remote.origin.url' to 'https://github.com/LionGab/NossaMaternidadeSLC.git'
+Running pre-push validation...
+
+> nossa-maternidade@1.0.0 quality-gate
+> bash scripts/quality-gate.sh
+
+🚀 Running quality gates for Nossa Maternidade...
+
+📝 [1/4] TypeScript type check...
+
+> nossa-maternidade@1.0.0 typecheck
+> tsc --noEmit
+
+src/api/community.ts:226:33 - error TS7006: Parameter 'p' implicitly has an 'any' type.
+
+226       const postIds = data.map((p) => p.id);
+                                    ~
+
+src/api/community.ts:229:15 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(relation: "profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"): PostgrestQueryBuilder<...>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"'.
+  Overload 2 of 2, '(relation: "user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"): PostgrestQueryBuilder<{ PostgrestVersion: "13.0.5"; }, { Tables: { affirmations: { ...; }; ... 37 more ...; weight_logs: { ...; }; }; Views: { ...; }; Functions: { ...; }; Enums: { ...; }; CompositeTypes: {}; }, { ...; } | ... 2 more ... | { ...; }, "user_context_full" | ... 2 more ... | "analytics_top_screens", []>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"'.
+
+229         .from("community_likes")
+                  ~~~~~~~~~~~~~~~~~
+
+
+src/api/community.ts:235:55 - error TS2339: Property 'post_id' does not exist on type 'SelectQueryError<"column 'post_id' does not exist on 'profiles'."> | SelectQueryError<"column 'post_id' does not exist on 'chat_conversations'."> | ... 36 more ... | SelectQueryError<...>'.
+  Property 'post_id' does not exist on type 'SelectQueryError<"column 'post_id' does not exist on 'profiles'.">'.
+
+235         likedPostIds = new Set(likesData.map((l) => l.post_id));
+                                                          ~~~~~~~
+
+src/api/community.ts:241:18 - error TS7006: Parameter 'post' implicitly has an 'any' type.
+
+241       data?.map((post) =>
+                     ~~~~
+
+src/api/community.ts:308:33 - error TS7006: Parameter 'p' implicitly has an 'any' type.
+
+308       const postIds = data.map((p) => p.id);
+                                    ~
+
+src/api/community.ts:311:15 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(relation: "profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"): PostgrestQueryBuilder<...>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"'.
+  Overload 2 of 2, '(relation: "user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"): PostgrestQueryBuilder<{ PostgrestVersion: "13.0.5"; }, { Tables: { affirmations: { ...; }; ... 37 more ...; weight_logs: { ...; }; }; Views: { ...; }; Functions: { ...; }; Enums: { ...; }; CompositeTypes: {}; }, { ...; } | ... 2 more ... | { ...; }, "user_context_full" | ... 2 more ... | "analytics_top_screens", []>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"'.
+
+311         .from("community_likes")
+                  ~~~~~~~~~~~~~~~~~
+
+
+src/api/community.ts:317:55 - error TS2339: Property 'post_id' does not exist on type 'SelectQueryError<"column 'post_id' does not exist on 'profiles'."> | SelectQueryError<"column 'post_id' does not exist on 'chat_conversations'."> | ... 36 more ... | SelectQueryError<...>'.
+  Property 'post_id' does not exist on type 'SelectQueryError<"column 'post_id' does not exist on 'profiles'.">'.
+
+317         likedPostIds = new Set(likesData.map((l) => l.post_id));
+                                                          ~~~~~~~
+
+src/api/community.ts:323:18 - error TS7006: Parameter 'post' implicitly has an 'any' type.
+
+323       data?.map((post) =>
+                     ~~~~
+
+src/api/community.ts:396:15 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(relation: "profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"): PostgrestQueryBuilder<...>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"'.
+  Overload 2 of 2, '(relation: "user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"): PostgrestQueryBuilder<{ PostgrestVersion: "13.0.5"; }, { Tables: { affirmations: { ...; }; ... 37 more ...; weight_logs: { ...; }; }; Views: { ...; }; Functions: { ...; }; Enums: { ...; }; CompositeTypes: {}; }, { ...; } | ... 2 more ... | { ...; }, "user_context_full" | ... 2 more ... | "analytics_top_screens", []>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"'.
+
+396         .from("community_likes")
+                  ~~~~~~~~~~~~~~~~~
+
+
+src/api/community.ts:471:33 - error TS7006: Parameter 'p' implicitly has an 'any' type.
+
+471       const postIds = data.map((p) => p.id);
+                                    ~
+
+src/api/community.ts:486:18 - error TS7006: Parameter 'post' implicitly has an 'any' type.
+
+486       data?.map((post) =>
+                     ~~~~
+
+src/api/community.ts:594:43 - error TS2352: Conversion of type '{ id: string; author_id: string; group_id: string | null; content: string; image_url: string | null; type: "text" | "image" | "poll" | "question" | "announcement" | "milestone" | null; ... 5 more ...; profiles: SelectQueryError<...>; }' to type 'SupabasePost' may be a mistake because neither type sufficiently overlaps with the other. If this was intentional, convert the expression to 'unknown' first.
+  Types of property 'profiles' are incompatible.
+    Type 'SelectQueryError<"column 'full_name' does not exist on 'author_id'.">' is not comparable to type '{ full_name: string; avatar_url?: string | null | undefined; } | null | undefined'.
+
+594     const post = mapSupabasePostToAppPost(postData as SupabasePost, false);
+                                              ~~~~~~~~~~~~~~~~~~~~~~~~
+
+src/api/community.ts:647:13 - error TS6133: 'data' is declared but its value is never read.
+
+647     const { data, error } = await (client as any).from("community_likes").insert({
+                ~~~~
+
+src/api/highlights.ts:104:15 - error TS2769: No overload matches this call.
+  Overload 1 of 2, '(relation: "profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"): PostgrestQueryBuilder<...>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"profiles" | "chat_conversations" | "community_comments" | "community_posts" | "community_groups" | "habits" | "affirmations" | "ai_context_cache" | "ai_insights" | "analytics_conversions" | ... 28 more ... | "weight_logs"'.
+  Overload 2 of 2, '(relation: "user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"): PostgrestQueryBuilder<{ PostgrestVersion: "13.0.5"; }, { Tables: { affirmations: { ...; }; ... 37 more ...; weight_logs: { ...; }; }; Views: { ...; }; Functions: { ...; }; Enums: { ...; }; CompositeTypes: {}; }, { ...; } | ... 2 more ... | { ...; }, "user_context_full" | ... 2 more ... | "analytics_top_screens", []>', gave the following error.
+    Argument of type '"community_likes"' is not assignable to parameter of type '"user_context_full" | "analytics_conversion_funnel" | "analytics_daily_summary" | "analytics_top_screens"'.
+
+104         .from("community_likes")
+                  ~~~~~~~~~~~~~~~~~
+
+
+src/api/highlights.ts:107:33 - error TS7006: Parameter 'p' implicitly has an 'any' type.
+
+107         .in("post_id", data.map(p => p.id));
+                                    ~
+
+src/api/highlights.ts:110:49 - error TS2339: Property 'post_id' does not exist on type 'SelectQueryError<"column 'post_id' does not exist on 'profiles'."> | SelectQueryError<"column 'post_id' does not exist on 'chat_conversations'."> | ... 36 more ... | SelectQueryError<...>'.
+  Property 'post_id' does not exist on type 'SelectQueryError<"column 'post_id' does not exist on 'profiles'.">'.
+
+110         likedPostIds = new Set(likes.map(l => l.post_id));
+                                                    ~~~~~~~
+
+
+Found 16 errors in 2 files.
+
+Errors  Files
+    13  src/api/community.ts:226
+     3  src/api/highlights.ts:104
+husky - pre-push script failed (code 1)
+error: failed to push some refs to 'https://github.com/LionGab/NossaMaternidadeSLC'

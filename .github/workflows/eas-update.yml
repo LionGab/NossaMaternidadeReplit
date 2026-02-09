@@ -1,0 +1,161 @@
+# Nossa Maternidade - EAS Update (OTA)
+# Deploys JavaScript updates without app store review
+
+name: EAS Update
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.github/**'
+      - 'docs/**'
+
+  workflow_dispatch:
+    inputs:
+      channel:
+        description: 'Update channel'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+          - preview
+      message:
+        description: 'Update message'
+        required: false
+        default: 'OTA Update'
+
+concurrency:
+  group: eas-update-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.11.1'
+
+jobs:
+  update:
+    name: EAS Update
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Quality Gate
+        run: |
+          echo "📝 TypeScript check..."
+          npm run typecheck
+          echo "✅ TypeScript OK"
+          
+          echo "🔧 ESLint check..."
+          npm run lint
+          echo "✅ ESLint OK"
+
+      - name: Determine channel
+        id: channel
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          INPUT_CHANNEL: ${{ github.event.inputs.channel }}
+          INPUT_MESSAGE: ${{ github.event.inputs.message }}
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            CHANNEL="$INPUT_CHANNEL"
+            MESSAGE="$INPUT_MESSAGE"
+          else
+            CHANNEL="production"
+            # Use first line of commit message only to avoid multiline issues
+            MESSAGE="Auto-update: $(echo "$COMMIT_MESSAGE" | head -n1)"
+          fi
+          echo "channel=$CHANNEL" >> $GITHUB_OUTPUT
+          echo "message=$MESSAGE" >> $GITHUB_OUTPUT
+
+      - name: Publish EAS Update
+        id: update
+        run: |
+          UPDATE_OUTPUT=$(npx eas-cli update \
+            --branch=${{ steps.channel.outputs.channel }} \
+            --message="${{ steps.channel.outputs.message }}" \
+            --non-interactive 2>&1)
+
+          echo "$UPDATE_OUTPUT"
+
+          # Extract update info
+          UPDATE_GROUP=$(echo "$UPDATE_OUTPUT" | grep -oP 'Update group ID: \K[a-f0-9-]+' || true)
+          echo "update_group=$UPDATE_GROUP" >> $GITHUB_OUTPUT
+
+      - name: Create deployment summary
+        run: |
+          echo "## EAS Update Deployed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Channel:** \`${{ steps.channel.outputs.channel }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "**Message:** ${{ steps.channel.outputs.message }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Update Group:** \`${{ steps.update.outputs.update_group }}\`" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Users on the \`${{ steps.channel.outputs.channel }}\` channel will receive this update automatically." >> $GITHUB_STEP_SUMMARY
+
+  # Staging deployment on develop branch
+  staging-update:
+    name: Staging Update
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    if: github.ref == 'refs/heads/develop'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Quality Gate
+        run: |
+          echo "📝 TypeScript check..."
+          npm run typecheck
+          echo "✅ TypeScript OK"
+          
+          echo "🔧 ESLint check..."
+          npm run lint
+          echo "✅ ESLint OK"
+
+      - name: Publish to Staging
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+        run: |
+          # Use first line of commit message only
+          FIRST_LINE=$(echo "$COMMIT_MESSAGE" | head -n1)
+          npx eas-cli update \
+            --branch=staging \
+            --message="Staging: $FIRST_LINE" \
+            --non-interactive

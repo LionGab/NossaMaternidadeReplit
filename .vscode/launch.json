@@ -1,0 +1,65 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Expo (Just My Code)",
+      "type": "reactnative",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true,
+      "skipFiles": [
+        "<node_internals>/**",
+        "**/node_modules/**",
+        "**/.expo/**",
+        "**/ios/Pods/**",
+        "**/android/**"
+      ]
+    },
+    {
+      "name": "Debug iOS",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "ios",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/ios/Pods/**"],
+      "sourceMaps": true,
+      "sourceMapPathOverrides": {
+        "webpack:///./*": "${workspaceFolder}/*"
+      }
+    },
+    {
+      "name": "Debug Android",
+      "type": "reactnative",
+      "request": "launch",
+      "platform": "android",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**", "**/android/**"],
+      "sourceMaps": true
+    },
+    {
+      "name": "Debug + Libraries (Full Debug)",
+      "type": "reactnative",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "justMyCode": false,
+      "skipFiles": ["<node_internals>/**"],
+      "sourceMaps": true,
+      "trace": true
+    },
+    {
+      "name": "Performance Profile",
+      "type": "reactnative",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "enableDebug": false,
+      "justMyCode": true,
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"],
+      "env": {
+        "EXPO_USE_FAST_RESOLVER": "1",
+        "EXPO_NO_METRO_LAZY": "false"
+      }
+    }
+  ]
+}

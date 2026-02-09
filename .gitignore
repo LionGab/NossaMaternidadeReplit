@@ -1,0 +1,163 @@
+# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
+
+# dependencies
+node_modules/
+bun.lock
+bun.lockb
+
+# npm cache (Windows artifacts)
+C:\npm-cache/
+*npm-cache*/
+_cacache/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Native
+.kotlin/
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Metro
+.metro-health-check*
+
+# debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+*.pem
+
+# typescript
+*.tsbuildinfo
+
+# iOS & Android
+ios/
+android/
+
+# Expo log
+expo.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Backups
+*.tar.gz
+*.zip
+
+# EAS build scripts with credentials (contain sensitive info)
+scripts/eas-build-auth.exp
+scripts/eas-build-final.exp
+scripts/eas-build-auto.exp
+
+# Coverage reports (regenerated)
+coverage/
+*.rar
+*.7z
+
+# Temp files
+*.log
+*.tmp
+*.bak
+Thumbs.db
+Untitled*
+temp/
+tmpclaude-*
+tree.txt
+
+# Archive
+docs/archive/
+docs/_archive/
+
+# Claude/Cursor local
+.cursor/
+core
+
+# SSH Keys (private keys should never be committed)
+*.rsa
+*.ed25519
+id_rsa*
+id_ed25519*
+adogo*
+*.pub
+!*.pub.sig
+
+# Claude Code export (permitir .json, bloquear arquivos sensíveis)
+.claude-export/.env
+.claude-export/.env.*
+.claude-export/*.key
+.claude-export/*.pem
+.claude-export/*.p12
+.claude-export/*.backup
+
+# Google Play Service Account (credenciais sensíveis)
+google-play-service-account.json
+
+# Arquivos temporários de análise
+Analise.md
+README - cópia.md
+*.deprecated
+docs/ANALISE_*.md
+
+# Conteúdos locais (não versionar)
+NatháliaFotos/
+
+supabase/.temp/
+
+.env.local
+
+# Playwright MCP (screenshots temporários)
+.playwright-mcp/
+
+# Downloads incompletos
+*.part
+coverage/
+*.p8
+
+# Claude Code / Ralph Loop (local-only state & flags)
+.claude/ralph-loop.local.md
+.claude/ralph-auto-enabled
+.claude/hookify.always-ralph.local.md
+.claude/**/ralph-loop.local.md
+
+# CLAUDE.local.md (preferências pessoais, não compartilhar)
+CLAUDE.local.md
+**/CLAUDE.local.md
+
+# Build artifacts (EAS builds should not be committed)
+*.ipa
+*.apk
+*.aab
+
+# Gate reports (local artifacts)
+reports/gates/latest.json
+reports/gates/latest.md
+reports/gates/history/
+
+# Backups de environment
+.env.local.backup
+
+supabase-*.txt
+
+# EAS temporários (diretórios criados durante builds)
+.eas/
+nossamaternidade-*/
+
+# Duplicado criado por sistema/OS (não versionar)
+assets/splash (2).png
+
+# Windows artifacts
+nul
+NossaMaternidade_backup_*/
+NossaMaternidade/

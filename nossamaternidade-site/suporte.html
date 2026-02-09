@@ -1,0 +1,542 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Central de Ajuda Nossa Maternidade - Encontre respostas rápidas para suas dúvidas sobre o app."
+    />
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#D4A5A5" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
+
+    <!-- Preconnect para fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <link rel="apple-touch-icon" href="assets/icon.png" />
+    <title>Central de Ajuda - Nossa Maternidade</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="nav" role="navigation" aria-label="Menu principal">
+      <div class="container nav-inner">
+        <a href="/" class="logo" aria-label="Nossa Maternidade - Início">
+          <svg
+            width="36"
+            height="36"
+            viewBox="0 0 100 100"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden="true"
+          >
+            <circle cx="50" cy="50" r="48" fill="#7EC8E3" />
+            <path
+              d="M50 75C50 75 25 55 25 40C25 30 33 23 43 23C47 23 50 25 50 25C50 25 53 23 57 23C67 23 75 30 75 40C75 55 50 75 50 75Z"
+              fill="white"
+              stroke="white"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+            <ellipse cx="50" cy="52" rx="8" ry="6" fill="#7EC8E3" opacity="0.3" />
+          </svg>
+          Nossa Maternidade
+        </a>
+
+        <ul class="nav-links" id="navLinks" role="menubar">
+          <li role="none"><a href="/#funcionalidades" role="menuitem">O que tem no app</a></li>
+          <li role="none"><a href="/#planos" role="menuitem">Planos</a></li>
+          <li role="none"><a href="/suporte" role="menuitem" aria-current="page">Ajuda</a></li>
+          <li role="none"><a href="/#baixar" class="nav-cta" role="menuitem">Baixar grátis</a></li>
+        </ul>
+
+        <button
+          class="mobile-menu-btn"
+          id="mobileMenuBtn"
+          aria-label="Abrir menu"
+          aria-expanded="false"
+          aria-controls="navLinks"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </nav>
+
+    <main>
+      <!-- Page Header -->
+      <header class="page-header">
+        <div class="container">
+          <h1>Precisa de ajuda?</h1>
+          <p>A gente tá aqui. Procura sua dúvida ou manda pra gente.</p>
+
+          <div class="support-search">
+            <input
+              type="search"
+              placeholder="Buscar ajuda..."
+              id="searchInput"
+              autocomplete="off"
+              aria-label="Buscar na central de ajuda"
+            />
+          </div>
+        </div>
+      </header>
+
+      <!-- Categories -->
+      <section class="support-categories" aria-labelledby="categories-title">
+        <div class="container">
+          <h2 id="categories-title" class="visually-hidden">Categorias de ajuda</h2>
+          <div class="category-grid">
+            <button class="category-card" data-category="conta" type="button">
+              <div class="category-icon" aria-hidden="true">🔐</div>
+              <h4>Conta e Login</h4>
+              <p>Problemas de acesso, senha e configurações</p>
+            </button>
+
+            <button class="category-card" data-category="perfil" type="button">
+              <div class="category-icon" aria-hidden="true">👤</div>
+              <h4>Perfil e Personalização</h4>
+              <p>Ajustar preferências e dados pessoais</p>
+            </button>
+
+            <button class="category-card" data-category="nathia" type="button">
+              <div class="category-icon" aria-hidden="true">🤖</div>
+              <h4>NathIA - Assistente IA</h4>
+              <p>Como usar e tirar o melhor da IA</p>
+            </button>
+
+            <button class="category-card" data-category="assinatura" type="button">
+              <div class="category-icon" aria-hidden="true">💳</div>
+              <h4>Assinatura e Pagamentos</h4>
+              <p>Planos, cobranças e cancelamentos</p>
+            </button>
+
+            <button class="category-card" data-category="comunidade" type="button">
+              <div class="category-icon" aria-hidden="true">👩‍👩‍👧</div>
+              <h4>Comunidade</h4>
+              <p>MãesValentes, posts e interações</p>
+            </button>
+
+            <button class="category-card" data-category="habitos" type="button">
+              <div class="category-icon" aria-hidden="true">📊</div>
+              <h4>Rastreadores e Hábitos</h4>
+              <p>Sono, alimentação e bem-estar</p>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="faq-section" id="faq" aria-labelledby="faq-title">
+        <div class="container">
+          <div class="section-header">
+            <h2 id="faq-title">Dúvidas comuns</h2>
+            <p>Talvez sua resposta esteja aqui 👇</p>
+          </div>
+
+          <div class="faq-list" role="list">
+            <!-- Conta e Login -->
+            <div class="faq-item" data-category="conta" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Esqueci minha senha, como recuperar?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Na tela de login, toque em "Esqueci minha senha". Digite o email cadastrado e você
+                  receberá um link para criar uma nova senha. O link expira em 1 hora. Se não
+                  receber, verifique a pasta de spam ou tente novamente.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="conta" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Como alterar meu email de cadastro?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Vá em Perfil → Configurações → Dados da conta → Email. Você precisará confirmar a
+                  alteração no novo email. Por segurança, mantenha acesso ao email antigo até a
+                  confirmação.
+                </p>
+              </div>
+            </div>
+
+            <!-- Perfil -->
+            <div class="faq-item" data-category="perfil" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Como ajustar a data prevista do parto?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Acesse Perfil → Minha Jornada → Data prevista. Você pode atualizar conforme
+                  orientação médica. Isso ajustará automaticamente os conteúdos e dicas da NathIA
+                  para sua fase atual.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="perfil" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Como refazer o onboarding/questionário inicial?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Vá em Perfil → Configurações → Refazer perfil. Isso reiniciará as 9 etapas do
+                  onboarding para atualizar suas preferências e fase da maternidade.
+                </p>
+              </div>
+            </div>
+
+            <!-- NathIA -->
+            <div class="faq-item" data-category="nathia" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Quantas mensagens posso enviar para a NathIA?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  No plano gratuito, você tem 6 mensagens por dia. Nos planos pagos (Mensal, Anual
+                  ou Founder), as mensagens são ilimitadas. O contador reseta à meia-noite no
+                  horário de Brasília.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="nathia" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                A NathIA substitui consultas médicas?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  <strong>Não.</strong> A NathIA é uma ferramenta de organização e apoio à rotina.
+                  Ela oferece informações gerais sobre maternidade, mas
+                  <strong>não fornece diagnósticos, prescrições ou orientações médicas</strong>.
+                  Para questões de saúde, sempre consulte seu médico, pediatra ou profissional de
+                  saúde qualificado.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="nathia" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Posso confiar nas informações da NathIA?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  A NathIA foi desenvolvida para fornecer informações práticas sobre organização,
+                  rotina e bem-estar geral na maternidade. No entanto, ela é uma assistente virtual
+                  e pode cometer erros. Para decisões importantes sobre saúde, medicamentos ou
+                  desenvolvimento do bebê, sempre confirme com profissionais de saúde.
+                </p>
+              </div>
+            </div>
+
+            <!-- Assinatura -->
+            <div class="faq-item" data-category="assinatura" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Como cancelar minha assinatura?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  O cancelamento é feito diretamente na loja do seu celular:<br /><br />
+                  <strong>iPhone:</strong> Ajustes → seu nome → Assinaturas → Nossa Maternidade →
+                  Cancelar<br /><br />
+                  <strong>Android:</strong> Play Store → Menu → Assinaturas → Nossa Maternidade →
+                  Cancelar<br /><br />
+                  Você mantém acesso até o fim do período pago. Não há reembolso proporcional.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="assinatura" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Qual a diferença entre os planos?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  <strong>Gratuito:</strong> Comunidade, 5 mensagens/dia com NathIA, hábitos
+                  básicos<br /><br />
+                  <strong>Mensal (R$19,90):</strong> Tudo ilimitado + Mundo Nath completo + Séries
+                  exclusivas<br /><br />
+                  <strong>Anual (R$199):</strong> Mesmos benefícios do mensal com 2 meses grátis<br /><br />
+                  <strong>Founder (R$97):</strong> Oferta especial de lançamento com acesso especial
+                  (vagas limitadas)
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="assinatura" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                O plano Founder é vitalício?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  O plano Founder é uma oferta promocional especial de lançamento, disponível apenas
+                  para as primeiras usuárias. Os detalhes exatos do plano (duração e benefícios)
+                  estão descritos na tela de compra dentro do app. Este plano pode ser descontinuado
+                  a qualquer momento.
+                </p>
+              </div>
+            </div>
+
+            <!-- Comunidade -->
+            <div class="faq-item" data-category="comunidade" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Como denunciar um post ou comentário?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Toque nos três pontinhos (⋮) no canto superior do post ou comentário e selecione
+                  "Denunciar". Escolha o motivo e envie. Nossa equipe analisa em até 24 horas.
+                  Conteúdos que violem nossas diretrizes são removidos.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="comunidade" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Posso usar nome/foto fictícios na comunidade?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Sim! Você pode usar um apelido e avatar em vez de nome/foto reais. Vá em Perfil →
+                  Configurações → Perfil público para ajustar como você aparece para outras mães na
+                  comunidade.
+                </p>
+              </div>
+            </div>
+
+            <!-- Hábitos -->
+            <div class="faq-item" data-category="habitos" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Perdi meus dados de hábitos, como recuperar?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Seus dados são sincronizados automaticamente na nuvem quando você está logada. Se
+                  reinstalou o app, basta fazer login com a mesma conta. Se os dados ainda não
+                  aparecem, entre em contato conosco com o email da conta.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="habitos" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Como exportar meus dados de sono/hábitos?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Vá em Perfil → Configurações → Meus dados → Exportar. Você receberá um arquivo com
+                  todo seu histórico por email. Esse recurso está disponível nos planos pagos.
+                </p>
+              </div>
+            </div>
+
+            <!-- Geral -->
+            <div class="faq-item" data-category="geral" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                O app Nossa Maternidade é um serviço médico?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  <strong>Não.</strong> O Nossa Maternidade é um aplicativo de organização,
+                  bem-estar e comunidade para mães. Não somos um serviço médico e não oferecemos
+                  diagnósticos, tratamentos ou prescrições. O conteúdo do app é informativo e não
+                  substitui consultas com profissionais de saúde. Sempre consulte seu médico para
+                  questões de saúde.
+                </p>
+              </div>
+            </div>
+
+            <div class="faq-item" data-category="geral" role="listitem">
+              <button class="faq-question" aria-expanded="false">
+                Como meus dados são protegidos?
+              </button>
+              <div class="faq-answer" role="region">
+                <p>
+                  Levamos sua privacidade a sério. Seus dados são criptografados, armazenados em
+                  servidores seguros e nunca vendidos a terceiros. Usamos provedores de
+                  processamento (como serviços de IA) apenas para funcionalidades do app, sempre
+                  seguindo a LGPD. Veja nossa
+                  <a href="/privacidade">Política de Privacidade</a> completa.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section class="contact-section" aria-labelledby="contact-title">
+        <div class="container">
+          <div class="contact-card">
+            <h3 id="contact-title">Não achou?</h3>
+            <p>Manda um email que a gente responde em até 24h.</p>
+            <a href="mailto:suporte@nossamaternidade.com.br" class="btn btn-primary">
+              Enviar email para suporte
+            </a>
+            <p style="margin-top: var(--space-sm); font-size: 0.85rem; color: var(--texto-suave)">
+              suporte@nossamaternidade.com.br
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+      <div class="container">
+        <div class="footer-bottom" style="border-top: none; padding-top: 0">
+          <p>© 2025 Nossa Maternidade. Todos os direitos reservados.</p>
+          <div class="footer-legal">
+            <a href="/privacidade">Privacidade</a>
+            <a href="/termos">Termos</a>
+            <a href="/ai-disclaimer">Aviso IA</a>
+            <a href="/">Voltar ao site</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Acessibilidade -->
+    <style>
+      .visually-hidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+    </style>
+
+    <script>
+      // Mobile menu toggle
+      const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+      const navLinks = document.getElementById("navLinks");
+
+      function toggleMenu() {
+        const isOpen = navLinks.classList.toggle("active");
+        mobileMenuBtn.classList.toggle("active");
+        mobileMenuBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+        mobileMenuBtn.setAttribute("aria-label", isOpen ? "Fechar menu" : "Abrir menu");
+        document.body.style.overflow = isOpen ? "hidden" : "";
+      }
+
+      mobileMenuBtn.addEventListener("click", toggleMenu);
+
+      navLinks.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", () => {
+          if (navLinks.classList.contains("active")) toggleMenu();
+        });
+      });
+
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && navLinks.classList.contains("active")) {
+          toggleMenu();
+          mobileMenuBtn.focus();
+        }
+      });
+
+      // FAQ accordion com acessibilidade
+      const faqItems = document.querySelectorAll(".faq-item");
+
+      faqItems.forEach((item) => {
+        const question = item.querySelector(".faq-question");
+        const answer = item.querySelector(".faq-answer");
+
+        // Gerar ID único para answer
+        const id = "faq-answer-" + Math.random().toString(36).substr(2, 9);
+        answer.id = id;
+        question.setAttribute("aria-controls", id);
+
+        question.addEventListener("click", () => {
+          // Fechar outros
+          faqItems.forEach((other) => {
+            if (other !== item) {
+              other.classList.remove("active");
+              other.querySelector(".faq-question").setAttribute("aria-expanded", "false");
+            }
+          });
+
+          // Toggle atual
+          item.classList.toggle("active");
+          // Verificar estado DEPOIS do toggle para setar aria-expanded corretamente
+          const isNowOpen = item.classList.contains("active");
+          question.setAttribute("aria-expanded", isNowOpen ? "true" : "false");
+        });
+
+        // Suporte a teclado
+        question.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            question.click();
+          }
+        });
+      });
+
+      // Category filter
+      const categoryCards = document.querySelectorAll(".category-card");
+
+      categoryCards.forEach((card) => {
+        card.addEventListener("click", () => {
+          const category = card.dataset.category;
+
+          // Scroll to FAQ
+          document.getElementById("faq").scrollIntoView({ behavior: "smooth" });
+
+          // Filter FAQs
+          setTimeout(() => {
+            faqItems.forEach((item) => {
+              if (item.dataset.category === category || category === "all") {
+                item.style.display = "block";
+              } else {
+                item.style.display = "none";
+              }
+            });
+          }, 500);
+        });
+      });
+
+      // Search functionality
+      const searchInput = document.getElementById("searchInput");
+
+      searchInput.addEventListener("input", (e) => {
+        const query = e.target.value.toLowerCase().trim();
+
+        faqItems.forEach((item) => {
+          const question = item.querySelector(".faq-question").textContent.toLowerCase();
+          const answer = item.querySelector(".faq-answer").textContent.toLowerCase();
+
+          if (question.includes(query) || answer.includes(query)) {
+            item.style.display = "block";
+          } else {
+            item.style.display = query ? "none" : "block";
+          }
+        });
+
+        // Scroll to FAQ if searching
+        if (query.length > 2) {
+          document.getElementById("faq").scrollIntoView({ behavior: "smooth" });
+        }
+      });
+
+      // Reset filter when clicking header
+      document.querySelector(".section-header").addEventListener("click", () => {
+        faqItems.forEach((item) => {
+          item.style.display = "block";
+        });
+        searchInput.value = "";
+      });
+    </script>
+  </body>
+</html>

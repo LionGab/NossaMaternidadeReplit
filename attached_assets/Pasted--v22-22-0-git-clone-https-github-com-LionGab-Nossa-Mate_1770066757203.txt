@@ -1,0 +1,71 @@
+~ ⬢ v22.22.0
+❯ git clone https://github.com/LionGab/Nossa-Maternidade.git
+cd Nossa-Maternidade
+npm install
+eas login
+eas build --profile ios_testflight --platform ios
+Cloning into 'Nossa-Maternidade'...
+warning: You appear to have cloned an empty repository.
+
+up to date, audited 627 packages in 3s
+
+56 packages are looking for funding
+  run `npm fund` for details
+
+1 high severity vulnerability
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+You are already logged in as liongab.
+✔ Do you want to continue? … yes
+Log in to EAS with email or username (exit and run eas login --help to see other login options)
+✔ Email or username … LionGab
+✔ Password … *********
+Logged in
+package.json is outside of the current git repository (project root: /Users/lion, git root: /Users/lion/Nossa-Maternidade.
+    Error: build command failed.
+
+Nossa-Maternidade main 20s
+❯ git clone https://github.com/LionGab/Nossa-Maternidade.git
+cd Nossa-Maternidade
+npm install
+eas login
+eas build --profile ios_testflight --platform ios
+Cloning into 'Nossa-Maternidade'...
+warning: You appear to have cloned an empty repository.
+
+Cloning into 'Nossa-Maternidade'...
+warning: You appear to have cloned an empty repository.
+
+up to date, audited 627 packages in 719ms
+
+56 packages are looking for funding
+  run `npm fund` for details
+
+1 high severity vulnerability
+
+To address all issues, run:
+  npm audit fix
+
+Run `npm audit` for details.
+You are already logged in as liongab.
+✔ Do you want to continue? … yes
+Log in to EAS with email or username (exit and run eas login --help to see other login options)
+✔ Email or username … LionGab
+✔ Password … *********
+Logged in
+package.json is outside of the current git repository (project root: /Users/lion, git root: /Users/lion/Nossa-Maternidade/Nossa-Maternidade.
+    Error: build command failed.
+zsh: command not found: Cloning
+zsh: command not found: warning:
+
+Nossa-Maternidade main 15s
+❯
+
+Nossa-Maternidade main
+❯ cd /Users/lion/Nossa-Maternidade/Nossa-Maternidade
+
+Nossa-Maternidade main
+❯

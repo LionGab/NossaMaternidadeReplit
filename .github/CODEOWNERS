@@ -1,0 +1,19 @@
+# Default owner for everything
+* @LionGab
+
+# Core app code
+/src/api/ @LionGab
+/src/services/ @LionGab
+/src/state/ @LionGab
+
+# Security-critical paths
+/supabase/ @LionGab
+/.github/ @LionGab
+
+# Design system
+/src/theme/ @LionGab
+/src/components/ui/ @LionGab
+
+# Configuration
+/*.json @LionGab
+/*.config.* @LionGab

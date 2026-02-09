@@ -1,0 +1,124 @@
+---
+paths:
+  - "src/state/premium-store.ts"
+  - "src/screens/premium/**"
+  - "src/components/premium/**"
+  - "supabase/functions/webhook/**"
+priority: high
+---
+
+# Premium & In-App Purchases (RevenueCat)
+
+## IMMUTABLE Constants
+
+**NUNCA modificar:**
+
+| Constante | Valor |
+|-----------|-------|
+| Product (Monthly) | `nossa_maternidade_monthly` |
+| Product (Yearly) | `nossa_maternidade_yearly` |
+| Entitlement | `premium` |
+| Offering | `default` |
+
+## Store Pattern
+
+### ✅ Use Selector Hooks
+
+```typescript
+import { useIsPremium, useHasVoiceAccess } from '@/state/premium-store';
+
+const isPremium = useIsPremium();
+const hasVoice = useHasVoiceAccess();
+```
+
+## Premium Features
+
+| Feature | Free | Premium |
+|---------|------|----------|
+| AI Messages | 6/dia | Unlimited |
+| Voice Messages | ❌ | ✅ |
+| Premium Screens | ❌ | ✅ |
+| Priority Support | ❌ | ✅ |
+
+## Flow de Inicialização
+
+```
+App.tsx
+  ↓ initializePurchases()
+Purchases.configure()
+  ↓ syncWithRevenueCat()
+Purchases.getCustomerInfo()
+  ↓
+usePremiumStore.setPremiumStatus()
+```
+
+## PremiumGate Component
+
+```typescript
+import { PremiumGate } from '@/components/premium/PremiumGate';
+
+<PremiumGate>
+  <VoiceMessagePlayer />
+</PremiumGate>
+```
+
+## Testing
+
+### iOS Sandbox
+App Store Connect → Users → Sandbox Testers
+
+### Android
+Google Play Console → License Testing
+
+### DEV_BYPASS
+```typescript
+// src/config/dev-bypass.ts
+export const DEV_BYPASS = {
+  PREMIUM: __DEV__ && false, // true para testar
+};
+```
+
+## Debug RevenueCat
+
+```typescript
+import Purchases from 'react-native-purchases';
+
+// Ver offerings
+const offerings = await Purchases.getOfferings();
+console.log(offerings);
+
+// Ver status
+const info = await Purchases.getCustomerInfo();
+console.log(info.entitlements);
+
+// Restore
+await Purchases.restorePurchases();
+```
+
+## Troubleshooting
+
+**Premium not activating**:
+- Verificar webhook recebendo events
+- Forçar refresh: `usePremiumStore.getState().checkPremiumStatus()`
+
+**No packages available**:
+- Verificar offerings no RevenueCat Dashboard
+- Verificar API keys (iOS vs Android)
+
+**Restore não funciona**:
+- User logado com mesma Apple ID/Google account?
+- Call: `await Purchases.restorePurchases()`
+
+## Release Gate G4
+
+- [ ] API keys configuradas
+- [ ] Products criados (App Store + Play Console)
+- [ ] Webhook endpoint ativo
+- [ ] Testar compra sandbox
+- [ ] Testar restore
+
+## Recursos
+
+- Store: `src/state/premium-store.ts`
+- Gate: `src/components/premium/PremiumGate.tsx`
+- Webhook: `supabase/functions/webhook/index.ts`

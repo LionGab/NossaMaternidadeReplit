@@ -1,0 +1,79 @@
+{
+  "$schema": "https://claude.ai/mcp/schema.json",
+  "mcpServers": {
+    "expo-mcp": {
+      "transport": "http",
+      "url": "https://mcp.expo.dev/mcp",
+      "description": "Expo MCP Server para builds iOS/Android"
+    },
+    "memory-keeper": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MCP_MEMORY_DB_PATH": ".claude/context.db"
+      },
+      "description": "Persistência de contexto entre sessões"
+    },
+    "sequential-thinking": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "description": "Pensamento sequencial para tarefas complexas"
+    },
+    "context7": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@upstash/context7-mcp"],
+      "description": "Documentação atualizada: React Native, Expo, Supabase"
+    },
+    "github-readonly": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${COPILOT_MCP_GITHUB_TOKEN}"
+      },
+      "description": "GitHub MCP server (read-only mode for safety)",
+      "metadata": {
+        "url": "https://github.com/nossamaternidade/nossamaternidade",
+        "toolsets": ["readonly"],
+        "permissions": "read-only"
+      }
+    },
+    "filesystem-readonly": {
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "C:\\Users\\lion\\Documents\\NossaMaternidade"
+      ],
+      "description": "Local filesystem access (read-only for safety)",
+      "metadata": {
+        "allowedPaths": [
+          "C:\\Users\\lion\\Documents\\NossaMaternidade\\src",
+          "C:\\Users\\lion\\Documents\\NossaMaternidade\\docs",
+          "C:\\Users\\lion\\Documents\\NossaMaternidade\\supabase"
+        ],
+        "permissions": "read-only"
+      }
+    }
+  },
+  "security": {
+    "trustBoundaries": {
+      "description": "MCP servers run in isolated processes with limited permissions",
+      "secretsManagement": "Use COPILOT_MCP_* environment variables (never in prompts)",
+      "dataValidation": "All server responses are validated before being shown to AI"
+    },
+    "guidelines": [
+      "Start with read-only servers - expand permissions only when necessary",
+      "Never expose SUPABASE_SERVICE_ROLE_KEY or GEMINI_API_KEY to MCP",
+      "Review server logs regularly for suspicious activity",
+      "Use minimal toolsets (avoid '*' wildcard in production)"
+    ]
+  },
+  "notes": {
+    "platform": "Windows (cmd)",
+    "vsCodeUsage": "This config works with GitHub Copilot Chat in VS Code",
+    "githubCodingAgent": "For GitHub Copilot coding agent, configure via repository Settings > Copilot",
+    "documentation": "See docs/setup/COPILOT_MCP_SETUP.md for full setup guide"
+  }
+}

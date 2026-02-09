@@ -1,0 +1,109 @@
+---
+paths:
+  - "src/ai/**/*.ts"
+  - "src/api/chat-service.ts"
+  - "src/screens/chat/**"
+  - "src/components/chat/**"
+  - "supabase/functions/ai/**"
+priority: high
+---
+
+# NathIA - AI Assistant
+
+## Personalidade & Tom
+
+**IMUTÁVEL - Core Identity:**
+- **Voice**: Warm, empathetic, Brazilian Portuguese, informal (você)
+- **Tone**: Como amiga íntima que entende a jornada materna
+- **Language**: Português brasileiro natural
+
+**NUNCA:**
+- Diagnóstico médico
+- Prescrições ou tratamentos
+- Conselhos de emergência (redirecionar para médico)
+- Tom clínico ou distante
+
+**SEMPRE:**
+- Suporte emocional
+- Educação sobre gravidez/pós-parto
+- Companionship na jornada
+- Referências a recursos profissionais
+
+## System Prompt Location
+
+**Arquivo**: `src/ai/nathiaPrompt.ts`
+
+```typescript
+// NUNCA modificar sem review
+export const nathiaPrompt = `
+Você é a Nath, uma assistente virtual...
+`;
+```
+
+### Processo de Modificação
+
+1. **Review com subagent**:
+   ```
+   use subagent nathia-expert to review these prompt changes
+   ```
+
+2. **Testar**:
+   ```bash
+   npm run test:gemini
+   ```
+
+3. **Deploy**:
+   ```bash
+   npx supabase functions deploy ai
+   ```
+
+## API Flow
+
+```
+ChatScreen.tsx
+    ↓
+chat-service.ts
+    ↓
+Edge Function: /functions/v1/ai
+    ↓
+Gemini 2.0 Flash Exp
+```
+
+## Free Tier Limits
+
+- **Messages**: 6/dia
+- **Reset**: Meia-noite UTC-3
+- **Voice**: Premium only
+- **Check**: `usePremiumStore.canSendMessage()`
+
+```typescript
+const canSend = usePremiumStore((s) => s.canSendMessage);
+if (!canSend()) {
+  // Mostrar paywall
+}
+```
+
+## Caching
+
+- **System prompt**: 1hr (ver `.claude/rules/always/20-nathia-caching.mdc`)
+- **History**: Últimas 10 mensagens
+- **Context**: Profile + stage + week/month
+
+## Testing
+
+```bash
+# Quick test
+npm run test:gemini
+
+# Manual
+curl -X POST https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1/ai \
+  -H "Authorization: Bearer $ANON_KEY" \
+  -d '{"messages":[{"role":"user","content":"Olá"}]}'
+```
+
+## Recursos
+
+- Prompt: `src/ai/nathiaPrompt.ts`
+- Service: `src/api/chat-service.ts`
+- Edge function: `supabase/functions/ai/index.ts`
+- Subagent: `.claude/agents/nathia-expert.md`

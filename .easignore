@@ -1,0 +1,79 @@
+# Large iOS build artifacts (1.6GB)
+ios/Pods
+ios/build
+ios/.xcode.env.local
+
+# Large Android build artifacts
+android/.gradle
+android/build
+android/app/build
+android/.idea
+
+# Node modules handled by EAS
+node_modules
+
+# Git
+.git
+
+# Coverage and tests (9MB)
+coverage
+**/__tests__
+**/*.test.ts
+**/*.test.tsx
+**/*.spec.ts
+**/*.spec.tsx
+jest.config.js
+jest.setup.js
+
+# Development files
+.expo
+.vscode
+.idea
+*.log
+.env.local
+.env.development
+.env.test
+.turbo
+.cache
+dist
+web-build
+
+# Documentation (not needed for build)
+docs
+*.md
+!README.md
+
+# Archive / design assets (not needed for build)
+archive
+design-system
+frontend-design
+nossamaternidade-site
+reports
+skills
+
+# Large asset folders (if not needed)
+# assets/onboarding
+
+# Dev tools
+promptsoptimize
+DeviceWindows
+web-simulator
+legal-pages
+.claude
+.codex
+.continue
+.agent
+.codebuddy
+.gemini
+.github/prompts
+.kiro
+.opencode
+.qoder
+.roo
+.trae
+.windsurf
+
+# Scripts (not needed for native build)
+scripts/*.sh
+scripts/*.mjs
+scripts/*.ps1
