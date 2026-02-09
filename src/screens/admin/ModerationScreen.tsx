@@ -220,29 +220,32 @@ export default function ModerationScreen({ navigation }: Props) {
     setIsRefreshing(false);
   };
 
-  const handleApprove = async (item: ModerationQueueItem) => {
+  const handleApprove = useCallback(async (item: ModerationQueueItem) => {
     await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
-    
+
     const { success, error } = await approvePost(item.id, user?.id || "");
-    
+
     if (success) {
-      setItems(prev => prev.filter(i => i.id !== item.id));
-      if (stats) {
-        setStats({
-          ...stats,
-          pending: stats.pending - 1,
-          approved: stats.approved + 1,
-        });
-      }
+      setItems((prev) => prev.filter((i) => i.id !== item.id));
+      setStats((previousStats) => {
+        if (!previousStats) {
+          return previousStats;
+        }
+        return {
+          ...previousStats,
+          pending: previousStats.pending - 1,
+          approved: previousStats.approved + 1,
+        };
+      });
     } else {
       Alert.alert("Erro", error?.message || "Não foi possível aprovar o post.");
     }
-  };
+  }, [user?.id]);
 
-  const handleReject = (item: ModerationQueueItem) => {
+  const handleReject = useCallback((item: ModerationQueueItem) => {
     setRejectingId(item.id);
     setRejectReason("");
-  };
+  }, []);
 
   const confirmReject = async () => {
     if (!rejectingId) return;
