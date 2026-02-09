@@ -19,6 +19,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { usePost, useComments, useCreateComment, useTogglePostLike } from "@/api/hooks";
 import { formatTimeAgo } from "@/utils/formatters";
 import { Tokens } from "@/theme/tokens";
+import { PostSkeleton } from "@/components/ui";
 
 export default function PostDetailScreen({
   route,
@@ -83,9 +84,8 @@ export default function PostDetailScreen({
 
   if (isLoading) {
     return (
-      <View className="flex-1 items-center justify-center" style={{ backgroundColor: bgCard }}>
-        <ActivityIndicator size="large" color={Tokens.brand.accent[500]} />
-        <Text style={{ color: textSecondary, marginTop: 12 }}>Carregando...</Text>
+      <View className="flex-1" style={{ backgroundColor: bgCard, padding: 16 }}>
+        <PostSkeleton />
       </View>
     );
   }
@@ -112,7 +112,10 @@ export default function PostDetailScreen({
       behavior={Platform.OS === "ios" ? "padding" : undefined}
       keyboardVerticalOffset={0}
     >
-      <View className="flex-1" style={{ backgroundColor: isDark ? Tokens.neutral[900] : Tokens.neutral[50] }}>
+      <View
+        className="flex-1"
+        style={{ backgroundColor: isDark ? Tokens.neutral[900] : Tokens.neutral[50] }}
+      >
         <ScrollView
           ref={scrollRef}
           showsVerticalScrollIndicator={false}
