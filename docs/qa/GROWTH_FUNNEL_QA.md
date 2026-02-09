@@ -152,18 +152,23 @@ Validar endpoint `/enqueue-journey`.
 
 ### 6.1 Chamada (curl ou Postman)
 
+**Requer:** `Authorization: Bearer <SUPABASE_SERVICE_ROLE_KEY>` (service call)
+
 ```bash
 curl -X POST "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1/crm-lifecycle/enqueue-journey" \
-  -H "Authorization: Bearer <ANON_KEY>" \
+  -H "Authorization: Bearer <SUPABASE_SERVICE_ROLE_KEY>" \
   -H "Content-Type: application/json" \
   -d '{
-    "user_id": "<uuid>",
-    "journey_name": "growth_onboarding_trial",
-    "payload": {}
+    "journey_type": "trial",
+    "user_id": "<profile_uuid>",
+    "scheduled_for": null,
+    "metadata": {}
   }'
 ```
 
-- [ ] Resposta 200 ou 201
+`journey_type`: `trial` | `churn_risk` | `winback` | `billing_issue`
+
+- [ ] Resposta 200
 - [ ] Sem erro de CORS ou auth
 
 ### 6.2 Validação no Banco
@@ -203,6 +208,6 @@ LIMIT 10;
 
 ## 9. Referências
 
-- **UTM Taxonomy:** [UTM_TAXONOMY_CREATOR.md](../UTM_TAXONOMY_CREATOR.md) (se existir)
+- **UTM Taxonomy:** [UTM_TAXONOMY_CREATOR.md](../growth/UTM_TAXONOMY_CREATOR.md)
 - **Edge Function:** `crm-lifecycle` — [Dashboard](https://supabase.com/dashboard/project/lqahkqfpynypbmhtffyi/functions)
 - **Migration:** `032_growth_attribution_experiments.sql`
