@@ -15,7 +15,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Heart, Sparkles, TrendingUp } from "lucide-react-native";
 import React, { useCallback, useMemo, useState } from "react";
 import { RefreshControl, ScrollView, StatusBar, StyleSheet, View } from "react-native";
-import Animated, { FadeInUp } from "react-native-reanimated";
+import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import {
@@ -34,6 +34,7 @@ import { useAppStore } from "@/state";
 import { useNathIAOnboardingStore } from "@/state/nathia-onboarding-store";
 import { brand, maternal, neutral, spacing } from "@/theme/tokens";
 import { MainTabScreenProps } from "@/types/navigation";
+import { staggeredFadeUp } from "@/utils/animations";
 import { getGreeting } from "@/utils/greeting";
 
 const COLORS = {
@@ -95,7 +96,7 @@ export default function HomeScreen({ navigation }: MainTabScreenProps<"Home">): 
         <PremiumHeader greeting={greeting} userName={userName} />
 
         {insight && (
-          <Animated.View entering={FadeInUp.duration(500).delay(100)}>
+          <Animated.View entering={staggeredFadeUp(0)}>
             <DailyInsightCard
               insight={insight}
               dayIndex={dayIndex}
@@ -122,14 +123,14 @@ export default function HomeScreen({ navigation }: MainTabScreenProps<"Home">): 
           </Animated.View>
         )}
 
-        <Animated.View entering={FadeInUp.duration(500).delay(150)} style={styles.section}>
+        <Animated.View entering={staggeredFadeUp(1)} style={styles.section}>
           <SectionHeader title="Como você está?" icon={<Heart size={20} color={COLORS.accent} />} />
           <View style={styles.cardWrapper}>
             <EmotionalCheckInPrimary />
           </View>
         </Animated.View>
 
-        <Animated.View entering={FadeInUp.duration(500).delay(200)} style={styles.section}>
+        <Animated.View entering={staggeredFadeUp(2)} style={styles.section}>
           <SectionHeader
             title="Micro-ações do dia"
             icon={<Sparkles size={20} color={COLORS.teal} />}
@@ -138,7 +139,7 @@ export default function HomeScreen({ navigation }: MainTabScreenProps<"Home">): 
           <DailyMicroActions />
         </Animated.View>
 
-        <Animated.View entering={FadeInUp.duration(500).delay(250)} style={styles.section}>
+        <Animated.View entering={staggeredFadeUp(3)} style={styles.section}>
           <SectionHeader
             title="Seu progresso"
             icon={<TrendingUp size={20} color={COLORS.primary} />}
@@ -146,12 +147,12 @@ export default function HomeScreen({ navigation }: MainTabScreenProps<"Home">): 
           <DailyProgressBar />
         </Animated.View>
 
-        <Animated.View entering={FadeInUp.duration(500).delay(300)} style={styles.section}>
+        <Animated.View entering={staggeredFadeUp(4)} style={styles.section}>
           <DailyReminders />
         </Animated.View>
 
         {lifeStage === "pregnant" && dueDate && (
-          <Animated.View entering={FadeInUp.duration(500).delay(350)} style={styles.section}>
+          <Animated.View entering={staggeredFadeUp(5)} style={styles.section}>
             <DailyInsightsSection dueDate={new Date(dueDate)} />
           </Animated.View>
         )}

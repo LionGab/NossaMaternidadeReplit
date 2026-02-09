@@ -13,13 +13,14 @@ import {
   TextInput,
   View,
 } from "react-native";
-import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
+import Animated, { FadeInDown } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { deleteAccount } from "@/api/auth";
 import { useTheme } from "@/hooks/useTheme";
 import { useAppStore } from "@/state";
 import { usePrivacyStore } from "@/state/usePrivacyStore";
 import { RootStackScreenProps } from "@/types/navigation";
+import { staggeredFadeUp } from "@/utils/animations";
 import { logger } from "@/utils/logger";
 import { Tokens, typography, spacing, radius } from "@/theme/tokens";
 import { getStageLabel } from "@/utils/formatters";
@@ -435,7 +436,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
         {/* Interests */}
         {user?.interests && user.interests.length > 0 && (
           <Animated.View
-            entering={FadeInUp.delay(200).duration(600).springify()}
+            entering={staggeredFadeUp(0)}
             style={{ paddingHorizontal: spacing["2xl"], marginBottom: spacing["3xl"] }}
           >
             <Text
@@ -450,12 +451,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
             </Text>
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
               {user.interests.map((interest, index) => (
-                <Animated.View
-                  key={interest}
-                  entering={FadeInUp.delay(300 + index * 50)
-                    .duration(600)
-                    .springify()}
-                >
+                <Animated.View key={interest} entering={staggeredFadeUp(index, 50)}>
                   <View
                     style={{
                       paddingHorizontal: spacing.xl,
@@ -488,7 +484,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
 
         {/* Theme Selection */}
         <Animated.View
-          entering={FadeInUp.delay(300).duration(600).springify()}
+          entering={staggeredFadeUp(1)}
           style={{ paddingHorizontal: spacing["2xl"], marginBottom: spacing["3xl"] }}
         >
           <Text
@@ -659,7 +655,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
 
         {/* AI Settings Section */}
         <Animated.View
-          entering={FadeInUp.delay(350).duration(600).springify()}
+          entering={staggeredFadeUp(2)}
           style={{ paddingHorizontal: spacing["2xl"], marginBottom: spacing["3xl"] }}
         >
           <Text
@@ -782,10 +778,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
         </Animated.View>
 
         {/* Menu Items */}
-        <Animated.View
-          entering={FadeInUp.delay(400).duration(600).springify()}
-          style={{ paddingHorizontal: spacing["2xl"] }}
-        >
+        <Animated.View entering={staggeredFadeUp(3)} style={{ paddingHorizontal: spacing["2xl"] }}>
           <Text
             style={{
               color: textMain,
@@ -853,7 +846,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
 
         {/* Logout */}
         <Animated.View
-          entering={FadeInUp.delay(500).duration(600).springify()}
+          entering={staggeredFadeUp(4)}
           style={{ paddingHorizontal: spacing["2xl"], marginTop: spacing["2xl"] }}
         >
           <Pressable
@@ -888,7 +881,7 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
 
         {/* Danger Zone - Delete Account */}
         <Animated.View
-          entering={FadeInUp.delay(600).duration(600).springify()}
+          entering={staggeredFadeUp(5)}
           style={{ paddingHorizontal: spacing["2xl"], marginTop: spacing["3xl"] }}
         >
           <Text
