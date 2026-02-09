@@ -1,0 +1,79 @@
+#!/usr/bin/expect -f
+# Automated EAS Build for iOS production - Using ASC API Key (no Apple login)
+
+set timeout 600
+log_user 1
+
+cd /Users/lion/Documents/Lion/NossaMaternidade
+
+spawn eas build --platform ios --profile production --auto-submit
+
+expect {
+    "Do you want to log in to your Apple account?" {
+        # Skip Apple login - use API key instead
+        send "n\r"
+        exp_continue
+    }
+    "Distribution Certificate" {
+        send "\r"
+        exp_continue
+    }
+    "Would you like to set up Push Notifications" {
+        send "n\r"
+        exp_continue
+    }
+    "Provisioning Profile" {
+        send "\r"
+        exp_continue
+    }
+    "Generate" {
+        send "Y\r"
+        exp_continue
+    }
+    "create" {
+        send "Y\r"
+        exp_continue
+    }
+    "Select" {
+        send "\r"
+        exp_continue
+    }
+    "Continue" {
+        send "Y\r"
+        exp_continue
+    }
+    "reuse" {
+        send "Y\r"
+        exp_continue
+    }
+    "Use existing" {
+        send "Y\r"
+        exp_continue
+    }
+    "Waiting for build" {
+        send_user "\n*** Build iniciado na nuvem EAS ***\n"
+        exp_continue
+    }
+    "View build details" {
+        send_user "\n*** Build submetido! Aguardando... ***\n"
+        exp_continue
+    }
+    "Build finished" {
+        send_user "\n*** BUILD CONCLUIDO! ***\n"
+        exp_continue
+    }
+    "Successfully submitted" {
+        send_user "\n*** ENVIADO PARA TESTFLIGHT! ***\n"
+    }
+    "Error" {
+        send_user "\n*** ERRO ***\n"
+    }
+    eof {
+        send_user "\n*** Processo finalizado ***\n"
+    }
+    timeout {
+        send_user "\n*** Timeout atingido ***\n"
+    }
+}
+
+wait

@@ -1,0 +1,63 @@
+---
+paths:
+  - "src/components/**/*.{ts,tsx}"
+---
+
+# Componentes React Native
+
+## Estrutura
+
+- Componentes devem ser funcionais (não classes)
+- Usar TypeScript com tipos explícitos
+- Props devem ter interface definida
+
+## Padrão de Componente
+
+```typescript
+import React from 'react';
+import { View, Text } from 'react-native';
+import { Tokens } from '@/theme/tokens';
+
+interface ComponentProps {
+  title: string;
+  onPress?: () => void;
+}
+
+export const Component: React.FC<ComponentProps> = ({ title, onPress }) => {
+  return (
+    <View style={{ padding: Tokens.spacing.md }}>
+      <Text>{title}</Text>
+    </View>
+  );
+};
+```
+
+## Acessibilidade
+
+- Sempre incluir `accessibilityLabel` e `accessibilityRole`
+- Touch targets mínimo 44pt
+- Contraste adequado (usar Tokens)
+
+## Performance
+
+- Usar `React.memo()` para componentes que renderizam frequentemente
+- Evitar criar objetos/arrays dentro do render
+- Usar `useMemo` e `useCallback` quando apropriado
+
+## Estilização
+
+- Usar NativeWind (`className`) quando possível
+- Usar `cn()` helper para combinar classes
+- Fallback para `style` prop quando necessário
+- Nunca cores hardcoded (usar Tokens)
+
+## Tamanho de Arquivo
+
+- Preferir componentes <250 linhas
+- Se >250 LOC, refatorar (extrair hooks/components/services)
+
+## Testes
+
+- Componentes interativos devem ter testes
+- Usar `@testing-library/react-native`
+- Testar acessibilidade quando relevante

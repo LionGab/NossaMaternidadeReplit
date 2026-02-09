@@ -1,0 +1,222 @@
+# CLAUDE.md
+
+> Nossa Maternidade — Guia para Claude Code
+> Versão: 5.0 | 2026-01-25 | Best Practices 2026
+
+---
+
+## QUICK START
+
+```bash
+npm run quality-gate          # OBRIGATÓRIO antes de PR/build
+npm start                     # Expo dev server
+npm test -- --watch           # Testes em watch mode
+```
+
+```typescript
+import { Tokens } from "@/theme/tokens";
+import { useThemeColors } from "@/hooks/useTheme";
+import { logger } from "@/utils/logger";
+import { useAppStore } from "@/state/store";
+```
+
+**Path alias:** `@/*` → `src/*`
+
+---
+
+## SKILLS (2026)
+
+Skills são a forma preferida de estender Claude Code. Carregam sob demanda com progressive disclosure.
+
+| Skill                | Propósito                  |
+| -------------------- | -------------------------- |
+| `/deploy-testflight` | Deploy iOS para TestFlight |
+| `/deploy-android`    | Deploy Android para Play   |
+| `/pre-commit`        | Quality gate rápido        |
+| `/fix-types`         | Resolver erros TypeScript  |
+| `/verify`            | Quality gate completo      |
+| `/review`            | Code review completo       |
+| `/nathia`            | Especialista NathIA        |
+| `/gates`             | Release gates (G1-G7)      |
+
+**Hot-reload**: Skills em `.claude/skills/` recarregam automaticamente.
+
+---
+
+## WORKFLOW AGENTIC
+
+```
+Explore → Plan → Implement → Verify
+```
+
+1. **Explore**: Leia arquivos antes de agir
+2. **Plan**: Tarefas complexas → plano primeiro
+3. **Implement**: Verificação incremental
+4. **Verify**: `npm run quality-gate`
+
+**Contexto**: `/clear` entre tarefas · `/compact` quando grande
+
+---
+
+## NON-NEGOTIABLES
+
+| Regra      | Correto                        | Errado                   |
+| ---------- | ------------------------------ | ------------------------ |
+| TypeScript | `unknown` + guards             | `any`, `@ts-ignore`      |
+| Logging    | `logger.*`                     | `console.log`            |
+| Colors     | `Tokens.*`, `useThemeColors()` | `#xxx`, `'white'`        |
+| Lists      | `FlashList`, `FlatList`        | `ScrollView + map()`     |
+| Touch      | `Pressable`                    | `TouchableOpacity`       |
+| Zustand    | `useStore(s => s.value)`       | `useStore(s => ({...}))` |
+
+**Zustand CRÍTICO** (previne loops infinitos):
+
+```typescript
+// CORRETO
+const user = useAppStore((s) => s.user);
+
+// ERRADO - cria nova ref todo render
+const { user } = useAppStore((s) => ({ user: s.user }));
+```
+
+---
+
+## IMMUTABLE CONSTANTS
+
+| Constante          | Valor                      |
+| ------------------ | -------------------------- |
+| Bundle ID          | `app.nossamaternidade.app` |
+| Apple Team         | `KZPW4S77UH`               |
+| RevenueCat Product | `premium`                  |
+| Supabase Project   | `lqahkqfpynypbmhtffyi`     |
+
+---
+
+## PROJECT STRUCTURE
+
+```
+src/
+├── api/          # Supabase, chat, transcribe
+├── ai/           # nathiaPrompt.ts
+├── components/   # UI components (ui/ = atoms)
+├── hooks/        # Custom hooks
+├── navigation/   # React Navigation
+├── screens/      # Screen components
+├── state/        # Zustand stores
+├── theme/        # Design tokens
+└── utils/        # Utilities (logger, cn)
+
+.claude/
+├── skills/       # Skills 2026 (prefer these!)
+│   ├── release/  # deploy-testflight, deploy-android
+│   ├── quality/  # pre-commit, fix-types, verify, review
+│   ├── domain/   # nathia
+│   └── workflow/ # gates
+├── agents/       # Agents especializados (legacy)
+├── commands/     # Slash commands
+├── hooks/        # Event hooks
+└── rules/        # Path-triggered rules
+```
+
+---
+
+## RELEASE GATES
+
+```
+G1 (Quality) → G2 (Auth) → G3 (RLS) → G4 (RevenueCat) → G5 (NathIA) → G6 (Build) → G7 (Submit)
+```
+
+| Gate | Comando                   |
+| ---- | ------------------------- |
+| G1   | `npm run quality-gate`    |
+| G2   | `npm run test:oauth`      |
+| G5   | `npm run test:gemini`     |
+| G6   | `npm run build:prod:ios`  |
+| G7   | `npm run submit:prod:ios` |
+
+Use `/gates` para scoreboard completo.
+
+---
+
+## PREMIUM/IAP
+
+- **Products**: `nossa_maternidade_monthly`, `nossa_maternidade_yearly`
+- **Entitlement**: `premium`
+- **Free tier**: 6 AI messages/day (reset meia-noite UTC-3)
+
+```typescript
+const isPremium = useIsPremium();
+<PremiumGate>{/* premium content */}</PremiumGate>
+```
+
+---
+
+## AI/NathIA
+
+- **Model**: `gemini-2.0-flash-exp`
+- **System prompt**: `src/ai/nathiaPrompt.ts`
+- **Test**: `npm run test:gemini`
+- **Skill**: `/nathia` para personalidade
+
+---
+
+## COMMANDS
+
+| Comando                  | Propósito                |
+| ------------------------ | ------------------------ |
+| `npm run quality-gate`   | TypeCheck + Lint + Build |
+| `npm start`              | Expo dev server          |
+| `npm test -- --watch`    | Jest watch mode          |
+| `npm run generate-types` | Regenerar tipos Supabase |
+| `npm run build:prod:ios` | Build produção iOS       |
+
+---
+
+## TROUBLESHOOTING
+
+```bash
+npm run clean && npm install   # Build failures
+npm run typecheck              # TS errors
+npm start:clear                # Metro issues
+npm run generate-types         # Schema changed
+```
+
+---
+
+## DOCUMENTATION
+
+| Docs                                                              | Conteúdo                 |
+| ----------------------------------------------------------------- | ------------------------ |
+| [CLAUDE_CODE_GUIDE_2026.md](docs/setup/CLAUDE_CODE_GUIDE_2026.md) | Best practices 2026      |
+| [memory-guide.md](docs/claude/memory-guide.md)                    | Gerenciamento de memória |
+| [architecture.md](docs/claude/architecture.md)                    | Navigation, stores       |
+| [design-system.md](docs/claude/design-system.md)                  | Tokens, cores            |
+
+### Skills 2026 (.claude/skills/)
+
+| Categoria | Skills                                        |
+| --------- | --------------------------------------------- |
+| Release   | `deploy-testflight`, `deploy-android`         |
+| Quality   | `pre-commit`, `fix-types`, `verify`, `review` |
+| Domain    | `nathia`                                      |
+| Workflow  | `gates`                                       |
+
+### Agents (Legacy)
+
+`mobile-deployer` · `mobile-debugger` · `type-checker` · `code-reviewer`
+
+---
+
+## ANTI-PATTERNS
+
+| Evitar                 | Solução                  |
+| ---------------------- | ------------------------ |
+| Kitchen sink session   | `/clear` entre tarefas   |
+| Correção infinita (3+) | `/clear` + prompt melhor |
+| `console.log`          | `logger.*`               |
+| `any` types            | `unknown` + guards       |
+| Hardcoded colors       | `Tokens.*`               |
+
+---
+
+_Skills: `.claude/skills/` · Docs: `docs/claude/` · Guide 2026: `docs/setup/CLAUDE_CODE_GUIDE_2026.md`_

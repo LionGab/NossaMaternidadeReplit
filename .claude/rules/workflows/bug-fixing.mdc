@@ -1,0 +1,174 @@
+---
+description: "Bug fixing workflow - TDD approach with quality gates"
+priority: high
+---
+
+# Bug Fixing Workflow
+
+## 1. Investigate (Plan Mode)
+
+```
+Shift+Tab (2x) → Plan Mode
+```
+
+### Gather Context
+- Read error logs/stack traces
+- Review: `git log --oneline -10`
+- Check related files (component → service → store)
+
+### Use Subagent
+```
+use subagent mobile-debugger to investigate [error message]
+```
+
+## 2. Reproduce
+
+### Test Case Mínimo
+
+```typescript
+describe('Bug reproduction', () => {
+  it('should not crash when email invalid', () => {
+    render(<LoginScreen />);
+
+    const input = screen.getByRole('textbox', { name: 'Email' });
+    fireEvent.changeText(input, 'invalid');
+
+    const button = screen.getByRole('button', { name: 'Entrar' });
+    fireEvent.press(button);
+
+    expect(screen.getByText(/email inválido/i)).toBeTruthy();
+  });
+});
+```
+
+### Categorizar Bug
+- Dev-only vs Production
+- iOS only vs Android only
+- Intermittent vs Consistent
+
+## 3. Fix (TDD)
+
+1. **Write failing test**:
+   ```bash
+   npm test -- --watch path/to/file.test.ts
+   ```
+
+2. **Implement minimal fix**
+
+3. **Verify test passes**
+
+### Common Fix Patterns
+
+```typescript
+// Null Safety
+const name = user?.name ?? 'Guest';
+
+// Async Cleanup
+useEffect(() => {
+  let cancelled = false;
+  fetchData().then(data => {
+    if (!cancelled) setData(data);
+  });
+  return () => { cancelled = true; };
+}, []);
+
+// Zustand Selector
+const user = useAppStore((s) => s.user); // Individual
+```
+
+## 4. Verify
+
+```bash
+npm run quality-gate
+# Windows:
+npm run quality-gate:win
+```
+
+### Manual Testing
+- Happy path OK?
+- Edge cases covered?
+- Accessibility intact?
+
+### Code Review
+```
+use subagent code-reviewer to review this bug fix
+```
+
+## 5. Document
+
+### CHANGELOG.md
+```markdown
+## [Unreleased]
+
+### Fixed
+- Login valida email corretamente (#123)
+```
+
+### Commit
+```bash
+git commit -m "fix: validate email before login (closes #123)"
+```
+
+## Error Categories
+
+### TypeScript
+```bash
+npm run typecheck
+npm run generate-types  # Se schema mudou
+```
+
+### Build
+```bash
+npm run clean && npm install
+npm start:clear
+```
+
+### Runtime iOS
+```bash
+# Xcode Simulator
+Cmd+D → Debug JS Remotely
+```
+
+### Runtime Android
+```bash
+adb logcat *:E
+```
+
+## Rollback
+
+```bash
+# Revert commit
+git revert <hash>
+
+# Claude checkpoint
+Esc + Esc → Rewind → Restore code
+
+# Git worktree
+git worktree add ../nm-hotfix -b hotfix/bug
+```
+
+## Checklist
+
+- [ ] Bug reproduzido
+- [ ] Teste failing escrito
+- [ ] Fix implementado
+- [ ] Teste passa
+- [ ] `npm run quality-gate` passa
+- [ ] Teste manual no device
+- [ ] Accessibility OK
+- [ ] CHANGELOG atualizado
+- [ ] Commit descritivo
+
+## Anti-Patterns
+
+❌ Fix sem teste
+❌ "Blind fix" sem entender causa
+❌ Over-engineering
+❌ Ignorar side effects
+❌ Commit sem quality-gate
+
+## Recursos
+
+- Debugger: `.claude/agents/mobile-debugger.md`
+- Reviewer: `.claude/agents/code-reviewer.md`
+- Rollback: `docs/ROLLBACK_PROCEDURES.md`

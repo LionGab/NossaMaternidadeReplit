@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.nossamaternidade.com.br/sitemap.xml
+
+# Bloquear páginas de suporte de indexação (opcional, remover se quiser indexar)
+# Disallow: /suporte

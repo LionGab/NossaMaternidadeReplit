@@ -1,0 +1,48 @@
+{
+  "$schema": "https://modelcontextprotocol.io/schemas/mcp.json",
+  "note": "MCPs configurados para NossaMaternidade (React Native + Expo + Supabase)",
+  "mcpServers": {
+    "brave-search": {
+      "enabled": true,
+      "description": "Pesquisar docs (Expo, RN, Supabase, TS)",
+      "priority": "high"
+    },
+    "github": {
+      "enabled": true,
+      "description": "PRs, issues, commits",
+      "priority": "high",
+      "config": {
+        "defaultRepo": "LionGab/NossaMaternidade"
+      }
+    },
+    "context7": {
+      "enabled": true,
+      "description": "Docs atualizadas",
+      "priority": "high",
+      "focusAreas": ["expo", "react-native", "supabase", "typescript", "reanimated", "wcag", "lgpd"]
+    },
+    "memory-keeper": {
+      "enabled": true,
+      "description": "Persistir decisões de arquitetura",
+      "priority": "medium",
+      "config": {
+        "memoryScope": "project"
+      }
+    },
+    "sequential-thinking": {
+      "enabled": false,
+      "description": "Ativar só para debugging complexo",
+      "priority": "low"
+    }
+  },
+  "excludedMCPs": ["claude-in-chrome"],
+  "projectContext": {
+    "stack": ["React Native", "Expo SDK 52", "TypeScript", "Supabase", "Reanimated 3", "Zustand"],
+    "focus": [
+      "Bem-estar emocional/saúde mental",
+      "Acessibilidade (WCAG 2.1 AA)",
+      "Design empático",
+      "Performance mobile"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "bradlc.vscode-tailwindcss",
+    "ms-vscode.vscode-typescript-next",
+    "expo.vscode-expo-tools",
+    "github.copilot",
+    "github.copilot-chat",
+    "msjsdiag.vscode-react-native",
+    "dsznajder.es7-react-js-snippets",
+    "mikestead.dotenv",
+    "eamodio.gitlens",
+    "usernamehw.errorlens",
+    "wix.vscode-import-cost",
+    "yoavbls.pretty-ts-errors"
+  ],
+  "unwantedRecommendations": ["hookyqr.beautify", "ms-vscode.vscode-json", "openai.chatgpt"]
+}

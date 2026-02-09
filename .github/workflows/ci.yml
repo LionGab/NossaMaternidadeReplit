@@ -1,0 +1,279 @@
+# Nossa Maternidade - CI Workflow
+# Validates PRs with typecheck, lint, format check, build readiness, and tests
+# Optimized for speed (<5 min) with parallel jobs and aggressive caching
+
+name: CI
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main, develop]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: '20.11.1'
+  BUN_VERSION: 'latest'
+
+jobs:
+  # ============================================
+  # INSTALL - Shared dependency installation
+  # ============================================
+  install:
+    name: Install Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Cache node_modules
+        id: cache-node-modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: Install dependencies
+        if: steps.cache-node-modules.outputs.cache-hit != 'true'
+        run: bun install
+
+  # ============================================
+  # LINT & FORMAT - Code quality checks
+  # ============================================
+  lint:
+    name: Lint & Format
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: install
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
+
+      - name: Install dependencies (if cache miss)
+        run: |
+          if [ ! -d "node_modules" ]; then
+            bun install
+          fi
+
+      - name: Format check
+        run: bun run format:check
+
+      - name: ESLint
+        run: bun run lint
+
+      - name: Check for console.log
+        run: |
+          if grep -rn "console\.log" --include="*.ts" --include="*.tsx" --exclude="logger.ts" --exclude="Toast.tsx" --exclude="useToast.ts" src/; then
+            echo "::error::Found console.log statements. Use logger.* instead."
+            exit 1
+          fi
+          echo "✅ No console.log found"
+
+  # ============================================
+  # TYPECHECK - TypeScript validation
+  # ============================================
+  typecheck:
+    name: TypeScript Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    needs: install
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
+
+      - name: Install dependencies (if cache miss)
+        run: |
+          if [ ! -d "node_modules" ]; then
+            bun install
+          fi
+
+      - name: TypeScript check
+        run: bun run typecheck
+
+  # ============================================
+  # TEST - Unit tests with coverage
+  # ============================================
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: install
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
+
+      - name: Install dependencies (if cache miss)
+        run: |
+          if [ ! -d "node_modules" ]; then
+            bun install
+          fi
+
+      - name: Run tests with coverage
+        run: bun run test:ci
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        if: always()
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          fail_ci_if_error: false
+          verbose: true
+
+      - name: Upload coverage artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 7
+
+  # ============================================
+  # BUILD CHECK - Expo build validation
+  # ============================================
+  build-check:
+    name: Build Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: install
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+
+      - name: Restore node_modules cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
+
+      - name: Install dependencies (if cache miss)
+        run: |
+          if [ ! -d "node_modules" ]; then
+            bun install
+          fi
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Check Expo config
+        run: npx expo config --type public
+
+      - name: Export web build (dry run)
+        run: npx expo export --platform web --output-dir dist-ci --dump-sourcemap
+        env:
+          CI: true
+
+      - name: Verify EAS configuration
+        run: |
+          npx eas-cli config --platform ios --profile preview --non-interactive || echo "iOS config check completed"
+          npx eas-cli config --platform android --profile preview --non-interactive || echo "Android config check completed"
+
+      - name: Check build readiness
+        run: bun run check-build-ready || echo "⚠️ Build readiness check completed"
+        continue-on-error: true
+
+      - name: Cleanup dist
+        run: rm -rf dist-ci
+
+  # ============================================
+  # QUALITY GATE - Final status check
+  # ============================================
+  quality-gate:
+    name: Quality Gate
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    needs: [lint, typecheck, test, build-check]
+    if: always()
+
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [ "${{ needs.lint.result }}" != "success" ] || \
+             [ "${{ needs.typecheck.result }}" != "success" ] || \
+             [ "${{ needs.test.result }}" != "success" ] || \
+             [ "${{ needs.build-check.result }}" != "success" ]; then
+            echo "❌ Quality gate failed!"
+            echo "  - Lint: ${{ needs.lint.result }}"
+            echo "  - TypeScript: ${{ needs.typecheck.result }}"
+            echo "  - Tests: ${{ needs.test.result }}"
+            echo "  - Build: ${{ needs.build-check.result }}"
+            exit 1
+          fi
+          echo "✅ All quality checks passed!"

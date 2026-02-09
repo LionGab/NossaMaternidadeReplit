@@ -1,0 +1,132 @@
+{
+  "version": 2,
+  "name": "nossamaternidade-site",
+  "buildCommand": null,
+  "outputDirectory": ".",
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/styles.css",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=604800"
+        }
+      ]
+    },
+    {
+      "source": "/(.*).html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/suporte",
+      "destination": "/suporte.html"
+    },
+    {
+      "source": "/privacidade",
+      "destination": "/privacidade.html"
+    },
+    {
+      "source": "/termos",
+      "destination": "/termos.html"
+    },
+    {
+      "source": "/ai-disclaimer",
+      "destination": "/ai-disclaimer.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/privacy",
+      "destination": "/privacidade",
+      "permanent": true
+    },
+    {
+      "source": "/terms",
+      "destination": "/termos",
+      "permanent": true
+    },
+    {
+      "source": "/help",
+      "destination": "/suporte",
+      "permanent": true
+    },
+    {
+      "source": "/support",
+      "destination": "/suporte",
+      "permanent": true
+    },
+    {
+      "source": "/ajuda",
+      "destination": "/suporte",
+      "permanent": true
+    },
+    {
+      "source": "/faq",
+      "destination": "/suporte#faq",
+      "permanent": true
+    },
+    {
+      "source": "/politica-de-privacidade",
+      "destination": "/privacidade",
+      "permanent": true
+    },
+    {
+      "source": "/termos-de-uso",
+      "destination": "/termos",
+      "permanent": true
+    },
+    {
+      "source": "/aviso-ia",
+      "destination": "/ai-disclaimer",
+      "permanent": true
+    },
+    {
+      "source": "/disclaimer",
+      "destination": "/ai-disclaimer",
+      "permanent": true
+    }
+  ]
+}

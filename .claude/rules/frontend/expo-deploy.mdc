@@ -1,0 +1,53 @@
+---
+paths:
+  - "app.json"
+  - "app.config.js"
+  - "eas.json"
+---
+
+# Expo Configuration Rules
+
+## Version Management
+
+- **ALWAYS** increment `buildNumber` (iOS) before iOS builds
+- **ALWAYS** increment `versionCode` (Android) before Android builds
+- Format: `version` is semantic (1.2.3), build numbers are sequential integers
+
+## Security
+
+- **NEVER** commit production API keys
+- **NEVER** hardcode secrets in `app.config.js`
+- Use `eas.json` environment variables for production
+- Prefix public vars with `EXPO_PUBLIC_`
+
+## Bundle Identifiers
+
+- iOS: `br.com.nossamaternidade.app` (NUNCA alterar)
+- Android: `com.nossamaternidade.app` (NUNCA alterar)
+- **NEVER** change bundle identifiers after first release
+
+## SDK Compatibility
+
+- Check Expo SDK version compatibility before upgrades
+- Run `npx expo-doctor` after SDK changes
+- Review breaking changes in Expo release notes
+
+## Build Profiles
+
+- `development` - Debug builds with dev client
+- `preview` - Internal testing builds
+- `production` - Store submission builds
+
+## Pre-Build Checklist
+
+1. Run `npx tsc --noEmit`
+2. Run `npx expo-doctor`
+3. Verify environment variables
+4. Increment build numbers
+5. Commit version changes
+
+## Asset Requirements
+
+- App icon: 1024x1024 PNG (no transparency for iOS)
+- Splash screen: Recommended 1284x2778 for iPhone
+- Adaptive icon (Android): Foreground and background layers

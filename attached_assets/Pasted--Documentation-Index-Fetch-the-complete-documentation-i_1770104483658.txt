@@ -1,0 +1,255 @@
+> ## Documentation Index
+> Fetch the complete documentation index at: https://docs.replit.com/llms.txt
+> Use this file to discover all available pages before exploring further.
+
+# Build and launch a mobile app
+
+> Build a native iOS app with Agent, test it on your phone with Expo Go, and publish through TestFlight to the App Store.
+
+## What you’ll do
+
+In this tutorial, you’ll:
+
+* Create a mobile app from a prompt with Agent
+* Preview it locally on your phone with Expo Go
+* Publish to Expo Go so anyone can access your app
+* Promote to TestFlight for beta testing
+* Submit to the App Store for public release
+
+<Note>
+  Apple sets the requirements for TestFlight and App Store submissions. You’ll use App Store Connect to manage testing and releases.
+</Note>
+
+## What you’ll need
+
+* A Replit account with access to mobile apps
+* A phone with Expo Go installed
+* An Apple Developer Program membership (required by Apple for TestFlight and the App Store)
+
+## Part 1: Build your app with Agent
+
+<Steps>
+  <Step title="Create a mobile app">
+    On the Replit home screen, describe what you want to build, then select **Mobile app** as the app type.
+  </Step>
+
+  <Step title="Let Agent build">
+    Agent scaffolds your project and builds your first version. Keep the chat open to follow progress and request changes.
+  </Step>
+</Steps>
+
+## Part 2: Test on your phone with Expo Go
+
+Expo Go runs a native preview of your app on your device.
+
+<Steps>
+  <Step title="Install Expo Go">
+    Install Expo Go on your iPhone or Android device.
+  </Step>
+
+  <Step title="Open the QR code">
+    In your Workspace, select **Preview on mobile device** to display a QR code.
+  </Step>
+
+  <Step title="Scan and preview">
+    Scan the QR code with your phone to open a native preview in Expo Go.
+  </Step>
+</Steps>
+
+<Frame>
+  <img src="https://mintcdn.com/replit/w-e0JEaJZyojmDmg/images/native-mobile-apps/mobile-screen.png?fit=max&auto=format&n=w-e0JEaJZyojmDmg&q=85&s=853fee23e3e5b838d5f0f2e2ba80e32d" alt="Mobile app running in the Replit Workspace preview with the Preview on device panel and QR code" data-og-width="5120" width="5120" data-og-height="2694" height="2694" data-path="images/native-mobile-apps/mobile-screen.png" data-optimize="true" data-opv="3" srcset="https://mintcdn.com/replit/w-e0JEaJZyojmDmg/images/native-mobile-apps/mobile-screen.png?w=280&fit=max&auto=format&n=w-e0JEaJZyojmDmg&q=85&s=b070d02d091d82cee7969c76e587ba8e 280w, https://mintcdn.com/replit/w-e0JEaJZyojmDmg/images/native-mobile-apps/mobile-screen.png?w=560&fit=max&auto=format&n=w-e0JEaJZyojmDmg&q=85&s=4b6db4d9f2ee5b3dd21f80d6cf90a1c9 560w, https://mintcdn.com/replit/w-e0JEaJZyojmDmg/images/native-mobile-apps/mobile-screen.png?w=840&fit=max&auto=format&n=w-e0JEaJZyojmDmg&q=85&s=3375d30ff165e9c6f1b5ad4cb2b2c3f3 840w, https://mintcdn.com/replit/w-e0JEaJZyojmDmg/images/native-mobile-apps/mobile-screen.png?w=1100&fit=max&auto=format&n=w-e0JEaJZyojmDmg&q=85&s=f556e0899b1315b357e2515a2b7f9e03 1100w, https://mintcdn.com/replit/w-e0JEaJZyojmDmg/images/native-mobile-apps/mobile-screen.png?w=1650&fit=max&auto=format&n=w-e0JEaJZyojmDmg&q=85&s=aa3357c2a23a59abb33bf3c1f164a29c 1650w, https://mintcdn.com/replit/w-e0JEaJZyojmDmg/images/native-mobile-apps/mobile-screen.png?w=2500&fit=max&auto=format&n=w-e0JEaJZyojmDmg&q=85&s=08b320e140daaf6486954912a426bfdf 2500w" />
+</Frame>
+
+<Tip>
+  If your preview looks out of date, refresh in Expo Go. On your device, shake your phone to open the developer menu, then select **Refresh**.
+</Tip>
+
+## Part 3: Publish to Expo Go
+
+Publishing to Expo Go makes your app available to anyone with the Expo Go app installed. This is the fastest way to share your app for feedback without going through Apple's review process.
+
+<Steps>
+  <Step title="Publish from your Workspace">
+    Open the publishing pane and select **Publish**. This deploys your app and backend to Replit's infrastructure.
+  </Step>
+
+  <Step title="Share your app">
+    After publishing, anyone with Expo Go can open your app using the shareable link. No Apple Developer account is required at this stage.
+  </Step>
+</Steps>
+
+<Tip>
+  Use Expo Go publishing to quickly share prototypes, gather early feedback, and iterate before committing to the App Store process.
+</Tip>
+
+## Part 4: Promote to TestFlight
+
+After publishing to Expo Go, you can promote your app to TestFlight for more formal beta testing. TestFlight requires an Apple Developer account but provides a native app experience without Expo Go.
+
+### Apple publishing prerequisites
+
+Apple requires specific accounts and configurations before you can publish. Complete these steps before attempting to submit.
+
+#### Join the Apple Developer Program
+
+You need an Apple Developer Program membership to publish to TestFlight and submit to the App Store.
+
+<Callout type="note">
+  Apple requires two-factor authentication on your Apple Account.
+</Callout>
+
+#### Individual vs. organization enrollment
+
+* **Individual accounts**: Publish under your legal name as the seller.
+* **Organization accounts**: Publish under the organization name as the seller. Apple requires a D‑U‑N‑S Number for organizations, which can take time to obtain.
+
+#### Typical enrollment steps
+
+1. Sign in at `https://developer.apple.com/programs/enroll/`
+2. Complete identity verification
+3. Accept the Apple Developer Program license agreement
+4. Pay the annual fee set by Apple
+5. Wait for Apple approval (time varies by account type)
+
+### Understand TestFlight vs. the App Store
+
+TestFlight is Apple’s beta testing system. The App Store is the public marketplace where anyone can download your app.
+
+| Aspect             | TestFlight                                        | App Store                                |
+| ------------------ | ------------------------------------------------- | ---------------------------------------- |
+| **Audience**       | Invited testers (up to 10,000 external testers)   | Public                                   |
+| **Purpose**        | Beta testing and feedback                         | Public release                           |
+| **Review**         | First build of a version goes through beta review | Every submission goes through App Review |
+| **Build lifetime** | Expires after 90 days                             | Permanent until you remove it            |
+
+<Tip>
+  TestFlight is the fastest way to catch crashes, performance issues, and device-specific problems before launch.
+</Tip>
+
+<Steps>
+  <Step title="Open the publishing pane">
+    With your app already published to Expo Go, open the publishing pane in your Workspace.
+  </Step>
+
+  <Step title="Select App Store publishing">
+    Select **Publish to App Store** to promote your app to TestFlight.
+  </Step>
+
+  <Step title="Connect Apple and submit">
+    Sign in with your Apple Developer account when prompted. Replit builds a native app in the cloud and submits it to TestFlight.
+  </Step>
+</Steps>
+
+<Note>
+  The first build of a version typically requires a TestFlight beta review. After approval, you can usually push additional builds to testers faster.
+</Note>
+
+### Enable external testing
+
+To share your TestFlight build with other people, configure external testing in App Store Connect:
+
+1. In App Store Connect, open your app.
+2. Go to **TestFlight**, then **External Testing**.
+3. Create a testing group and add your build.
+4. Submit for Beta App Review (required by Apple for external testers).
+5. Share the public TestFlight link after approval.
+
+## Part 5: Submit to the App Store
+
+When your build is ready for release, submit it through App Store Connect:
+
+1. In App Store Connect, open your app.
+2. Go to the **App Store** tab.
+3. Fill out required metadata (description, screenshots, category, pricing, and privacy details).
+4. Select your TestFlight build to promote.
+5. Submit for review.
+
+### Complete your App Store Connect listing
+
+Replit creates your app listing in App Store Connect, but you still need to complete required metadata before Apple will accept a submission. The following fields are commonly required:
+
+* **App name and subtitle**
+* **Category** (primary, optional secondary)
+* **Pricing and availability** (free or paid, and regions)
+* **Privacy policy URL** (publicly accessible)
+* **App Privacy details** (data collection “nutrition labels”)
+* **Screenshots** (required)
+* **Support URL** (required)
+* **App Review contact information** (required)
+
+<Callout type="note">
+  If your app requires sign-in, add demo credentials for App Review in App Store Connect so Apple can test your app.
+</Callout>
+
+### Privacy requirements
+
+Apple requires you to:
+
+* Provide a public **privacy policy URL**
+* Declare your **App Privacy** data practices (including third-party SDKs and services you use)
+
+If you use third-party services (analytics, payments, crash reporting, ads), review their privacy disclosures and include them in your App Privacy answers.
+
+### Screenshots
+
+Screenshots are required and strongly influence conversion on the App Store.
+
+<Tip>
+  Use real screenshots from your app. Make sure screenshots match the current build you’re submitting.
+</Tip>
+
+### Common rejection reasons
+
+| Issue                             | How to avoid it                                             |
+| --------------------------------- | ----------------------------------------------------------- |
+| Crashes or obvious bugs           | Test on TestFlight first and fix issues before submission   |
+| Missing privacy policy            | Add a public privacy policy URL before submission           |
+| Screenshots don’t match the app   | Upload screenshots from the current build                   |
+| Reviewers can’t access the app    | Provide demo credentials and instructions in review notes   |
+| Incomplete or placeholder content | Remove “coming soon” flows and incomplete screens           |
+| Permission prompts lack context   | Explain why you need camera, location, or other permissions |
+
+### Timelines to expect
+
+| Stage                                             | Typical duration                                                  |
+| ------------------------------------------------- | ----------------------------------------------------------------- |
+| Apple Developer Program approval                  | Varies (often 1–2 days for individuals; longer for organizations) |
+| Build processing in App Store Connect             | Often 10–15 minutes                                               |
+| TestFlight beta review (first build of a version) | Often about a day                                                 |
+| App Store review                                  | Often 1–2 days                                                    |
+
+### Updating your app after launch
+
+* **UI and content updates**: Publish again to ship updates quickly.
+* **Native changes** (for example, app icons or permissions): Submit a new App Store build.
+
+## Checklist
+
+Use this checklist to verify you're ready for each stage.
+
+**Before you publish to Expo Go:**
+
+* You can run the app on a real device via Expo Go
+* Your app has no obvious crashes or broken flows
+
+**Before you promote to TestFlight:**
+
+* Your app is published and running on Replit
+* You have an Apple Developer Program membership
+* You know whether your Apple account is individual or organization
+
+**Before you submit to the App Store:**
+
+* App Store Connect metadata is complete (name, category, regions, and support URL)
+* Privacy policy URL is public and accurate
+* App Privacy details are complete (including third-party services)
+* Screenshots are uploaded and match the submitted build
+* App Review contact info is set
+* Demo credentials are provided (if your app requires sign-in)
+
+## Next steps
+
+* Learn how mobile apps work on Replit: [Native Mobile Apps](/replitai/building-mobile-apps)
+* Learn how Agent works: [Agent](/replitai/agent)
+* Build on your phone: [Replit Mobile App](/platforms/mobile-app)
+* Learn more about Expo: [Expo docs](https://docs.expo.dev/)

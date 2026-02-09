@@ -1,0 +1,137 @@
+---
+paths:
+  - "src/state/**/*.ts"
+priority: critical
+---
+
+# Zustand - State Management
+
+## CRITICAL: Selector Pattern
+
+**NUNCA use object destructuring - cria nova ref a cada render → loops infinitos**
+
+```typescript
+// ❌ ERRADO - Nova referência a cada render
+const { user, setUser } = useAppStore((s) => ({
+  user: s.user,
+  setUser: s.setUser
+}));
+
+// ✅ CORRETO - Seletores individuais
+const user = useAppStore((s) => s.user);
+const setUser = useAppStore((s) => s.setUser);
+```
+
+## Store Structure
+
+Todos os stores usam:
+- `create<StoreType>()` from zustand
+- `persist()` middleware (exceto `useCommunityStore`)
+- Storage: `AsyncStorage` via `createJSONStorage()`
+
+## Stores Existentes
+
+| Store | Persist | Propósito |
+|-------|---------|-----------|
+| `useAppStore` | ✅ | User profile, auth, theme |
+| `useChatStore` | ✅ | AI conversation history |
+| `useCycleStore` | ✅ | Menstrual cycle tracking |
+| `usePremiumStore` | ✅ | RevenueCat subscription |
+| `useNathJourneyOnboardingStore` | ✅ | Onboarding progress |
+| `useCommunityStore` | ❌ | Posts, groups (sempre fresh) |
+| `useHabitsStore` | ✅ | Habit tracking |
+| `useCheckInStore` | ✅ | Daily check-ins |
+| `useAffirmationsStore` | ✅ | Daily affirmations + favorites |
+| `useNathIAOnboardingStore` | ✅ | NathIA-specific onboarding |
+| `usePreferencesStore` | ✅ | User preferences |
+| `usePrivacyStore` | ✅ | Privacy settings |
+| `useThemePresetStore` | ✅ | Theme presets |
+
+## Template para Novo Store
+
+```typescript
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { logger } from "@/utils/logger";
+
+interface MyStoreState {
+  data: string | null;
+  isLoading: boolean;
+
+  // Actions
+  setData: (data: string) => void;
+  reset: () => void;
+}
+
+const initialState = {
+  data: null,
+  isLoading: false,
+};
+
+export const useMyStore = create<MyStoreState>()(
+  persist(
+    (set, get) => ({
+      ...initialState,
+
+      setData: (data) => {
+        logger.info("Setting data", "MyStore", { data });
+        set({ data });
+      },
+
+      reset: () => {
+        logger.info("Resetting store", "MyStore");
+        set(initialState);
+      },
+    }),
+    {
+      name: "my-store", // AsyncStorage key
+      storage: createJSONStorage(() => AsyncStorage),
+    }
+  )
+);
+```
+
+## Selector Hooks (Recomendado)
+
+Para lógica complexa, exporte hooks seletores:
+
+```typescript
+// ✅ Em premium-store.ts
+export const useIsPremium = () =>
+  usePremiumStore((s) => s.isPremium);
+
+export const useHasVoiceAccess = () =>
+  usePremiumStore((s) => s.isPremium || s.voiceTrialActive);
+
+// ✅ Uso nos componentes
+const isPremium = useIsPremium();
+const hasVoice = useHasVoiceAccess();
+```
+
+## Quando Criar Novo Store
+
+1. **Verifique primeiro**: Pode usar store existente?
+2. **Critério de separação**: Domínio de negócio distinto
+3. **Persistência**: Dados de saúde = persist, Social = fresh
+4. **Naming**: `use[Domain]Store` (e.g., `useNotificationsStore`)
+
+## Evitar
+
+- ❌ Stores gigantes com muitas responsabilidades
+- ❌ Duplicar dados entre stores
+- ❌ Lógica de negócio complexa dentro do store (mover para services)
+- ❌ Object destructuring em selectors
+
+## Debugging
+
+```typescript
+// Ver estado atual
+const state = useMyStore.getState();
+console.log(state);
+
+// Subscriber para mudanças
+useMyStore.subscribe((state) => {
+  logger.debug("Store updated", "MyStore", { state });
+});
+```

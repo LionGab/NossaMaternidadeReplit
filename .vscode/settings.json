@@ -1,0 +1,411 @@
+{
+  // ============================================
+  // PERFORMANCE & MEMORY - MacBook Air 2020 8GB
+  // Otimizado para Cursor + Claude Code IDE
+  // ============================================
+
+  // Desabilita features pesadas - AGRESSIVO para 8GB
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/**": true,
+    "**/.expo/**": true,
+    "**/dist/**": true,
+    "**/build/**": true,
+    "**/.next/**": true,
+    "**/coverage/**": true,
+    "**/.turbo/**": true,
+    "**/ios/Pods/**": true,
+    "**/ios/build/**": true,
+    "**/android/.gradle/**": true,
+    "**/android/app/build/**": true,
+    "**/.metro-cache/**": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true,
+    "**/.cache/**": true,
+    "**/tmp/**": true,
+    "**/*.log": true
+  },
+
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/dist": true,
+    "**/build": true,
+    "**/.expo": true,
+    "**/coverage": true,
+    "**/.turbo": true,
+    "**/ios/Pods": true,
+    "**/android/.gradle": true,
+    "**/.metro-cache": true,
+    "**/package-lock.json": true,
+    "**/yarn.lock": true,
+    "**/*.min.js": true,
+    "**/*.bundle.js": true
+  },
+
+  "files.exclude": {
+    "**/.git": false,
+    "**/.DS_Store": true,
+    "**/Thumbs.db": true
+  },
+
+  // Limita arquivos grandes - CRÍTICO para 8GB
+  "files.maxMemoryForLargeFilesMB": 256,
+  "editor.largeFileOptimizations": true,
+
+  // TypeScript Server - ULTRA OTIMIZADO para Ryzen 5 7600X + 32GB RAM
+  // 8GB max (32GB total = pode alocar generosamente)
+  "typescript.tsserver.maxTsServerMemory": 8192,
+  "typescript.tsserver.watchOptions": {
+    "excludeDirectories": [
+      "**/node_modules",
+      "**/.expo",
+      "**/dist",
+      "**/build",
+      "**/ios/Pods",
+      "**/android/.gradle"
+    ],
+    "excludeFiles": ["**/*.min.js", "**/*.bundle.js"]
+  },
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "prompt",
+  "typescript.suggest.completeFunctionCalls": true,
+  "typescript.suggest.paths": true,
+
+  // Otimizações de busca - AGRESSIVO
+  "search.followSymlinks": false,
+  "search.smartCase": true,
+  "search.useGlobalIgnoreFiles": true,
+  "search.maxResults": 1000,
+  "search.seedOnFocus": false,
+  "search.searchOnType": false,
+
+  // ============================================
+  // CURSOR IDE + CLAUDE CODE - ULTRATHINK MODE
+  // ============================================
+
+  // Cursor AI otimizado
+  "cursor.aipreview.enabled": false,
+  "cursor.composer.collapsePills": false,
+
+  // Garbage collection agressivo
+  "window.titleSeparator": " — ",
+  "window.restoreWindows": "none",
+  "window.restoreFullscreen": false,
+
+  // Editor otimizado para PC high-end (32GB RAM)
+  "editor.suggest.maxVisibleSuggestions": 15,
+  "editor.maxTokenizationLineLength": 10000,
+  "editor.folding": true,
+  "editor.foldingStrategy": "auto",
+  "editor.unfoldOnClickAfterEndOfLine": false,
+  "editor.links": true,
+  "editor.occurrencesHighlight": "singleFile",
+  "editor.renderControlCharacters": false,
+  "editor.roundedSelection": true,
+  "editor.columnSelection": false,
+
+  // Desabilita telemetria para economizar recursos
+  "telemetry.telemetryLevel": "off",
+  "workbench.enableExperiments": false,
+  "update.mode": "manual",
+  "extensions.autoUpdate": false,
+
+  // ============================================
+  // LAYOUT FIXO & UI - PADRÃO (MAIORIA DOS DEVs)
+  // ============================================
+
+  // Layout padrão (VS Code/Cursor)
+  "workbench.panel.defaultLocation": "bottom",
+  "workbench.sideBar.location": "right",
+  "workbench.sideBar.visible": true,
+  "workbench.statusBar.visible": false,
+  "workbench.editor.showTabs": "multiple",
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": true,
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.editor.restoreViewState": true,
+  "workbench.startupEditor": "none",
+
+  // Tema e aparência - Tema ultra escuro
+  "workbench.colorTheme": "Visual Studio Dark",
+  "workbench.iconTheme": "vs-seti",
+  "workbench.colorCustomizations": {
+    "[Default Dark+]": {
+      "editor.background": "#0d1117",
+      "editor.foreground": "#c9d1d9",
+      "sideBar.background": "#010409",
+      "sideBar.foreground": "#c9d1d9",
+      "activityBar.background": "#0d1117",
+      "activityBar.foreground": "#c9d1d9",
+      "panel.background": "#0d1117",
+      "terminal.background": "#0d1117",
+      "terminal.foreground": "#c9d1d9",
+      "statusBar.background": "#161b22",
+      "statusBar.foreground": "#c9d1d9",
+      "titleBar.activeBackground": "#0d1117",
+      "titleBar.activeForeground": "#c9d1d9",
+      "tab.activeBackground": "#0d1117",
+      "tab.inactiveBackground": "#161b22",
+      "editorGroupHeader.tabsBackground": "#161b22",
+      "editorGroupHeader.tabsBorder": "#30363d"
+    }
+  },
+  "workbench.tree.indent": 12,
+  "workbench.tree.renderIndentGuides": "always",
+
+  // Editor visual
+  "editor.fontFamily": "'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Droid Sans Mono', 'Courier New', monospace",
+  "editor.fontSize": 13,
+  "editor.lineHeight": 1.6,
+  "editor.fontLigatures": true,
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.smoothScrolling": true,
+  "editor.minimap.enabled": true,
+  "editor.minimap.maxColumn": 80,
+  "editor.minimap.renderCharacters": false,
+  "editor.minimap.showSlider": "mouseover",
+  "editor.renderWhitespace": "boundary",
+  "editor.renderLineHighlight": "all",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.guides.highlightActiveIndentation": true,
+
+  // ============================================
+  // YOLO MODE - AUTOACCEPT TUDO
+  // ============================================
+
+  "editor.inlineSuggest.enabled": true,
+  "editor.inlineSuggest.acceptSuggestionOnCommitCharacter": true,
+  "editor.inlineSuggest.acceptSuggestionOnEnter": "on",
+  "editor.inlineSuggest.showToolbar": "never",
+  "editor.inlineSuggest.suppressSuggestions": false,
+  "editor.acceptSuggestionOnCommitCharacter": true,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.acceptSuggestionOnTab": true,
+  "editor.suggestSelection": "first",
+  "editor.tabCompletion": "on",
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": "on"
+  },
+  "editor.quickSuggestionsDelay": 0,
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.wordBasedSuggestions": "allDocuments",
+  "editor.suggest.localityBonus": true,
+  "editor.suggest.shareSuggestSelections": true,
+  "editor.hover.delay": 100,
+  "editor.hover.enabled": "on",
+
+  // Desabilita TODAS as confirmações
+  "workbench.editor.confirmBeforeClose": "never",
+  "workbench.editor.confirmDelete": false,
+  "files.confirmDelete": false,
+  "files.confirmTrash": false,
+  "files.confirmCreate": false,
+  "files.confirmOverwrite": false,
+  "workbench.settings.enableNaturalLanguageSearch": false,
+  "git.confirmForceSync": false,
+  "extensions.ignoreRecommendations": true,
+
+  // ============================================
+  // FORMATTING & CODE QUALITY
+  // ============================================
+
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.wordWrap": "on"
+  },
+
+  // ============================================
+  // REACT NATIVE & EXPO SPECIFIC
+  // ============================================
+
+  "files.associations": {
+    "*.tsx": "typescriptreact",
+    "*.ts": "typescript"
+  },
+
+  "emmet.includeLanguages": {
+    "typescript": "html",
+    "typescriptreact": "html"
+  },
+
+  // ============================================
+  // GIT & VERSION CONTROL
+  // ============================================
+
+  "git.enabled": true,
+  "git.autofetch": true,
+  "git.autofetchPeriod": 180,
+  "git.confirmSync": false,
+  "git.enableSmartCommit": false,
+  "git.suggestSmartCommit": false,
+  "git.decorations.enabled": true,
+  "scm.diffDecorations": "all",
+  "scm.defaultViewMode": "tree",
+
+  // ============================================
+  // TERMINAL
+  // ============================================
+
+  "terminal.integrated.fontSize": 12,
+  "terminal.integrated.fontFamily": "'SF Mono', 'Monaco', monospace",
+  "terminal.integrated.cursorBlinking": true,
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.smoothScrolling": true,
+  "terminal.integrated.defaultLocation": "view",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+
+  // ============================================
+  // EXTENSIONS SPECIFIC
+  // ============================================
+
+  // ESLint
+  // ESLint
+  "eslint.enable": true,
+  "eslint.useFlatConfig": true,
+  "eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.probe": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "eslint.run": "onType",
+  "eslint.format.enable": true,
+  "eslint.lintTask.enable": true,
+  "eslint.codeActionsOnSave.mode": "all",
+  "eslint.codeActionsOnSave.rules": null,
+  "eslint.codeAction.showDocumentation": true,
+  "eslint.codeAction.disableRuleComment": true,
+  "eslint.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  },
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "eslint.trace.server": "off",
+
+  // Prettier
+  "prettier.enable": true,
+  "prettier.requireConfig": true,
+
+  // TypeScript - Enhanced features para PC high-end
+  "typescript.enablePromptUseWorkspaceTsdk": true,
+  "typescript.preferences.quoteStyle": "single",
+  "typescript.inlayHints.parameterNames.enabled": "all",
+  "typescript.inlayHints.parameterTypes.enabled": true,
+  "typescript.inlayHints.variableTypes.enabled": true,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+  "typescript.referencesCodeLens.enabled": true,
+  "typescript.implementationsCodeLens.enabled": true,
+
+  // Tailwind CSS IntelliSense
+  "tailwindCSS.experimental.classRegex": [
+    ["cn\\(([^)]*)\\)", "(?:'|\"|`)([^\"'`]*)(?:'|\"|`)"],
+    ["className\\s*[:=]\\s*[\"'`]([^\"'`]*)[\"'`]", "[\"'`]([^\"'`]*)[\"'`]"]
+  ],
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  },
+  "tailwindCSS.files.exclude": [
+    "**/.git/**",
+    "**/node_modules/**",
+    "**/.expo/**",
+    "**/dist/**",
+    "**/build/**"
+  ],
+
+  // ============================================
+  // SECURITY & PRIVACY
+  // ============================================
+
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+
+  // ============================================
+  // CLAUDE CODE IDE - ULTRATHINK MODE
+  // ============================================
+
+  // Permissões Claude Code
+  "claudeCode.allowDangerouslySkipPermissions": true,
+  "claudeCode.initialPermissionMode": "bypassPermissions",
+  "claudeCode.enableUltraThink": true,
+  "claudeCode.maxContextTokens": 200000,
+  "claudeCode.preferredModel": "claude-opus-4-5",
+
+  // ============================================
+  // PERFORMANCE FINAL - MacBook Air 8GB
+  // ============================================
+
+  // Sem limite de workers - aproveita 6 cores do Ryzen 5 7600X
+  // "editor.maxWorkers": 2,  // REMOVIDO - deixa VS Code gerenciar automaticamente
+  "remote.downloadExtensionsLocally": true,
+
+  // Habilita features úteis - 32GB RAM suporta tranquilamente
+  "workbench.localHistory.enabled": true,
+  "workbench.localHistory.maxFileEntries": 50,
+  "workbench.localHistory.maxFileSize": 256,
+  "npm.autoDetect": "on",
+  "npm.fetchOnlinePackageInfo": false,
+
+  // Debug otimizado - PC High-End (32GB RAM + 6 cores)
+  "debug.javascript.usePreview": true,
+  "debug.javascript.codelens.npmScripts": "top",
+  "debug.allowBreakpointsEverywhere": false,
+  "debug.showBreakpointsInOverviewRuler": true,
+  "debug.terminal.clearBeforeReusing": true,
+  "debug.javascript.automaticallyTunnelRemoteServer": true,
+  "debug.onTaskErrors": "showErrors",
+  "debug.internalConsoleOptions": "openOnSessionStart",
+  "debug.console.wordWrap": false,
+
+  // Just My Code - pode aumentar sockets para mais performance
+  "debug.javascript.unmapMissingSources": true,
+  "debug.javascript.resourceRequestOptions": {
+    "maxSockets": 8
+  },
+
+  // Performance monitoring
+  "debug.showSubSessionsInToolBar": true,
+  "debug.toolBarLocation": "docked",
+  "chat.tools.terminal.autoApprove": {
+    "ssh": true
+  }
+}

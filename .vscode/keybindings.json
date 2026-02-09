@@ -1,0 +1,328 @@
+[
+  // ============================================
+  // CURSOR AI + CLAUDE CODE SHORTCUTS
+  // Otimizado para MacBook Air 2020 + Ultrathink
+  // ============================================
+  {
+    "key": "cmd+l",
+    "command": "workbench.action.chat.open",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "cmd+shift+a",
+    "command": "workbench.action.chat.open",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "cmd+shift+c",
+    "command": "workbench.action.chat.open",
+    "when": "!terminalFocus"
+  },
+  // Claude Code específicos
+  {
+    "key": "cmd+shift+i",
+    "command": "claude-code.openInlineChat",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+c",
+    "command": "claude-code.explainCode",
+    "when": "editorHasSelection"
+  },
+
+  // ============================================
+  // QUICK OPEN & NAVIGATION
+  // ============================================
+  {
+    "key": "cmd+p",
+    "command": "workbench.action.quickOpen"
+  },
+  {
+    "key": "cmd+shift+p",
+    "command": "workbench.action.showCommands"
+  },
+  {
+    "key": "cmd+shift+o",
+    "command": "workbench.action.gotoSymbol"
+  },
+  {
+    "key": "f12",
+    "command": "editor.action.revealDefinition",
+    "when": "editorHasDefinitionProvider && editorTextFocus"
+  },
+  {
+    "key": "shift+f12",
+    "command": "editor.action.revealReferences",
+    "when": "editorHasReferenceProvider && editorTextFocus"
+  },
+  {
+    "key": "cmd+k cmd+i",
+    "command": "editor.action.showHover",
+    "when": "editorTextFocus"
+  },
+
+  // ============================================
+  // EDITOR OPERATIONS
+  // ============================================
+  {
+    "key": "cmd+d",
+    "command": "editor.action.addSelectionToNextFindMatch",
+    "when": "editorFocus"
+  },
+  {
+    "key": "cmd+shift+d",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "alt+up",
+    "command": "editor.action.moveLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "alt+down",
+    "command": "editor.action.moveLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "shift+alt+up",
+    "command": "editor.action.copyLinesUpAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "shift+alt+down",
+    "command": "editor.action.copyLinesDownAction",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+shift+k",
+    "command": "editor.action.deleteLines",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+/",
+    "command": "editor.action.commentLine",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "shift+alt+a",
+    "command": "editor.action.blockComment",
+    "when": "editorTextFocus && !editorReadonly"
+  },
+
+  // ============================================
+  // MULTI-CURSOR
+  // ============================================
+  {
+    "key": "cmd+shift+l",
+    "command": "editor.action.selectHighlights",
+    "when": "editorFocus"
+  },
+  {
+    "key": "cmd+alt+up",
+    "command": "editor.action.insertCursorAbove",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "cmd+alt+down",
+    "command": "editor.action.insertCursorBelow",
+    "when": "editorTextFocus"
+  },
+
+  // ============================================
+  // LAYOUT & UI
+  // ============================================
+  {
+    "key": "cmd+b",
+    "command": "workbench.action.toggleSidebarVisibility"
+  },
+  {
+    "key": "cmd+j",
+    "command": "workbench.action.togglePanel"
+  },
+  {
+    "key": "cmd+shift+e",
+    "command": "workbench.view.explorer"
+  },
+  {
+    "key": "cmd+shift+f",
+    "command": "workbench.action.findInFiles"
+  },
+  {
+    "key": "cmd+shift+g",
+    "command": "workbench.view.scm"
+  },
+  {
+    "key": "cmd+shift+d",
+    "command": "workbench.view.debug"
+  },
+  {
+    "key": "cmd+shift+x",
+    "command": "workbench.view.extensions"
+  },
+
+  // ============================================
+  // TASKS & SCRIPTS
+  // ============================================
+  {
+    "key": "cmd+shift+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "🔍 Typecheck"
+  },
+  {
+    "key": "cmd+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "✨ Lint Fix",
+    "when": "!editorFocus"
+  },
+  {
+    "key": "cmd+shift+q",
+    "command": "workbench.action.tasks.runTask",
+    "args": "✅ Quality Gate"
+  },
+
+  // ============================================
+  // TERMINAL
+  // ============================================
+  {
+    "key": "ctrl+`",
+    "command": "workbench.action.terminal.toggleTerminal"
+  },
+  {
+    "key": "cmd+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+  {
+    "key": "cmd+k",
+    "command": "workbench.action.terminal.clear",
+    "when": "terminalFocus"
+  },
+
+  // ============================================
+  // FILE OPERATIONS + MEMORY SAVING
+  // ============================================
+  {
+    "key": "cmd+n",
+    "command": "workbench.action.files.newUntitledFile"
+  },
+  {
+    "key": "cmd+s",
+    "command": "workbench.action.files.save"
+  },
+  {
+    "key": "cmd+shift+s",
+    "command": "workbench.action.files.saveAs"
+  },
+  {
+    "key": "cmd+w",
+    "command": "workbench.action.closeActiveEditor"
+  },
+  {
+    "key": "cmd+k cmd+w",
+    "command": "workbench.action.closeAllEditors"
+  },
+  {
+    "key": "cmd+k cmd+shift+w",
+    "command": "workbench.action.closeAllGroups"
+  },
+  // Memory saving - fechar editores não salvos
+  {
+    "key": "cmd+alt+w",
+    "command": "workbench.action.closeUnmodifiedEditors"
+  },
+  // Reload para liberar memória
+  {
+    "key": "cmd+alt+r",
+    "command": "workbench.action.reloadWindow"
+  },
+
+  // ============================================
+  // FORMATTING
+  // ============================================
+  {
+    "key": "shift+alt+f",
+    "command": "editor.action.formatDocument",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly"
+  },
+  {
+    "key": "cmd+k cmd+f",
+    "command": "editor.action.formatSelection",
+    "when": "editorHasDocumentSelectionFormattingProvider && editorTextFocus && !editorReadonly"
+  },
+
+  // ============================================
+  // SEARCH & REPLACE
+  // ============================================
+  {
+    "key": "cmd+f",
+    "command": "actions.find",
+    "when": "editorFocus || editorIsOpen"
+  },
+  {
+    "key": "cmd+alt+f",
+    "command": "editor.action.startFindReplaceAction",
+    "when": "editorFocus || editorIsOpen"
+  },
+  {
+    "key": "cmd+shift+f",
+    "command": "workbench.action.findInFiles",
+    "when": "!searchViewletFocus"
+  },
+  {
+    "key": "cmd+shift+h",
+    "command": "workbench.action.replaceInFiles"
+  },
+
+  // ============================================
+  // GIT
+  // ============================================
+  {
+    "key": "ctrl+shift+g g",
+    "command": "git.commit",
+    "when": "scmRepository"
+  },
+  {
+    "key": "ctrl+shift+g p",
+    "command": "git.push",
+    "when": "scmRepository"
+  },
+  {
+    "key": "ctrl+shift+g s",
+    "command": "git.sync",
+    "when": "scmRepository"
+  },
+
+  // ============================================
+  // DEBUGGING
+  // ============================================
+  {
+    "key": "f5",
+    "command": "workbench.action.debug.start",
+    "when": "!inDebugMode"
+  },
+  {
+    "key": "shift+f5",
+    "command": "workbench.action.debug.stop",
+    "when": "inDebugMode"
+  },
+  {
+    "key": "f9",
+    "command": "editor.debug.action.toggleBreakpoint",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "f10",
+    "command": "workbench.action.debug.stepOver",
+    "when": "inDebugMode"
+  },
+  {
+    "key": "f11",
+    "command": "workbench.action.debug.stepInto",
+    "when": "inDebugMode"
+  },
+  {
+    "key": "shift+f11",
+    "command": "workbench.action.debug.stepOut",
+    "when": "inDebugMode"
+  }
+]

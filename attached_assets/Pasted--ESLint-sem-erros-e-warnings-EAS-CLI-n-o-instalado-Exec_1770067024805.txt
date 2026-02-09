@@ -1,0 +1,107 @@
+ ESLint sem erros e warnings
+⚠️  EAS CLI não instalado. Execute: npm install -g eas-cli
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  Projeto pronto com 1 aviso(s)
+✅ Build readiness check passed
+
+🔍 [4/4] Checking for console.log usage...
+✅ No console.log found (using logger instead)
+
+🎉 All quality gates passed! Ready for PR/build.
+Ready to push!
+Enumerating objects: 1342, done.
+Counting objects: 100% (1342/1342), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (1203/1203), done.
+Writing objects: 100% (1342/1342), 50.90 MiB | 5.95 MiB/s, done.
+Total 1342 (delta 98), reused 1333 (delta 91), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (98/98), done.
+remote: fatal: did not receive expected object 3a575d509e47a47c01d9c48461108f390881d264
+error: remote unpack failed: index-pack failed
+To https://github.com/LionGab/Nossa-Maternidade.git
+ ! [remote rejected] main -> main (failed)
+error: failed to push some refs to 'https://github.com/LionGab/Nossa-Maternidade.git'
+~/workspace$ git add -A
+git commit --amend -m "Initial commit"
+git push -u origin main --force
+Running pre-commit checks...
+[1/4] TypeScript check...
+
+> nossa-maternidade@1.0.0 typecheck
+> tsc --noEmit
+
+[2/4] ESLint...
+
+> nossa-maternidade@1.0.0 lint
+> npx expo lint
+
+[3/4] Design validation... (skipped - hook not found)
+[4/4] Security check...
+All pre-commit checks passed!
+[main 3708704] Initial commit
+ Author: gabrielvesz <49618317-gabrielvesz@users.noreply.replit.com>
+ Date: Mon Feb 2 21:12:43 2026 +0000
+ 1 file changed, 71 insertions(+)
+ create mode 100644 attached_assets/Pasted--v22-22-0-git-clone-https-github-com-LionGab-Nossa-Mate_1770066757203.txt
+Running pre-push validation...
+
+> nossa-maternidade@1.0.0 quality-gate
+> bash scripts/quality-gate.sh
+
+🚀 Running quality gates for Nossa Maternidade...
+
+📝 [1/4] TypeScript type check...
+
+> nossa-maternidade@1.0.0 typecheck
+> tsc --noEmit
+
+✅ TypeScript check passed
+
+🔧 [2/4] ESLint check...
+
+> nossa-maternidade@1.0.0 lint
+> npx expo lint
+
+✅ ESLint check passed
+
+🏗️  [3/4] Build readiness check...
+
+> nossa-maternidade@1.0.0 check-build-ready
+> bash scripts/build/check-build-ready.sh
+
+🔍 Verificando prontidão para build...
+✅ eas.json encontrado
+✅ app.config.js encontrado (dynamic config)
+✅ bundleIdentifier iOS configurado
+✅ package Android configurado
+✅ Ícone do app encontrado
+✅ Splash screen encontrado
+🔍 Verificando tipos TypeScript...
+✅ TypeScript sem erros
+🔍 Verificando ESLint...
+✅ ESLint sem erros e warnings
+⚠️  EAS CLI não instalado. Execute: npm install -g eas-cli
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+⚠️  Projeto pronto com 1 aviso(s)
+✅ Build readiness check passed
+
+🔍 [4/4] Checking for console.log usage...
+✅ No console.log found (using logger instead)
+
+🎉 All quality gates passed! Ready for PR/build.
+Ready to push!
+Enumerating objects: 1342, done.
+Counting objects: 100% (1342/1342), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (1203/1203), done.
+Writing objects: 100% (1342/1342), 50.90 MiB | 5.89 MiB/s, done.
+Total 1342 (delta 97), reused 1333 (delta 91), pack-reused 0 (from 0)
+remote: Resolving deltas: 100% (97/97), done.
+remote: fatal: did not receive expected object 3a575d509e47a47c01d9c48461108f390881d264
+error: remote unpack failed: index-pack failed
+To https://github.com/LionGab/Nossa-Maternidade.git
+ ! [remote rejected] main -> main (failed)
+error: failed to push some refs to 'https://github.com/LionGab/Nossa-Maternidade.git'
+~/workspace$ 

@@ -1,0 +1,65 @@
+---
+paths:
+  - "supabase/**/*.{ts,js,sql}"
+  - "src/api/**/*.{ts,tsx}"
+  - "src/services/**/*.{ts,tsx}"
+---
+
+# Supabase - Backend e Segurança
+
+## Row Level Security (RLS)
+
+- **SEMPRE**: RLS habilitado em todas as tabelas
+- **NUNCA**: Desabilitar RLS em produção
+- Políticas devem ser explícitas e restritivas
+
+## Migrations
+
+- **Plan mode obrigatório**: Sempre planejar antes de executar
+- Testar migrations em ambiente de desenvolvimento primeiro
+- Nunca fazer DROP sem backup
+- Versionar todas as migrations
+
+## Edge Functions
+
+- Sempre validar input
+- Implementar CORS corretamente
+- Usar variáveis de ambiente para secrets
+- Nunca expor secrets no código
+
+## Queries
+
+- Usar parâmetros preparados (nunca string interpolation)
+- Implementar rate limiting quando necessário
+- Validar dados antes de inserir/atualizar
+
+## Segurança
+
+- **NUNCA**: Hardcode de credenciais
+- Usar variáveis de ambiente
+- Validar permissões do usuário
+- Implementar sanitização de input
+
+## Logs
+
+- Não logar dados sensíveis
+- Usar logger estruturado
+- Implementar rotação de logs
+
+## Exemplo Seguro
+
+```typescript
+// ✅ CORRETO
+const { data, error } = await supabase
+  .from('users')
+  .select('id, name, email')
+  .eq('id', userId)
+  .single();
+
+if (error) {
+  logger.error('Erro ao buscar usuário', 'UserService', { error });
+  return { data: null, error };
+}
+
+return { data, error: null };
+```

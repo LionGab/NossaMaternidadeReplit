@@ -1,0 +1,120 @@
+# Nossa Maternidade - Regras do Projeto
+
+## TypeScript Strict Mode
+
+- **ZERO `any`**: Use `unknown` + type guards quando necessário
+- **ZERO `@ts-ignore`/`@ts-expect-error`**: Proibido sem justificativa explícita em comentário
+- **TypeScript strict mode**: Sempre habilitado no `tsconfig.json`
+- **Tipos explícitos**: Evitar inferência quando reduz clareza
+
+### Exemplos
+
+```typescript
+// ❌ ERRADO
+function processData(data: any) { ... }
+
+// ✅ CORRETO
+function processData(data: unknown) {
+  if (isValidData(data)) {
+    // type guard garante tipo
+  }
+}
+```
+
+## Logging
+
+- **PROIBIDO**: `console.log`, `console.error`, `console.warn`, `console.info`
+- **OBRIGATÓRIO**: Usar `logger.*` de `src/utils/logger.ts`
+
+### Padrão de Uso
+
+```typescript
+import { logger } from "@/utils/logger";
+
+// ✅ CORRETO
+logger.info("Mensagem informativa", "Contexto", { metadata });
+logger.error("Erro ocorrido", "Contexto", { error, stack });
+logger.warn("Aviso importante", "Contexto", { data });
+logger.debug("Debug info", "Contexto", { details });
+```
+
+## Design System
+
+- **PROIBIDO**: Cores hardcoded (`#xxx`, `rgba()`, `'white'`, `'black'`)
+- **OBRIGATÓRIO**: Usar `Tokens.*` de `src/theme/tokens.ts` OU `useThemeColors()` hook
+
+### Fonte Única de Verdade
+
+- **Tokens**: `src/theme/tokens.ts`
+- **Presets**: `src/theme/presets/` (ex: `calmFemtech.ts`)
+- **Hook de tema**: `useThemeColors()` para cores dinâmicas
+
+### Uso Correto
+
+```typescript
+import { Tokens } from '@/theme/tokens';
+import { useThemeColors } from '@/hooks/useThemeColors';
+
+// ✅ CORRETO - Tokens estáticos
+<View style={{ backgroundColor: Tokens.neutral[50] }} />
+
+// ✅ CORRETO - Hook para cores dinâmicas
+const colors = useThemeColors();
+<View style={{ backgroundColor: colors.background }} />
+```
+
+## Acessibilidade (WCAG AAA)
+
+- **Contraste mínimo**: 7:1 para texto normal, 4.5:1 para texto grande (18pt+)
+- **Touch targets**: Mínimo 44pt (iOS) / 48dp (Android)
+- **Labels**: Sempre `accessibilityLabel` e `accessibilityRole` em elementos interativos
+
+### Exemplos
+
+```typescript
+// ✅ CORRETO
+<Pressable
+  style={{ minHeight: 44 }}
+  accessibilityLabel="Botão de salvar"
+  accessibilityRole="button"
+  accessibilityHint="Salva as alterações"
+>
+  <Text>Salvar</Text>
+</Pressable>
+```
+
+## React Native Patterns
+
+- Use `Pressable` sobre `TouchableOpacity`
+- Use `SafeAreaView` de `react-native-safe-area-context`
+- Use `Ionicons` de `@expo/vector-icons`
+- Listas grandes: use `FlashList`/`FlatList`, não `ScrollView + map()`
+- Componentes pesados: use `React.memo()`
+- Componentes grandes: use `React.lazy()`
+
+## State Management (Zustand)
+
+- **Evitar**: Seletores que retornam objetos inteiros
+- **Prefira**: Seletores individuais
+
+```typescript
+// ❌ ERRADO
+const { user, settings } = useAppStore((s) => ({ user: s.user, settings: s.settings }));
+
+// ✅ CORRETO
+const user = useAppStore((s) => s.user);
+const settings = useAppStore((s) => s.settings);
+```
+
+## Commits e Build
+
+- Mudanças em atomic commits (1 tema por commit) com mensagem clara
+- Não adicionar dependências sem necessidade
+- Respeitar Design System (tokens/theme/dark mode) e acessibilidade (WCAG AAA)
+- Se houver risco de breaking change, propor plano incremental antes de aplicar
+
+## Validação
+
+- Comandos disponíveis: `validate`, `validate:full`, `quality-gate`
+- Sempre rodar `quality-gate` antes de PR/build
+- TypeScript strict: proibido any; proibido @ts-ignore/@ts-expect-error sem justificativa

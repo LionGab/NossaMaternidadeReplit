@@ -1,0 +1,231 @@
+---
+description: "React Navigation patterns for Nossa Maternidade"
+paths:
+  - "src/navigation/**/*.ts"
+  - "src/navigation/**/*.tsx"
+  - "src/types/navigation.ts"
+priority: high
+---
+
+# Navigation Patterns
+
+## Navigation Structure
+
+```
+RootNavigator (Native Stack)
+├── AuthStack
+│   ├── AuthLanding
+│   ├── EmailAuth
+│   └── ForgotPassword
+├── NotificationPermission
+├── OnboardingStack (12 screens)
+│   ├── Welcome
+│   ├── JourneySelect
+│   ├── MaternityStage
+│   └── ... → Paywall
+└── MainTabs (Bottom Tabs)
+    ├── Home
+    ├── Community
+    ├── NathIA
+    ├── MundoNath
+    └── MyCare
+```
+
+## Type-Safe Navigation
+
+### 1. Define Types
+
+```typescript
+// src/types/navigation.ts
+export type RootStackParamList = {
+  Auth: undefined;
+  NotificationPermission: undefined;
+  Onboarding: undefined;
+  MainTabs: undefined;
+  MyNewScreen: { itemId: string };
+};
+
+export type MainTabsParamList = {
+  Home: undefined;
+  Community: undefined;
+  NathIA: { conversationId?: string };
+  MundoNath: undefined;
+  MyCare: undefined;
+};
+```
+
+### 2. Use Typed Hook
+
+```typescript
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '@/types/navigation';
+
+type NavigationProp = NativeStackNavigationProp<RootStackParamList>;
+
+export function MyComponent() {
+  const navigation = useNavigation<NavigationProp>();
+
+  const handlePress = () => {
+    navigation.navigate('MyNewScreen', { itemId: '123' });
+  };
+}
+```
+
+### 3. Use Typed Route
+
+```typescript
+import { useRoute, RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '@/types/navigation';
+
+type MyScreenRouteProp = RouteProp<RootStackParamList, 'MyNewScreen'>;
+
+export function MyNewScreen() {
+  const route = useRoute<MyScreenRouteProp>();
+  const { itemId } = route.params;
+}
+```
+
+## Adding New Screen
+
+### Step 1: Add to types
+
+```typescript
+// src/types/navigation.ts
+export type RootStackParamList = {
+  // existing...
+  MyNewScreen: { itemId: string };
+};
+```
+
+### Step 2: Create screen component
+
+```typescript
+// src/screens/MyNewScreen.tsx
+import { SafeAreaView } from 'react-native-safe-area-context';
+
+export function MyNewScreen() {
+  return (
+    <SafeAreaView className="flex-1 bg-background">
+      {/* content */}
+    </SafeAreaView>
+  );
+}
+```
+
+### Step 3: Add to navigator
+
+```typescript
+// src/navigation/RootNavigator.tsx
+<Stack.Screen
+  name="MyNewScreen"
+  component={MyNewScreen}
+  options={{ title: 'Minha Tela' }}
+/>
+```
+
+## Screen Options
+
+```typescript
+<Stack.Screen
+  name="MyScreen"
+  component={MyScreen}
+  options={{
+    title: 'Título',
+    headerShown: true,
+    headerBackTitle: 'Voltar',
+    headerStyle: {
+      backgroundColor: Tokens.brand.primary[500],
+    },
+    headerTintColor: '#fff',
+    gestureEnabled: true,
+    animation: 'slide_from_right',
+  }}
+/>
+```
+
+## Deep Linking
+
+```typescript
+// app.config.js
+{
+  scheme: 'nossamaternidade',
+  web: {
+    bundler: 'metro',
+  },
+}
+
+// Handle: nossamaternidade://chat/123
+```
+
+## Navigation Guards
+
+```typescript
+// Auth check before navigation
+const isAuthenticated = useAppStore((s) => !!s.user);
+const hasCompletedOnboarding = useAppStore((s) => s.hasCompletedOnboarding);
+
+// In RootNavigator
+{!isAuthenticated ? (
+  <Stack.Screen name="Auth" component={AuthStack} />
+) : !hasCompletedOnboarding ? (
+  <Stack.Screen name="Onboarding" component={OnboardingStack} />
+) : (
+  <Stack.Screen name="MainTabs" component={MainTabs} />
+)}
+```
+
+## Tab Navigation
+
+```typescript
+<Tab.Navigator
+  screenOptions={{
+    tabBarActiveTintColor: Tokens.brand.primary[500],
+    tabBarInactiveTintColor: Tokens.neutral[400],
+    tabBarStyle: {
+      borderTopWidth: 0,
+      elevation: 0,
+    },
+  }}
+>
+  <Tab.Screen
+    name="Home"
+    component={HomeScreen}
+    options={{
+      tabBarIcon: ({ color, size }) => (
+        <Ionicons name="home" color={color} size={size} />
+      ),
+    }}
+  />
+</Tab.Navigator>
+```
+
+## Reset Navigation
+
+```typescript
+// Reset to specific screen (e.g., after logout)
+navigation.reset({
+  index: 0,
+  routes: [{ name: 'Auth' }],
+});
+```
+
+## Common Issues
+
+### Missing type
+```
+Error: Argument of type '"MyScreen"' is not assignable
+```
+**Fix**: Add screen to `RootStackParamList`
+
+### Params undefined
+```
+Error: Cannot read property 'itemId' of undefined
+```
+**Fix**: Check if params exist or provide defaults
+
+### Navigation not ready
+```
+Error: Cannot navigate before mounting
+```
+**Fix**: Use `useNavigation` inside component, not at module level

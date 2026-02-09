@@ -1,0 +1,42 @@
+---
+paths:
+  - "scripts/**/*.{js,ts,sh,ps1}"
+---
+
+# Scripts de Automação
+
+## Padrões
+
+- Scripts devem ser executáveis e bem documentados
+- Incluir tratamento de erros
+- Usar logger quando apropriado
+
+## TypeScript/JavaScript
+
+- Usar TypeScript quando possível
+- Validar input de scripts
+- Implementar flags de dry-run quando apropriado
+
+## Shell Scripts
+
+- Sempre `set -e` para parar em erros
+- Validar dependências antes de executar
+- Usar paths absolutos quando necessário
+
+## PowerShell
+
+- Usar `$LASTEXITCODE` em vez de try/catch para comandos npm
+- Validar ambiente antes de executar
+- Tratar erros adequadamente
+
+## Segurança
+
+- Nunca expor secrets em scripts
+- Validar permissões antes de operações destrutivas
+- Usar variáveis de ambiente para configuração
+
+## Documentação
+
+- Incluir comentários explicativos
+- Documentar parâmetros e flags
+- Exemplos de uso quando apropriado

@@ -1,0 +1,285 @@
+---
+description: "Jest testing patterns for Nossa Maternidade React Native"
+paths:
+  - "src/**/__tests__/**/*.ts"
+  - "src/**/__tests__/**/*.tsx"
+  - "**/*.test.ts"
+  - "**/*.test.tsx"
+priority: high
+---
+
+# Jest Testing Patterns
+
+## Test File Structure
+
+```typescript
+// src/screens/__tests__/MyScreen.test.tsx
+import React from 'react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react-native';
+import { MyScreen } from '../MyScreen';
+
+// Mock dependencies
+jest.mock('@/state/store', () => ({
+  useAppStore: jest.fn(),
+}));
+
+jest.mock('@/api/my-service', () => ({
+  fetchData: jest.fn(),
+}));
+
+describe('MyScreen', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should render correctly', () => {
+    render(<MyScreen />);
+
+    expect(screen.getByText('Título')).toBeTruthy();
+  });
+
+  it('should handle user interaction', async () => {
+    render(<MyScreen />);
+
+    const button = screen.getByRole('button', { name: 'Salvar' });
+    fireEvent.press(button);
+
+    await waitFor(() => {
+      expect(screen.getByText('Salvo!')).toBeTruthy();
+    });
+  });
+});
+```
+
+## Commands
+
+```bash
+# Run all tests
+npm test
+
+# Watch mode
+npm test -- --watch
+
+# Single file
+npm test -- path/to/file.test.ts
+
+# With coverage
+npm run test:coverage
+
+# Match pattern
+npm test -- -t "should render"
+```
+
+## Mocking Zustand Stores
+
+```typescript
+import { useAppStore } from '@/state/store';
+
+jest.mock('@/state/store');
+
+const mockUseAppStore = useAppStore as jest.MockedFunction<typeof useAppStore>;
+
+beforeEach(() => {
+  mockUseAppStore.mockImplementation((selector) => {
+    const state = {
+      user: { id: '1', name: 'Test User' },
+      setUser: jest.fn(),
+      isPremium: false,
+    };
+    return selector(state);
+  });
+});
+```
+
+## Mocking Navigation
+
+```typescript
+const mockNavigate = jest.fn();
+
+jest.mock('@react-navigation/native', () => ({
+  ...jest.requireActual('@react-navigation/native'),
+  useNavigation: () => ({
+    navigate: mockNavigate,
+    goBack: jest.fn(),
+  }),
+  useRoute: () => ({
+    params: { itemId: '123' },
+  }),
+}));
+```
+
+## Mocking Supabase
+
+```typescript
+jest.mock('@/api/supabase', () => ({
+  supabase: {
+    from: jest.fn(() => ({
+      select: jest.fn(() => ({
+        eq: jest.fn(() => ({
+          single: jest.fn(() => Promise.resolve({
+            data: { id: '1', name: 'Test' },
+            error: null,
+          })),
+        })),
+      })),
+    })),
+    auth: {
+      getUser: jest.fn(() => Promise.resolve({
+        data: { user: { id: '1' } },
+        error: null,
+      })),
+    },
+  },
+}));
+```
+
+## Testing Async Operations
+
+```typescript
+it('should load data on mount', async () => {
+  const mockFetch = jest.fn().mockResolvedValue({ data: ['item1'] });
+  (fetchData as jest.Mock).mockImplementation(mockFetch);
+
+  render(<MyScreen />);
+
+  // Wait for loading to complete
+  await waitFor(() => {
+    expect(screen.queryByTestId('loading')).toBeNull();
+  });
+
+  expect(screen.getByText('item1')).toBeTruthy();
+  expect(mockFetch).toHaveBeenCalledTimes(1);
+});
+```
+
+## Testing Error States
+
+```typescript
+it('should show error message on failure', async () => {
+  const mockFetch = jest.fn().mockRejectedValue(new Error('Network error'));
+  (fetchData as jest.Mock).mockImplementation(mockFetch);
+
+  render(<MyScreen />);
+
+  await waitFor(() => {
+    expect(screen.getByText(/erro/i)).toBeTruthy();
+  });
+});
+```
+
+## Accessibility Testing
+
+```typescript
+it('should have accessible button', () => {
+  render(<MyScreen />);
+
+  const button = screen.getByRole('button', { name: 'Salvar' });
+  expect(button).toBeTruthy();
+  expect(button.props.accessibilityLabel).toBe('Salvar');
+});
+```
+
+## Snapshot Testing
+
+```typescript
+it('should match snapshot', () => {
+  const tree = render(<MyComponent />);
+  expect(tree.toJSON()).toMatchSnapshot();
+});
+```
+
+## Testing Hooks
+
+```typescript
+import { renderHook, act } from '@testing-library/react-native';
+import { useMyHook } from '../useMyHook';
+
+describe('useMyHook', () => {
+  it('should initialize with default value', () => {
+    const { result } = renderHook(() => useMyHook());
+
+    expect(result.current.value).toBe(0);
+  });
+
+  it('should update value', () => {
+    const { result } = renderHook(() => useMyHook());
+
+    act(() => {
+      result.current.increment();
+    });
+
+    expect(result.current.value).toBe(1);
+  });
+});
+```
+
+## Test Utils
+
+```typescript
+// src/test-utils/render.tsx
+import { ReactElement } from 'react';
+import { render, RenderOptions } from '@testing-library/react-native';
+import { NavigationContainer } from '@react-navigation/native';
+
+const AllProviders = ({ children }) => (
+  <NavigationContainer>
+    {children}
+  </NavigationContainer>
+);
+
+export const customRender = (
+  ui: ReactElement,
+  options?: RenderOptions
+) => render(ui, { wrapper: AllProviders, ...options });
+
+export * from '@testing-library/react-native';
+export { customRender as render };
+```
+
+## Common Matchers
+
+```typescript
+// Existence
+expect(element).toBeTruthy();
+expect(element).toBeNull();
+
+// Text
+expect(screen.getByText('Hello')).toBeTruthy();
+expect(screen.queryByText('Missing')).toBeNull();
+
+// Calls
+expect(mockFn).toHaveBeenCalled();
+expect(mockFn).toHaveBeenCalledWith('arg');
+expect(mockFn).toHaveBeenCalledTimes(1);
+
+// Async
+await waitFor(() => {
+  expect(condition).toBe(true);
+});
+```
+
+## Anti-Patterns
+
+```typescript
+// ❌ WRONG: Testing implementation details
+expect(component.state.isLoading).toBe(false);
+
+// ✅ CORRECT: Testing behavior
+expect(screen.queryByTestId('loading')).toBeNull();
+
+// ❌ WRONG: Using setTimeout in tests
+await new Promise(r => setTimeout(r, 1000));
+
+// ✅ CORRECT: Using waitFor
+await waitFor(() => {
+  expect(screen.getByText('Loaded')).toBeTruthy();
+});
+
+// ❌ WRONG: Not cleaning up
+// Missing beforeEach/afterEach
+
+// ✅ CORRECT: Clean state between tests
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+```

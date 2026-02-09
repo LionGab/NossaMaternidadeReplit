@@ -1,0 +1,70 @@
+---
+description: "Acessibilidade WCAG AAA - contraste 7:1, touch 44pt+"
+alwaysApply: true
+priority: high
+---
+
+# Acessibilidade - WCAG AAA
+
+## Padrão
+
+- **WCAG AAA**: Contraste mínimo 7:1
+- **Touch targets**: Mínimo 44pt (iOS) / 48dp (Android)
+- **Labels**: Sempre `accessibilityLabel` e `accessibilityRole`
+
+## Regras Obrigatórias
+
+### Elementos Interativos
+
+```typescript
+// ✅ CORRETO
+<Pressable
+  style={{ minHeight: 44 }}
+  accessibilityLabel="Botão de salvar"
+  accessibilityRole="button"
+  accessibilityHint="Salva as alterações"
+>
+  <Text>Salvar</Text>
+</Pressable>
+```
+
+### Imagens
+
+```typescript
+// ✅ CORRETO
+<Image
+  source={...}
+  accessibilityLabel="Foto de perfil da usuária"
+  accessibilityRole="image"
+/>
+```
+
+### Inputs
+
+```typescript
+// ✅ CORRETO
+<TextInput
+  accessibilityLabel="Campo de email"
+  accessibilityRole="textbox"
+  accessibilityHint="Digite seu endereço de email"
+/>
+```
+
+## Contraste
+
+- Texto normal: mínimo 7:1
+- Texto grande (18pt+): mínimo 4.5:1
+- Usar `Tokens` garante contraste adequado
+
+## Navegação
+
+- Suporte a VoiceOver (iOS) e TalkBack (Android)
+- Ordem lógica de foco
+- Feedback háptico em ações importantes
+
+## Benefícios
+
+- App acessível para todos
+- Compliance com guidelines de acessibilidade
+- Melhor UX geral
+- Requisito para App Store/Play Store

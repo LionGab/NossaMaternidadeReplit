@@ -1,0 +1,193 @@
+---
+description: "React hooks patterns and best practices for Nossa Maternidade"
+paths:
+  - "src/hooks/**/*.ts"
+  - "src/hooks/**/*.tsx"
+priority: high
+---
+
+# Custom Hooks Patterns
+
+## Hook Structure
+
+```typescript
+// src/hooks/useMyHook.ts
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { logger } from '@/utils/logger';
+
+interface UseMyHookOptions {
+  initialValue?: string;
+  enabled?: boolean;
+}
+
+interface UseMyHookReturn {
+  data: string | null;
+  isLoading: boolean;
+  error: Error | null;
+  refresh: () => Promise<void>;
+}
+
+export function useMyHook(options: UseMyHookOptions = {}): UseMyHookReturn {
+  const { initialValue = null, enabled = true } = options;
+
+  const [data, setData] = useState<string | null>(initialValue);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const refresh = useCallback(async () => {
+    if (!enabled) return;
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // fetch logic
+      const result = await fetchData();
+      setData(result);
+    } catch (err) {
+      const error = err instanceof Error ? err : new Error('Unknown error');
+      setError(error);
+      logger.error('Hook fetch failed', 'useMyHook', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [enabled]);
+
+  useEffect(() => {
+    refresh();
+  }, [refresh]);
+
+  return { data, isLoading, error, refresh };
+}
+```
+
+## Existing Hooks Reference
+
+| Hook | Location | Purpose |
+|------|----------|---------|
+| `useThemeColors` | `src/hooks/useTheme.ts` | Theme-aware colors |
+| `useKeyboardStatus` | `src/hooks/useKeyboardStatus.ts` | Keyboard visibility |
+| `useNetworkStatus` | `src/hooks/useNetworkStatus.ts` | Online/offline |
+| `useDebounce` | `src/hooks/useDebounce.ts` | Debounced values |
+
+## Anti-Patterns
+
+```typescript
+// ❌ WRONG: Conditional hooks
+if (condition) {
+  const data = useMyHook(); // React Rules violation
+}
+
+// ✅ CORRECT: Conditional enabled
+const data = useMyHook({ enabled: condition });
+
+// ❌ WRONG: Missing cleanup
+useEffect(() => {
+  const interval = setInterval(() => {}, 1000);
+  // no cleanup!
+}, []);
+
+// ✅ CORRECT: With cleanup
+useEffect(() => {
+  const interval = setInterval(() => {}, 1000);
+  return () => clearInterval(interval);
+}, []);
+
+// ❌ WRONG: Missing dependencies
+useEffect(() => {
+  fetchData(userId);
+}, []); // userId missing
+
+// ✅ CORRECT: All dependencies
+useEffect(() => {
+  fetchData(userId);
+}, [userId]);
+```
+
+## Async Effect Pattern
+
+```typescript
+useEffect(() => {
+  let cancelled = false;
+
+  async function load() {
+    try {
+      const result = await fetchData();
+      if (!cancelled) {
+        setData(result);
+      }
+    } catch (error) {
+      if (!cancelled) {
+        setError(error);
+      }
+    }
+  }
+
+  load();
+
+  return () => {
+    cancelled = true;
+  };
+}, [dependency]);
+```
+
+## Zustand Selectors in Hooks
+
+```typescript
+// ✅ CORRECT: Individual selectors
+export function useUser() {
+  const user = useAppStore((s) => s.user);
+  const setUser = useAppStore((s) => s.setUser);
+
+  return { user, setUser };
+}
+
+// ❌ WRONG: Object selector
+export function useUser() {
+  const { user, setUser } = useAppStore((s) => ({
+    user: s.user,
+    setUser: s.setUser,
+  })); // Infinite loop!
+}
+```
+
+## Testing Hooks
+
+```typescript
+import { renderHook, act, waitFor } from '@testing-library/react-native';
+
+describe('useMyHook', () => {
+  it('should return initial state', () => {
+    const { result } = renderHook(() => useMyHook());
+
+    expect(result.current.data).toBeNull();
+    expect(result.current.isLoading).toBe(true);
+  });
+
+  it('should handle refresh', async () => {
+    const { result } = renderHook(() => useMyHook());
+
+    await act(async () => {
+      await result.current.refresh();
+    });
+
+    await waitFor(() => {
+      expect(result.current.isLoading).toBe(false);
+    });
+  });
+});
+```
+
+## Memoization
+
+```typescript
+// useMemo for expensive computations
+const filteredItems = useMemo(() => {
+  return items.filter(item => item.active);
+}, [items]);
+
+// useCallback for stable function references
+const handlePress = useCallback(() => {
+  onPress(itemId);
+}, [onPress, itemId]);
+```

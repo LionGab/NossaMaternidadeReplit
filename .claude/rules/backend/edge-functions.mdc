@@ -1,0 +1,242 @@
+---
+description: "Supabase Edge Functions patterns for Nossa Maternidade"
+paths:
+  - "supabase/functions/**/*.ts"
+priority: high
+---
+
+# Edge Functions Patterns
+
+## Function Structure
+
+```typescript
+// supabase/functions/my-function/index.ts
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
+import { corsHeaders } from "../_shared/cors.ts";
+
+interface RequestBody {
+  userId: string;
+  data: unknown;
+}
+
+serve(async (req: Request) => {
+  // Handle CORS preflight
+  if (req.method === "OPTIONS") {
+    return new Response("ok", { headers: corsHeaders });
+  }
+
+  try {
+    // Auth check
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(
+        JSON.stringify({ error: "Missing authorization header" }),
+        { status: 401, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+      );
+    }
+
+    // Parse body
+    const body: RequestBody = await req.json();
+
+    // Initialize Supabase
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    );
+
+    // Business logic here
+    const result = await processData(body);
+
+    return new Response(
+      JSON.stringify({ data: result }),
+      { status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    console.error("Function error:", error);
+    return new Response(
+      JSON.stringify({ error: error.message }),
+      { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+    );
+  }
+});
+```
+
+## Existing Functions
+
+| Function | Purpose |
+|----------|---------|
+| `ai` | NathIA chat (Gemini) |
+| `transcribe` | Voice transcription |
+| `moderate-content` | Content moderation |
+| `upload-image` | Image upload |
+| `delete-account` | LGPD account deletion |
+| `webhook-revenuecat` | IAP webhooks |
+
+## CORS Headers
+
+```typescript
+// supabase/functions/_shared/cors.ts
+export const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "POST, OPTIONS",
+};
+```
+
+## Environment Variables
+
+```typescript
+// Available in Deno.env
+Deno.env.get("SUPABASE_URL")
+Deno.env.get("SUPABASE_ANON_KEY")
+Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")
+Deno.env.get("GEMINI_API_KEY")
+```
+
+**Set secrets:**
+```bash
+supabase secrets set GEMINI_API_KEY=xxx
+```
+
+## Calling from Client
+
+```typescript
+// src/api/my-service.ts
+import { supabase } from './supabase';
+import { logger } from '@/utils/logger';
+
+export async function callMyFunction(data: unknown) {
+  try {
+    const { data: result, error } = await supabase.functions.invoke('my-function', {
+      body: { data },
+    });
+
+    if (error) {
+      logger.error('Function error', 'MyService', error);
+      return { data: null, error };
+    }
+
+    return { data: result, error: null };
+  } catch (error) {
+    logger.error('Function call failed', 'MyService', error);
+    return { data: null, error };
+  }
+}
+```
+
+## Testing Locally
+
+```bash
+# Start local Supabase
+supabase start
+
+# Serve functions locally
+supabase functions serve
+
+# Test specific function
+curl -X POST http://localhost:54321/functions/v1/my-function \
+  -H "Authorization: Bearer <JWT>" \
+  -H "Content-Type: application/json" \
+  -d '{"userId": "123"}'
+```
+
+## Deployment
+
+```bash
+# Deploy all functions
+npm run deploy-functions
+
+# Deploy specific function
+supabase functions deploy my-function
+
+# Check logs
+supabase functions logs my-function
+```
+
+## AI Function Pattern (NathIA)
+
+```typescript
+// supabase/functions/ai/index.ts
+const GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent";
+
+const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    contents: [
+      { role: "user", parts: [{ text: systemPrompt }] },
+      { role: "model", parts: [{ text: "Entendido!" }] },
+      ...history,
+      { role: "user", parts: [{ text: userMessage }] },
+    ],
+    generationConfig: {
+      temperature: 0.7,
+      maxOutputTokens: 1024,
+    },
+  }),
+});
+```
+
+## Rate Limiting
+
+```typescript
+// Check user's daily limit (free tier)
+const { count } = await supabase
+  .from("chat_messages")
+  .select("*", { count: "exact", head: true })
+  .eq("user_id", userId)
+  .gte("created_at", todayStart.toISOString());
+
+if (count >= 6 && !isPremium) {
+  return new Response(
+    JSON.stringify({ error: "Daily limit reached" }),
+    { status: 429, headers: corsHeaders }
+  );
+}
+```
+
+## Error Handling
+
+```typescript
+// Standard error response
+function errorResponse(message: string, status: number = 500) {
+  return new Response(
+    JSON.stringify({ error: message }),
+    { status, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+  );
+}
+
+// Usage
+if (!userId) return errorResponse("Missing userId", 400);
+if (!authorized) return errorResponse("Unauthorized", 401);
+```
+
+## Webhooks (RevenueCat)
+
+```typescript
+// supabase/functions/webhook-revenuecat/index.ts
+const event = await req.json();
+
+switch (event.type) {
+  case "INITIAL_PURCHASE":
+  case "RENEWAL":
+    await supabase
+      .from("user_subscriptions")
+      .upsert({ user_id: event.app_user_id, is_premium: true });
+    break;
+  case "CANCELLATION":
+  case "EXPIRATION":
+    await supabase
+      .from("user_subscriptions")
+      .update({ is_premium: false })
+      .eq("user_id", event.app_user_id);
+    break;
+}
+```

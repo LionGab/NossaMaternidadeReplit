@@ -1,0 +1,78 @@
+---
+description: "TestFlight Gates Methodology - G2-G7 validation sequence"
+alwaysApply: true
+priority: high
+tags: ["release", "testflight", "gates"]
+---
+
+# TestFlight Gates Methodology
+
+## Gate Flow
+
+```
+G-1 → G0 → G1 → G2.5
+              ↓
+            G2 ← BLOCKER
+              ↓
+            G3 ← BLOCKER
+              ↓
+            G4 ← BLOCKER
+              ↓
+            G5 ← BLOCKER
+              ↓
+            G6
+              ↓
+            G7 → TestFlight ACTIVE
+```
+
+## Critical Rules
+
+1. **G2-G5 are BLOCKERS** - G6 (build) cannot proceed without ALL passing
+2. **G3 BEFORE G2** - RLS verification before build to avoid rebuild
+3. **Reuse dev build** - One development build serves G2, G4, G5 (saves 40-60 min)
+4. **Document results** - Update `docs/release/GATES.md` after each gate
+5. **Physical device required** - Simulator cannot validate Auth or RevenueCat
+
+## Validation Priority
+
+1. **G3 (RLS)** - 15 min SQL check
+2. **G2 (Auth)** - 45 min device testing
+3. **G4 (RevenueCat)** - 1h sandbox purchases
+4. **G5 (NathIA)** - 3h (2h caching + 1h validations)
+5. **G6 (Build)** - 30 min EAS compilation
+6. **G7 (TestFlight)** - 15 min configuration
+
+**Total:** ~7h distributed across 2-3 days
+
+## Success Criteria
+
+Each gate must have:
+- ✅ Measurable criteria (not subjective)
+- ✅ Test checklist (step-by-step)
+- ✅ Documented result in GATES.md
+- ✅ Validated by named person + date
+
+## Rollback Protocol
+
+If any G2-G5 fails:
+1. **Stop immediately** - Do not proceed to next gate
+2. **Debug** - Use rollback checklist in gate documentation
+3. **Fix** - Apply fix and re-validate
+4. **Document** - Note failure + fix in GATES.md
+
+**Never skip a failed gate "to save time"** - it will cost more later.
+
+## Commands
+
+- `/gates` - Show current gate status
+- `/g2-auth` - Execute G2 validation
+- `/g3-rls` - Execute G3 validation
+- `/g4-revenuecat` - Execute G4 validation
+- `/g5-nathia` - Execute G5 validation
+- `/build-testflight` - Execute G6 + G7
+
+## References
+
+- **Scoreboard**: `docs/release/GATES.md`
+- **Detailed Guide**: `docs/release/TESTFLIGHT_GATES_v1.md`
+- **Agent**: `.claude/agents/nm-release-operator.md`

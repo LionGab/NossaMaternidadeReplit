@@ -1,0 +1,94 @@
+---
+description: "NathIA Prompt Caching - G5 BLOCKER (26% cost reduction = $583/month)"
+alwaysApply: true
+priority: critical
+tags: ["nathia", "ai", "caching", "cost-optimization"]
+---
+
+# NathIA Prompt Caching - Critical Optimization
+
+## Why It's G5 Blocker
+
+**Problem:** System prompt repetição = 61% of tokens in conversations
+**Solution:** Anthropic Prompt Caching (ephemeral, 5min TTL)
+**Impact:** 26% cost reduction = $583/month savings
+**ROI:** 349x (2h work → $6,996/year savings)
+
+## Implementation Rules
+
+### MUST DO (before G6 production build):
+
+1. **Modify `callClaude()` and `callClaudeVision()`:**
+   ```typescript
+   // Change system from string to array with cache_control
+   system: [
+     {
+       type: "text",
+       text: systemPrompt || DEFAULT_SYSTEM_PROMPT,
+       cache_control: { type: "ephemeral" }
+     }
+   ]
+   ```
+
+2. **Add cache metrics logging:**
+   ```typescript
+   const cacheMetrics = {
+     cacheCreationTokens: response.usage.cache_creation_input_tokens || 0,
+     cacheReadTokens: response.usage.cache_read_input_tokens || 0,
+   };
+   logger.info("claude_cache_metrics", { userId, cacheMetrics });
+   ```
+
+3. **Deploy edge function:**
+   ```bash
+   npm run deploy-functions
+   ```
+
+4. **Validate caching:**
+   - Test 1: Cache MISS (first request) → `cache_creation_input_tokens: 400`
+   - Test 2: Cache HIT (<5min) → `cache_read_input_tokens: 400`
+   - Test 3: Cache Expiry (>5min) → new cache creation
+
+### MUST NOT DO:
+
+❌ Launch to TestFlight without caching (wastes $583/month)
+❌ Modify system prompt after caching (invalidates cache)
+❌ Skip validation tests (risk broken caching)
+
+## Success Criteria
+
+- ✅ Cache MISS works (first request)
+- ✅ Cache HIT works (<5min requests)
+- ✅ Cache expiry works (>5min recreates)
+- ✅ Logs include cache metrics
+- ✅ Estimated 26% cost reduction (verify in Anthropic dashboard after 24h)
+
+## Files to Modify
+
+- `supabase/functions/ai/index.ts:160-175` - ApiResponse interface
+- `supabase/functions/ai/index.ts:1260-1285` - callClaude()
+- `supabase/functions/ai/index.ts:1290-1350` - callClaudeVision()
+
+## Prerequisites (SDK Requirements)
+
+Before implementing caching, verify:
+
+1. **Anthropic SDK version**: `@anthropic-ai/sdk` >= 0.20.0
+   ```bash
+   npm list @anthropic-ai/sdk
+   ```
+
+2. **API endpoint**: Must use Messages API (not legacy Completion API)
+
+3. **Model**: Claude 3 family (Opus, Sonnet, Haiku) - caching supported
+
+If any prerequisite fails, update SDK first:
+```bash
+npm install @anthropic-ai/sdk@latest
+```
+
+## References
+
+- **Full analysis**: `docs/ai/COST_OPTIMIZATION.md`
+- **Claude Cookbooks**: `misc/prompt_caching.ipynb`
+- **Command**: `/g5-nathia` (includes caching validation)

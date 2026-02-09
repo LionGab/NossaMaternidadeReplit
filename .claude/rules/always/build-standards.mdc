@@ -1,0 +1,109 @@
+---
+description: Regras obrigatórias para builds EAS (iOS/Android)
+globs: ["**/build*.md", "**/eas.json", "**/app.config.js"]
+alwaysApply: true
+---
+
+# Build Standards - Regras Obrigatórias
+
+## A) Regra dos 70% (Gatilho de Contexto)
+
+**OBRIGATÓRIO** no início de qualquer comando de build:
+
+1. Executar `/context` (ou verificar uso de contexto)
+2. **Se uso >= 70%**:
+   - Criar checkpoint: `docs/builds/YYYY-MM-DD-{platform}-{profile}.md`
+   - Executar `/compact`
+   - Continuar **somente após** compactação
+3. **Se uso < 70%**: continuar normalmente
+
+## B) Persistência por Build (Anti NOTES.md Gigante)
+
+**Padrão**: 1 arquivo por build em `docs/builds/`
+
+**NOTES.md** deve conter **apenas**:
+- Resumo em 3 bullets
+- Link do arquivo de checkpoint
+- Link do log completo (se existir)
+
+**Template**: `docs/builds/TEMPLATE.md`
+
+## C) Regra Anti-Log-Poluição
+
+**NUNCA** colar logs completos no chat.
+
+**SEMPRE**:
+1. Colar apenas **trecho mínimo**: erro + ~20 linhas acima/abaixo
+2. Salvar log completo em: `docs/builds/logs/{build-id}.txt`
+3. Referenciar no checkpoint
+
+**Campos obrigatórios no checkpoint**:
+- "Trecho mínimo no chat" (o que foi mostrado)
+- "Log completo em arquivo" (path do .txt)
+
+## D) Modo Entrevista com Evidência
+
+**ANTES** de gerar plano ou rodar comandos de build:
+
+### Entrevista Obrigatória (4 perguntas):
+
+1. **Plataforma**: iOS / Android / Ambos?
+2. **Profile**: development / preview / production?
+3. **Auto-submit**: Se production, submeter automaticamente?
+4. **Branch + Objetivo**: Em qual branch? Qual o objetivo deste build?
+
+### Após Entrevista:
+
+1. Ler este arquivo (build-standards.mdc)
+2. **MOSTRAR EVIDÊNCIA**: Listar 3 itens P0 do checklist que serão verificados
+
+**Exemplo de evidência**:
+```
+📋 P0 Checklist que será verificado:
+1. Nenhum console.log em src/
+2. Copy correto: "Quando você começou a tentar?"
+3. Nenhuma cor hardcoded (#xxx, rgba)
+```
+
+## E) Checklist Copy/UI como Gate
+
+**ANTES** de tsc/lint, validar Copy/UI P0:
+
+### Itens P0 (Bloqueantes):
+
+| Item | Verificação | Comando |
+|------|-------------|---------|
+| console.log | Nenhum em src/ | `grep -r "console.log" src/` |
+| any types | Nenhum sem justificativa | `grep -r ": any" src/` |
+| Cores hardcoded | Nenhum #xxx, rgba(), 'white', 'black' | Grep em .tsx |
+| Copy "tentando" | "Quando você começou a tentar?" | Busca manual |
+| Copy "mês" | "cada mês" (não "ciclo") | Busca manual |
+| Emoji/ícones | Renderizam corretamente (não texto) | Verificar screenshots |
+
+### Se Violar:
+
+1. **INTERROMPER** build imediatamente
+2. Listar: `arquivo:linha` de cada violação
+3. Aguardar correção antes de continuar
+
+---
+
+## Fluxo Completo de Build
+
+```
+1. /context → verificar uso
+2. Se >= 70% → checkpoint + /compact
+3. Entrevista (4 perguntas)
+4. Mostrar evidência (3 P0s)
+5. Validar Copy/UI P0
+6. quality-gate (tsc + lint + build check)
+7. eas build --platform X --profile Y
+8. Atualizar NOTES.md (3 bullets + links)
+9. Criar/atualizar checkpoint
+```
+
+## Referências
+
+- Template: `docs/builds/TEMPLATE.md`
+- NOTES: `docs/builds/NOTES.md`
+- Logs: `docs/builds/logs/`
