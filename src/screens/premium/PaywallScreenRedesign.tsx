@@ -33,6 +33,11 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import type { PurchasesPackage } from "react-native-purchases";
 import { usePremium } from "../../hooks/usePremium";
+import {
+  trackEvent,
+  trackPaywallExposure,
+  trackPaywallOutcome,
+} from "../../services/analytics";
 import { Tokens } from "../../theme/tokens";
 import { logger } from "../../utils/logger";
 import { PRICES_BRL, calculateSavingsPercent } from "../../services/revenuecat";
@@ -111,6 +116,8 @@ interface PaywallScreenRedesignProps {
   onSuccess?: () => void;
   onClose?: () => void;
   showCloseButton?: boolean;
+  variant?: string;
+  sourceCampaign?: string;
 }
 
 export function PaywallScreenRedesign({
@@ -118,6 +125,8 @@ export function PaywallScreenRedesign({
   onSuccess,
   onClose,
   showCloseButton = true,
+  variant = "control",
+  sourceCampaign,
 }: PaywallScreenRedesignProps) {
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
@@ -161,6 +170,37 @@ export function PaywallScreenRedesign({
     ]).start();
   }, [fadeAnim, slideAnim]);
 
+  useEffect(() => {
+    trackPaywallExposure({
+      experimentName: "paywall_in_app_v1",
+      variant,
+      screenName: "PaywallScreenRedesign",
+      source: sourceCampaign || undefined,
+      campaign: sourceCampaign || undefined,
+      metadata: {
+        feature: feature || "unknown",
+        packages_count: packages.length,
+      },
+    }).catch(() => {
+      // Exposure telemetry should never block the paywall render.
+    });
+  }, [feature, packages.length, sourceCampaign, variant]);
+
+  const handleClose = useCallback(() => {
+    trackPaywallOutcome({
+      experimentName: "paywall_in_app_v1",
+      variant,
+      outcomeType: "dismissed",
+      source: sourceCampaign || undefined,
+      campaign: sourceCampaign || undefined,
+      metadata: { feature: feature || "unknown" },
+    }).catch(() => {
+      // Close telemetry must remain fire-and-forget.
+    });
+
+    onClose?.();
+  }, [feature, onClose, sourceCampaign, variant]);
+
   /**
    * Handle purchase
    */
@@ -171,6 +211,18 @@ export function PaywallScreenRedesign({
     }
 
     setIsPurchasing(true);
+    await trackEvent({
+      eventName: "paywall_cta_tapped",
+      category: "conversion",
+      screenName: "PaywallScreenRedesign",
+      properties: {
+        experiment_name: "paywall_in_app_v1",
+        variant,
+        feature: feature || "unknown",
+        package_identifier: selectedPackage.identifier,
+      },
+    });
+
     logger.info(`Attempting purchase: ${selectedPackage.identifier}`, "PaywallScreenRedesign", {
       feature,
     });
@@ -179,6 +231,18 @@ export function PaywallScreenRedesign({
       const result = await purchase(selectedPackage);
 
       if (result.success) {
+        await trackPaywallOutcome({
+          experimentName: "paywall_in_app_v1",
+          variant,
+          outcomeType: "purchase_success",
+          source: sourceCampaign || undefined,
+          campaign: sourceCampaign || undefined,
+          metadata: {
+            feature: feature || "unknown",
+            package_identifier: selectedPackage.identifier,
+            price_string: selectedPackage.product.priceString,
+          },
+        });
         Alert.alert("Bem-vinda ao Premium", "Aproveite todos os recursos exclusivos.", [
           {
             text: "Continuar",
@@ -186,15 +250,39 @@ export function PaywallScreenRedesign({
           },
         ]);
       } else if (result.error !== "cancelled") {
+        await trackPaywallOutcome({
+          experimentName: "paywall_in_app_v1",
+          variant,
+          outcomeType: "purchase_failed",
+          source: sourceCampaign || undefined,
+          campaign: sourceCampaign || undefined,
+          metadata: {
+            feature: feature || "unknown",
+            package_identifier: selectedPackage.identifier,
+            error: result.error || "unknown_error",
+          },
+        });
         Alert.alert("Erro", result.error || "Tente novamente em instantes");
       }
     } catch (err) {
       logger.error("Purchase error", "PaywallScreenRedesign", err as Error);
+      await trackPaywallOutcome({
+        experimentName: "paywall_in_app_v1",
+        variant,
+        outcomeType: "purchase_failed",
+        source: sourceCampaign || undefined,
+        campaign: sourceCampaign || undefined,
+        metadata: {
+          feature: feature || "unknown",
+          package_identifier: selectedPackage.identifier,
+          error: err instanceof Error ? err.message : String(err),
+        },
+      });
       Alert.alert("Erro", "Tente novamente em alguns instantes.");
     } finally {
       setIsPurchasing(false);
     }
-  }, [selectedPackage, purchase, feature, onSuccess]);
+  }, [selectedPackage, purchase, variant, feature, sourceCampaign, onSuccess]);
 
   /**
    * Handle restore
@@ -207,6 +295,14 @@ export function PaywallScreenRedesign({
       const result = await restore();
 
       if (result.success) {
+        await trackPaywallOutcome({
+          experimentName: "paywall_in_app_v1",
+          variant,
+          outcomeType: "restore_success",
+          source: sourceCampaign || undefined,
+          campaign: sourceCampaign || undefined,
+          metadata: { feature: feature || "unknown" },
+        });
         Alert.alert("Compras restauradas", "Seu acesso premium foi restaurado.", [
           {
             text: "Continuar",
@@ -214,6 +310,17 @@ export function PaywallScreenRedesign({
           },
         ]);
       } else {
+        await trackPaywallOutcome({
+          experimentName: "paywall_in_app_v1",
+          variant,
+          outcomeType: "restore_failed",
+          source: sourceCampaign || undefined,
+          campaign: sourceCampaign || undefined,
+          metadata: {
+            feature: feature || "unknown",
+            error: result.error || "restore_not_found",
+          },
+        });
         Alert.alert(
           "Nenhuma compra encontrada",
           "Nao encontramos assinaturas anteriores nesta conta."
@@ -221,11 +328,22 @@ export function PaywallScreenRedesign({
       }
     } catch (err) {
       logger.error("Restore error", "PaywallScreenRedesign", err as Error);
+      await trackPaywallOutcome({
+        experimentName: "paywall_in_app_v1",
+        variant,
+        outcomeType: "restore_failed",
+        source: sourceCampaign || undefined,
+        campaign: sourceCampaign || undefined,
+        metadata: {
+          feature: feature || "unknown",
+          error: err instanceof Error ? err.message : String(err),
+        },
+      });
       Alert.alert("Erro", "Tente novamente em alguns instantes.");
     } finally {
       setIsRestoring(false);
     }
-  }, [restore, onSuccess]);
+  }, [restore, variant, sourceCampaign, feature, onSuccess]);
 
   // Loading state
   if (premiumLoading) {
@@ -247,7 +365,7 @@ export function PaywallScreenRedesign({
         </Text>
         {showCloseButton && onClose && (
           <Pressable
-            onPress={onClose}
+            onPress={handleClose}
             style={[styles.errorButton, { backgroundColor: colors.ctaBackground }]}
             accessibilityLabel="Fechar"
             accessibilityRole="button"
@@ -274,7 +392,7 @@ export function PaywallScreenRedesign({
         {/* Close Button */}
         {showCloseButton && onClose && (
           <Pressable
-            onPress={onClose}
+            onPress={handleClose}
             style={[styles.closeButton, { top: insets.top + 16 }]}
             accessibilityLabel="Fechar"
             accessibilityRole="button"

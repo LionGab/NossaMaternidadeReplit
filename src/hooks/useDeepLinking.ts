@@ -9,12 +9,66 @@ import * as Linking from "expo-linking";
 import { useCallback, useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import { supabase } from "../api/supabase";
+import { setAttributionContext, trackEvent } from "../services/analytics";
 import { navigationRef } from "../navigation/navigationRef";
 import { RootStackParamList } from "../types/navigation";
+import type { AttributionContext } from "../types/analytics";
 import { logger } from "../utils/logger";
 
 const SCHEME = "nossamaternidade";
 const ACCESS_TOKEN_HASH_FRAGMENT = "#" + "access_token=";
+
+function readStringParam(value: unknown): string | undefined {
+  if (typeof value !== "string") return undefined;
+  const trimmed = value.trim();
+  if (!trimmed) return undefined;
+  return trimmed;
+}
+
+function resolvePlatform(): "ios" | "android" | "web" {
+  if (Platform.OS === "ios") return "ios";
+  if (Platform.OS === "android") return "android";
+  return "web";
+}
+
+function extractAttributionFromParsedUrl(
+  parsed: Linking.ParsedURL,
+  fullUrl: string
+): AttributionContext | null {
+  const queryParams = parsed.queryParams ?? {};
+  const source =
+    readStringParam(queryParams.utm_source) ||
+    readStringParam(queryParams.source) ||
+    readStringParam(queryParams.ref_source) ||
+    undefined;
+  const campaign =
+    readStringParam(queryParams.utm_campaign) || readStringParam(queryParams.campaign) || undefined;
+  const medium =
+    readStringParam(queryParams.utm_medium) || readStringParam(queryParams.medium) || undefined;
+  const contentId =
+    readStringParam(queryParams.content_id) ||
+    readStringParam(queryParams.utm_content) ||
+    readStringParam(queryParams.content) ||
+    undefined;
+  const creatorCtaId =
+    readStringParam(queryParams.creator_cta_id) || readStringParam(queryParams.cta_id) || undefined;
+
+  if (!source && !campaign && !contentId && !creatorCtaId) {
+    return null;
+  }
+
+  return {
+    source: source || "unknown",
+    campaign,
+    medium,
+    contentId,
+    creatorCtaId,
+    referrerUrl: fullUrl,
+    landingPath: parsed.path || "/",
+    platform: resolvePlatform(),
+    capturedAt: new Date().toISOString(),
+  };
+}
 
 /**
  * Verifica se a URL é um callback de autenticação (OAuth ou Magic Link)
@@ -231,6 +285,30 @@ export function useDeepLinking() {
       }
 
       const path = parsed.path || "/";
+      const attributionContext = extractAttributionFromParsedUrl(parsed, url);
+
+      if (attributionContext) {
+        await setAttributionContext(attributionContext, {
+          persist: true,
+          touchRemote: true,
+          track: true,
+        });
+      }
+
+      await trackEvent({
+        eventName: "deep_link_opened",
+        category: "navigation",
+        screenName: path,
+        properties: {
+          url,
+          path,
+          has_attribution: !!attributionContext,
+          attribution_source: attributionContext?.source ?? null,
+          attribution_campaign: attributionContext?.campaign ?? null,
+          attribution_content_id: attributionContext?.contentId ?? null,
+          attribution_creator_cta_id: attributionContext?.creatorCtaId ?? null,
+        },
+      });
 
       // PRIORIDADE 1: Auth callbacks (OAuth, Magic Link)
       // Não requer navegação pronta - apenas criar sessão

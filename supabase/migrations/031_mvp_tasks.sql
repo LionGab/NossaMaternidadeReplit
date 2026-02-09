@@ -54,26 +54,30 @@ CREATE TRIGGER trigger_update_mvp_tasks_updated_at
 ALTER TABLE mvp_tasks ENABLE ROW LEVEL SECURITY;
 
 -- Policy: Users can view their own tasks
-CREATE POLICY IF NOT EXISTS "Users can view own tasks"
+DROP POLICY IF EXISTS "Users can view own tasks" ON mvp_tasks;
+CREATE POLICY "Users can view own tasks"
   ON mvp_tasks
   FOR SELECT
   USING (auth.uid() = user_id);
 
 -- Policy: Users can insert their own tasks
-CREATE POLICY IF NOT EXISTS "Users can insert own tasks"
+DROP POLICY IF EXISTS "Users can insert own tasks" ON mvp_tasks;
+CREATE POLICY "Users can insert own tasks"
   ON mvp_tasks
   FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
 -- Policy: Users can update their own tasks
-CREATE POLICY IF NOT EXISTS "Users can update own tasks"
+DROP POLICY IF EXISTS "Users can update own tasks" ON mvp_tasks;
+CREATE POLICY "Users can update own tasks"
   ON mvp_tasks
   FOR UPDATE
   USING (auth.uid() = user_id)
   WITH CHECK (auth.uid() = user_id);
 
 -- Policy: Users can delete their own tasks
-CREATE POLICY IF NOT EXISTS "Users can delete own tasks"
+DROP POLICY IF EXISTS "Users can delete own tasks" ON mvp_tasks;
+CREATE POLICY "Users can delete own tasks"
   ON mvp_tasks
   FOR DELETE
   USING (auth.uid() = user_id);

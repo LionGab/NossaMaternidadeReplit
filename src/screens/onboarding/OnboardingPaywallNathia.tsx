@@ -40,6 +40,11 @@ import {
   purchasePackage,
   restorePurchases,
 } from "@/services/revenuecat";
+import {
+  trackEvent,
+  trackPaywallExposure,
+  trackPaywallOutcome,
+} from "@/services/analytics";
 
 // Store
 import { useNathJourneyOnboardingStore } from "@/state/nath-journey-onboarding-store";
@@ -96,6 +101,9 @@ const BENEFITS = [
   { icon: "people-outline", text: 'Comunidade "Mães Valente"' },
   { icon: "star-outline", text: "Grupo VIP (se baixou no D1)" },
 ];
+
+const ONBOARDING_PAYWALL_EXPERIMENT = "paywall_onboarding_v1";
+const ONBOARDING_PAYWALL_VARIANT = "nathia_primary";
 
 /**
  * BenefitItem - Item de benefício
@@ -188,6 +196,20 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
     setCurrentScreen("OnboardingPaywall");
   }, [setCurrentScreen]);
 
+  useEffect(() => {
+    trackPaywallExposure({
+      experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+      variant: ONBOARDING_PAYWALL_VARIANT,
+      screenName: "OnboardingPaywallNathia",
+      metadata: {
+        needs_extra_care: needsExtraCareFlag,
+        has_monthly_package: !!monthlyPackage,
+      },
+    }).catch(() => {
+      // Exposure telemetry should never block onboarding.
+    });
+  }, [needsExtraCareFlag, monthlyPackage]);
+
   // Get display price
   const getMonthlyPrice = useCallback(() => {
     return monthlyPackage?.product?.priceString ?? "R$ 34,90";
@@ -214,6 +236,15 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
       }
 
       completeOnboarding();
+      await trackEvent({
+        eventName: "onboarding_completed",
+        category: "conversion",
+        screenName: "OnboardingPaywallNathia",
+        properties: {
+          journey: data.journey,
+          needs_extra_care: needsExtraCareFlag,
+        },
+      });
       logger.info("Onboarding completed", "OnboardingPaywallNathia", {
         userId: authUserId ?? null,
         journey: data.journey,
@@ -233,15 +264,41 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
     } finally {
       setIsSaving(false);
     }
-  }, [authUserId, data.journey, data.stage, data.maternityStage, completeOnboarding, navigation]);
+  }, [
+    authUserId,
+    data.journey,
+    data.stage,
+    data.maternityStage,
+    needsExtraCareFlag,
+    completeOnboarding,
+    navigation,
+  ]);
 
   // Start trial / purchase handler
   const handleStartTrial = useCallback(async () => {
     try {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+      await trackEvent({
+        eventName: "paywall_cta_tapped",
+        category: "conversion",
+        screenName: "OnboardingPaywallNathia",
+        properties: {
+          experiment_name: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          cta: "start_trial",
+        },
+      });
 
       // Skip paywall for extra care users
       if (needsExtraCareFlag) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "skip_free",
+          metadata: {
+            reason: "needs_extra_care",
+          },
+        });
         logger.info("Skipping paywall for extra care user", "OnboardingPaywallNathia");
         await handleComplete();
         return;
@@ -249,6 +306,14 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
 
       // Complete without purchase if RevenueCat unavailable
       if (!getIsConfigured() || !monthlyPackage) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "skip_free",
+          metadata: {
+            reason: "revenuecat_unavailable",
+          },
+        });
         logger.info(
           "RevenueCat not available, completing without purchase",
           "OnboardingPaywallNathia"
@@ -265,12 +330,39 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
       const result = await purchasePackage(monthlyPackage);
 
       if (result.success) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "trial_started",
+          metadata: {
+            package_identifier: monthlyPackage.identifier,
+            price_string: monthlyPackage.product.priceString,
+          },
+        });
         logger.info("Purchase successful", "OnboardingPaywallNathia");
         setPremiumStatus(true);
         await handleComplete();
       } else if (result.error === "cancelled") {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "dismissed",
+          metadata: {
+            reason: "purchase_cancelled",
+            package_identifier: monthlyPackage.identifier,
+          },
+        });
         logger.info("Purchase cancelled by user", "OnboardingPaywallNathia");
       } else {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "purchase_failed",
+          metadata: {
+            package_identifier: monthlyPackage.identifier,
+            error: result.error || "unknown_purchase_error",
+          },
+        });
         logger.error(
           "Purchase failed",
           "OnboardingPaywallNathia",
@@ -291,6 +383,14 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
         "OnboardingPaywallNathia",
         error instanceof Error ? error : new Error(String(error))
       );
+      await trackPaywallOutcome({
+        experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+        variant: ONBOARDING_PAYWALL_VARIANT,
+        outcomeType: "purchase_failed",
+        metadata: {
+          error: error instanceof Error ? error.message : String(error),
+        },
+      });
       await handleComplete();
     } finally {
       setPurchasing(false);
@@ -303,15 +403,38 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
       setPurchasing(true);
 
+      await trackEvent({
+        eventName: "paywall_cta_tapped",
+        category: "conversion",
+        screenName: "OnboardingPaywallNathia",
+        properties: {
+          experiment_name: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          cta: "restore",
+        },
+      });
+
       const result = await restorePurchases();
 
       if (result.success) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "restore_success",
+          metadata: { source: "onboarding_restore" },
+        });
         logger.info("Restore successful", "OnboardingPaywallNathia");
         setPremiumStatus(true);
         Alert.alert("Sucesso!", "Sua assinatura foi restaurada.", [
           { text: "Continuar", onPress: handleComplete },
         ]);
       } else {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "restore_failed",
+          metadata: { reason: "no_subscription_found" },
+        });
         Alert.alert(
           "Nenhuma assinatura encontrada",
           "Não encontramos uma assinatura ativa para restaurar."
@@ -323,6 +446,12 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
         "OnboardingPaywallNathia",
         error instanceof Error ? error : new Error(String(error))
       );
+      await trackPaywallOutcome({
+        experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+        variant: ONBOARDING_PAYWALL_VARIANT,
+        outcomeType: "restore_failed",
+        metadata: { error: error instanceof Error ? error.message : String(error) },
+      });
       Alert.alert("Erro", "Não foi possível restaurar sua assinatura.");
     } finally {
       setPurchasing(false);
@@ -331,6 +460,15 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
 
   const handleTerms = () => Linking.openURL("https://nossamaternidade.app/termos");
   const handlePrivacy = () => Linking.openURL("https://nossamaternidade.app/privacidade");
+  const handleSkipFree = useCallback(async () => {
+    await trackPaywallOutcome({
+      experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+      variant: ONBOARDING_PAYWALL_VARIANT,
+      outcomeType: "skip_free",
+      metadata: { reason: "manual_skip" },
+    });
+    await handleComplete();
+  }, [handleComplete]);
 
   const isLoading = isSaving || isPurchasing;
 
@@ -453,7 +591,7 @@ export default function OnboardingPaywallNathia({ navigation }: Props) {
 
           {/* Skip */}
           <Pressable
-            onPress={handleComplete}
+            onPress={handleSkipFree}
             style={styles.skipButton}
             accessibilityLabel="Continuar sem assinatura"
             accessibilityRole="button"

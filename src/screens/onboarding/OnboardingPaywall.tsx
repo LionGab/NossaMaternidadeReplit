@@ -35,6 +35,11 @@ import {
   purchasePackage,
   restorePurchases,
 } from "@/services/revenuecat";
+import {
+  trackEvent,
+  trackPaywallExposure,
+  trackPaywallOutcome,
+} from "@/services/analytics";
 import { useNathJourneyOnboardingStore } from "@/state/nath-journey-onboarding-store";
 import { usePremiumStore } from "@/state/premium-store";
 import { useAppStore } from "@/state";
@@ -63,6 +68,9 @@ const BENEFITS = [
   'Comunidade "Mães Valente"',
   "Grupo VIP (se baixou no D1)",
 ];
+
+const ONBOARDING_PAYWALL_EXPERIMENT = "paywall_onboarding_v1";
+const ONBOARDING_PAYWALL_VARIANT = "legacy_primary";
 
 // ===========================================
 // COMPONENT
@@ -136,6 +144,21 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
     setCurrentScreen("OnboardingPaywall");
   }, [setCurrentScreen]);
 
+  useEffect(() => {
+    trackPaywallExposure({
+      experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+      variant: ONBOARDING_PAYWALL_VARIANT,
+      screenName: "OnboardingPaywall",
+      metadata: {
+        needs_extra_care: needsExtraCareFlag,
+        selected_package: selectedPackage,
+        has_monthly_package: !!monthlyPackage,
+      },
+    }).catch(() => {
+      // Exposure telemetry should never block onboarding.
+    });
+  }, [needsExtraCareFlag, selectedPackage, monthlyPackage]);
+
   // Get display price
   const getMonthlyPrice = useCallback(() => {
     return monthlyPackage?.product?.priceString ?? "R$ 34,90";
@@ -160,6 +183,15 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
       }
 
       completeOnboarding();
+      await trackEvent({
+        eventName: "onboarding_completed",
+        category: "conversion",
+        screenName: "OnboardingPaywall",
+        properties: {
+          needs_extra_care: needsExtraCareFlag,
+          selected_package: selectedPackage,
+        },
+      });
       logger.info("Onboarding completed", "OnboardingPaywall", { userId: authUserId ?? null });
 
       // CRITICAL: Reset navigation stack before state change propagates
@@ -177,15 +209,32 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
     } finally {
       setIsSaving(false);
     }
-  }, [authUserId, data.stage, completeOnboarding, _navigation]);
+  }, [authUserId, data.stage, needsExtraCareFlag, selectedPackage, completeOnboarding, _navigation]);
 
   // Start trial / purchase handler
   const handleStartTrial = useCallback(async () => {
     try {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium).catch(() => {});
+      await trackEvent({
+        eventName: "paywall_cta_tapped",
+        category: "conversion",
+        screenName: "OnboardingPaywall",
+        properties: {
+          experiment_name: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          cta: "start_trial",
+          selected_package: selectedPackage,
+        },
+      });
 
       // Skip paywall for extra care users
       if (needsExtraCareFlag) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "skip_free",
+          metadata: { reason: "needs_extra_care" },
+        });
         logger.info("Skipping paywall for extra care user", "OnboardingPaywall");
         await handleComplete();
         return;
@@ -195,6 +244,12 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
 
       // Complete without purchase if RevenueCat unavailable
       if (!getIsConfigured() || !packageToPurchase) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "skip_free",
+          metadata: { reason: "revenuecat_unavailable" },
+        });
         logger.info("RevenueCat not available, completing without purchase", "OnboardingPaywall");
         await handleComplete();
         return;
@@ -208,12 +263,39 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
       const result = await purchasePackage(packageToPurchase);
 
       if (result.success) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "trial_started",
+          metadata: {
+            package_identifier: packageToPurchase.identifier,
+            price_string: packageToPurchase.product.priceString,
+          },
+        });
         logger.info("Purchase successful", "OnboardingPaywall");
         setPremiumStatus(true);
         await handleComplete();
       } else if (result.error === "cancelled") {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "dismissed",
+          metadata: {
+            reason: "purchase_cancelled",
+            package_identifier: packageToPurchase.identifier,
+          },
+        });
         logger.info("Purchase cancelled by user", "OnboardingPaywall");
       } else {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "purchase_failed",
+          metadata: {
+            package_identifier: packageToPurchase.identifier,
+            error: result.error || "unknown_purchase_error",
+          },
+        });
         logger.error(
           "Purchase failed",
           "OnboardingPaywall",
@@ -234,6 +316,12 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
         "OnboardingPaywall",
         error instanceof Error ? error : new Error(String(error))
       );
+      await trackPaywallOutcome({
+        experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+        variant: ONBOARDING_PAYWALL_VARIANT,
+        outcomeType: "purchase_failed",
+        metadata: { error: error instanceof Error ? error.message : String(error) },
+      });
       await handleComplete();
     } finally {
       setPurchasing(false);
@@ -254,15 +342,38 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light).catch(() => {});
       setPurchasing(true);
 
+      await trackEvent({
+        eventName: "paywall_cta_tapped",
+        category: "conversion",
+        screenName: "OnboardingPaywall",
+        properties: {
+          experiment_name: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          cta: "restore",
+        },
+      });
+
       const result = await restorePurchases();
 
       if (result.success) {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "restore_success",
+          metadata: { source: "onboarding_restore" },
+        });
         logger.info("Restore successful", "OnboardingPaywall");
         setPremiumStatus(true);
         Alert.alert("Sucesso!", "Sua assinatura foi restaurada.", [
           { text: "Continuar", onPress: handleComplete },
         ]);
       } else {
+        await trackPaywallOutcome({
+          experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+          variant: ONBOARDING_PAYWALL_VARIANT,
+          outcomeType: "restore_failed",
+          metadata: { reason: "no_subscription_found" },
+        });
         Alert.alert(
           "Nenhuma assinatura encontrada",
           "Não encontramos uma assinatura ativa para restaurar."
@@ -274,6 +385,12 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
         "OnboardingPaywall",
         error instanceof Error ? error : new Error(String(error))
       );
+      await trackPaywallOutcome({
+        experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+        variant: ONBOARDING_PAYWALL_VARIANT,
+        outcomeType: "restore_failed",
+        metadata: { error: error instanceof Error ? error.message : String(error) },
+      });
       Alert.alert("Erro", "Não foi possível restaurar sua assinatura.");
     } finally {
       setPurchasing(false);
@@ -282,6 +399,15 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
 
   const handleTerms = () => Linking.openURL("https://nossamaternidade.app/termos");
   const handlePrivacy = () => Linking.openURL("https://nossamaternidade.app/privacidade");
+  const handleSkipFree = useCallback(async () => {
+    await trackPaywallOutcome({
+      experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+      variant: ONBOARDING_PAYWALL_VARIANT,
+      outcomeType: "skip_free",
+      metadata: { reason: "manual_skip" },
+    });
+    await handleComplete();
+  }, [handleComplete]);
 
   const isLoading = isSaving || isPurchasing;
 
@@ -404,7 +530,7 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
 
         {/* Skip */}
         <Pressable
-          onPress={handleComplete}
+          onPress={handleSkipFree}
           style={styles.skipButton}
           accessibilityLabel="Continuar sem assinatura"
           accessibilityRole="button"

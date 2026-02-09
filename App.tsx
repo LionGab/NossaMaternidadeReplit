@@ -23,6 +23,7 @@ import { QueryProvider } from "./src/providers/QueryProvider";
 import { usePremiumStore } from "./src/state/premium-store";
 import { brand, maternal, nathAccent, text } from "./src/theme/tokens";
 import { validateCriticalEnv } from "./src/config/env";
+import { startSession, trackEvent } from "./src/services/analytics";
 import { isExpoGo } from "./src/utils/expo";
 import { logger } from "./src/utils/logger";
 
@@ -132,6 +133,30 @@ function App() {
   // But fontsLoaded never became true in TestFlight builds, causing infinite splash
 
   const [isSplashVisible, setIsSplashVisible] = useState(true);
+
+  useEffect(() => {
+    const bootstrapAnalytics = async () => {
+      try {
+        await startSession();
+        await trackEvent({
+          eventName: "app_opened",
+          category: "engagement",
+          properties: {
+            platform: Platform.OS,
+            app_version: Constants.expoConfig?.version ?? "unknown",
+          },
+        });
+      } catch (error) {
+        logger.warn("Analytics bootstrap failed", "App", {
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    };
+
+    bootstrapAnalytics().catch(() => {
+      // Intentionally ignored: analytics must never block app startup.
+    });
+  }, []);
 
   useEffect(() => {
     SplashScreen.hideAsync().catch((error) => {
