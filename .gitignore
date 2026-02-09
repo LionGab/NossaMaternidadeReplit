@@ -157,6 +157,10 @@ nossamaternidade-*/
 # Duplicado criado por sistema/OS (não versionar)
 assets/splash (2).png
 
+# Replit (não utilizado)
+.replit
+replit.md
+
 # Windows artifacts
 nul
 NossaMaternidade_backup_*/

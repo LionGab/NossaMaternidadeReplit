@@ -1165,6 +1165,8 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
                 <View style={{ flexDirection: "row", gap: spacing.md }}>
                   <Pressable
                     onPress={handleCloseDeleteModal}
+                    accessibilityRole="button"
+                    accessibilityLabel="Cancelar exclusão da conta"
                     style={{
                       flex: 1,
                       backgroundColor: colors.background.tertiary,
@@ -1185,6 +1187,8 @@ export default function ProfileScreen({ navigation }: RootStackScreenProps<"Edit
                   </Pressable>
                   <Pressable
                     onPress={handleNextStep}
+                    accessibilityRole="button"
+                    accessibilityLabel="Continuar para próxima etapa de exclusão"
                     style={{
                       flex: 1,
                       backgroundColor: colors.semantic.error,

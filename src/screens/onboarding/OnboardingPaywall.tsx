@@ -18,7 +18,7 @@
 import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { ActivityIndicator, Alert, Linking, Pressable, StyleSheet, Text, View } from "react-native";
 import { PurchasesPackage } from "react-native-purchases";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -99,6 +99,10 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
   const [yearlyPackage, setYearlyPackage] = useState<PurchasesPackage | null>(null);
   const [selectedPackage] = useState<"monthly" | "yearly">("monthly");
 
+  const hasTrackedPaywallExposure = useRef(false);
+  const monthlyPackageId = monthlyPackage?.identifier ?? null;
+  const hasMonthlyPackage = !!monthlyPackageId;
+
   const needsExtraCareFlag = needsExtraCare();
   const progress = CURRENT_STEP / TOTAL_STEPS;
 
@@ -145,6 +149,9 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
   }, [setCurrentScreen]);
 
   useEffect(() => {
+    if (hasTrackedPaywallExposure.current) return;
+    hasTrackedPaywallExposure.current = true;
+
     trackPaywallExposure({
       experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
       variant: ONBOARDING_PAYWALL_VARIANT,
@@ -152,12 +159,12 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
       metadata: {
         needs_extra_care: needsExtraCareFlag,
         selected_package: selectedPackage,
-        has_monthly_package: !!monthlyPackage,
+        has_monthly_package: hasMonthlyPackage,
       },
     }).catch(() => {
       // Exposure telemetry should never block onboarding.
     });
-  }, [needsExtraCareFlag, selectedPackage, monthlyPackage]);
+  }, [needsExtraCareFlag, hasMonthlyPackage]);
 
   // Get display price
   const getMonthlyPrice = useCallback(() => {
@@ -400,13 +407,22 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
   const handleTerms = () => Linking.openURL("https://nossamaternidade.app/termos");
   const handlePrivacy = () => Linking.openURL("https://nossamaternidade.app/privacidade");
   const handleSkipFree = useCallback(async () => {
-    await trackPaywallOutcome({
-      experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
-      variant: ONBOARDING_PAYWALL_VARIANT,
-      outcomeType: "skip_free",
-      metadata: { reason: "manual_skip" },
-    });
-    await handleComplete();
+    try {
+      await trackPaywallOutcome({
+        experimentName: ONBOARDING_PAYWALL_EXPERIMENT,
+        variant: ONBOARDING_PAYWALL_VARIANT,
+        outcomeType: "skip_free",
+        metadata: { reason: "manual_skip" },
+      });
+    } catch (error) {
+      logger.error(
+        "skip free outcome tracking failed",
+        "OnboardingPaywall",
+        error instanceof Error ? error : new Error(String(error))
+      );
+    } finally {
+      await handleComplete();
+    }
   }, [handleComplete]);
 
   const isLoading = isSaving || isPurchasing;

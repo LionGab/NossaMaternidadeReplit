@@ -324,7 +324,7 @@ function FloSectionTitle({ title, subtitle, isDark, action }: FloSectionTitlePro
         )}
       </View>
       {action && (
-        <Pressable onPress={action.onPress} accessibilityRole="button">
+        <Pressable onPress={action.onPress} accessibilityRole="button" accessibilityLabel={action.label}>
           <Text
             style={{
               fontFamily: Tokens.typography.fontFamily.medium,

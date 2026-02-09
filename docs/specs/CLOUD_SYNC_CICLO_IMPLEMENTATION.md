@@ -215,7 +215,7 @@ CREATE TABLE daily_logs (
 ### 1. Sincronizar ao Abrir Tela
 
 ```typescript
-import { useCycleStore } from "@/state/store";
+import { useCycleStore } from "@/state";
 import { useEffect } from "react";
 
 function CycleTrackerScreen() {

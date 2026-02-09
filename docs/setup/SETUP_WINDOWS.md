@@ -556,7 +556,21 @@ npx expo start --clear
 rm -rf $env:USERPROFILE\.metro-cache
 ```
 
-### 9.10 Expo nao encontra .env.local
+### 9.10 ERR_UNSUPPORTED_ESM_URL_SCHEME (Metro config)
+
+**Sintoma:** `Error loading Metro config at: C:\... Only URLs with a scheme in: file, data, and node are supported. Received protocol 'c:'`
+
+**Causa:** Node.js ESM loader no Windows exige URLs `file://` para caminhos absolutos; o `metro-config` passava o path bruto.
+
+**Solucao:** O projeto inclui um patch (`patches/metro-config+0.83.3.patch`) aplicado automaticamente no `postinstall`. Se o erro persistir:
+
+```powershell
+npm install
+# Ou forcar reaplicacao dos patches:
+npx patch-package
+```
+
+### 9.11 Expo nao encontra .env.local
 
 **Sintoma:** Variaveis de ambiente undefined
 

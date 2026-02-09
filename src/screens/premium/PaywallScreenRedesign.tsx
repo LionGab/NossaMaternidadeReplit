@@ -117,6 +117,8 @@ interface PaywallScreenRedesignProps {
   onClose?: () => void;
   showCloseButton?: boolean;
   variant?: string;
+  source?: string;
+  campaign?: string;
   sourceCampaign?: string;
 }
 
@@ -126,12 +128,18 @@ export function PaywallScreenRedesign({
   onClose,
   showCloseButton = true,
   variant = "control",
+  source,
+  campaign,
   sourceCampaign,
 }: PaywallScreenRedesignProps) {
   const insets = useSafeAreaInsets();
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const colors = useMemo(() => getColors(isDark), [isDark]);
+  const resolvedSource = source ?? sourceCampaign;
+  const resolvedCampaign = campaign ?? feature ?? variant;
+  const trackingSource = resolvedSource ?? undefined;
+  const trackingCampaign = resolvedCampaign ?? undefined;
 
   const { offerings, purchase, restore, isLoading: premiumLoading } = usePremium();
   const [selectedPackage, setSelectedPackage] = useState<PurchasesPackage | null>(null);
@@ -175,8 +183,8 @@ export function PaywallScreenRedesign({
       experimentName: "paywall_in_app_v1",
       variant,
       screenName: "PaywallScreenRedesign",
-      source: sourceCampaign || undefined,
-      campaign: sourceCampaign || undefined,
+      source: trackingSource,
+      campaign: trackingCampaign,
       metadata: {
         feature: feature || "unknown",
         packages_count: packages.length,
@@ -184,22 +192,22 @@ export function PaywallScreenRedesign({
     }).catch(() => {
       // Exposure telemetry should never block the paywall render.
     });
-  }, [feature, packages.length, sourceCampaign, variant]);
+  }, [feature, packages.length, trackingSource, trackingCampaign, variant]);
 
   const handleClose = useCallback(() => {
     trackPaywallOutcome({
       experimentName: "paywall_in_app_v1",
       variant,
       outcomeType: "dismissed",
-      source: sourceCampaign || undefined,
-      campaign: sourceCampaign || undefined,
+      source: trackingSource,
+      campaign: trackingCampaign,
       metadata: { feature: feature || "unknown" },
     }).catch(() => {
       // Close telemetry must remain fire-and-forget.
     });
 
     onClose?.();
-  }, [feature, onClose, sourceCampaign, variant]);
+  }, [feature, onClose, trackingSource, trackingCampaign, variant]);
 
   /**
    * Handle purchase
@@ -235,8 +243,8 @@ export function PaywallScreenRedesign({
           experimentName: "paywall_in_app_v1",
           variant,
           outcomeType: "purchase_success",
-          source: sourceCampaign || undefined,
-          campaign: sourceCampaign || undefined,
+          source: trackingSource,
+          campaign: trackingCampaign,
           metadata: {
             feature: feature || "unknown",
             package_identifier: selectedPackage.identifier,
@@ -254,8 +262,8 @@ export function PaywallScreenRedesign({
           experimentName: "paywall_in_app_v1",
           variant,
           outcomeType: "purchase_failed",
-          source: sourceCampaign || undefined,
-          campaign: sourceCampaign || undefined,
+          source: trackingSource,
+          campaign: trackingCampaign,
           metadata: {
             feature: feature || "unknown",
             package_identifier: selectedPackage.identifier,
@@ -270,8 +278,8 @@ export function PaywallScreenRedesign({
         experimentName: "paywall_in_app_v1",
         variant,
         outcomeType: "purchase_failed",
-        source: sourceCampaign || undefined,
-        campaign: sourceCampaign || undefined,
+        source: trackingSource,
+        campaign: trackingCampaign,
         metadata: {
           feature: feature || "unknown",
           package_identifier: selectedPackage.identifier,
@@ -299,8 +307,8 @@ export function PaywallScreenRedesign({
           experimentName: "paywall_in_app_v1",
           variant,
           outcomeType: "restore_success",
-          source: sourceCampaign || undefined,
-          campaign: sourceCampaign || undefined,
+          source: trackingSource,
+          campaign: trackingCampaign,
           metadata: { feature: feature || "unknown" },
         });
         Alert.alert("Compras restauradas", "Seu acesso premium foi restaurado.", [
@@ -314,8 +322,8 @@ export function PaywallScreenRedesign({
           experimentName: "paywall_in_app_v1",
           variant,
           outcomeType: "restore_failed",
-          source: sourceCampaign || undefined,
-          campaign: sourceCampaign || undefined,
+          source: trackingSource,
+          campaign: trackingCampaign,
           metadata: {
             feature: feature || "unknown",
             error: result.error || "restore_not_found",
@@ -332,8 +340,8 @@ export function PaywallScreenRedesign({
         experimentName: "paywall_in_app_v1",
         variant,
         outcomeType: "restore_failed",
-        source: sourceCampaign || undefined,
-        campaign: sourceCampaign || undefined,
+        source: trackingSource,
+        campaign: trackingCampaign,
         metadata: {
           feature: feature || "unknown",
           error: err instanceof Error ? err.message : String(err),
@@ -468,8 +476,8 @@ export function PaywallScreenRedesign({
                   borderWidth: selectedPackage?.identifier === yearlyPackage.identifier ? 2 : 1,
                 },
               ]}
-              accessibilityLabel={`Plano anual: ${yearlyPackage.product.priceString} por ano, economize ${savingsPercent}%`}
               accessibilityRole="button"
+              accessibilityLabel={`Plano anual: ${yearlyPackage.product.priceString} por ano, economize ${savingsPercent}%`}
             >
               {/* Best Value Badge */}
               <View style={[styles.badge, { backgroundColor: colors.badge }]}>
@@ -520,8 +528,8 @@ export function PaywallScreenRedesign({
                   borderWidth: selectedPackage?.identifier === monthlyPackage.identifier ? 2 : 1,
                 },
               ]}
-              accessibilityLabel={`Plano mensal: ${monthlyPackage.product.priceString} por mes`}
               accessibilityRole="button"
+              accessibilityLabel={`Plano mensal: ${monthlyPackage.product.priceString} por mes`}
             >
               <View style={styles.pricingCardContent}>
                 <View style={styles.pricingLeft}>
@@ -560,8 +568,8 @@ export function PaywallScreenRedesign({
               opacity: !selectedPackage || isPurchasing ? 0.6 : pressed ? 0.9 : 1,
             },
           ]}
-          accessibilityLabel={isPurchasing ? "Processando" : "Assinar agora"}
           accessibilityRole="button"
+          accessibilityLabel={isPurchasing ? "Processando" : "Assinar agora"}
         >
           {isPurchasing ? (
             <ActivityIndicator color={colors.ctaText} size="small" />
@@ -575,8 +583,8 @@ export function PaywallScreenRedesign({
           onPress={handleRestore}
           disabled={isRestoring}
           style={styles.restoreButton}
-          accessibilityLabel={isRestoring ? "Restaurando" : "Restaurar compras"}
           accessibilityRole="button"
+          accessibilityLabel={isRestoring ? "Restaurando" : "Restaurar compras"}
         >
           {isRestoring ? (
             <ActivityIndicator color={colors.textSecondary} size="small" />

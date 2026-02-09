@@ -158,53 +158,82 @@ async function incrementCreatorPerformance(
 ): Promise<void> {
   const dayDate = new Date().toISOString().slice(0, 10);
 
-  const { data: existing } = await supabaseAdmin
-    .from("creator_content_performance")
-    .select(
-      "id, impressions, clicks, installs, trials, paid_conversions, revenue_cents, metadata"
-    )
-    .eq("day_date", dayDate)
-    .eq("source", payload.source)
-    .eq("campaign", payload.campaign)
-    .eq("content_id", payload.contentId)
-    .eq("creator_cta_id", payload.creatorCtaId)
-    .maybeSingle();
+  type CreatorPerformanceRow = {
+    id: string;
+    impressions: number | null;
+    clicks: number | null;
+    installs: number | null;
+    trials: number | null;
+    paid_conversions: number | null;
+    revenue_cents: number | null;
+    metadata: Record<string, unknown> | null;
+  };
+
+  const buildSelector = () =>
+    supabaseAdmin
+      .from("creator_content_performance")
+      .select("id, impressions, clicks, installs, trials, paid_conversions, revenue_cents, metadata")
+      .eq("day_date", dayDate)
+      .eq("source", payload.source)
+      .eq("campaign", payload.campaign)
+      .eq("content_id", payload.contentId)
+      .eq("creator_cta_id", payload.creatorCtaId);
+
+  const fetchExistingRow = async (): Promise<CreatorPerformanceRow | null> => {
+    const { data } = await buildSelector().maybeSingle();
+    return data as CreatorPerformanceRow | null;
+  };
+
+  const updateRow = async (row: CreatorPerformanceRow) => {
+    const currentMetadata =
+      row.metadata && typeof row.metadata === "object" ? row.metadata : {};
+
+    await supabaseAdmin
+      .from("creator_content_performance")
+      .update({
+        impressions: (row.impressions || 0) + payload.counters.impressions,
+        clicks: (row.clicks || 0) + payload.counters.clicks,
+        installs: (row.installs || 0) + payload.counters.installs,
+        trials: (row.trials || 0) + payload.counters.trials,
+        paid_conversions: (row.paid_conversions || 0) + payload.counters.paid_conversions,
+        revenue_cents: (row.revenue_cents || 0) + payload.counters.revenue_cents,
+        metadata: { ...currentMetadata, ...payload.metadata },
+      })
+      .eq("id", row.id);
+  };
+
+  const existing = await fetchExistingRow();
 
   if (!existing) {
-    await supabaseAdmin.from("creator_content_performance").insert({
-      day_date: dayDate,
-      source: payload.source,
-      campaign: payload.campaign,
-      content_id: payload.contentId,
-      creator_cta_id: payload.creatorCtaId,
-      impressions: payload.counters.impressions,
-      clicks: payload.counters.clicks,
-      installs: payload.counters.installs,
-      trials: payload.counters.trials,
-      paid_conversions: payload.counters.paid_conversions,
-      revenue_cents: payload.counters.revenue_cents,
-      metadata: payload.metadata,
-    });
-    return;
+    try {
+      await supabaseAdmin.from("creator_content_performance").insert({
+        day_date: dayDate,
+        source: payload.source,
+        campaign: payload.campaign,
+        content_id: payload.contentId,
+        creator_cta_id: payload.creatorCtaId,
+        impressions: payload.counters.impressions,
+        clicks: payload.counters.clicks,
+        installs: payload.counters.installs,
+        trials: payload.counters.trials,
+        paid_conversions: payload.counters.paid_conversions,
+        revenue_cents: payload.counters.revenue_cents,
+        metadata: payload.metadata,
+      });
+      return;
+    } catch (error) {
+      if (error && (error as { code?: string }).code === "23505") {
+        const fresh = await fetchExistingRow();
+        if (fresh) {
+          await updateRow(fresh);
+          return;
+        }
+      }
+      throw error;
+    }
   }
 
-  const currentMetadata =
-    existing.metadata && typeof existing.metadata === "object"
-      ? (existing.metadata as Record<string, unknown>)
-      : {};
-
-  await supabaseAdmin
-    .from("creator_content_performance")
-    .update({
-      impressions: (existing.impressions || 0) + payload.counters.impressions,
-      clicks: (existing.clicks || 0) + payload.counters.clicks,
-      installs: (existing.installs || 0) + payload.counters.installs,
-      trials: (existing.trials || 0) + payload.counters.trials,
-      paid_conversions: (existing.paid_conversions || 0) + payload.counters.paid_conversions,
-      revenue_cents: (existing.revenue_cents || 0) + payload.counters.revenue_cents,
-      metadata: { ...currentMetadata, ...payload.metadata },
-    })
-    .eq("id", existing.id);
+  await updateRow(existing);
 }
 
 async function handleAttributionTouch(
@@ -223,6 +252,8 @@ async function handleAttributionTouch(
   const metadata = sanitizeMetadata(body.metadata);
   const touchType = (body.touch_type || "click") as TouchType;
 
+  const profileId = await requireProfileId(supabaseAdmin, userId);
+
   const touchPayload = {
     source,
     medium,
@@ -240,7 +271,7 @@ async function handleAttributionTouch(
   const { data: existing } = await supabaseAdmin
     .from("user_attribution")
     .select("id, first_touch_at")
-    .eq("user_id", userId)
+    .eq("user_id", profileId)
     .eq("source", source)
     .eq("campaign", campaign)
     .eq("content_id", contentId)
@@ -249,7 +280,7 @@ async function handleAttributionTouch(
 
   if (!existing) {
     await supabaseAdmin.from("user_attribution").insert({
-      user_id: userId,
+      user_id: profileId,
       source,
       medium,
       campaign,
@@ -272,7 +303,7 @@ async function handleAttributionTouch(
         last_touch_at: new Date().toISOString(),
         last_touch_payload: touchPayload,
       })
-      .eq("id", existing.id);
+        .eq("id", existing.id);
   }
 
   await incrementCreatorPerformance(supabaseAdmin, {
@@ -295,9 +326,10 @@ async function handlePaywallExposure(
   const contentId = sanitizeText(body.content_id, "");
   const creatorCtaId = sanitizeText(body.creator_cta_id, "");
   const metadata = sanitizeMetadata(body.metadata);
+  const profileId = await requireProfileId(supabaseAdmin, userId);
 
   await supabaseAdmin.from("paywall_exposures").insert({
-    user_id: userId,
+    user_id: profileId,
     session_id: sanitizeText(body.session_id, ""),
     experiment_name: sanitizeText(body.experiment_name, "paywall_creator_v1"),
     variant: sanitizeText(body.variant, "control"),
@@ -329,6 +361,7 @@ async function handlePaywallOutcome(
   const contentId = sanitizeText(body.content_id, "");
   const creatorCtaId = sanitizeText(body.creator_cta_id, "");
   const metadata = sanitizeMetadata(body.metadata);
+  const profileId = await requireProfileId(supabaseAdmin, userId);
   const outcomeType = sanitizeText(body.outcome_type, "dismissed") as PaywallOutcomeType;
   const valueCents =
     typeof body.outcome_value_cents === "number" && body.outcome_value_cents > 0
@@ -336,7 +369,7 @@ async function handlePaywallOutcome(
       : 0;
 
   await supabaseAdmin.from("paywall_outcomes").insert({
-    user_id: userId,
+    user_id: profileId,
     session_id: sanitizeText(body.session_id, ""),
     experiment_name: sanitizeText(body.experiment_name, "paywall_creator_v1"),
     variant: sanitizeText(body.variant, "control"),
@@ -379,6 +412,17 @@ async function resolveProfileId(
     .maybeSingle();
 
   return data?.id ?? null;
+}
+
+async function requireProfileId(
+  supabaseAdmin: ReturnType<typeof createClient>,
+  authUserId: string
+): Promise<string> {
+  const profileId = await resolveProfileId(supabaseAdmin, authUserId);
+  if (!profileId) {
+    throw new Error("Profile not found for authenticated user");
+  }
+  return profileId;
 }
 
 function getJourneyMessage(

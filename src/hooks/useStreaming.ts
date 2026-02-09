@@ -20,6 +20,9 @@ import { AppError, ErrorCode, wrapError } from "../utils/error-handler";
 import { getSupabaseFunctionsUrl } from "../config/env";
 
 const FUNCTIONS_URL = getSupabaseFunctionsUrl();
+const AI_STREAM_ENDPOINT_CANDIDATES = ["ai", "nathia-chat"] as const;
+const DEFAULT_STREAM_PROVIDER: "openai" = "openai";
+const DEFAULT_STREAM_MODEL = "gpt-4o-mini";
 
 // Timeout para SSE (mais longo que request normal)
 const SSE_TIMEOUT_MS = 120_000; // 2 minutos
@@ -119,7 +122,7 @@ export function useStreaming() {
         }
 
         // Decidir provider
-        let provider: "claude" | "gemini" | "openai" = "gemini";
+        let provider: "claude" | "gemini" | "openai" = DEFAULT_STREAM_PROVIDER;
         if (context.isCrisis || context.imageData) {
           provider = "claude";
         }
@@ -128,6 +131,7 @@ export function useStreaming() {
         const payload = {
           messages,
           provider,
+          model: provider === "openai" ? DEFAULT_STREAM_MODEL : undefined,
           grounding: context.requiresGrounding || false,
           stream: true, // Flag para SSE
           ...(context.imageData && { imageData: context.imageData }),
@@ -143,17 +147,53 @@ export function useStreaming() {
           messageCount: messages.length,
         });
 
-        // Nota: A function deployada no Supabase é "nathia-chat", não "/ai"
-        const response = await fetch(`${FUNCTIONS_URL}/nathia-chat`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.access_token}`,
-            Accept: "text/event-stream",
-          },
-          body: JSON.stringify(payload),
-          signal,
-        });
+        let response: Response | null = null;
+        let lastEndpointError: Error | null = null;
+
+        for (const endpoint of AI_STREAM_ENDPOINT_CANDIDATES) {
+          const endpointResponse = await fetch(`${FUNCTIONS_URL}/${endpoint}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.access_token}`,
+              Accept: "text/event-stream",
+            },
+            body: JSON.stringify(payload),
+            signal,
+          });
+
+          if (endpointResponse.ok) {
+            response = endpointResponse;
+            if (endpoint !== "ai") {
+              logger.warn("Using legacy AI stream endpoint fallback", "useStreaming", {
+                endpoint,
+              });
+            }
+            break;
+          }
+
+          if (endpointResponse.status !== 404 && endpointResponse.status !== 405) {
+            response = endpointResponse;
+            break;
+          }
+
+          const endpointErrorBody = await endpointResponse
+            .text()
+            .catch(() => "(empty response)");
+          lastEndpointError = new Error(
+            `Endpoint ${endpoint} unavailable: ${endpointResponse.status} ${endpointErrorBody}`
+          );
+        }
+
+        if (!response) {
+          throw new AppError(
+            "No AI stream endpoint available",
+            ErrorCode.API_ERROR,
+            "Serviço da NathIA indisponível. Tente novamente em instantes.",
+            lastEndpointError || undefined,
+            { endpointsTried: AI_STREAM_ENDPOINT_CANDIDATES }
+          );
+        }
 
         // Verificar se é SSE ou JSON fallback
         const contentType = response.headers.get("content-type") || "";

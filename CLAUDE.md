@@ -17,7 +17,7 @@ npm test -- --watch           # Testes em watch mode
 import { Tokens } from "@/theme/tokens";
 import { useThemeColors } from "@/hooks/useTheme";
 import { logger } from "@/utils/logger";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 ```
 
 **Path alias:** `@/*` → `src/*`
@@ -200,6 +200,16 @@ npm run generate-types         # Schema changed
 | [memory-guide.md](docs/claude/memory-guide.md)                    | Gerenciamento de memória |
 | [architecture.md](docs/claude/architecture.md)                    | Navigation, stores       |
 | [design-system.md](docs/claude/design-system.md)                  | Tokens, cores            |
+
+### Produto (`docs/product/`)
+
+| Docs                                                                | Conteudo               |
+| ------------------------------------------------------------------- | ---------------------- |
+| [NATALIA_BRAND.md](docs/product/NATALIA_BRAND.md)                   | Quem e Natalia Valente |
+| [PRODUCT_VISION.md](docs/product/PRODUCT_VISION.md)                 | Visao do produto       |
+| [BUSINESS_MODEL.md](docs/product/BUSINESS_MODEL.md)                 | Modelo de negocio      |
+
+> **Nota**: Docs de produto sao visao estrategica, NAO spec tecnica. A arquitetura real esta aqui e em `src/CLAUDE.md`.
 
 ### Skills 2026 (.claude/skills/)
 

@@ -19,7 +19,7 @@ import { render, fireEvent, waitFor, screen } from '@testing-library/react-nativ
 import { MyScreen } from '../MyScreen';
 
 // Mock dependencies
-jest.mock('@/state/store', () => ({
+jest.mock('@/state', () => ({
   useAppStore: jest.fn(),
 }));
 
@@ -73,9 +73,9 @@ npm test -- -t "should render"
 ## Mocking Zustand Stores
 
 ```typescript
-import { useAppStore } from '@/state/store';
+import { useAppStore } from '@/state';
 
-jest.mock('@/state/store');
+jest.mock('@/state');
 
 const mockUseAppStore = useAppStore as jest.MockedFunction<typeof useAppStore>;
 

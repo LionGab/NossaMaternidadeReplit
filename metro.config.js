@@ -92,10 +92,9 @@ config.cacheStores = ({ FileStore, HttpStore }) => {
 // to invalidate existing caches.
 config.cacheVersion = metroCacheVersion;
 
-// Configure server to bind to 0.0.0.0 for Replit compatibility
+// Configure server: bind to 0.0.0.0 for LAN; port controlado pelo Expo CLI (--port)
 config.server = {
   ...config.server,
-  port: 5000,
   enhanceMiddleware: (middleware) => {
     return (req, res, next) => {
       res.setHeader("Access-Control-Allow-Origin", "*");

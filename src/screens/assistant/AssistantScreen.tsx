@@ -231,6 +231,7 @@ const FloMinimalInput: React.FC<FloMinimalInputProps> = ({
           <Pressable
             onPress={onClearImage}
             style={styles.floImagePreviewClose}
+            accessibilityRole="button"
             accessibilityLabel="Remover imagem"
           >
             <Ionicons name="close-circle" size={22} color={Tokens.semantic.light.error} />
@@ -244,6 +245,7 @@ const FloMinimalInput: React.FC<FloMinimalInputProps> = ({
         <Pressable
           onPress={onAttachment}
           style={styles.floInputButton}
+          accessibilityRole="button"
           accessibilityLabel="Anexar imagem"
         >
           <Ionicons
@@ -280,6 +282,7 @@ const FloMinimalInput: React.FC<FloMinimalInputProps> = ({
             <Pressable
               onPress={handleSendPress}
               style={styles.floSendButton}
+              accessibilityRole="button"
               accessibilityLabel="Enviar mensagem"
             >
               <Ionicons name="arrow-up" size={18} color={Tokens.neutral[0]} />
@@ -289,6 +292,7 @@ const FloMinimalInput: React.FC<FloMinimalInputProps> = ({
           <Pressable
             onPress={onMicPress}
             style={styles.floInputButton}
+            accessibilityRole="button"
             accessibilityLabel="Gravar áudio"
           >
             <Ionicons name="mic-outline" size={22} color={iconColor} />
@@ -352,6 +356,7 @@ export default function AssistantScreen({ navigation, route }: AssistantScreenPr
   // Refs
   const flatListRef = useRef<FlashListRef<ChatMessage>>(null);
   const inputRef = useRef<TextInput>(null);
+  const isMountedRef = useRef(true);
 
   // Local state
   const [inputText, setInputText] = useState("");
@@ -400,6 +405,27 @@ export default function AssistantScreen({ navigation, route }: AssistantScreenPr
   // Destructure streaming state
   const { isStreaming, currentStreamText } = handlers;
 
+  const safeScrollToEnd = useCallback(() => {
+    const listRef = flatListRef.current;
+    if (!isMountedRef.current || !listRef || typeof listRef.scrollToEnd !== "function") {
+      return;
+    }
+
+    try {
+      listRef.scrollToEnd({ animated: true });
+    } catch (error) {
+      logger.debug("Safe scroll ignored transient list state", "AssistantScreen", {
+        error: error instanceof Error ? error.message : String(error),
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
   // Auto-scroll during streaming - throttled with cleanup
   const lastScrollRef = useRef<number>(0);
   const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -413,7 +439,7 @@ export default function AssistantScreen({ navigation, route }: AssistantScreenPr
           clearTimeout(scrollTimeoutRef.current);
         }
         scrollTimeoutRef.current = setTimeout(() => {
-          flatListRef.current?.scrollToEnd({ animated: true });
+          safeScrollToEnd();
           scrollTimeoutRef.current = null;
         }, 50);
       }
@@ -425,7 +451,7 @@ export default function AssistantScreen({ navigation, route }: AssistantScreenPr
         scrollTimeoutRef.current = null;
       }
     };
-  }, [isStreaming, currentStreamText]);
+  }, [isStreaming, currentStreamText, safeScrollToEnd]);
 
   // Load message count on mount (with migration)
   React.useEffect(() => {

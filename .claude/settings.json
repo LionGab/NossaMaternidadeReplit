@@ -129,7 +129,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/session-start.sh",
+            "command": "bash .claude/hooks/session-start.sh",
             "timeout": 30
           }
         ]
@@ -141,7 +141,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/validate-bash.sh",
+            "command": "bash .claude/hooks/validate-bash.sh",
             "timeout": 10
           }
         ]
@@ -151,7 +151,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-edit-check.sh",
+            "command": "bash .claude/hooks/pre-edit-check.sh",
             "timeout": 5
           }
         ]
@@ -163,7 +163,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/post-edit-format.sh",
+            "command": "bash .claude/hooks/post-edit-format.sh",
             "timeout": 15
           }
         ]
@@ -174,7 +174,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/pre-stop-check.sh",
+            "command": "bash .claude/hooks/pre-stop-check.sh",
             "timeout": 20
           }
         ]
@@ -185,7 +185,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "\"$CLAUDE_PROJECT_DIR\"/.claude/hooks/prompt-context.sh",
+            "command": "bash .claude/hooks/prompt-context.sh",
             "timeout": 5
           }
         ]
