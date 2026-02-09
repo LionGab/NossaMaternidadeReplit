@@ -16,16 +16,16 @@ import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeIn, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from "react-native-reanimated";
 
-import { brand, neutral, radius, spacing } from "@/theme/tokens";
+import { brand, neutral, radius, spacing, Tokens } from "@/theme/tokens";
 import { shadowPresets } from "@/utils/shadow";
 import type { DailyInsight } from "../../content/insights";
 
 const COLORS = {
   white: neutral[0],
-  cardBg: "#FEFEFE",
-  gradientStart: "#FFF7F8",
-  gradientMid: "#F8FAFF",
-  gradientEnd: "#FFFFFF",
+  cardBg: Tokens.neutral[0],
+  gradientStart: Tokens.cleanDesign.pink[50],
+  gradientMid: Tokens.maternal.calm.cloud,
+  gradientEnd: Tokens.neutral[0],
   accent: brand.accent[400],
   accentLight: brand.accent[100],
   accentSoft: brand.accent[50],
@@ -34,14 +34,14 @@ const COLORS = {
   textPrimary: neutral[900],
   textSecondary: neutral[600],
   textMuted: neutral[500],
-  border: "rgba(0,0,0,0.04)",
+  border: Tokens.accent.dark.blackSoft,
 } as const;
 
-type Props = {
+interface Props {
   insight: DailyInsight;
   dayIndex: number;
   onPressCTA?: (action: NonNullable<DailyInsight["ctaAction"]>) => void;
-};
+}
 
 function SparkleIcon({ size = 20 }: { size?: number }) {
   const scale = useSharedValue(1);

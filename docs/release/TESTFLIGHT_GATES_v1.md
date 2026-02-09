@@ -268,7 +268,7 @@ Se qualquer gate falhar apos submit:
 ## Configuração Oficial
 
 - **Bundle ID (iOS):** `br.com.nossamaternidade.app`
-- **Package (Android):** `com.nossamaternidade.app`
+- **Package (Android):** `com.liongab.nossamaternidade`
 - **Comando Gate (Windows):** `npm run quality-gate:win`
 
 ---

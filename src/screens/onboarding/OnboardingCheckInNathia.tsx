@@ -228,7 +228,7 @@ export default function OnboardingCheckInNathia({ navigation }: Props) {
               accessibilityLabel="NathIA, sua companheira de maternidade"
             />
             <LinearGradient
-              colors={["transparent", "rgba(255,245,247,0.95)"]}
+              colors={["transparent", Tokens.glass.light.strong]}
               style={styles.imageOverlay}
             />
             <View style={styles.floatingIcon}>

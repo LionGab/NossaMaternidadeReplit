@@ -22,6 +22,67 @@ export interface CreatePostResult {
   message?: string;
 }
 
+interface ReputationMetrics {
+  posts: number;
+  likes: number;
+  comments: number;
+  reports: number;
+}
+
+function scoreUserReputation(metrics: ReputationMetrics): number {
+  const score = 50 + metrics.posts * 2 + metrics.likes + metrics.comments - metrics.reports * 4;
+  return Math.max(0, Math.min(100, Math.round(score)));
+}
+
+async function calculateUserReputation(userId: string): Promise<number> {
+  if (!supabase) {
+    return 50;
+  }
+
+  const { data: posts, error: postsError } = await supabase
+    .from("community_posts")
+    .select("id, likes_count")
+    .eq("author_id", userId);
+
+  if (postsError) {
+    throw postsError;
+  }
+
+  const postIds = (posts || []).map((post) => post.id);
+  const postsCount = postIds.length;
+  const likesCount = (posts || []).reduce((sum, post) => sum + (post.likes_count || 0), 0);
+
+  const { count: commentsCount, error: commentsError } = await supabase
+    .from("community_comments")
+    .select("*", { count: "exact", head: true })
+    .eq("author_id", userId);
+
+  if (commentsError) {
+    throw commentsError;
+  }
+
+  let reportsCount = 0;
+  if (postIds.length > 0) {
+    const { count, error: reportsError } = await supabase
+      .from("community_post_reports")
+      .select("*", { count: "exact", head: true })
+      .in("post_id", postIds);
+
+    if (reportsError) {
+      throw reportsError;
+    }
+
+    reportsCount = count || 0;
+  }
+
+  return scoreUserReputation({
+    posts: postsCount,
+    likes: likesCount,
+    comments: commentsCount || 0,
+    reports: reportsCount,
+  });
+}
+
 export const communityService = {
   // Feed Aprovado
   getFeed: async (page = 1, limit = 10): Promise<CommunityPost[]> => {
@@ -82,7 +143,17 @@ export const communityService = {
 
       // 1. Analisar conteúdo com AI moderation
       const hasMedia = !!mediaUri;
-      const userReputation = 50; // TODO: Buscar reputação real do usuário
+      let userReputation = 50;
+      try {
+        userReputation = await calculateUserReputation(user.id);
+      } catch (reputationError) {
+        logger.warn("Falha ao calcular reputação real, usando fallback", "CommunityService", {
+          userId: user.id,
+          error:
+            reputationError instanceof Error ? reputationError.message : "unknown_reputation_error",
+        });
+      }
+
       const moderationDecision = analyzePost(text, hasMedia, userReputation);
 
       logger.info("Análise de moderação", "CommunityService", {

@@ -14,7 +14,7 @@ import React, { useCallback, useMemo } from "react";
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useTheme } from "../../hooks/useTheme";
-import { useCheckInStore } from "../../state/store";
+import { useCheckInStore } from "../../state";
 import { neutral, radius, shadows, spacing } from "../../theme/tokens";
 
 // Imagem real da Nath

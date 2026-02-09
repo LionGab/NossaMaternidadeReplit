@@ -386,6 +386,12 @@ Memory files loaded:
 > /clear + prompt melhor
 ```
 
+### Uso com autoCompact (recomendações)
+
+- **Deixe autoCompact ligado** em `triggerTokens: 80000` (faixa 70k–90k no projeto).
+- **`/clear`** entre tarefas; **`/compact`** quando a thread está longa mas ainda relevante.
+- Prefira **`@arquivo`** a colar blocos grandes; use **skills** (`/verify`, `/nathia`) para contexto focado.
+
 ---
 
 ## 🔧 Gerenciamento de Sessões

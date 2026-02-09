@@ -21,10 +21,10 @@ function shadowToBoxShadow(
   shadowOpacity: number,
   shadowRadius: number
 ): string {
-  const r = parseInt(shadowColor.slice(1, 3), 16);
-  const g = parseInt(shadowColor.slice(3, 5), 16);
-  const b = parseInt(shadowColor.slice(5, 7), 16);
-  const color = `rgba(${r}, ${g}, ${b}, ${shadowOpacity})`;
+  const alpha = Math.round(Math.max(0, Math.min(1, shadowOpacity)) * 255)
+    .toString(16)
+    .padStart(2, "0");
+  const color = `${shadowColor}${alpha}`;
   return `${shadowOffset.width}px ${shadowOffset.height}px ${shadowRadius}px ${color}`;
 }
 

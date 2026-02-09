@@ -26,7 +26,7 @@ import Animated, {
 import * as Haptics from "expo-haptics";
 
 import { MainTabScreenProps } from "@/types/navigation";
-import { useAppStore, useHabitsStore, useCheckInStore, Habit } from "@/state/store";
+import { useAppStore, useHabitsStore, useCheckInStore, Habit } from "@/state";
 import { useTheme } from "@/hooks/useTheme";
 import {
   FloScreenWrapper,

@@ -10,7 +10,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
-import { useAppStore, useCheckInStore } from "@/state/store";
+import { useAppStore, useCheckInStore } from "@/state";
 import {
   Tokens,
   streak,
@@ -40,10 +40,10 @@ const COLORS = {
 // Overlay compatibility mapping - using premium tokens
 const OVERLAY = {
   white: {
-    text: Tokens.premium.text.muted, // rgba(255, 255, 255, 0.7)
-    textStrong: Tokens.premium.text.secondary, // rgba(255, 255, 255, 0.8)
-    strong: Tokens.premium.glass.border, // rgba(255, 255, 255, 0.2)
-    prominent: Tokens.premium.text.subtle, // rgba(255, 255, 255, 0.6)
+    text: Tokens.premium.text.muted,
+    textStrong: Tokens.premium.text.secondary,
+    strong: Tokens.premium.glass.border,
+    prominent: Tokens.premium.text.subtle,
   },
 } as const;
 

@@ -102,7 +102,7 @@ export default function BreathingExerciseScreen() {
   // Flo Clean color tokens
   const textPrimary = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[600];
-  const glassBg = isDark ? "rgba(255,255,255,0.06)" : "rgba(255,255,255,0.9)";
+  const glassBg = isDark ? Tokens.glass.dark.light : Tokens.glass.light.medium;
 
   // Background gradient for Flo Clean style
   const floGradient = isDark
@@ -318,7 +318,7 @@ export default function BreathingExerciseScreen() {
                     </Text>
                     <Text
                       style={{
-                        color: "rgba(255,255,255,0.8)",
+                        color: Tokens.premium.text.secondary,
                         fontSize: typography.bodySmall.fontSize,
                         fontFamily: typography.fontFamily.medium,
                         textAlign: "center",

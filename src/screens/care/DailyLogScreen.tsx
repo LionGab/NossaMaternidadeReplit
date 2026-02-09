@@ -20,7 +20,7 @@ import Animated, {
   interpolate,
   Extrapolate,
 } from "react-native-reanimated";
-import { useCycleStore } from "@/state/store";
+import { useSaveCycleDailyLog } from "@/api/hooks";
 import { RootStackScreenProps, DailyLog } from "@/types/navigation";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "@/hooks/useTheme";
@@ -47,15 +47,15 @@ const MOODS: Array<{ id: MoodType; label: string; color: string }> = [
 
 export default function DailyLogScreen({ navigation, route }: RootStackScreenProps<"DailyLog">) {
   const { isDark } = useTheme();
-  const addDailyLog = useCycleStore((s) => s.addDailyLog);
+  const saveCycleDailyLogMutation = useSaveCycleDailyLog();
   const { showSuccess, showError } = useToast();
 
   // Flo Clean color tokens
   const textPrimary = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
   const textMuted = isDark ? Tokens.neutral[500] : Tokens.neutral[400];
-  const cardBg = isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0];
-  const sliderBg = isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100];
+  const cardBg = isDark ? Tokens.glass.dark.light : Tokens.neutral[0];
+  const sliderBg = isDark ? Tokens.glass.dark.medium : Tokens.neutral[100];
 
   const today = useMemo(() => {
     if (route.params?.date) {
@@ -146,7 +146,7 @@ export default function DailyLogScreen({ navigation, route }: RootStackScreenPro
         sexActivity: "none",
       };
 
-      addDailyLog(log);
+      await saveCycleDailyLogMutation.mutateAsync(log);
       logger.info("Daily log saved", "DailyLogScreen", {
         date: dateStr,
         mood: selectedMood,
@@ -317,7 +317,7 @@ export default function DailyLogScreen({ navigation, route }: RootStackScreenPro
                         marginBottom: spacing.sm,
                         backgroundColor: cardBg,
                         borderWidth: 1,
-                        borderColor: isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100],
+                        borderColor: isDark ? Tokens.glass.dark.medium : Tokens.neutral[100],
                         ...shadows.flo.minimal,
                       }}
                     >

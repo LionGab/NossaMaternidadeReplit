@@ -2,7 +2,7 @@
  * AnimatedSplashScreen - Friendly Soft Minimalist Design ✨
  *
  * Design Philosophy: "Warm, Welcoming & Nurturing"
- * - Soft pastel palette (#fdf1e6 cream, #e1325c pink, #5ba4d8 blue)
+ * - Soft pastel palette (cream + pink + blue)
  * - Rounded Quicksand typography for approachable feel
  * - Layered shadows and glows
  * - Smooth organic animations with custom cubic-bezier

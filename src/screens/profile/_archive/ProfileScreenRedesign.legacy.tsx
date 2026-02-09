@@ -21,7 +21,7 @@ import { deleteAccount } from "@/api/auth";
 import { FloActionCard, FloHeader, FloScreenWrapper, FloSectionTitle } from "@/components/ui";
 import { useAlertModal } from "@/components/ui/AlertModal";
 import { useTheme } from "@/hooks/useTheme";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { Tokens, shadows, spacing, surface, typography } from "@/theme/tokens";
 import { RootStackScreenProps } from "@/types/navigation";
 import { getStageLabel } from "@/utils/formatters";

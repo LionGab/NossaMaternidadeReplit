@@ -18,7 +18,7 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import { useTheme } from "../../hooks/useTheme";
-import { useHabitsStore } from "../../state/store";
+import { useHabitsStore } from "../../state";
 import {
   accessibility,
   brand,

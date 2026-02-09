@@ -17,17 +17,19 @@
  * - useCallback for handlers
  * - useMemo for derived data
  * - StyleSheet for static styles
- * - FlatList for habits list
+ * - FlashList for habits list
  */
 
 import { useTheme } from "@/hooks/useTheme";
-import { Habit, useHabitsStore } from "@/state/store";
+import { useHabits, useToggleHabit } from "@/api/hooks";
+import { Habit } from "@/state";
 import { Tokens, radius, shadows, spacing, streak, typography } from "@/theme/tokens";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import React, { memo, useCallback, useMemo, useState } from "react";
-import { FlatList, ListRenderItem, Pressable, Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { FlashList, ListRenderItem } from "@shopify/flash-list";
 import Animated, {
   FadeIn,
   FadeInDown,
@@ -82,10 +84,10 @@ const StatsRow = memo(function StatsRow({
         alignItems: "center",
         paddingVertical: spacing.md,
         paddingHorizontal: spacing.sm,
-        backgroundColor: isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0],
+        backgroundColor: isDark ? Tokens.surface.dark.elevatedSoft : Tokens.neutral[0],
         borderRadius: radius.lg,
         borderWidth: 1,
-        borderColor: isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100],
+        borderColor: isDark ? Tokens.glass.dark.border : Tokens.neutral[100],
         ...(!isDark && shadows.flo.minimal),
       }}
     >
@@ -169,7 +171,7 @@ const ViewModeTabs = memo(function ViewModeTabs({ viewMode, onViewModeChange }: 
       entering={FadeIn.duration(300)}
       style={{
         flexDirection: "row",
-        backgroundColor: isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[100],
+        backgroundColor: isDark ? Tokens.surface.dark.elevatedSoft : Tokens.neutral[100],
         borderRadius: radius.lg,
         padding: 4,
         marginBottom: spacing.xl,
@@ -188,7 +190,7 @@ const ViewModeTabs = memo(function ViewModeTabs({ viewMode, onViewModeChange }: 
             backgroundColor:
               viewMode === mode
                 ? isDark
-                  ? "rgba(255,255,255,0.12)"
+                  ? Tokens.glass.dark.strong
                   : Tokens.neutral[0]
                 : "transparent",
             ...(viewMode === mode && !isDark && shadows.flo.minimal),
@@ -256,13 +258,13 @@ const HabitCard = memo(function HabitCard({ habit, onToggle, index }: HabitCardP
     transform: [{ scale: checkScale.value }],
   }));
 
-  const cardBg = isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0];
+  const cardBg = isDark ? Tokens.surface.dark.elevatedSoft : Tokens.neutral[0];
   const borderColor = habit.completed
     ? isDark
       ? `${habit.color}50`
       : `${habit.color}30`
     : isDark
-      ? "rgba(255,255,255,0.08)"
+      ? Tokens.glass.dark.border
       : Tokens.neutral[100];
 
   return (
@@ -341,7 +343,7 @@ const HabitCard = memo(function HabitCard({ habit, onToggle, index }: HabitCardP
                     style={{
                       flexDirection: "row",
                       alignItems: "center",
-                      backgroundColor: isDark ? "rgba(244,63,94,0.15)" : streak.background,
+                      backgroundColor: isDark ? Tokens.surface.dark.accentSoft : streak.background,
                       paddingHorizontal: spacing.sm,
                       paddingVertical: 3,
                       borderRadius: radius.full,
@@ -366,7 +368,7 @@ const HabitCard = memo(function HabitCard({ habit, onToggle, index }: HabitCardP
                         flexDirection: "row",
                         alignItems: "center",
                         backgroundColor: isDark
-                          ? "rgba(168,85,247,0.15)"
+                          ? Tokens.surface.dark.secondarySoft
                           : Tokens.brand.secondary[50],
                         paddingHorizontal: spacing.sm,
                         paddingVertical: 3,
@@ -463,11 +465,11 @@ const WeeklyHeatmap = memo(function WeeklyHeatmap({ habits }: WeeklyHeatmapProps
     <Animated.View
       entering={FadeInDown.duration(400)}
       style={{
-        backgroundColor: isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0],
+        backgroundColor: isDark ? Tokens.surface.dark.elevatedSoft : Tokens.neutral[0],
         borderRadius: radius.xl,
         padding: spacing.xl,
         borderWidth: 1,
-        borderColor: isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100],
+        borderColor: isDark ? Tokens.glass.dark.border : Tokens.neutral[100],
         ...(!isDark && shadows.flo.soft),
       }}
     >
@@ -497,14 +499,14 @@ const WeeklyHeatmap = memo(function WeeklyHeatmap({ habits }: WeeklyHeatmapProps
                       ? Tokens.brand.accent[500]
                       : completion >= 50
                         ? isDark
-                          ? "rgba(244,63,104,0.3)"
+                          ? Tokens.surface.dark.accentStrong
                           : Tokens.brand.accent[100]
                         : completion > 0
                           ? isDark
-                            ? "rgba(244,63,104,0.15)"
+                            ? Tokens.surface.dark.accentSoft
                             : Tokens.brand.accent[50]
                           : isDark
-                            ? "rgba(255,255,255,0.08)"
+                            ? Tokens.glass.dark.border
                             : Tokens.neutral[100],
                   alignItems: "center",
                   justifyContent: "center",
@@ -595,11 +597,11 @@ const MonthlyStats = memo(function MonthlyStats({ habits }: MonthlyStatsProps) {
             key={category}
             entering={FadeInUp.delay(index * 80).duration(400)}
             style={{
-              backgroundColor: isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0],
+              backgroundColor: isDark ? Tokens.surface.dark.elevatedSoft : Tokens.neutral[0],
               borderRadius: radius.xl,
               padding: spacing.lg,
               borderWidth: 1,
-              borderColor: isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100],
+              borderColor: isDark ? Tokens.glass.dark.border : Tokens.neutral[100],
               ...(!isDark && shadows.flo.soft),
             }}
           >
@@ -648,7 +650,7 @@ const MonthlyStats = memo(function MonthlyStats({ habits }: MonthlyStatsProps) {
               style={{
                 height: 6,
                 borderRadius: 3,
-                backgroundColor: isDark ? "rgba(255,255,255,0.1)" : Tokens.neutral[100],
+                backgroundColor: isDark ? Tokens.glass.dark.strong : Tokens.neutral[100],
                 overflow: "hidden",
               }}
             >
@@ -719,7 +721,7 @@ const MotivationalMessage = memo(function MotivationalMessage({
       style={{
         flexDirection: "row",
         alignItems: "center",
-        backgroundColor: isDark ? "rgba(255,255,255,0.06)" : Tokens.brand.accent[50],
+        backgroundColor: isDark ? Tokens.surface.dark.elevatedSoft : Tokens.brand.accent[50],
         borderRadius: radius.full,
         paddingHorizontal: spacing.lg,
         paddingVertical: spacing.sm + 2,
@@ -749,9 +751,8 @@ export default function HabitsEnhancedScreen() {
   const navigation = useNavigation();
   const [viewMode, setViewMode] = useState<ViewMode>("today");
 
-  // Zustand selectors (stable)
-  const habits = useHabitsStore((s) => s.habits);
-  const toggleHabit = useHabitsStore((s) => s.toggleHabit);
+  const { data: habits = [] } = useHabits();
+  const toggleHabitMutation = useToggleHabit();
 
   // Memoized calculations
   const today = useMemo(() => new Date().toISOString().split("T")[0], []);
@@ -780,9 +781,9 @@ export default function HabitsEnhancedScreen() {
   const handleToggleHabit = useCallback(
     async (id: string) => {
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-      toggleHabit(id, today);
+      toggleHabitMutation.mutate({ habitId: id, date: today });
     },
-    [toggleHabit, today]
+    [today, toggleHabitMutation]
   );
 
   const handleViewModeChange = useCallback((mode: ViewMode) => {
@@ -898,16 +899,12 @@ export default function HabitsEnhancedScreen() {
 
       {/* Content */}
       {viewMode === "today" ? (
-        <FlatList
+        <FlashList
           data={habits}
           renderItem={renderHabitItem}
           keyExtractor={keyExtractor}
           ListHeaderComponent={ListHeader}
           showsVerticalScrollIndicator={false}
-          initialNumToRender={5}
-          maxToRenderPerBatch={5}
-          windowSize={5}
-          removeClippedSubviews
           contentContainerStyle={{ paddingBottom: spacing["2xl"] }}
         />
       ) : (

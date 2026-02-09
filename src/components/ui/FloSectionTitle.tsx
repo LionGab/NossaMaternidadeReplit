@@ -106,7 +106,7 @@ export function FloSectionTitle({
               width: 32, // 32px (era 28px) - maior presença
               height: 32,
               borderRadius: 16,
-              backgroundColor: isDark ? "rgba(255,255,255,0.1)" : `${accentColor}18`, // um pouco mais de opacidade
+              backgroundColor: isDark ? Tokens.glass.dark.strong : `${accentColor}18`, // um pouco mais de opacidade
               alignItems: "center",
               justifyContent: "center",
               marginRight: spacing.md, // 12px (era 8px)

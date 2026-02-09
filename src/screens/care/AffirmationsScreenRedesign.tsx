@@ -58,7 +58,7 @@ const AFFIRMATIONS = [
     text: "Voce e mais forte do que imagina. Cada desafio e uma oportunidade de descobrir sua coragem.",
     author: "Nathalia Valente",
     gradientLight: [Tokens.brand.accent[100], Tokens.brand.accent[50], Tokens.neutral[0]] as const,
-    gradientDark: ["rgba(255,107,138,0.15)", "rgba(255,107,138,0.05)"] as const,
+    gradientDark: [Tokens.accent.dark.soft, Tokens.accent.dark.subtle] as const,
   },
   {
     id: "2",
@@ -71,7 +71,7 @@ const AFFIRMATIONS = [
       Tokens.brand.secondary[50],
       Tokens.neutral[0],
     ] as const,
-    gradientDark: ["rgba(168,85,247,0.15)", "rgba(168,85,247,0.05)"] as const,
+    gradientDark: [Tokens.accent.dark.secondarySoft, Tokens.accent.dark.secondarySubtle] as const,
   },
   {
     id: "3",
@@ -84,7 +84,7 @@ const AFFIRMATIONS = [
       Tokens.brand.primary[50],
       Tokens.neutral[0],
     ] as const,
-    gradientDark: ["rgba(56,189,248,0.15)", "rgba(56,189,248,0.05)"] as const,
+    gradientDark: [Tokens.accent.dark.primarySoft, Tokens.accent.dark.primarySubtle] as const,
   },
   {
     id: "4",
@@ -93,7 +93,7 @@ const AFFIRMATIONS = [
     text: "Voce merece descanso, carinho e cuidado. Nao e egoismo, e necessidade.",
     author: "Nathalia Valente",
     gradientLight: [Tokens.brand.accent[200], Tokens.brand.accent[50], Tokens.neutral[0]] as const,
-    gradientDark: ["rgba(244,63,94,0.15)", "rgba(244,63,94,0.05)"] as const,
+    gradientDark: [Tokens.accent.dark.soft, Tokens.accent.dark.subtle] as const,
   },
   {
     id: "5",
@@ -106,7 +106,7 @@ const AFFIRMATIONS = [
       Tokens.maternal.warmth.cream,
       Tokens.neutral[0],
     ] as const,
-    gradientDark: ["rgba(251,191,36,0.15)", "rgba(251,191,36,0.05)"] as const,
+    gradientDark: [Tokens.accent.dark.warningSoft, Tokens.accent.dark.warningSubtle] as const,
   },
 ];
 
@@ -181,8 +181,8 @@ export function AffirmationsScreenRedesign({ navigation }: AffirmationsScreenRed
   // Theme colors
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
   const accentColor = Tokens.brand.accent[500];
-  const chipBg = isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100];
-  const chipActiveBg = isDark ? "rgba(255,107,138,0.2)" : Tokens.brand.accent[50];
+  const chipBg = isDark ? Tokens.glass.dark.medium : Tokens.neutral[100];
+  const chipActiveBg = isDark ? Tokens.accent.dark.medium : Tokens.brand.accent[50];
 
   return (
     <FloScreenWrapper scrollable paddingHorizontal={0} paddingBottom={120}>
@@ -358,8 +358,8 @@ function AffirmationCard({
   const textPrimary = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
   const accentColor = Tokens.brand.accent[400];
-  const cardBorder = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.04)";
-  const iconBg = isDark ? "rgba(255,255,255,0.1)" : "rgba(255,107,138,0.1)";
+  const cardBorder = isDark ? Tokens.glass.dark.border : Tokens.accent.dark.blackSoft;
+  const iconBg = isDark ? Tokens.glass.dark.strong : Tokens.accent.light.subtle;
 
   // Serif font for emotional content
   const serifFont = Platform.OS === "ios" ? "Georgia" : "serif";
@@ -388,7 +388,7 @@ function AffirmationCard({
             style={[
               animatedStyle,
               {
-                backgroundColor: isDark ? "rgba(255,255,255,0.04)" : Tokens.neutral[50],
+                backgroundColor: isDark ? Tokens.glass.dark.ultraLight : Tokens.neutral[50],
                 borderRadius: 16,
                 padding: cardPadding,
                 borderWidth: 1,
@@ -475,7 +475,7 @@ function AffirmationCard({
             <View
               style={{
                 alignSelf: "flex-start",
-                backgroundColor: isDark ? "rgba(255,255,255,0.1)" : "rgba(255,255,255,0.8)",
+                backgroundColor: isDark ? Tokens.glass.dark.strong : Tokens.glass.light.soft,
                 paddingVertical: spacing.xs,
                 paddingHorizontal: spacing.md,
                 borderRadius: 12,
@@ -575,11 +575,11 @@ function ActionButton({ icon, onPress, active = false, label }: ActionButtonProp
 
   const bgColor = active
     ? isDark
-      ? "rgba(255,107,138,0.2)"
+      ? Tokens.accent.dark.medium
       : Tokens.brand.accent[50]
     : isDark
-      ? "rgba(255,255,255,0.08)"
-      : "rgba(0,0,0,0.04)";
+      ? Tokens.glass.dark.medium
+      : Tokens.accent.dark.blackSoft;
 
   const iconColor = active
     ? Tokens.brand.accent[500]

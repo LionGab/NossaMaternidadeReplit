@@ -54,7 +54,7 @@ Explore → Plan → Implement → Verify
 3. **Implement**: Verificação incremental
 4. **Verify**: `npm run quality-gate`
 
-**Contexto**: `/clear` entre tarefas · `/compact` quando grande
+**Contexto**: `/clear` entre tarefas · `/compact` quando grande · autoCompact em 80k (ver `docs/setup/CLAUDE_CODE_GUIDE_2026.md`)
 
 ---
 
@@ -83,12 +83,13 @@ const { user } = useAppStore((s) => ({ user: s.user }));
 
 ## IMMUTABLE CONSTANTS
 
-| Constante          | Valor                      |
-| ------------------ | -------------------------- |
-| Bundle ID          | `app.nossamaternidade.app` |
-| Apple Team         | `KZPW4S77UH`               |
-| RevenueCat Product | `premium`                  |
-| Supabase Project   | `lqahkqfpynypbmhtffyi`     |
+| Constante          | Valor                           |
+| ------------------ | ------------------------------- |
+| Bundle ID iOS      | `br.com.nossamaternidade.app`   |
+| Bundle ID Android  | `com.liongab.nossamaternidade`  |
+| Apple Team ID      | `KZPW4S77UH`                    |
+| RevenueCat Product | `premium`                       |
+| Supabase Project   | `lqahkqfpynypbmhtffyi`          |
 
 ---
 
@@ -169,6 +170,14 @@ const isPremium = useIsPremium();
 | `npm test -- --watch`    | Jest watch mode          |
 | `npm run generate-types` | Regenerar tipos Supabase |
 | `npm run build:prod:ios` | Build produção iOS       |
+
+---
+
+## BUILDS
+
+- Builds locais requerem macOS/Linux. Em Windows, use EAS cloud:
+  `eas build --platform all --profile production`
+- Sempre valide build cloud antes de release.
 
 ---
 

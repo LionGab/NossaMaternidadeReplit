@@ -28,7 +28,7 @@ import { Tokens, radius, shadows, spacing } from "@/theme/tokens";
 import { MainTabScreenProps } from "@/types/navigation";
 
 // Store
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 
 // Utils
 import { getGreeting } from "@/utils/greeting";

@@ -53,11 +53,11 @@ export function FloMotivationalCard({
   const textPrimary = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
   const accentColor = Tokens.brand.accent[400];
-  const borderColor = isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.04)";
+  const borderColor = isDark ? Tokens.glass.dark.medium : Tokens.accent.dark.blackSoft;
 
   // Gradient based on variant
   const gradientColors = isDark
-    ? (["rgba(255,107,138,0.1)", "rgba(255,107,138,0.05)"] as const)
+    ? ([Tokens.accent.dark.subtle, Tokens.overlay.accentVeryLight] as const)
     : ([Tokens.brand.accent[50], Tokens.maternal.warmth.blush, Tokens.neutral[0]] as const);
 
   // Serif font for emotional content
@@ -162,7 +162,7 @@ export function FloMotivationalCard({
                 width: 36, // 36px (era 32px)
                 height: 36,
                 borderRadius: 18,
-                backgroundColor: isDark ? "rgba(255,255,255,0.1)" : `${accentColor}15`, // usando cor de accent
+                backgroundColor: isDark ? Tokens.glass.dark.strong : `${accentColor}15`, // usando cor de accent
                 alignItems: "center",
                 justifyContent: "center",
                 marginRight: spacing.md, // 12px (era 8px)

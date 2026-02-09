@@ -77,13 +77,13 @@ function getMoodDescriptor(value: number): MoodDescriptor {
 function MoodIndicator({ level, size = ICON_SIZE }: { level: MoodLevel; size?: number }) {
   switch (level) {
     case "low":
-      return <MoodSadIcon size={size} color="#C4858E" />;
+      return <MoodSadIcon size={size} color={nathAccent.roseSoft} />;
     case "neutral":
       return <MoodCalmIcon size={size} color={brand.primary[400]} />;
     case "good":
       return <MoodHappyIcon size={size} color={brand.primary[500]} />;
     case "great":
-      return <MoodAmadaIcon size={size} color="#FF6B8A" />;
+      return <MoodAmadaIcon size={size} color={cleanDesign.pink[500]} />;
   }
 }
 

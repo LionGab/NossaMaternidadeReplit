@@ -51,7 +51,7 @@ const mockPresetMode = "calmFemtech";
 const mockSetPresetMode = jest.fn();
 const mockTogglePreset = jest.fn();
 
-jest.mock("../../state/store", () => ({
+jest.mock("../../state", () => ({
   useAppStore: jest.fn((selector: (state: unknown) => unknown) => {
     const state = {
       theme: mockTheme,

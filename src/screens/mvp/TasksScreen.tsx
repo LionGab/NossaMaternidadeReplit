@@ -42,7 +42,7 @@ import {
   type MvpTaskInsert,
 } from "@/api/mvp-tasks-service";
 import { logger } from "@/utils/logger";
-import { spacing, typography, radius } from "@/theme/tokens";
+import { spacing, typography, radius, Tokens } from "@/theme/tokens";
 
 const CONTEXT = "TasksScreen";
 
@@ -566,7 +566,7 @@ export default function TasksScreen() {
         <View
           style={{
             flex: 1,
-            backgroundColor: "rgba(0,0,0,0.5)",
+            backgroundColor: Tokens.overlay.dark,
             justifyContent: "flex-end",
           }}
         >

@@ -24,7 +24,7 @@
 
 import { supabase } from "@/api/supabase";
 import { navigationRef } from "@/navigation/navigationRef";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { COLORS } from "@/theme/tokens";
 import { logger } from "@/utils/logger";
 import { getSupabaseFunctionsUrl } from "@/config/env";

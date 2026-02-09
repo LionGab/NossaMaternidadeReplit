@@ -56,7 +56,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useVoiceOptInGate } from "@/hooks/useVoice";
 import { useVoiceRecording } from "@/hooks/useVoiceRecording";
 import { useIsPremium } from "@/state/premium-store";
-import { Conversation, useAppStore, useChatStore } from "@/state/store";
+import { Conversation, useAppStore, useChatStore } from "@/state";
 import { Tokens, mockupColors, radius, shadows, spacing, typography } from "@/theme/tokens";
 import { ChatMessage, MainTabScreenProps } from "@/types/navigation";
 // Navigation types provided by MainTabScreenProps

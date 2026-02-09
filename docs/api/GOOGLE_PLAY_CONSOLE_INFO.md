@@ -27,7 +27,7 @@
 
 #### Informações Básicas
 
-- **Package name:** `com.nossamaternidade.app` (já configurado no `app.json`)
+- **Package name:** `com.liongab.nossamaternidade` (já configurado no `app.json`)
 - **App name:** Nossa Maternidade
 - **Short description:** Acompanhamento completo da sua jornada materna
 - **Full description:** [Descrição completa do app]
@@ -85,7 +85,7 @@ eas submit --profile production --platform android
 ## Checklist de Lançamento
 
 - [ ] App criado no Google Play Console
-- [ ] Package name configurado: `com.nossamaternidade.app`
+- [ ] Package name configurado: `com.liongab.nossamaternidade`
 - [ ] Assinaturas criadas (mensal + anual)
 - [ ] Service Account JSON configurado
 - [ ] Política de privacidade publicada

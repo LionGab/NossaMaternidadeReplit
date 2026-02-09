@@ -27,7 +27,7 @@ import {
   EmotionalCheckInPrimary,
 } from "@/components/home";
 import { useTheme } from "@/hooks/useTheme";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { useNathIAOnboardingStore } from "@/state/nathia-onboarding-store";
 import { brand, neutral, spacing } from "@/theme/tokens";
 import { getGreeting } from "@/utils/greeting";

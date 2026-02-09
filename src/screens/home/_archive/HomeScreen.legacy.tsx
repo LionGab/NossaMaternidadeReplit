@@ -36,7 +36,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Svg, { Circle } from "react-native-svg";
 
 import { useTheme } from "@/hooks/useTheme";
-import { useAppStore, useHabitsStore } from "@/state/store";
+import { useAppStore, useHabitsStore } from "@/state";
 import { brand, maternal, neutral, semantic, shadows, text } from "@/theme/tokens";
 import { MainTabScreenProps } from "@/types/navigation";
 import { getGreeting } from "@/utils/greeting";

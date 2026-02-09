@@ -150,7 +150,7 @@ export default function MundoScreenNathia({ navigation }: Props) {
           <View style={styles.welcomeRow}>
             <View style={styles.welcomeContent}>
               <View style={styles.welcomeHeader}>
-                <NathBadge variant="muted" style={{ backgroundColor: "rgba(255,255,255,0.8)" }}>
+                <NathBadge variant="muted" style={{ backgroundColor: Tokens.glass.light.soft }}>
                   🌞 Bom dia
                 </NathBadge>
                 <Caption>8:30 AM</Caption>
@@ -289,14 +289,14 @@ export default function MundoScreenNathia({ navigation }: Props) {
           style={styles.insightCard}
         >
           <View style={styles.insightDecor}>
-            <Quote size={80} color="rgba(255,255,255,0.1)" />
+            <Quote size={80} color={Tokens.accent.dark.whiteStrong} />
           </View>
 
           <View style={styles.insightMeta}>
-            <NathBadge variant="muted" style={{ backgroundColor: "rgba(255,255,255,0.2)" }}>
+            <NathBadge variant="muted" style={{ backgroundColor: Tokens.premium.glass.border }}>
               INSIGHT
             </NathBadge>
-            <Caption style={{ color: "rgba(255,255,255,0.6)" }}>Leitura de 1 min</Caption>
+            <Caption style={{ color: Tokens.glass.dark.text60 }}>Leitura de 1 min</Caption>
           </View>
 
           <Subtitle style={{ color: nathColors.white, marginBottom: spacing.md }}>
@@ -304,7 +304,7 @@ export default function MundoScreenNathia({ navigation }: Props) {
           </Subtitle>
 
           <Body
-            style={{ color: "rgba(255,255,255,0.8)", lineHeight: 22, marginBottom: spacing.lg }}
+            style={{ color: Tokens.glass.dark.text80, lineHeight: 22, marginBottom: spacing.lg }}
           >
             Sempre que você sentir que &quot;falhou&quot; hoje, lembre-se: seu filho não quer uma
             mãe de comercial de margarina. Ele quer você.
@@ -316,8 +316,8 @@ export default function MundoScreenNathia({ navigation }: Props) {
               accessibilityLabel="Ler reflexão completa"
               accessibilityRole="button"
             >
-              <BookOpen size={16} color="rgba(255,255,255,0.9)" />
-              <Caption style={{ color: "rgba(255,255,255,0.9)" }} weight="medium">
+              <BookOpen size={16} color={Tokens.glass.dark.text90} />
+              <Caption style={{ color: Tokens.glass.dark.text90 }} weight="medium">
                 Ler reflexão completa
               </Caption>
             </Pressable>
@@ -350,7 +350,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: spacing.xl,
     paddingVertical: spacing.md,
-    backgroundColor: "rgba(255,255,255,0.9)",
+    backgroundColor: Tokens.glass.light.medium,
     borderBottomWidth: 1,
     borderBottomColor: nathColors.border + "80",
   },
@@ -595,7 +595,7 @@ const styles = StyleSheet.create({
     width: 32,
     height: 32,
     borderRadius: 16,
-    backgroundColor: "rgba(255,255,255,0.1)",
+    backgroundColor: Tokens.accent.dark.whiteStrong,
     alignItems: "center",
     justifyContent: "center",
   },

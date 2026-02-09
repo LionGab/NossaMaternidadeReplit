@@ -12,7 +12,7 @@
  * ```tsx
  * <FloActionCard
  *   icon="chatbubbles"
- *   iconColor="#FF6B8A"
+ *   iconColor={Tokens.brand.accent[400]}
  *   title="Conversar com NathIA"
  *   subtitle="Sua companheira sempre disponível"
  *   onPress={handleChat}
@@ -88,12 +88,12 @@ export function FloActionCard({
   // Default colors
   const defaultIconColor = iconColor || Tokens.brand.accent[500];
   const defaultIconBgColor =
-    iconBgColor || (isDark ? "rgba(255,107,138,0.15)" : Tokens.brand.accent[50]);
+    iconBgColor || (isDark ? Tokens.accent.dark.soft : Tokens.brand.accent[50]);
   const defaultBadgeColor = badgeColor || Tokens.brand.accent[500];
 
   // Card colors
-  const cardBg = isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0];
-  const borderColor = isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100];
+  const cardBg = isDark ? Tokens.glass.dark.light : Tokens.neutral[0];
+  const borderColor = isDark ? Tokens.glass.dark.medium : Tokens.neutral[100];
   const textPrimary = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
 
@@ -240,7 +240,7 @@ export function FloActionCard({
               marginTop: spacing.md,
               height: 6,
               borderRadius: 3,
-              backgroundColor: isDark ? "rgba(255,255,255,0.1)" : Tokens.neutral[100],
+              backgroundColor: isDark ? Tokens.glass.dark.strong : Tokens.neutral[100],
               overflow: "hidden",
             }}
           >

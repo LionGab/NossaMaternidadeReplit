@@ -228,3 +228,13 @@ export function useDeleteComment() {
     },
   });
 }
+
+// ============ PHASE 2 HOOKS ============
+
+export { useCommunityPosts } from "./useCommunityPosts";
+export { useCycleData } from "./useCycleData";
+export { useDeletePost } from "./useDeletePost";
+export { useHabits, useToggleHabit } from "./useHabits";
+export { useLikePost } from "./useLikePost";
+export { useReportPost } from "./useReportPost";
+export { useSaveCycleDailyLog, useUpdateCycle } from "./useUpdateCycle";

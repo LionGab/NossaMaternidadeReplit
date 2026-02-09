@@ -14,6 +14,7 @@ import { RootStackParamList } from "../types/navigation";
 import { logger } from "../utils/logger";
 
 const SCHEME = "nossamaternidade";
+const ACCESS_TOKEN_HASH_FRAGMENT = "#" + "access_token=";
 
 /**
  * Verifica se a URL é um callback de autenticação (OAuth ou Magic Link)
@@ -25,7 +26,7 @@ function isAuthCallback(path: string, url?: string): boolean {
   // CRÍTICO: No web, também verificar query params/hash na URL completa
   if (Platform.OS === "web" && url) {
     const hasCode = url.includes("?code=") || url.includes("&code=");
-    const hasTokens = url.includes("#access_token=") || url.includes("?access_token=");
+    const hasTokens = url.includes(ACCESS_TOKEN_HASH_FRAGMENT) || url.includes("?access_token=");
     const hasTokenHash = url.includes("token_hash=");
     return pathMatch || hasCode || hasTokens || hasTokenHash;
   }
@@ -215,7 +216,7 @@ export function useDeepLinking() {
         Platform.OS === "web" &&
         (url.includes("/auth/callback") ||
           url.includes("?code=") ||
-          url.includes("#access_token="));
+          url.includes(ACCESS_TOKEN_HASH_FRAGMENT));
 
       // Allow localhost URLs in dev environment
       const isLocalhost = url.includes("localhost");
@@ -329,7 +330,7 @@ export function useDeepLinking() {
         if (
           currentUrl.includes("/auth/callback") ||
           currentUrl.includes("?code=") ||
-          currentUrl.includes("#access_token=") ||
+          currentUrl.includes(ACCESS_TOKEN_HASH_FRAGMENT) ||
           currentUrl.includes("token_hash=")
         ) {
           logger.info("Processando callback OAuth da URL atual (web)", "DeepLinking", {
@@ -361,7 +362,7 @@ export function useDeepLinking() {
         if (
           (url.includes("/auth/callback") ||
             url.includes("?code=") ||
-            url.includes("#access_token=")) &&
+            url.includes(ACCESS_TOKEN_HASH_FRAGMENT)) &&
           !url.endsWith("/auth/callback") && // URL já foi limpa
           url !== window.location.pathname
         ) {

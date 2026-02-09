@@ -18,7 +18,7 @@ import * as Haptics from "expo-haptics";
 import React, { useCallback, useMemo, useState } from "react";
 import { View } from "react-native";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import { useAppStore, useHabitsStore, useCheckInStore } from "@/state/store";
+import { useAppStore, useHabitsStore, useCheckInStore } from "@/state";
 import { MainTabScreenProps } from "@/types/navigation";
 import { logger } from "@/utils/logger";
 import { getPregnancyInfo, getMoodEmoji } from "@/utils/formatters";

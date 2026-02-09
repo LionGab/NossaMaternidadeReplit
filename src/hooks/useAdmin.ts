@@ -4,7 +4,7 @@
  */
 
 import { useMemo } from "react";
-import { useAppStore } from "../state/store";
+import { useAppStore } from "../state";
 import { isUserAdmin } from "../config/admin";
 
 interface UseAdminReturn {

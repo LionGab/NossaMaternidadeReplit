@@ -3,7 +3,7 @@
  * Valida state management crítico usando Zustand API diretamente
  */
 
-import { useAppStore, useChatStore, useCycleStore } from "../store";
+import { useAppStore, useChatStore, useCycleStore } from "..";
 
 // Note: AsyncStorage is mocked in jest.setup.js
 

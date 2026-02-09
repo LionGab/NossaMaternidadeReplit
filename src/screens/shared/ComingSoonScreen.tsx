@@ -231,9 +231,9 @@ const SparkleBadge = ({ isDark }: { isDark: boolean }) => {
         paddingHorizontal: spacing.lg,
         paddingVertical: spacing.sm,
         borderRadius: 20,
-        backgroundColor: isDark ? "rgba(255,255,255,0.08)" : `${accentColor}10`,
+        backgroundColor: isDark ? Tokens.glass.dark.medium : `${accentColor}10`,
         borderWidth: 1,
-        borderColor: isDark ? "rgba(255,255,255,0.1)" : `${accentColor}20`,
+        borderColor: isDark ? Tokens.glass.dark.strong : `${accentColor}20`,
       }}
     >
       <Ionicons name="sparkles" size={14} color={isDark ? Tokens.brand.accent[400] : accentColor} />
@@ -277,8 +277,8 @@ export default function ComingSoonScreen({
   const textMain = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
   const accentColor = Tokens.brand.accent[500];
-  const cardBg = isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0];
-  const borderColor = isDark ? "rgba(255,255,255,0.1)" : Tokens.neutral[100];
+  const cardBg = isDark ? Tokens.glass.dark.light : Tokens.neutral[0];
+  const borderColor = isDark ? Tokens.glass.dark.strong : Tokens.neutral[100];
 
   // Button animations
   const primaryScale = useSharedValue(1);
@@ -330,7 +330,7 @@ export default function ComingSoonScreen({
             borderRadius: 22,
             alignItems: "center",
             justifyContent: "center",
-            backgroundColor: isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100],
+            backgroundColor: isDark ? Tokens.glass.dark.medium : Tokens.neutral[100],
           }}
           accessibilityLabel="Fechar"
           accessibilityRole="button"

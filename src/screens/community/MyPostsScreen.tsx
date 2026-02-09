@@ -11,7 +11,8 @@ import { Ionicons } from "@expo/vector-icons";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import React, { useCallback, useState, useMemo } from "react";
-import { FlatList, Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { Pressable, RefreshControl, StyleSheet, Text, View } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -286,7 +287,7 @@ export default function MyPostsScreen({ navigation }: RootStackScreenProps<"MyPo
           <ListSkeleton type="post" count={3} />
         </View>
       ) : (
-        <FlatList
+        <FlashList
           data={filteredPosts}
           keyExtractor={(item) => item.id}
           renderItem={renderPost}
@@ -301,7 +302,6 @@ export default function MyPostsScreen({ navigation }: RootStackScreenProps<"MyPo
           contentContainerStyle={[
             styles.listContent,
             { paddingBottom: insets.bottom },
-            filteredPosts.length === 0 && styles.emptyListContent,
           ]}
           showsVerticalScrollIndicator={false}
           refreshControl={

@@ -25,7 +25,7 @@ interface MoodIconProps {
 
 /**
  * MoodBemIcon - Sol radiante (feliz, bem)
- * Cor padrão: feeling.bem.icon (#F59E0B - amarelo dourado)
+ * Cor padrão: feeling.bem.icon (amarelo dourado)
  */
 export const MoodBemIcon: React.FC<MoodIconProps> = React.memo(
   ({ size = 24, color = feeling.bem.icon }) => (
@@ -51,7 +51,7 @@ MoodBemIcon.displayName = "MoodBemIcon";
 
 /**
  * MoodCansadaIcon - Nuvem com lua (cansaço, sono)
- * Cor padrão: feeling.cansada.icon (#60A5FA - azul pastel)
+ * Cor padrão: feeling.cansada.icon (azul pastel)
  */
 export const MoodCansadaIcon: React.FC<MoodIconProps> = React.memo(
   ({ size = 24, color = feeling.cansada.icon }) => (
@@ -79,7 +79,7 @@ MoodCansadaIcon.displayName = "MoodCansadaIcon";
 
 /**
  * MoodIndispostaIcon - Gota (enjoo, indisposição)
- * Cor padrão: feeling.indisposta.icon (#A855F7 - lavanda)
+ * Cor padrão: feeling.indisposta.icon (lavanda)
  */
 export const MoodIndispostaIcon: React.FC<MoodIconProps> = React.memo(
   ({ size = 24, color = feeling.indisposta.icon }) => (
@@ -106,7 +106,7 @@ export const MoodEnjoaadaIcon = MoodIndispostaIcon;
 
 /**
  * MoodAmadaIcon - Coração (amor, afeto)
- * Cor padrão: feeling.amada.icon (#FF5C94 - rosa vibrante)
+ * Cor padrão: feeling.amada.icon (rosa vibrante)
  */
 export const MoodAmadaIcon: React.FC<MoodIconProps> = React.memo(
   ({ size = 24, color = feeling.amada.icon }) => (

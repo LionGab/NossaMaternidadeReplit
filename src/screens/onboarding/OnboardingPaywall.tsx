@@ -37,7 +37,7 @@ import {
 } from "@/services/revenuecat";
 import { useNathJourneyOnboardingStore } from "@/state/nath-journey-onboarding-store";
 import { usePremiumStore } from "@/state/premium-store";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { Tokens } from "@/theme/tokens";
 import { RootStackScreenProps } from "@/types/navigation";
 import { logger } from "@/utils/logger";

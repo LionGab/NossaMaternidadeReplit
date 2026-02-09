@@ -7,7 +7,7 @@
 
 import React, { useMemo } from "react";
 import { useColorScheme } from "react-native";
-import { useAppStore } from "../state/store";
+import { useAppStore } from "../state";
 import { useThemePresetStore } from "../state/theme-preset-store";
 import {
   neutral,
