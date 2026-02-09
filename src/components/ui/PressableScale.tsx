@@ -20,7 +20,7 @@
 
 import * as Haptics from "expo-haptics";
 import React, { useCallback } from "react";
-import { Pressable, PressableProps, ViewStyle } from "react-native";
+import { Pressable, PressableProps, StyleProp, ViewStyle } from "react-native";
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from "react-native-reanimated";
 
 // Spring configs para diferentes feels
@@ -44,7 +44,7 @@ interface PressableScaleProps extends Omit<PressableProps, "style"> {
   /** Tipo de animação spring. Padrão: "gentle" */
   spring?: SpringType;
   /** Estilos do container */
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   /** Conteúdo */
   children: React.ReactNode;
 }

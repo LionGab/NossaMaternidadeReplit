@@ -16,7 +16,7 @@
  * ```
  */
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback, useMemo } from "react";
 import {
   View,
   Text,
@@ -24,7 +24,6 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert,
-  Animated,
   useColorScheme,
   StyleSheet,
 } from "react-native";
@@ -33,14 +32,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import type { PurchasesPackage } from "react-native-purchases";
 import { usePremium } from "../../hooks/usePremium";
-import {
-  trackEvent,
-  trackPaywallExposure,
-  trackPaywallOutcome,
-} from "../../services/analytics";
+import { trackEvent, trackPaywallExposure, trackPaywallOutcome } from "../../services/analytics";
 import { Tokens } from "../../theme/tokens";
 import { logger } from "../../utils/logger";
 import { PRICES_BRL, calculateSavingsPercent } from "../../services/revenuecat";
+import { staggeredFadeUp } from "../../utils/animations";
+import ReanimatedAnimated from "react-native-reanimated";
+import { GlowEffect } from "../../components/ui/GlowEffect";
 
 /**
  * Theme-aware color tokens
@@ -146,10 +144,6 @@ export function PaywallScreenRedesign({
   const [isPurchasing, setIsPurchasing] = useState(false);
   const [isRestoring, setIsRestoring] = useState(false);
 
-  // Animations
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(20)).current;
-
   // Packages
   const packages = offerings?.availablePackages || [];
   const monthlyPackage = packages.find((p: PurchasesPackage) => p.identifier?.includes("monthly"));
@@ -161,22 +155,6 @@ export function PaywallScreenRedesign({
       setSelectedPackage(yearlyPackage);
     }
   }, [yearlyPackage, selectedPackage]);
-
-  // Entrance animation
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 400,
-        useNativeDriver: true,
-      }),
-      Animated.timing(slideAnim, {
-        toValue: 0,
-        duration: 400,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, [fadeAnim, slideAnim]);
 
   useEffect(() => {
     trackPaywallExposure({
@@ -412,35 +390,22 @@ export function PaywallScreenRedesign({
         )}
 
         {/* Header */}
-        <Animated.View
-          style={[
-            styles.header,
-            {
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            },
-          ]}
-        >
+        <ReanimatedAnimated.View entering={staggeredFadeUp(0)} style={styles.header}>
           <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
             Desbloqueie o Premium
           </Text>
           <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>
             Tenha acesso completo a todos os recursos
           </Text>
-        </Animated.View>
+        </ReanimatedAnimated.View>
 
         {/* Features List */}
         <View style={styles.featuresContainer}>
           {PREMIUM_FEATURES.map((feat, idx) => (
-            <Animated.View
+            <ReanimatedAnimated.View
               key={idx}
-              style={[
-                styles.featureRow,
-                {
-                  opacity: fadeAnim,
-                  transform: [{ translateY: slideAnim }],
-                },
-              ]}
+              entering={staggeredFadeUp(idx + 1)}
+              style={styles.featureRow}
             >
               <View
                 style={[styles.checkmarkContainer, { backgroundColor: `${colors.checkmark}15` }]}
@@ -455,12 +420,12 @@ export function PaywallScreenRedesign({
                   {feat.description}
                 </Text>
               </View>
-            </Animated.View>
+            </ReanimatedAnimated.View>
           ))}
         </View>
 
         {/* Pricing Cards */}
-        <View style={styles.pricingContainer}>
+        <ReanimatedAnimated.View entering={staggeredFadeUp(7)} style={styles.pricingContainer}>
           {/* Yearly Package - Featured */}
           {yearlyPackage && (
             <Pressable
@@ -555,45 +520,51 @@ export function PaywallScreenRedesign({
               )}
             </Pressable>
           )}
-        </View>
+        </ReanimatedAnimated.View>
 
         {/* CTA Button */}
-        <Pressable
-          onPress={handlePurchase}
-          disabled={!selectedPackage || isPurchasing}
-          style={({ pressed }) => [
-            styles.ctaButton,
-            {
-              backgroundColor: colors.ctaBackground,
-              opacity: !selectedPackage || isPurchasing ? 0.6 : pressed ? 0.9 : 1,
-            },
-          ]}
-          accessibilityRole="button"
-          accessibilityLabel={isPurchasing ? "Processando" : "Assinar agora"}
-        >
-          {isPurchasing ? (
-            <ActivityIndicator color={colors.ctaText} size="small" />
-          ) : (
-            <Text style={[styles.ctaButtonText, { color: colors.ctaText }]}>Assinar Agora</Text>
-          )}
-        </Pressable>
+        <ReanimatedAnimated.View entering={staggeredFadeUp(8)}>
+          <GlowEffect color={Tokens.brand.accent[400]} intensity={0.5} animated={true}>
+            <Pressable
+              onPress={handlePurchase}
+              disabled={!selectedPackage || isPurchasing}
+              style={({ pressed }) => [
+                styles.ctaButton,
+                {
+                  backgroundColor: colors.ctaBackground,
+                  opacity: !selectedPackage || isPurchasing ? 0.6 : pressed ? 0.9 : 1,
+                },
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel={isPurchasing ? "Processando" : "Assinar agora"}
+            >
+              {isPurchasing ? (
+                <ActivityIndicator color={colors.ctaText} size="small" />
+              ) : (
+                <Text style={[styles.ctaButtonText, { color: colors.ctaText }]}>Assinar Agora</Text>
+              )}
+            </Pressable>
+          </GlowEffect>
+        </ReanimatedAnimated.View>
 
         {/* Restore Link */}
-        <Pressable
-          onPress={handleRestore}
-          disabled={isRestoring}
-          style={styles.restoreButton}
-          accessibilityRole="button"
-          accessibilityLabel={isRestoring ? "Restaurando" : "Restaurar compras"}
-        >
-          {isRestoring ? (
-            <ActivityIndicator color={colors.textSecondary} size="small" />
-          ) : (
-            <Text style={[styles.restoreButtonText, { color: colors.textSecondary }]}>
-              Ja sou assinante
-            </Text>
-          )}
-        </Pressable>
+        <ReanimatedAnimated.View entering={staggeredFadeUp(9)}>
+          <Pressable
+            onPress={handleRestore}
+            disabled={isRestoring}
+            style={styles.restoreButton}
+            accessibilityRole="button"
+            accessibilityLabel={isRestoring ? "Restaurando" : "Restaurar compras"}
+          >
+            {isRestoring ? (
+              <ActivityIndicator color={colors.textSecondary} size="small" />
+            ) : (
+              <Text style={[styles.restoreButtonText, { color: colors.textSecondary }]}>
+                Ja sou assinante
+              </Text>
+            )}
+          </Pressable>
+        </ReanimatedAnimated.View>
 
         {/* Trust Badge - Minimal */}
         <View style={styles.trustContainer}>

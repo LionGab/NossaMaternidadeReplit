@@ -13,12 +13,7 @@ import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import React, { useCallback, useState } from "react";
 import { Pressable, StyleSheet, Text, View, ActionSheetIOS, Platform, Alert } from "react-native";
-import Animated, {
-  FadeInUp,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
+import Animated, { FadeInUp } from "react-native-reanimated";
 import { useTheme } from "../../hooks/useTheme";
 import { moderationService } from "../../services/moderation";
 import { Tokens, radius, shadows, spacing } from "../../theme/tokens";
@@ -26,6 +21,7 @@ import { CommunityPost } from "../../types/community";
 import { formatTimeAgo } from "../../utils/formatters";
 import { PostStatusBadge, PostStatus } from "./PostStatusBadge";
 import { ReportModal } from "./ReportModal";
+import { PressableScale } from "../ui/PressableScale";
 
 // Aliases
 const RADIUS = radius;
@@ -63,7 +59,6 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
     onBlockSuccess,
   }) => {
     const { isDark } = useTheme();
-    const scale = useSharedValue(1);
 
     // Modal states
     const [showReportModal, setShowReportModal] = useState(false);
@@ -73,16 +68,8 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
     const authorName = post.profiles?.name || "Usuária";
     const authorId = post.author_id;
 
-    const animatedStyle = useAnimatedStyle(() => ({
-      transform: [{ scale: scale.value }],
-    }));
-
     const handleLikePress = async () => {
       await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-      scale.value = withSpring(0.98, { damping: 15 });
-      setTimeout(() => {
-        scale.value = withSpring(1, { damping: 10 });
-      }, 100);
       onLike(post.id);
     };
 
@@ -215,169 +202,167 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
     }, [onReportSuccess]);
 
     return (
-      <Animated.View entering={FadeInUp.delay(index * 60).duration(450)}>
-        <Animated.View style={[styles.container, animatedStyle]}>
-          <Pressable
-            onPress={() => onPress(post.id)}
-            style={({ pressed }) => [
-              styles.card,
-              {
-                backgroundColor: bgCard,
-                borderColor: borderColor,
-                opacity: pressed ? 0.98 : 1,
-              },
-            ]}
-          >
-            {/* Status Badge (Meus Posts) */}
-            {showStatus && (
-              <View style={styles.statusBadgeContainer}>
-                <PostStatusBadge status={postStatus} size="medium" />
-              </View>
-            )}
+      <Animated.View entering={FadeInUp.delay(index * 60).duration(450)} style={styles.container}>
+        <PressableScale
+          onPress={() => onPress(post.id)}
+          spring="snappy"
+          scale={0.98}
+          haptic="light"
+          style={[
+            styles.card,
+            {
+              backgroundColor: bgCard,
+              borderColor: borderColor,
+            },
+          ]}
+        >
+          {/* Status Badge (Meus Posts) */}
+          {showStatus && (
+            <View style={styles.statusBadgeContainer}>
+              <PostStatusBadge status={postStatus} size="medium" />
+            </View>
+          )}
 
-            {/* Header */}
-            <View style={styles.header}>
-              <View
-                style={[
-                  styles.avatar,
-                  {
-                    backgroundColor: isDark ? Tokens.brand.primary[900] : Tokens.brand.primary[100],
-                  },
-                ]}
-              >
-                {post.profiles?.avatar_url ? (
-                  <Image
-                    source={{ uri: post.profiles.avatar_url }}
-                    style={styles.avatarImage}
-                    accessibilityLabel={`Foto de perfil de ${post.profiles?.name || "usuaria"}`}
-                  />
-                ) : (
-                  <Ionicons name="person" size={22} color={Tokens.brand.primary[500]} />
-                )}
-              </View>
+          {/* Header */}
+          <View style={styles.header}>
+            <View
+              style={[
+                styles.avatar,
+                {
+                  backgroundColor: isDark ? Tokens.brand.primary[900] : Tokens.brand.primary[100],
+                },
+              ]}
+            >
+              {post.profiles?.avatar_url ? (
+                <Image
+                  source={{ uri: post.profiles.avatar_url }}
+                  style={styles.avatarImage}
+                  accessibilityLabel={`Foto de perfil de ${post.profiles?.name || "usuaria"}`}
+                />
+              ) : (
+                <Ionicons name="person" size={22} color={Tokens.brand.primary[500]} />
+              )}
+            </View>
 
-              <View style={styles.authorInfo}>
-                <Text style={[styles.authorName, { color: textPrimary }]}>
-                  {post.profiles?.name || "Mãe Anônima"}
-                </Text>
-                <Text style={[styles.timeAgo, { color: textSecondary }]}>
-                  {formatTimeAgo(post.created_at)}
-                </Text>
-              </View>
+            <View style={styles.authorInfo}>
+              <Text style={[styles.authorName, { color: textPrimary }]}>
+                {post.profiles?.name || "Mãe Anônima"}
+              </Text>
+              <Text style={[styles.timeAgo, { color: textSecondary }]}>
+                {formatTimeAgo(post.created_at)}
+              </Text>
+            </View>
 
-              {/* Context Menu (Report/Block) */}
+            {/* Context Menu (Report/Block) */}
+            <Pressable
+              style={({ pressed }) => [styles.moreButton, { opacity: pressed ? 0.6 : 1 }]}
+              onPress={handleMorePress}
+              accessibilityLabel={
+                isOwn ? "Ver detalhes do post" : "Mais opções: denunciar ou bloquear"
+              }
+              accessibilityRole="button"
+              accessibilityHint={isOwn ? undefined : "Abre menu com opções de denúncia e bloqueio"}
+            >
+              <Ionicons name="ellipsis-horizontal" size={20} color={textSecondary} />
+            </Pressable>
+          </View>
+
+          {/* Content */}
+          {post.text && (
+            <View style={styles.contentWrapper}>
+              <Text style={[styles.content, { color: textPrimary }]}>{post.text}</Text>
+            </View>
+          )}
+
+          {/* Media */}
+          {post.signed_media_url && (
+            <View style={styles.imageWrapper}>
+              {post.media_type === "video" ? (
+                <View
+                  style={[
+                    styles.image,
+                    {
+                      backgroundColor: Tokens.neutral[900],
+                      alignItems: "center",
+                      justifyContent: "center",
+                    },
+                  ]}
+                >
+                  <Ionicons name="play-circle-outline" size={48} color={Tokens.neutral[0]} />
+                </View>
+              ) : (
+                <Image
+                  source={{ uri: post.signed_media_url }}
+                  style={[
+                    styles.image,
+                    { backgroundColor: isDark ? Tokens.neutral[700] : Tokens.neutral[200] },
+                  ]}
+                  contentFit="cover"
+                  accessibilityLabel="Imagem compartilhada no post"
+                />
+              )}
+            </View>
+          )}
+
+          {/* Actions */}
+          <View style={[styles.actionsWrapper, { borderTopColor: borderColor }]}>
+            <View style={styles.actionsRow}>
+              {/* Like */}
               <Pressable
-                style={({ pressed }) => [styles.moreButton, { opacity: pressed ? 0.6 : 1 }]}
-                onPress={handleMorePress}
-                accessibilityLabel={
-                  isOwn ? "Ver detalhes do post" : "Mais opções: denunciar ou bloquear"
-                }
+                onPress={handleLikePress}
+                style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel={`Curtir. ${likesCount} curtidas`}
                 accessibilityRole="button"
-                accessibilityHint={
-                  isOwn ? undefined : "Abre menu com opções de denúncia e bloqueio"
-                }
+                accessibilityState={{ selected: isLiked }}
               >
-                <Ionicons name="ellipsis-horizontal" size={20} color={textSecondary} />
+                <Ionicons
+                  name={isLiked ? "heart" : "heart-outline"}
+                  size={24}
+                  color={isLiked ? Tokens.brand.accent[500] : textSecondary}
+                />
+                <Text
+                  style={[
+                    styles.actionText,
+                    { color: isLiked ? Tokens.brand.accent[500] : textSecondary },
+                  ]}
+                >
+                  {likesCount}
+                </Text>
+              </Pressable>
+
+              {/* Comment */}
+              <Pressable
+                onPress={() => onComment(post.id)}
+                style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel={`Comentar. ${commentsCount} comentários`}
+                accessibilityRole="button"
+              >
+                <Ionicons name="chatbubble-outline" size={22} color={textSecondary} />
+                <Text style={[styles.actionText, { color: textSecondary }]}>{commentsCount}</Text>
+              </Pressable>
+
+              {/* Share */}
+              <Pressable
+                onPress={() => onShare(post)}
+                style={({ pressed }) => [styles.shareButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel="Compartilhar post"
+                accessibilityRole="button"
+              >
+                <Ionicons name="share-outline" size={22} color={textSecondary} />
               </Pressable>
             </View>
+          </View>
+        </PressableScale>
 
-            {/* Content */}
-            {post.text && (
-              <View style={styles.contentWrapper}>
-                <Text style={[styles.content, { color: textPrimary }]}>{post.text}</Text>
-              </View>
-            )}
-
-            {/* Media */}
-            {post.signed_media_url && (
-              <View style={styles.imageWrapper}>
-                {post.media_type === "video" ? (
-                  <View
-                    style={[
-                      styles.image,
-                      {
-                        backgroundColor: Tokens.neutral[900],
-                        alignItems: "center",
-                        justifyContent: "center",
-                      },
-                    ]}
-                  >
-                    <Ionicons name="play-circle-outline" size={48} color={Tokens.neutral[0]} />
-                  </View>
-                ) : (
-                  <Image
-                    source={{ uri: post.signed_media_url }}
-                    style={[
-                      styles.image,
-                      { backgroundColor: isDark ? Tokens.neutral[700] : Tokens.neutral[200] },
-                    ]}
-                    contentFit="cover"
-                    accessibilityLabel="Imagem compartilhada no post"
-                  />
-                )}
-              </View>
-            )}
-
-            {/* Actions */}
-            <View style={[styles.actionsWrapper, { borderTopColor: borderColor }]}>
-              <View style={styles.actionsRow}>
-                {/* Like */}
-                <Pressable
-                  onPress={handleLikePress}
-                  style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
-                  accessibilityLabel={`Curtir. ${likesCount} curtidas`}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected: isLiked }}
-                >
-                  <Ionicons
-                    name={isLiked ? "heart" : "heart-outline"}
-                    size={24}
-                    color={isLiked ? Tokens.brand.accent[500] : textSecondary}
-                  />
-                  <Text
-                    style={[
-                      styles.actionText,
-                      { color: isLiked ? Tokens.brand.accent[500] : textSecondary },
-                    ]}
-                  >
-                    {likesCount}
-                  </Text>
-                </Pressable>
-
-                {/* Comment */}
-                <Pressable
-                  onPress={() => onComment(post.id)}
-                  style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
-                  accessibilityLabel={`Comentar. ${commentsCount} comentários`}
-                  accessibilityRole="button"
-                >
-                  <Ionicons name="chatbubble-outline" size={22} color={textSecondary} />
-                  <Text style={[styles.actionText, { color: textSecondary }]}>{commentsCount}</Text>
-                </Pressable>
-
-                {/* Share */}
-                <Pressable
-                  onPress={() => onShare(post)}
-                  style={({ pressed }) => [styles.shareButton, { opacity: pressed ? 0.7 : 1 }]}
-                  accessibilityLabel="Compartilhar post"
-                  accessibilityRole="button"
-                >
-                  <Ionicons name="share-outline" size={22} color={textSecondary} />
-                </Pressable>
-              </View>
-            </View>
-          </Pressable>
-
-          {/* Report Modal */}
-          <ReportModal
-            visible={showReportModal}
-            onClose={() => setShowReportModal(false)}
-            contentType="post"
-            contentId={post.id}
-            authorName={authorName}
-            onSuccess={handleReportSuccess}
-          />
-        </Animated.View>
+        {/* Report Modal */}
+        <ReportModal
+          visible={showReportModal}
+          onClose={() => setShowReportModal(false)}
+          contentType="post"
+          contentId={post.id}
+          authorName={authorName}
+          onSuccess={handleReportSuccess}
+        />
       </Animated.View>
     );
   }

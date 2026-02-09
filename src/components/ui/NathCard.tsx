@@ -12,15 +12,8 @@ import { useTheme } from "@/hooks/useTheme";
 import { Tokens, neutral, radius, shadows, spacing } from "@/theme/tokens";
 import { LinearGradient } from "expo-linear-gradient";
 import React, { useMemo } from "react";
-import { Pressable, StyleProp, StyleSheet, View, ViewStyle } from "react-native";
-import Animated, {
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withSpring,
-} from "react-native-reanimated";
-
-const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
+import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
+import { PressableScale } from "./PressableScale";
 
 export type CardVariant = "default" | "outlined" | "gradient" | "highlight" | "dark" | "elevated";
 
@@ -49,13 +42,6 @@ const paddingMap = {
   xl: spacing.xl,
 };
 
-// Configuração de animação de spring
-const SPRING_CONFIG = {
-  damping: 15,
-  stiffness: 150,
-  mass: 0.5,
-};
-
 export const NathCard: React.FC<NathCardProps> = ({
   children,
   variant = "default",
@@ -70,7 +56,6 @@ export const NathCard: React.FC<NathCardProps> = ({
 }) => {
   const { isDark, surface, border: borderTokens } = useTheme();
   const cardPadding = paddingMap[padding];
-  const pressed = useSharedValue(0);
 
   // Cores adaptativas para dark mode
   const cardColors = useMemo(
@@ -83,27 +68,6 @@ export const NathCard: React.FC<NathCardProps> = ({
     }),
     [isDark, surface.card, borderTokens.subtle]
   );
-
-  const handlePressIn = () => {
-    if (onPress) {
-      pressed.value = withSpring(1, SPRING_CONFIG);
-    }
-  };
-
-  const handlePressOut = () => {
-    if (onPress) {
-      pressed.value = withSpring(0, SPRING_CONFIG);
-    }
-  };
-
-  // Estilo animado para cards interativos
-  const animatedStyle = useAnimatedStyle(() => {
-    const scale = interpolate(pressed.value, [0, 1], [1, 0.98]);
-
-    return {
-      transform: [{ scale }],
-    };
-  }, []);
 
   // Estilos base do card
   const baseStyles: StyleProp<ViewStyle> = [
@@ -131,15 +95,14 @@ export const NathCard: React.FC<NathCardProps> = ({
 
   // Card com gradiente customizado
   if (variant === "gradient" && gradientColors) {
-    const Wrapper = onPress ? AnimatedPressable : View;
+    const Wrapper = onPress ? PressableScale : View;
 
     return (
       <Wrapper
         onPress={onPress}
-        onPressIn={onPress ? handlePressIn : undefined}
-        onPressOut={onPress ? handlePressOut : undefined}
-        style={onPress ? animatedStyle : undefined}
-        accessibilityRole={onPress ? "button" : undefined}
+        spring="gentle"
+        scale={0.98}
+        haptic="light"
         accessibilityLabel={accessibilityLabel}
         accessibilityHint={accessibilityHint}
         testID={testID}
@@ -158,15 +121,14 @@ export const NathCard: React.FC<NathCardProps> = ({
 
   // Card dark (premium/destaque)
   if (variant === "dark") {
-    const Wrapper = onPress ? AnimatedPressable : View;
+    const Wrapper = onPress ? PressableScale : View;
 
     return (
       <Wrapper
         onPress={onPress}
-        onPressIn={onPress ? handlePressIn : undefined}
-        onPressOut={onPress ? handlePressOut : undefined}
-        style={onPress ? animatedStyle : undefined}
-        accessibilityRole={onPress ? "button" : undefined}
+        spring="gentle"
+        scale={0.98}
+        haptic="light"
         accessibilityLabel={accessibilityLabel}
         accessibilityHint={accessibilityHint}
         testID={testID}
@@ -186,18 +148,18 @@ export const NathCard: React.FC<NathCardProps> = ({
   // Cards padrão (default, outlined, elevated, highlight)
   if (onPress) {
     return (
-      <AnimatedPressable
-        style={[baseStyles, animatedStyle]}
+      <PressableScale
+        style={baseStyles}
         onPress={onPress}
-        onPressIn={handlePressIn}
-        onPressOut={handlePressOut}
-        accessibilityRole="button"
+        spring="gentle"
+        scale={0.98}
+        haptic="light"
         accessibilityLabel={accessibilityLabel}
         accessibilityHint={accessibilityHint}
         testID={testID}
       >
         {children}
-      </AnimatedPressable>
+      </PressableScale>
     );
   }
 
