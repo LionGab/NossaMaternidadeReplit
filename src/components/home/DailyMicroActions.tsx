@@ -25,6 +25,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useTheme } from "@/hooks/useTheme";
+import { useReducedMotion } from "@/hooks/useReducedMotion";
 import { brand, neutral, spacing, radius, accessibility, shadows } from "@/theme/tokens";
 import { useHabitsStore } from "@/state/habits-store";
 
@@ -77,7 +78,7 @@ function ConfettiBurst({ activeKey }: ConfettiBurstProps): React.JSX.Element {
 
   useEffect(() => {
     progress.value = 0;
-    progress.value = withTiming(1, { duration: 550, easing: Easing.out(Easing.quad) });
+    progress.value = withTiming(1, { duration: 700, easing: Easing.out(Easing.quad) });
   }, [activeKey, progress]);
 
   return (
@@ -129,6 +130,7 @@ function ConfettiParticle({ particle: p, progress }: ConfettiParticleProps): Rea
 
 export const DailyMicroActions: React.FC = () => {
   const { isDark, text, surface } = useTheme();
+  const { shouldAnimate } = useReducedMotion();
 
   // Zustand store
   const habits = useHabitsStore((s) => s.habits);
@@ -209,6 +211,7 @@ export const DailyMicroActions: React.FC = () => {
               completedText={completedText}
               textPrimary={textPrimary}
               textSecondary={textSecondary}
+              shouldAnimate={shouldAnimate}
             />
           );
         })}
@@ -231,6 +234,7 @@ interface MicroActionItemProps {
   completedText: string;
   textPrimary: string;
   textSecondary: string;
+  shouldAnimate: boolean;
 }
 
 function MicroActionItem({
@@ -243,22 +247,27 @@ function MicroActionItem({
   completedText,
   textPrimary,
   textSecondary,
+  shouldAnimate,
 }: MicroActionItemProps): React.JSX.Element {
   const isCompleted = habit.completed;
   const scale = useSharedValue(1);
   const [localBurstKey, setLocalBurstKey] = useState(0);
   const estimatedTime = HABIT_TIME_MAP[habit.id] || "5 min";
 
-  // Anima scale quando completar
+  // Anima scale quando completar (se animações habilitadas)
   useEffect(() => {
-    if (isCompleted) {
+    if (isCompleted && shouldAnimate) {
       scale.value = withSpring(1.05, { damping: 12, stiffness: 220 }, () => {
         scale.value = withSpring(1, { damping: 12, stiffness: 220 });
       });
       setLocalBurstKey((k) => k + 1);
+    } else if (isCompleted) {
+      // Reduce Motion: sem animação, só atualiza burst para mostrar check
+      scale.value = 1;
+      setLocalBurstKey((k) => k + 1);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isCompleted]);
+  }, [isCompleted, shouldAnimate]);
 
   const checkAnimatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
@@ -331,8 +340,8 @@ function MicroActionItem({
         {isCompleted && <Ionicons name="checkmark" size={16} color={neutral[0]} />}
       </Animated.View>
 
-      {/* Confetti ao completar */}
-      {isCompleted && <ConfettiBurst activeKey={localBurstKey} />}
+      {/* Confetti ao completar (apenas se animações habilitadas) */}
+      {isCompleted && shouldAnimate && <ConfettiBurst activeKey={localBurstKey} />}
     </Pressable>
   );
 }
