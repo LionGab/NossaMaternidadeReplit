@@ -5,6 +5,13 @@
 -- Permite que usuários denunciem conteúdo e bloqueiem outros usuários
 -- ============================================
 
+-- content_type pode já existir (021_content_moderation); criar se não existir
+DO $$ BEGIN
+  CREATE TYPE content_type AS ENUM ('post', 'comment', 'profile', 'message');
+EXCEPTION
+  WHEN duplicate_object THEN NULL;
+END $$;
+
 -- ============================================
 -- ENUM: report_reason
 -- ============================================
@@ -409,7 +416,7 @@ GRANT SELECT ON pending_reports TO authenticated;
 CREATE TRIGGER update_user_reports_updated_at
   BEFORE UPDATE ON user_reports
   FOR EACH ROW
-  EXECUTE FUNCTION update_updated_at();
+  EXECUTE FUNCTION update_updated_at_column();
 
 -- ============================================
 -- COMENTÁRIOS

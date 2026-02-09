@@ -34,6 +34,7 @@ npx supabase functions deploy community-feed
 
 # Deploy outras functions
 npx supabase functions deploy ai
+npx supabase functions deploy crm-lifecycle
 npx supabase functions deploy moderate-content
 npx supabase functions deploy mundo-nath-feed
 ```
@@ -83,6 +84,7 @@ supabase/functions/
 ├── ai/
 ├── analytics/
 ├── community-feed/      # Feed da comunidade
+├── crm-lifecycle/       # Attribution, paywall experiments, CRM journeys
 ├── delete-account/
 ├── elevenlabs-tts/
 ├── export-data/
