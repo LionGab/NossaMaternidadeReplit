@@ -4,7 +4,7 @@
 
 set -e
 
-PROJECT_ROOT="$CLAUDE_PROJECT_DIR"
+PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-.}"
 cd "$PROJECT_ROOT"
 
 # Função para adicionar contexto

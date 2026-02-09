@@ -15,6 +15,7 @@ import { getSupabaseFunctionsUrl } from "../config/env";
 import { chatMessagesSchema, validateWithSchema } from "../utils/validation";
 
 const FUNCTIONS_URL = getSupabaseFunctionsUrl();
+const AI_FUNCTION_CANDIDATES = ["ai", "nathia-chat"] as const;
 
 export interface AIContext {
   requiresGrounding?: boolean; // Usa Gemini com Google Search
@@ -26,6 +27,8 @@ export interface AIContext {
   };
   isCrisis?: boolean; // Força Claude para situações de crise
   conversationId?: string; // ID da conversa para persistência no DB
+  preferredProvider?: "claude" | "gemini" | "openai";
+  preferredModel?: string;
   /** AbortSignal for request cancellation */
   abortSignal?: AbortSignal;
 }
@@ -74,6 +77,7 @@ export function detectCrisis(message: string): boolean {
 interface EdgeFunctionPayload {
   messages: AIMessage[];
   provider: "claude" | "gemini" | "openai";
+  model?: string;
   grounding: boolean;
   imageData?: {
     base64: string;
@@ -174,9 +178,9 @@ export async function getNathIAResponse(
     }
 
     // 2. Decidir provider (NathIA v2.0)
-    // Default: Gemini (rápido, barato)
+    // Default: OpenAI GPT-4o Mini (estavel e custo-beneficio)
     // Crise/Imagem: Claude (mais seguro)
-    let provider: EdgeFunctionPayload["provider"] = "gemini";
+    let provider: EdgeFunctionPayload["provider"] = context.preferredProvider || "openai";
     let grounding = false;
 
     // Detectar crise na última mensagem do usuário
@@ -198,53 +202,84 @@ export async function getNathIAResponse(
       // Long context (>100K tokens) → Gemini (1M window)
       provider = "gemini";
     }
-    // Default: Gemini (NathIA v2.0 - custo-benefício)
+    // Default: OpenAI (NathIA v2.1 - estabilidade)
 
     // 3. Preparar payload
     const payload: EdgeFunctionPayload = {
       messages,
       provider,
       grounding,
+      ...(context.preferredModel && { model: context.preferredModel }),
       ...(context.imageData && { imageData: context.imageData }),
       ...(context.conversationId && { conversationId: context.conversationId }),
     };
 
     // 4. Chamar Edge Function COM JWT + RETRY + TIMEOUT
-    // Nota: A function deployada no Supabase é "nathia-chat", não "/ai"
-    const targetUrl = `${FUNCTIONS_URL}/nathia-chat`;
-    const response = await fetchWithRetry(
-      targetUrl,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${session.access_token}`,
-          "x-client-platform": "expo-app",
-          "x-client-version": "2.0.0",
-        },
-        body: JSON.stringify(payload),
-        // AI pode demorar até 60s dependendo do provider
-        timeoutMs: TIMEOUT_PRESETS.CRITICAL,
-        context: "AIService",
-        // Pass external abort signal for user cancellation
-        abortSignal: context.abortSignal,
-      },
-      {
-        // Não retry em erros de autenticação/validação
-        maxAttempts: 3,
-        initialDelay: 1000,
-        maxDelay: 5000,
-        retryable: (error) => {
-          if (isAppError(error)) {
-            // Não retry em erros que não devem ser retentados
-            return ![ErrorCode.UNAUTHORIZED, ErrorCode.FORBIDDEN, ErrorCode.INVALID_INPUT].includes(
-              error.code as ErrorCode
-            );
+    // Compatibilidade: tenta endpoint canônico "ai" e depois "nathia-chat" (legado)
+    let response: Response | null = null;
+    let lastEndpointError: unknown = null;
+
+    for (const endpoint of AI_FUNCTION_CANDIDATES) {
+      const targetUrl = `${FUNCTIONS_URL}/${endpoint}`;
+      try {
+        response = await fetchWithRetry(
+          targetUrl,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${session.access_token}`,
+              "x-client-platform": "expo-app",
+              "x-client-version": "2.0.0",
+            },
+            body: JSON.stringify(payload),
+            // AI pode demorar até 60s dependendo do provider
+            timeoutMs: TIMEOUT_PRESETS.CRITICAL,
+            context: `AIService:${endpoint}`,
+            // Pass external abort signal for user cancellation
+            abortSignal: context.abortSignal,
+          },
+          {
+            // Não retry em erros de autenticação/validação
+            maxAttempts: 3,
+            initialDelay: 1000,
+            maxDelay: 5000,
+            retryable: (error) => {
+              if (isAppError(error)) {
+                // Não retry em erros que não devem ser retentados
+                return ![ErrorCode.UNAUTHORIZED, ErrorCode.FORBIDDEN, ErrorCode.INVALID_INPUT].includes(
+                  error.code as ErrorCode
+                );
+              }
+              return true;
+            },
           }
-          return true;
-        },
+        );
+        if (endpoint !== "ai") {
+          logger.warn("Using legacy AI endpoint fallback", "AIService", { endpoint });
+        }
+        break;
+      } catch (error) {
+        lastEndpointError = error;
+        const status =
+          isAppError(error) && typeof error.context?.status === "number"
+            ? (error.context.status as number)
+            : null;
+        if (status === 404 || status === 405) {
+          continue;
+        }
+        throw error;
       }
-    );
+    }
+
+    if (!response) {
+      throw wrapError(
+        lastEndpointError || new Error("No AI endpoint reachable"),
+        ErrorCode.API_ERROR,
+        "Serviço da NathIA indisponível. Tente novamente em instantes.",
+        { endpointsTried: AI_FUNCTION_CANDIDATES, component: "AIService" }
+      );
+    }
 
     // 5. Parse resposta
     const data = await response.json();

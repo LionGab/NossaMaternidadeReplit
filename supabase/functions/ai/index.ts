@@ -341,7 +341,8 @@ const OPENAI_KEY = Deno.env.get("OPENAI_API_KEY")!;
 
 // Modelo Gemini pode variar por conta/região/versão da API.
 // Evita hardcode de preview que pode não existir para algumas API keys.
-const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") || "models/gemini-1.5-flash";
+const GEMINI_MODEL = Deno.env.get("GEMINI_MODEL") || "models/gemini-2.5-flash";
+const OPENAI_MODEL = Deno.env.get("OPENAI_MODEL") || "gpt-4o-mini";
 let cachedGeminiGenerateContentModel: string | null = null;
 
 type GeminiModel = {
@@ -390,7 +391,13 @@ function pickGeminiGenerateContentModel(models: GeminiModel[]): string | null {
   );
 
   // Preferências (ordem): flash mais novo disponível -> flash -> pro -> qualquer generateContent
-  const preferred = ["models/gemini-2.0-flash", "models/gemini-1.5-flash", "models/gemini-1.5-pro"];
+  const preferred = [
+    "models/gemini-2.5-flash",
+    "models/gemini-2.5-flash-lite",
+    "models/gemini-2.0-flash",
+    "models/gemini-1.5-flash",
+    "models/gemini-1.5-pro",
+  ];
 
   for (const id of preferred) {
     if (usable.some((m) => m.name === id)) return id;
@@ -1752,7 +1759,7 @@ async function callOpenAI(messages: AIMessage[], systemPrompt?: string): Promise
     ];
 
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: OPENAI_MODEL,
       messages: openaiMessages,
       max_tokens: 2048,
       temperature: 0.7,

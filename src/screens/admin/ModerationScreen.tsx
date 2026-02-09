@@ -297,7 +297,7 @@ export default function ModerationScreen({ navigation }: Props) {
         colors={[mockupColors.rosa.blush, mockupColors.azul.sereno + "30"]}
         style={styles.header}
       >
-        <Pressable onPress={() => navigation.goBack()} style={styles.backBtn}>
+        <Pressable onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Voltar">
           <Ionicons name="arrow-back" size={24} color={textPrimary} />
         </Pressable>
         <Title style={{ color: textPrimary }}>Moderação</Title>
@@ -342,6 +342,8 @@ export default function ModerationScreen({ navigation }: Props) {
       <View style={styles.filterRow}>
         <Pressable
           onPress={() => setFilter("best")}
+          accessibilityRole="button"
+          accessibilityLabel="Filtrar por top 200 melhores posts"
           style={[
             styles.filterBtn,
             filter === "best" && styles.filterBtnActive,
@@ -354,6 +356,8 @@ export default function ModerationScreen({ navigation }: Props) {
         </Pressable>
         <Pressable
           onPress={() => setFilter("all")}
+          accessibilityRole="button"
+          accessibilityLabel="Filtrar por todos os posts pendentes"
           style={[
             styles.filterBtn,
             filter === "all" && styles.filterBtnActive,
@@ -415,6 +419,8 @@ export default function ModerationScreen({ navigation }: Props) {
               <Pressable
                 key={idx}
                 onPress={() => setRejectReason(reason)}
+                accessibilityRole="button"
+                accessibilityLabel={`Selecionar motivo: ${reason}`}
                 style={[
                   styles.reasonOption,
                   rejectReason === reason && styles.reasonOptionActive,
@@ -437,12 +443,16 @@ export default function ModerationScreen({ navigation }: Props) {
             <View style={styles.modalActions}>
               <Pressable
                 onPress={() => setRejectingId(null)}
+                accessibilityRole="button"
+                accessibilityLabel="Cancelar rejeição"
                 style={[styles.modalBtn, { backgroundColor: Tokens.neutral[200] }]}
               >
                 <Text style={{ color: textPrimary }}>Cancelar</Text>
               </Pressable>
               <Pressable
                 onPress={confirmReject}
+                accessibilityRole="button"
+                accessibilityLabel="Confirmar rejeição do post"
                 style={[styles.modalBtn, { backgroundColor: nathAccent.coral }]}
               >
                 <Text style={{ color: Tokens.neutral[0] }}>Rejeitar</Text>

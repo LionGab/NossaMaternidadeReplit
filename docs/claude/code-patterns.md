@@ -77,7 +77,7 @@ export function Card({
 import { View, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MainTabScreenProps } from "@/types/navigation";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { useThemeColors } from "@/hooks/useTheme";
 import { logger } from "@/utils/logger";
 import { Header } from "@/components/shared/Header";

@@ -183,6 +183,7 @@ const ViewModeTabs = memo(function ViewModeTabs({ viewMode, onViewModeChange }: 
           onPress={() => onViewModeChange(mode)}
           accessibilityRole="tab"
           accessibilityState={{ selected: viewMode === mode }}
+          accessibilityLabel={`Visualizar ${VIEW_MODE_LABELS[mode]}`}
           style={{
             flex: 1,
             paddingVertical: spacing.sm + 2,

@@ -351,12 +351,29 @@ export function useChatHandlers(props: UseChatHandlersProps) {
       if (shouldStream) {
         // SSE STREAMING PATH
         logger.info("Using SSE streaming", "useChatHandlers");
-        const streamResult = await streamResponse(apiMessages, {
-          conversationId: currentConversationId || undefined,
-        });
-        aiContent = streamResult.content;
-        responseProvider = streamResult.provider;
-        responseTokens = streamResult.usage?.totalTokens;
+        try {
+          const streamResult = await streamResponse(apiMessages, {
+            conversationId: currentConversationId || undefined,
+          });
+          aiContent = streamResult.content;
+          responseProvider = streamResult.provider;
+          responseTokens = streamResult.usage?.totalTokens;
+        } catch (streamError) {
+          logger.warn("SSE failed, falling back to JSON response", "useChatHandlers", {
+            error: streamError instanceof Error ? streamError.message : String(streamError),
+          });
+
+          const response = await getNathIAResponse(apiMessages, {
+            estimatedTokens: estimated,
+            conversationId: currentConversationId || undefined,
+            preferredProvider: "openai",
+            preferredModel: "gpt-4o-mini",
+          });
+          aiContent = response.content;
+          grounding = response.grounding;
+          responseProvider = response.provider;
+          responseTokens = response.usage?.totalTokens;
+        }
       } else {
         // NON-STREAMING PATH (crisis, grounding, or image)
         logger.info("Using non-streaming path", "useChatHandlers", {
@@ -370,6 +387,8 @@ export function useChatHandlers(props: UseChatHandlersProps) {
           imageData,
           isCrisis,
           conversationId: currentConversationId || undefined,
+          preferredProvider: "openai",
+          preferredModel: "gpt-4o-mini",
         });
         aiContent = response.content;
         grounding = response.grounding;
@@ -424,6 +443,18 @@ export function useChatHandlers(props: UseChatHandlersProps) {
       );
 
       let errorMessage = getRandomFallbackMessage();
+
+      if (error instanceof AppError) {
+        if (error.code === ErrorCode.UNAUTHORIZED || error.code === ErrorCode.SESSION_EXPIRED) {
+          errorMessage =
+            "Sua sessão expirou. Faça login novamente para continuar conversando comigo. 🔒";
+        } else if (error.code === ErrorCode.RATE_LIMITED) {
+          errorMessage =
+            "Você está enviando muitas mensagens! Aguarde um minutinho e voltamos a conversar. ⏱️";
+        } else if (error.userMessage) {
+          errorMessage = error.userMessage;
+        }
+      }
 
       if (error instanceof Error) {
         if (
