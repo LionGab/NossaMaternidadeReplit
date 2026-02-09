@@ -15,14 +15,7 @@ import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pencil, Search, Shield } from "lucide-react-native";
 import React, { useCallback, useMemo, useState } from "react";
-import {
-  ActivityIndicator,
-  Pressable,
-  RefreshControl,
-  Share,
-  StyleSheet,
-  View,
-} from "react-native";
+import { Pressable, RefreshControl, Share, StyleSheet, View } from "react-native";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -33,7 +26,15 @@ import { NewPostModal } from "@/components/community/NewPostModal";
 import { PostType } from "@/components/community/PostTypeSelector";
 import { QuickComposerCard } from "@/components/community/QuickComposerCard";
 import { WeeklyHighlights } from "@/components/community/WeeklyHighlights";
-import { Body, Caption, NathButton, NathCard, Subtitle, Title } from "@/components/ui";
+import {
+  Body,
+  Caption,
+  ListSkeleton,
+  NathButton,
+  NathCard,
+  Subtitle,
+  Title,
+} from "@/components/ui";
 
 // Hooks & State
 import { useCommunityPosts, useCreatePost, useTogglePostLike } from "@/api/hooks";
@@ -251,9 +252,7 @@ export default function CommunityScreen({ navigation }: Props) {
                     <Shield size={12} color={Tokens.brand.teal[600]} />
                     <Caption style={styles.moderatedText}>Comunidade Moderada</Caption>
                   </View>
-                  <Subtitle style={styles.welcomeTitle}>
-                    Um espaço seguro para mães
-                  </Subtitle>
+                  <Subtitle style={styles.welcomeTitle}>Um espaço seguro para mães</Subtitle>
                   <Body style={styles.welcomeSubtitle}>
                     Compartilhe, desabafe e celebre cada momento da sua jornada
                   </Body>
@@ -311,10 +310,7 @@ export default function CommunityScreen({ navigation }: Props) {
         </Animated.View>
 
         {/* Weekly Highlights */}
-        <WeeklyHighlights
-          onPostPress={handlePostPress}
-          onLike={handleLike}
-        />
+        <WeeklyHighlights onPostPress={handlePostPress} onLike={handleLike} />
       </View>
     ),
     [isDark, nathColors, borderColor, handleOpenComposer, isCreating, handlePostPress, handleLike]
@@ -386,8 +382,7 @@ export default function CommunityScreen({ navigation }: Props) {
     if (isLoading) {
       return (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color={brand.accent[500]} />
-          <Caption style={{ marginTop: spacing.md }}>Carregando posts...</Caption>
+          <ListSkeleton type="post" count={3} />
         </View>
       );
     }
