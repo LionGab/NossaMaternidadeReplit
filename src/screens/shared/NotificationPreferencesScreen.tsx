@@ -25,7 +25,7 @@ import { FloHeader } from "@/components/ui/FloHeader";
 import { FloScreenWrapper } from "@/components/ui/FloScreenWrapper";
 import { getSupabaseFunctionsUrl } from "@/config/env";
 import { useTheme } from "@/hooks/useTheme";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { shadows, spacing, Tokens, typography } from "@/theme/tokens";
 import { RootStackScreenProps } from "@/types/navigation";
 import { logger } from "@/utils/logger";
@@ -78,8 +78,8 @@ export default function NotificationPreferencesScreen({
   // Cores dinâmicas - Flo style
   const textMain = isDark ? Tokens.neutral[50] : Tokens.neutral[800];
   const textSecondary = isDark ? Tokens.neutral[400] : Tokens.neutral[500];
-  const cardBg = isDark ? "rgba(255,255,255,0.06)" : Tokens.neutral[0];
-  const borderColor = isDark ? "rgba(255,255,255,0.1)" : Tokens.neutral[100];
+  const cardBg = isDark ? Tokens.surface.dark.elevatedSoft : Tokens.neutral[0];
+  const borderColor = isDark ? Tokens.glass.dark.strong : Tokens.neutral[100];
   const accentColor = Tokens.brand.accent[500];
 
   // Seções de preferências
@@ -327,7 +327,7 @@ export default function NotificationPreferencesScreen({
               width: 80,
               height: 80,
               borderRadius: 40,
-              backgroundColor: isDark ? "rgba(255,255,255,0.08)" : Tokens.neutral[100],
+              backgroundColor: isDark ? Tokens.glass.dark.medium : Tokens.neutral[100],
               alignItems: "center",
               justifyContent: "center",
               marginBottom: spacing.xl,
@@ -411,9 +411,9 @@ export default function NotificationPreferencesScreen({
                 height: 52,
                 borderRadius: 16,
                 backgroundColor: prefs.notifications_enabled
-                  ? `${accentColor}15`
+                  ? Tokens.accent.light.soft
                   : isDark
-                    ? "rgba(255,255,255,0.08)"
+                    ? Tokens.glass.dark.medium
                     : Tokens.neutral[100],
                 alignItems: "center",
                 justifyContent: "center",
@@ -485,7 +485,7 @@ export default function NotificationPreferencesScreen({
                 width: 28,
                 height: 28,
                 borderRadius: 8,
-                backgroundColor: `${accentColor}15`,
+                backgroundColor: Tokens.accent.light.soft,
                 alignItems: "center",
                 justifyContent: "center",
                 marginRight: spacing.sm,
@@ -540,8 +540,8 @@ export default function NotificationPreferencesScreen({
                     backgroundColor:
                       pressed && prefs.notifications_enabled
                         ? isDark
-                          ? "rgba(255,255,255,0.02)"
-                          : "rgba(0,0,0,0.02)"
+                          ? Tokens.accent.dark.whiteSubtle
+                          : Tokens.accent.dark.blackSubtle
                         : "transparent",
                   })}
                 >
@@ -612,7 +612,7 @@ export default function NotificationPreferencesScreen({
               width: 28,
               height: 28,
               borderRadius: 8,
-              backgroundColor: `${accentColor}15`,
+              backgroundColor: Tokens.accent.light.soft,
               alignItems: "center",
               justifyContent: "center",
               marginRight: spacing.sm,
@@ -662,8 +662,8 @@ export default function NotificationPreferencesScreen({
               backgroundColor:
                 pressed && prefs.notifications_enabled
                   ? isDark
-                    ? "rgba(255,255,255,0.02)"
-                    : "rgba(0,0,0,0.02)"
+                    ? Tokens.accent.dark.whiteSubtle
+                    : Tokens.accent.dark.blackSubtle
                   : "transparent",
             })}
           >
@@ -713,8 +713,8 @@ export default function NotificationPreferencesScreen({
               backgroundColor:
                 pressed && prefs.notifications_enabled
                   ? isDark
-                    ? "rgba(255,255,255,0.02)"
-                    : "rgba(0,0,0,0.02)"
+                    ? Tokens.accent.dark.whiteSubtle
+                    : Tokens.accent.dark.blackSubtle
                   : "transparent",
             })}
           >
@@ -755,7 +755,7 @@ export default function NotificationPreferencesScreen({
         <View
           style={{
             padding: spacing.xl,
-            backgroundColor: isDark ? "rgba(255,255,255,0.04)" : `${accentColor}08`,
+            backgroundColor: isDark ? Tokens.glass.dark.ultraLight : Tokens.accent.light.subtle,
             borderRadius: 16,
             borderLeftWidth: 3,
             borderLeftColor: accentColor,

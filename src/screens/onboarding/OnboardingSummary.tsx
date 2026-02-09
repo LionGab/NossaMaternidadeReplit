@@ -28,7 +28,7 @@ import { OnboardingHeader } from "@/components/onboarding/layout/OnboardingHeade
 
 import { saveOnboardingData } from "@/api/onboarding-service";
 import { useNathJourneyOnboardingStore } from "@/state/nath-journey-onboarding-store";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { STAGE_CARDS } from "@/config/nath-journey-onboarding-data";
 import { Tokens } from "@/theme/tokens";
 import { logger } from "@/utils/logger";

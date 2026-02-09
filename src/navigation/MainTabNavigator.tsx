@@ -168,7 +168,7 @@ const NathIATabButton = memo<{ focused: boolean; onPress: () => void }>(({ focus
           colors={
             focused
               ? [brand.primary[500], brand.accent[300]]
-              : ["rgba(255,255,255,0.8)", "rgba(255,255,255,0.9)"]
+              : [Tokens.glass.light.soft, Tokens.glass.light.medium]
           }
           style={styles.centerTabGradient}
         >
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: "row",
-    backgroundColor: Platform.OS === "ios" ? "transparent" : "rgba(255,255,255,0.8)",
+    backgroundColor: Platform.OS === "ios" ? "transparent" : Tokens.glass.light.soft,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: Tokens.border.light.subtle,
     paddingTop: spacing.sm,

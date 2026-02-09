@@ -15,6 +15,51 @@ interface ServiceResponse<T> {
   error: string | null;
 }
 
+function extractScheduledAt(post: Record<string, unknown>): string | null {
+  if (typeof post.scheduled_at === "string") {
+    return post.scheduled_at;
+  }
+
+  // TODO(2026-04-01): Remover fallback publish_time após migração completa do banco.
+  // A coluna scheduled_at deve ser a única fonte de verdade após essa data.
+  // Backward compatibility while databases are still migrating from legacy naming.
+  if (typeof post.publish_time === "string") {
+    return post.publish_time;
+  }
+
+  return null;
+}
+
+function mapPostStatus(post: Record<string, unknown>): MundoNathPostStatus {
+  const isPublished = Boolean(post.is_published);
+  if (isPublished) {
+    return "published";
+  }
+
+  const scheduledAt = extractScheduledAt(post);
+  if (scheduledAt) {
+    const scheduledDate = new Date(scheduledAt);
+    if (!Number.isNaN(scheduledDate.getTime()) && scheduledDate.getTime() > Date.now()) {
+      return "scheduled";
+    }
+  }
+
+  return "draft";
+}
+
+function mapAdminPost(post: Record<string, unknown>): MundoNathPostAdmin {
+  const status = mapPostStatus(post);
+  return {
+    ...(post as unknown as MundoNathPostAdmin),
+    is_published: Boolean(post.is_published),
+    published_at:
+      typeof post.published_at === "string" ? post.published_at : new Date().toISOString(),
+    created_at: typeof post.created_at === "string" ? post.created_at : undefined,
+    scheduled_at: extractScheduledAt(post),
+    status,
+  };
+}
+
 export const mundoNathAdminService = {
   /**
    * Lista posts para admin (todos os status)
@@ -36,17 +81,11 @@ export const mundoNathAdminService = {
         .order("created_at", { ascending: false })
         .range(offset, offset + limit - 1);
 
-      // Filtrar por status se especificado
-      if (status !== "all") {
-        // Para compatibilidade, 'published' também checa is_published
-        if (status === "published") {
-          query = query.eq("is_published", true);
-        } else {
-          // TODO: Quando migração de status for aplicada, usar:
-          // query = query.eq("status", status);
-          // Por enquanto, filtrar apenas published vs não-published
-          query = query.eq("is_published", false);
-        }
+      // Filtrar no banco quando possível para reduzir payload.
+      if (status === "published") {
+        query = query.eq("is_published", true);
+      } else if (status === "draft" || status === "scheduled") {
+        query = query.eq("is_published", false);
       }
 
       const { data, error } = await query;
@@ -56,14 +95,9 @@ export const mundoNathAdminService = {
         return { data: null, error: error.message };
       }
 
-      // Mapear para tipo admin (adicionar campos virtuais)
-      const posts: MundoNathPostAdmin[] = (data || []).map((post) => ({
-        ...post,
-        is_published: post.is_published ?? false,
-        published_at: post.published_at ?? new Date().toISOString(),
-        created_at: post.created_at ?? undefined,
-        status: post.is_published ? "published" : "draft",
-      }));
+      const mappedPosts = (data || []).map((post) => mapAdminPost(post as Record<string, unknown>));
+      const posts =
+        status === "all" ? mappedPosts : mappedPosts.filter((post) => post.status === status);
 
       return { data: posts, error: null };
     } catch (err) {
@@ -94,13 +128,7 @@ export const mundoNathAdminService = {
         return { data: null, error: error.message };
       }
 
-      const post: MundoNathPostAdmin = {
-        ...data,
-        is_published: data.is_published ?? false,
-        published_at: data.published_at ?? new Date().toISOString(),
-        created_at: data.created_at ?? undefined,
-        status: data.is_published ? "published" : "draft",
-      };
+      const post = mapAdminPost(data as Record<string, unknown>);
 
       return { data: post, error: null };
     } catch (err) {
@@ -123,18 +151,32 @@ export const mundoNathAdminService = {
         };
       }
 
-      const { data, error } = await supabase.from("mundo_nath_posts").select("is_published");
+      const { data, error } = await supabase.from("mundo_nath_posts").select("*");
 
       if (error) {
         logger.error("Erro ao buscar stats", CONTEXT, error);
         return { data: null, error: error.message };
       }
 
-      const posts = data || [];
+      const posts = (data || []) as Record<string, unknown>[];
+      const now = Date.now();
+      const published = posts.filter((post) => Boolean(post.is_published)).length;
+      const scheduled = posts.filter((post) => {
+        if (Boolean(post.is_published)) {
+          return false;
+        }
+        const scheduledAt = extractScheduledAt(post);
+        if (!scheduledAt) {
+          return false;
+        }
+        const scheduledDate = new Date(scheduledAt);
+        return !Number.isNaN(scheduledDate.getTime()) && scheduledDate.getTime() > now;
+      }).length;
+
       const stats: AdminPostsStats = {
-        published: posts.filter((p) => p.is_published).length,
-        draft: posts.filter((p) => !p.is_published).length,
-        scheduled: 0, // TODO: Implementar quando migração de scheduled_at existir
+        published,
+        draft: posts.length - published - scheduled,
+        scheduled,
         total: posts.length,
       };
 
@@ -158,15 +200,18 @@ export const mundoNathAdminService = {
         return { data: null, error: "Supabase not initialized" };
       }
 
+      const insertData: Record<string, unknown> = {
+        type: post.type || "text",
+        text: post.text || "",
+        media_path: post.media_path || null,
+        is_published: post.is_published ?? false,
+        scheduled_at: post.scheduled_at || null,
+        published_at: post.is_published ? new Date().toISOString() : null,
+      };
+
       const { data, error } = await supabase
         .from("mundo_nath_posts")
-        .insert({
-          type: post.type || "text",
-          text: post.text || "",
-          media_path: post.media_path || null,
-          is_published: post.is_published ?? false,
-          published_at: post.is_published ? new Date().toISOString() : null,
-        })
+        .insert(insertData)
         .select()
         .single();
 
@@ -175,13 +220,7 @@ export const mundoNathAdminService = {
         return { data: null, error: error.message };
       }
 
-      const createdPost: MundoNathPostAdmin = {
-        ...data,
-        is_published: data.is_published ?? false,
-        published_at: data.published_at ?? new Date().toISOString(),
-        created_at: data.created_at ?? undefined,
-        status: data.is_published ? "published" : "draft",
-      };
+      const createdPost = mapAdminPost(data as Record<string, unknown>);
 
       logger.info("Post criado com sucesso", CONTEXT, { id: createdPost.id });
       return { data: createdPost, error: null };
@@ -210,11 +249,13 @@ export const mundoNathAdminService = {
       if (updates.type !== undefined) updateData.type = updates.type;
       if (updates.text !== undefined) updateData.text = updates.text;
       if (updates.media_path !== undefined) updateData.media_path = updates.media_path;
+      if (updates.scheduled_at !== undefined) updateData.scheduled_at = updates.scheduled_at;
       if (updates.is_published !== undefined) {
         updateData.is_published = updates.is_published;
         // Se publicando agora, atualizar published_at
         if (updates.is_published) {
           updateData.published_at = new Date().toISOString();
+          updateData.scheduled_at = null;
         }
       }
 
@@ -230,13 +271,7 @@ export const mundoNathAdminService = {
         return { data: null, error: error.message };
       }
 
-      const updatedPost: MundoNathPostAdmin = {
-        ...data,
-        is_published: data.is_published ?? false,
-        published_at: data.published_at ?? new Date().toISOString(),
-        created_at: data.created_at ?? undefined,
-        status: data.is_published ? "published" : "draft",
-      };
+      const updatedPost = mapAdminPost(data as Record<string, unknown>);
 
       logger.info("Post atualizado com sucesso", CONTEXT, { id });
       return { data: updatedPost, error: null };
@@ -286,12 +321,15 @@ export const mundoNathAdminService = {
         return { data: null, error: "Supabase not initialized" };
       }
 
+      const updatePublishData: Record<string, unknown> = {
+        is_published: publish,
+        scheduled_at: publish ? null : undefined,
+        published_at: publish ? new Date().toISOString() : null,
+      };
+
       const { data, error } = await supabase
         .from("mundo_nath_posts")
-        .update({
-          is_published: publish,
-          published_at: publish ? new Date().toISOString() : null,
-        })
+        .update(updatePublishData)
         .eq("id", id)
         .select()
         .single();
@@ -301,13 +339,7 @@ export const mundoNathAdminService = {
         return { data: null, error: error.message };
       }
 
-      const post: MundoNathPostAdmin = {
-        ...data,
-        is_published: data.is_published ?? false,
-        published_at: data.published_at ?? new Date().toISOString(),
-        created_at: data.created_at ?? undefined,
-        status: data.is_published ? "published" : "draft",
-      };
+      const post = mapAdminPost(data as Record<string, unknown>);
 
       logger.info(`Post ${publish ? "publicado" : "despublicado"}`, CONTEXT, { id });
       return { data: post, error: null };

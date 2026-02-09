@@ -17,7 +17,7 @@ import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { deleteAccount } from "@/api/auth";
 import { useTheme } from "@/hooks/useTheme";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { usePrivacyStore } from "@/state/usePrivacyStore";
 import { RootStackScreenProps } from "@/types/navigation";
 import { logger } from "@/utils/logger";

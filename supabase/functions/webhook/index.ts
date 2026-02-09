@@ -526,9 +526,56 @@ async function markBillingIssue(
     },
   });
 
-  // TODO: Send notification to user about billing issue
+  await notifyAdminsAboutBillingIssue(supabase, userId, event);
 
   console.log(`[WEBHOOK] Billing issue for ${userId}`);
+}
+
+async function notifyAdminsAboutBillingIssue(
+  supabase: ReturnType<typeof createClient>,
+  affectedUserId: string,
+  event: RevenueCatWebhookEvent["event"]
+): Promise<void> {
+  const { data: admins, error: adminsError } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("is_admin", true);
+
+  if (adminsError) {
+    console.error("[WEBHOOK] Failed to fetch admins for billing issue alert:", adminsError);
+    return;
+  }
+
+  if (!admins || admins.length === 0) {
+    console.warn("[WEBHOOK] Billing issue detected but no admins found for notification");
+    return;
+  }
+
+  const now = new Date().toISOString();
+  const queueRows = admins.map((admin) => ({
+    user_id: admin.id,
+    notification_type: "custom",
+    title: "Billing issue detectado",
+    body: `Usuária ${affectedUserId} com falha de cobrança (${event.product_id}).`,
+    data: {
+      source: "revenuecat_webhook",
+      event_type: event.type,
+      affected_user_id: affectedUserId,
+      product_id: event.product_id,
+      transaction_id: event.transaction_id || null,
+      environment: event.environment || null,
+    },
+    status: "pending",
+    scheduled_for: now,
+    priority: 9,
+    ttl_seconds: 86400,
+    collapse_key: `billing_issue_${affectedUserId}`,
+  }));
+
+  const { error: queueError } = await supabase.from("notification_queue").insert(queueRows);
+  if (queueError) {
+    console.error("[WEBHOOK] Failed to enqueue admin billing issue notifications:", queueError);
+  }
 }
 
 /**

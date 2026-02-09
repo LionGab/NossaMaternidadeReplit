@@ -22,7 +22,7 @@ import Animated, {
 } from "react-native-reanimated";
 
 import { useTheme } from "../../hooks/useTheme";
-import { useAppStore } from "../../state/store";
+import { useAppStore } from "../../state";
 import { brand, neutral, radius, semantic, shadows, spacing, typography } from "../../theme/tokens";
 
 interface QuickComposerCardProps {

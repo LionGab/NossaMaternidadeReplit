@@ -35,7 +35,7 @@ Execute estes passos na ordem:
    - **Platform:** iOS
    - **Name:** Nossa Maternidade
    - **Primary Language:** Português (Brasil)
-   - **Bundle ID:** `com.nossamaternidade.app` (selecione existente ou crie)
+   - **Bundle ID:** `br.com.nossamaternidade.app` (selecione existente ou crie)
    - **SKU:** `NOSSA_MATERNIDADE_2025`
 4. Clique em **Create**
 
@@ -87,7 +87,7 @@ Execute estes passos na ordem:
 1. Acesse: https://app.revenuecat.com
 2. Crie projeto: **Nossa Maternidade**
 3. Configure app iOS:
-   - Bundle ID: `com.nossamaternidade.app`
+   - Bundle ID: `br.com.nossamaternidade.app`
    - Conecte App Store Connect
 4. Copie a **Public SDK Key** (iOS)
 5. Configure EAS Secret:

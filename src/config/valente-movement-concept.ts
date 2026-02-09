@@ -72,7 +72,7 @@ export const MOVEMENT_IDENTITY = {
   colors: {
     primary: brand.accent[500], // Roxo/Rosa
     secondary: brand.teal[500], // Verde-água
-    accent: "#FFD700", // Dourado para conquistas
+    accent: Tokens.premium.special.gold, // Dourado para conquistas
     background: brand.accent[50],
   },
 
@@ -442,7 +442,7 @@ export function getRarityColor(rarity: BadgeData["rarity"]): string {
     case "épico":
       return brand.accent[500];
     case "lendário":
-      return "#FFD700";
+      return Tokens.premium.special.gold;
     default:
       return brand.primary[500];
   }

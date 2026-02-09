@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   Text,
@@ -16,9 +16,7 @@ import { Image } from "expo-image";
 import { RootStackScreenProps } from "@/types/navigation";
 import * as Haptics from "expo-haptics";
 import { useTheme } from "@/hooks/useTheme";
-import { fetchPostById, togglePostLike } from "@/api/community";
-import { fetchComments, createComment, Comment } from "@/api/comments";
-import { useCommunityStore } from "@/state/store";
+import { usePost, useComments, useCreateComment, useTogglePostLike } from "@/api/hooks";
 import { formatTimeAgo } from "@/utils/formatters";
 import { Tokens } from "@/theme/tokens";
 
@@ -32,23 +30,14 @@ export default function PostDetailScreen({
   const scrollRef = useRef<ScrollView>(null);
 
   const [comment, setComment] = useState("");
-  const [post, setPost] = useState<{
-    id: string;
-    authorName: string;
-    authorAvatar?: string;
-    content: string;
-    imageUrl?: string;
-    likesCount: number;
-    commentsCount: number;
-    isLiked: boolean;
-    createdAt: string;
-  } | null>(null);
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSending, setIsSending] = useState(false);
-  const [isLiking, setIsLiking] = useState(false);
 
-  const toggleLikeInStore = useCommunityStore((s) => s.toggleLike);
+  // TanStack Query hooks (server state)
+  const { data: post, isLoading: isLoadingPost } = usePost(postId);
+  const { data: comments = [] } = useComments(postId);
+  const toggleLikeMutation = useTogglePostLike();
+  const createCommentMutation = useCreateComment();
+  const isLoading = isLoadingPost;
+  const isSending = createCommentMutation.isPending;
 
   const bgCard = isDark ? Tokens.neutral[800] : Tokens.neutral[0];
   const textPrimary = isDark ? Tokens.neutral[100] : Tokens.neutral[900];
@@ -56,86 +45,10 @@ export default function PostDetailScreen({
   const borderColor = isDark ? Tokens.neutral[700] : Tokens.neutral[200];
   const bgInput = isDark ? Tokens.neutral[800] : Tokens.neutral[50];
 
-  const loadData = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const [postResult, commentsResult] = await Promise.all([
-        fetchPostById(postId),
-        fetchComments(postId, 50, 0),
-      ]);
-
-      if (postResult.data) {
-        setPost({
-          id: postResult.data.id,
-          authorName: postResult.data.authorName,
-          authorAvatar: postResult.data.authorAvatar,
-          content: postResult.data.content,
-          imageUrl: postResult.data.imageUrl,
-          likesCount: postResult.data.likesCount,
-          commentsCount: postResult.data.commentsCount,
-          isLiked: postResult.data.isLiked || false,
-          createdAt: postResult.data.createdAt,
-        });
-      }
-
-      if (commentsResult.data) {
-        setComments(commentsResult.data);
-      }
-    } catch {
-      // Error handling
-    } finally {
-      setIsLoading(false);
-    }
-  }, [postId]);
-
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
-
   const handleLike = async () => {
-    if (!post || isLiking) return;
-    setIsLiking(true);
+    if (!post) return;
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-
-    const wasLiked = post.isLiked;
-    setPost((prev) =>
-      prev
-        ? {
-            ...prev,
-            isLiked: !prev.isLiked,
-            likesCount: prev.isLiked ? prev.likesCount - 1 : prev.likesCount + 1,
-          }
-        : prev
-    );
-
-    try {
-      const result = await togglePostLike(postId);
-      if (result.error) {
-        setPost((prev) =>
-          prev
-            ? {
-                ...prev,
-                isLiked: wasLiked,
-                likesCount: wasLiked ? prev.likesCount + 1 : prev.likesCount - 1,
-              }
-            : prev
-        );
-      } else {
-        toggleLikeInStore(postId);
-      }
-    } catch {
-      setPost((prev) =>
-        prev
-          ? {
-              ...prev,
-              isLiked: wasLiked,
-              likesCount: wasLiked ? prev.likesCount + 1 : prev.likesCount - 1,
-            }
-          : prev
-      );
-    } finally {
-      setIsLiking(false);
-    }
+    toggleLikeMutation.mutate(postId);
   };
 
   const handleShare = async () => {
@@ -152,29 +65,19 @@ export default function PostDetailScreen({
 
   const handleSendComment = async () => {
     if (!comment.trim() || isSending) return;
-    setIsSending(true);
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
     try {
-      const result = await createComment({
+      await createCommentMutation.mutateAsync({
         postId,
         content: comment.trim(),
       });
-
-      if (result.data) {
-        setComments((prev) => [...prev, result.data!]);
-        setPost((prev) =>
-          prev ? { ...prev, commentsCount: prev.commentsCount + 1 } : prev
-        );
-        setComment("");
-        setTimeout(() => {
-          scrollRef.current?.scrollToEnd({ animated: true });
-        }, 100);
-      }
+      setComment("");
+      setTimeout(() => {
+        scrollRef.current?.scrollToEnd({ animated: true });
+      }, 100);
     } catch {
-      // Error handling
-    } finally {
-      setIsSending(false);
+      // Error handled by TanStack Query mutation config
     }
   };
 
@@ -262,7 +165,7 @@ export default function PostDetailScreen({
             >
               <Pressable
                 onPress={handleLike}
-                disabled={isLiking}
+                disabled={toggleLikeMutation.isPending}
                 className="flex-row items-center mr-6"
                 accessibilityRole="button"
                 accessibilityLabel={post.isLiked ? "Descurtir post" : "Curtir post"}

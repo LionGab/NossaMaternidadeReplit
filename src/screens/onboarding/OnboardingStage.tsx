@@ -58,13 +58,13 @@ const CURRENT_STEP = 1;
 // Flo Health Minimal Colors
 const COLORS = {
   // Background gradient
-  gradientStart: Tokens.cleanDesign.pink[50], // #FFF5F7
-  gradientEnd: Tokens.neutral[0], // #FFFFFF
+  gradientStart: Tokens.cleanDesign.pink[50],
+  gradientEnd: Tokens.neutral[0],
 
   // Card colors
   cardBackground: Tokens.neutral[0],
-  cardBorder: Tokens.cleanDesign.pink[100], // #FFE4EC
-  cardSelectedBorder: Tokens.cleanDesign.pink[500], // #FF6B8A
+  cardBorder: Tokens.cleanDesign.pink[100],
+  cardSelectedBorder: Tokens.cleanDesign.pink[500],
   cardSelectedBackground: Tokens.cleanDesign.pink[50],
 
   // Text colors
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: Tokens.radius.full,
-    backgroundColor: "rgba(255, 255, 255, 0.8)",
+    backgroundColor: Tokens.glass.light.soft,
   },
   headerSpacer: {
     width: 44,
@@ -501,7 +501,7 @@ const styles = StyleSheet.create({
     right: 0,
     paddingHorizontal: Tokens.spacing["2xl"],
     paddingTop: Tokens.spacing.lg,
-    backgroundColor: "rgba(255, 255, 255, 0.95)",
+    backgroundColor: Tokens.glass.light.strong,
     borderTopWidth: 1,
     borderTopColor: COLORS.cardBorder,
   },

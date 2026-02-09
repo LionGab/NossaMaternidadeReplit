@@ -270,7 +270,7 @@ Estes assets já estão criados:
    - **Platform:** iOS
    - **Name:** Nossa Maternidade
    - **Primary Language:** Portuguese (Brazil)
-   - **Bundle ID:** Selecione `com.nossamaternidade.app` (criar se não existir)
+   - **Bundle ID:** Selecione `br.com.nossamaternidade.app` (criar se não existir)
    - **SKU:** NOSSA_MATERNIDADE_2025
    - **User Access:** Full Access
 

@@ -8,9 +8,9 @@
  */
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { updateUserAiMetadata } from "@/api/privacy";
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
-import { supabase } from "../api/supabase";
 import { logger } from "../utils/logger";
 
 export type AiConsentStatus = "unknown" | "accepted" | "declined";
@@ -33,35 +33,6 @@ interface PrivacyState {
   acceptAiConsent: () => Promise<void>;
   declineAiConsent: () => Promise<void>;
   setAiEnabled: (enabled: boolean) => Promise<void>;
-}
-
-/**
- * Syncs AI consent/enabled flags to Supabase user metadata
- * This allows backend Edge Functions to validate consent before processing AI requests
- */
-async function updateUserAiMetadata(data: Record<string, unknown>): Promise<void> {
-  if (!supabase) {
-    logger.warn("Supabase not configured - skipping AI metadata sync", "PrivacyStore");
-    return;
-  }
-
-  try {
-    const { error } = await supabase.auth.updateUser({ data });
-
-    if (error) {
-      logger.error("Failed to sync AI metadata to Supabase", "PrivacyStore", error);
-      throw error;
-    }
-
-    logger.info("AI metadata synced to Supabase", "PrivacyStore", data);
-  } catch (error) {
-    logger.error(
-      "Unexpected error syncing AI metadata",
-      "PrivacyStore",
-      error instanceof Error ? error : new Error(String(error))
-    );
-    throw error;
-  }
 }
 
 export const usePrivacyStore = create<PrivacyState>()(

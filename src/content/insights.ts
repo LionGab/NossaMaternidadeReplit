@@ -1,15 +1,15 @@
 // src/content/insights.ts
-import { LifeJourney } from '../types/expanded-onboarding.types';
+import { LifeJourney } from "@/types/expanded-onboarding.types";
 
-export type DailyInsight = {
+export interface DailyInsight {
   id: string;
   journey: LifeJourney;
   dayIndex: number;
   title: string;
   message: string;
   ctaLabel?: string;
-  ctaAction?: 'open_affirmations' | 'open_daily_log' | 'open_cycle' | 'open_assistant' | 'open_care';
-};
+  ctaAction?: "open_affirmations" | "open_daily_log" | "open_cycle" | "open_assistant" | "open_care";
+}
 
 export const INSIGHTS: DailyInsight[] = [
   // AUTOESTIMA

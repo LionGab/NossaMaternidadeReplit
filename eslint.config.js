@@ -300,9 +300,8 @@ module.exports = [
       // Error on hardcoded colors (must use Tokens.*)
       "design-system/no-hardcoded-colors": "error",
 
-      // Warn on local color constants during migration, will become error
-      // TODO: Change to "error" after migrating legacy files to @/theme/tokens
-      "design-system/require-token-imports": "warn",
+      // Enforce token imports for all color sources
+      "design-system/require-token-imports": "error",
 
       // Block console.log (must use logger.*)
       "no-console": [

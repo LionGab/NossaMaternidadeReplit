@@ -31,7 +31,7 @@ import Animated, {
   withTiming,
   cancelAnimation,
 } from "react-native-reanimated";
-import { useCycleStore } from "@/state/store";
+import { useCycleData, useUpdateCycle } from "@/api/hooks";
 import { useTheme } from "@/hooks/useTheme";
 import { FloScreenWrapper } from "@/components/ui/FloScreenWrapper";
 import { FloHeader } from "@/components/ui/FloHeader";
@@ -84,10 +84,12 @@ export default function CycleTrackerScreen() {
   const [currentMonth, setCurrentMonth] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
-  const lastPeriodStart = useCycleStore((s) => s.lastPeriodStart);
-  const cycleLength = useCycleStore((s) => s.cycleLength);
-  const periodLength = useCycleStore((s) => s.periodLength);
-  const setLastPeriodStart = useCycleStore((s) => s.setLastPeriodStart);
+  const { data: cycleData } = useCycleData();
+  const updateCycleMutation = useUpdateCycle();
+
+  const lastPeriodStart = cycleData?.settings?.last_period_start ?? null;
+  const cycleLength = cycleData?.settings?.cycle_length ?? 28;
+  const periodLength = cycleData?.settings?.period_length ?? 5;
 
   const today = useMemo(() => new Date(), []);
 
@@ -280,7 +282,11 @@ export default function CycleTrackerScreen() {
   const handleLogPeriod = () => {
     Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
     const dateToLog = selectedDate || new Date();
-    setLastPeriodStart(dateToLog.toISOString());
+    updateCycleMutation.mutate({
+      cycle_length: cycleLength,
+      last_period_start: dateToLog.toISOString(),
+      period_length: periodLength,
+    });
     setSelectedDate(null);
   };
 

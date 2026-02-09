@@ -7,7 +7,7 @@ import Animated, { FadeIn, FadeInUp } from "react-native-reanimated";
 import { uploadImageToImgur } from "../api/imgur";
 import { useToast } from "../context/ToastContext";
 import { useTheme } from "../hooks/useTheme";
-import { useAppStore } from "../state/store";
+import { useAppStore } from "../state";
 import { COLORS, COLORS_DARK, Tokens } from "../theme/tokens";
 import { logger } from "../utils/logger";
 import { Avatar } from "./ui";

@@ -17,7 +17,7 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import Svg, { Circle } from "react-native-svg";
 
 import { useTheme } from "@/hooks/useTheme";
-import { useHabitsStore, useCheckInStore } from "@/state/store";
+import { useHabitsStore, useCheckInStore } from "@/state";
 import { accessibility, brand, neutral, spacing, radius, shadows } from "@/theme/tokens";
 import { getHabitsMessage } from "@/utils/contextual-messages";
 import type { MainTabParamList } from "@/types/navigation";

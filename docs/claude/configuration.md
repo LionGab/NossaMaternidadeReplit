@@ -408,7 +408,7 @@ export default ({ config }) => ({
   assetBundlePatterns: ["**/*"],
   ios: {
     supportsTablet: false,
-    bundleIdentifier: "app.nossamaternidade.app",
+    bundleIdentifier: "br.com.nossamaternidade.app",
     buildNumber: "1",
     infoPlist: {
       NSCameraUsageDescription: "Para tirar fotos para seus posts",
@@ -421,7 +421,7 @@ export default ({ config }) => ({
       foregroundImage: "./assets/adaptive-icon.png",
       backgroundColor: "#5B8FB9",
     },
-    package: "com.nossamaternidade.app",
+    package: "com.liongab.nossamaternidade",
     versionCode: 1,
   },
   web: {

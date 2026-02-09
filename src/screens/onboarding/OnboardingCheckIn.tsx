@@ -153,8 +153,8 @@ export default function OnboardingCheckIn({ navigation }: Props) {
             <LinearGradient
               colors={
                 isDark
-                  ? ["transparent", "rgba(0,0,0,0.6)"]
-                  : ["transparent", "rgba(255,245,247,0.9)"]
+                  ? ["transparent", Tokens.overlay.heavy]
+                  : ["transparent", Tokens.glass.light.medium]
               }
               style={styles.imageOverlay}
             />

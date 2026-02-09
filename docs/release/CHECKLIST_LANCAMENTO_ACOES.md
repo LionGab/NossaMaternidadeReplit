@@ -143,7 +143,7 @@ ls -la ApiKey_E7IV510UXU7D.p8
 **Passos**:
 
 1. Acesse: https://play.google.com/console
-2. Selecione app: **Nossa Maternidade** (Package: `com.nossamaternidade.app`)
+2. Selecione app: **Nossa Maternidade** (Package: `com.liongab.nossamaternidade`)
 3. Vá em **Monetization** → **Subscriptions**
 4. Clique em **Create subscription**
 

@@ -12,7 +12,7 @@
  */
 
 import { useMemo } from "react";
-import { useCheckInStore, useHabitsStore } from "@/state/store";
+import { useCheckInStore, useHabitsStore } from "@/state";
 
 // =======================
 // TYPES

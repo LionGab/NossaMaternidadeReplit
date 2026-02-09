@@ -18,7 +18,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
-  FlatList,
   Pressable,
   RefreshControl,
   StyleSheet,
@@ -26,6 +25,7 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { FlashList } from "@shopify/flash-list";
 import Animated, { FadeInDown, FadeInRight, FadeOut } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -54,6 +54,130 @@ const REJECTION_REASONS = [
   "Fora do tema da comunidade",
   "Outro motivo",
 ];
+
+interface ModeratedItemCardProps {
+  bgCard: string;
+  index: number;
+  item: ModerationQueueItem;
+  onApprove: (item: ModerationQueueItem) => void;
+  onReject: (item: ModerationQueueItem) => void;
+  textPrimary: string;
+  textSecondary: string;
+}
+
+const ModeratedItemCard = React.memo(function ModeratedItemCard({
+  bgCard,
+  index,
+  item,
+  onApprove,
+  onReject,
+  textPrimary,
+  textSecondary,
+}: ModeratedItemCardProps) {
+  return (
+    <Animated.View
+      entering={FadeInDown.delay(index * 50).duration(300)}
+      exiting={FadeOut.duration(200)}
+    >
+      <NathCard variant="elevated" style={[styles.itemCard, { backgroundColor: bgCard }]} padding="lg">
+        {/* Header */}
+        <View style={styles.itemHeader}>
+          <View style={styles.userInfo}>
+            <View style={[styles.avatar, { backgroundColor: brand.primary[100] }]}>
+              <Text style={{ color: brand.primary[600], fontWeight: "600" }}>
+                {item.userName.charAt(0).toUpperCase()}
+              </Text>
+            </View>
+            <View>
+              <Body weight="bold" style={{ color: textPrimary }}>
+                {item.userName}
+              </Body>
+              <Caption style={{ color: textSecondary }}>
+                {new Date(item.createdAt).toLocaleDateString("pt-BR")}
+              </Caption>
+            </View>
+          </View>
+
+          {/* Quality Score */}
+          <View style={styles.scoreContainer}>
+            <LinearGradient
+              colors={
+                item.qualityScore >= 70
+                  ? [brand.teal[400], brand.teal[500]]
+                  : item.qualityScore >= 40
+                    ? [brand.accent[400], brand.accent[500]]
+                    : [Tokens.neutral[400], Tokens.neutral[500]]
+              }
+              style={styles.scoreBadge}
+            >
+              <Text style={styles.scoreText}>{item.qualityScore}</Text>
+            </LinearGradient>
+            <Caption style={{ color: textSecondary, fontSize: 10 }}>Qualidade</Caption>
+          </View>
+        </View>
+
+        {/* Content */}
+        <View style={styles.contentContainer}>
+          <Body style={{ color: textPrimary }} numberOfLines={4}>
+            {item.content}
+          </Body>
+        </View>
+
+        {/* Flags */}
+        {item.flaggedTerms.length > 0 && (
+          <View style={styles.flagsContainer}>
+            <AlertTriangle size={14} color={nathAccent.coral} />
+            <Caption style={{ color: nathAccent.coral, marginLeft: 4 }}>
+              Termos detectados: {item.flaggedTerms.join(", ")}
+            </Caption>
+          </View>
+        )}
+
+        {/* Categories */}
+        {item.categories.length > 0 && (
+          <View style={styles.categoriesRow}>
+            {item.categories.map((cat, idx) => (
+              <NathBadge key={idx} variant="warning" size="sm" style={{ marginRight: 4 }}>
+                {cat}
+              </NathBadge>
+            ))}
+          </View>
+        )}
+
+        {/* Actions */}
+        <View style={styles.actionsRow}>
+          <Pressable
+            onPress={() => onApprove(item)}
+            style={({ pressed }) => [
+              styles.actionBtn,
+              styles.approveBtn,
+              { opacity: pressed ? 0.8 : 1 },
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel="Aprovar post"
+          >
+            <Check size={18} color={Tokens.neutral[0]} />
+            <Text style={styles.actionBtnText}>Aprovar</Text>
+          </Pressable>
+
+          <Pressable
+            onPress={() => onReject(item)}
+            style={({ pressed }) => [
+              styles.actionBtn,
+              styles.rejectBtn,
+              { opacity: pressed ? 0.8 : 1 },
+            ]}
+            accessibilityRole="button"
+            accessibilityLabel="Rejeitar post"
+          >
+            <X size={18} color={nathAccent.coral} />
+            <Text style={[styles.actionBtnText, { color: nathAccent.coral }]}>Rejeitar</Text>
+          </Pressable>
+        </View>
+      </NathCard>
+    </Animated.View>
+  );
+});
 
 export default function ModerationScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
@@ -148,108 +272,19 @@ export default function ModerationScreen({ navigation }: Props) {
     setRejectReason("");
   };
 
-  const renderItem = ({ item, index }: { item: ModerationQueueItem; index: number }) => (
-    <Animated.View
-      entering={FadeInDown.delay(index * 50).duration(300)}
-      exiting={FadeOut.duration(200)}
-    >
-      <NathCard variant="elevated" style={[styles.itemCard, { backgroundColor: bgCard }]} padding="lg">
-        {/* Header */}
-        <View style={styles.itemHeader}>
-          <View style={styles.userInfo}>
-            <View style={[styles.avatar, { backgroundColor: brand.primary[100] }]}>
-              <Text style={{ color: brand.primary[600], fontWeight: "600" }}>
-                {item.userName.charAt(0).toUpperCase()}
-              </Text>
-            </View>
-            <View>
-              <Body weight="bold" style={{ color: textPrimary }}>
-                {item.userName}
-              </Body>
-              <Caption style={{ color: textSecondary }}>
-                {new Date(item.createdAt).toLocaleDateString("pt-BR")}
-              </Caption>
-            </View>
-          </View>
-          
-          {/* Quality Score */}
-          <View style={styles.scoreContainer}>
-            <LinearGradient
-              colors={
-                item.qualityScore >= 70
-                  ? [brand.teal[400], brand.teal[500]]
-                  : item.qualityScore >= 40
-                    ? [brand.accent[400], brand.accent[500]]
-                    : [Tokens.neutral[400], Tokens.neutral[500]]
-              }
-              style={styles.scoreBadge}
-            >
-              <Text style={styles.scoreText}>{item.qualityScore}</Text>
-            </LinearGradient>
-            <Caption style={{ color: textSecondary, fontSize: 10 }}>Qualidade</Caption>
-          </View>
-        </View>
-
-        {/* Content */}
-        <View style={styles.contentContainer}>
-          <Body style={{ color: textPrimary }} numberOfLines={4}>
-            {item.content}
-          </Body>
-        </View>
-
-        {/* Flags */}
-        {item.flaggedTerms.length > 0 && (
-          <View style={styles.flagsContainer}>
-            <AlertTriangle size={14} color={nathAccent.coral} />
-            <Caption style={{ color: nathAccent.coral, marginLeft: 4 }}>
-              Termos detectados: {item.flaggedTerms.join(", ")}
-            </Caption>
-          </View>
-        )}
-
-        {/* Categories */}
-        {item.categories.length > 0 && (
-          <View style={styles.categoriesRow}>
-            {item.categories.map((cat, idx) => (
-              <NathBadge key={idx} variant="warning" size="sm" style={{ marginRight: 4 }}>
-                {cat}
-              </NathBadge>
-            ))}
-          </View>
-        )}
-
-        {/* Actions */}
-        <View style={styles.actionsRow}>
-          <Pressable
-            onPress={() => handleApprove(item)}
-            style={({ pressed }) => [
-              styles.actionBtn,
-              styles.approveBtn,
-              { opacity: pressed ? 0.8 : 1 },
-            ]}
-            accessibilityRole="button"
-            accessibilityLabel="Aprovar post"
-          >
-            <Check size={18} color={Tokens.neutral[0]} />
-            <Text style={styles.actionBtnText}>Aprovar</Text>
-          </Pressable>
-
-          <Pressable
-            onPress={() => handleReject(item)}
-            style={({ pressed }) => [
-              styles.actionBtn,
-              styles.rejectBtn,
-              { opacity: pressed ? 0.8 : 1 },
-            ]}
-            accessibilityRole="button"
-            accessibilityLabel="Rejeitar post"
-          >
-            <X size={18} color={nathAccent.coral} />
-            <Text style={[styles.actionBtnText, { color: nathAccent.coral }]}>Rejeitar</Text>
-          </Pressable>
-        </View>
-      </NathCard>
-    </Animated.View>
+  const renderItem = useCallback(
+    ({ item, index }: { item: ModerationQueueItem; index: number }) => (
+      <ModeratedItemCard
+        bgCard={bgCard}
+        item={item}
+        index={index}
+        onApprove={handleApprove}
+        onReject={handleReject}
+        textPrimary={textPrimary}
+        textSecondary={textSecondary}
+      />
+    ),
+    [bgCard, handleApprove, handleReject, textPrimary, textSecondary]
   );
 
   return (
@@ -346,7 +381,7 @@ export default function ModerationScreen({ navigation }: Props) {
           </Caption>
         </View>
       ) : (
-        <FlatList
+        <FlashList
           data={items}
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
@@ -564,7 +599,7 @@ const styles = StyleSheet.create({
   },
   modalOverlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: Tokens.overlay.dark,
     alignItems: "center",
     justifyContent: "center",
     padding: spacing.xl,

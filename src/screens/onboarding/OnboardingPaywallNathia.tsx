@@ -44,7 +44,7 @@ import {
 // Store
 import { useNathJourneyOnboardingStore } from "@/state/nath-journey-onboarding-store";
 import { usePremiumStore } from "@/state/premium-store";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 
 // Theme
 import { Tokens, radius, shadows, spacing } from "@/theme/tokens";

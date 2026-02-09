@@ -320,7 +320,7 @@ Claude (via agent):
   2. Mostra checklist:
      - [ ] Criar conta
      - [ ] Adicionar iOS app (br.com.nossamaternidade.app)
-     - [ ] Adicionar Android app (com.nossamaternidade.app)
+     - [ ] Adicionar Android app (com.liongab.nossamaternidade)
      - [ ] Criar Entitlement "premium"
      - [ ] Criar Offering "default"
   3. Comandos copy-paste ready

@@ -8,7 +8,7 @@
  * Baseado em Apple HIG e Material Design 3
  */
 
-import { brand, feeling as feelingColors, gradients, neutral, semantic } from "../theme/tokens";
+import { accent, brand, feeling as feelingColors, gradients, neutral, overlay, semantic } from "../theme/tokens";
 
 // Re-exporta colors do tokens com compatibilidade
 export const Colors = {
@@ -147,9 +147,9 @@ export const Colors = {
     borderLight: neutral[100],
     borderPink: brand.accent[200],
     borderBlue: brand.primary[200],
-    shadow: "rgba(244, 37, 140, 0.15)",
-    shadowStrong: "rgba(244, 37, 140, 0.25)",
-    shadowBlue: "rgba(186, 230, 253, 0.15)",
+    shadow: accent.light.soft,
+    shadowStrong: accent.light.strong,
+    shadowBlue: accent.dark.primarySoft,
   },
 } as const;
 
@@ -279,9 +279,9 @@ export const ColorsDark = {
     borderLight: neutral[800],
     borderPink: brand.accent[800],
     borderBlue: brand.primary[700],
-    shadow: "rgba(0, 0, 0, 0.3)",
-    shadowStrong: "rgba(0, 0, 0, 0.5)",
-    shadowBlue: "rgba(186, 230, 253, 0.1)",
+    shadow: overlay.medium,
+    shadowStrong: overlay.dark,
+    shadowBlue: accent.dark.primarySubtle,
   },
 } as const;
 

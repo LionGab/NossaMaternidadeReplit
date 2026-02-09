@@ -19,7 +19,7 @@ import Animated, { FadeIn } from "react-native-reanimated";
 import { HeartMoodSlider } from "../HeartMoodSlider";
 import { Button } from "../ui/Button";
 import { useTheme } from "../../hooks/useTheme";
-import { useCheckInStore } from "../../state/store";
+import { useCheckInStore } from "../../state";
 import { brand, spacing, radius, shadows } from "../../theme/tokens";
 import type { MainTabParamList } from "../../types/navigation";
 

@@ -103,7 +103,7 @@ Android/Web usam OAuth via browser como fallback.
 4. Selecione **Services IDs** -> **Continue**
 5. Configure:
    - **Description:** Nossa Maternidade
-   - **Identifier:** `com.nossamaternidade.app.service` (ou similar)
+   - **Identifier:** `com.liongab.nossamaternidade.service` (ou similar)
 6. Marque **Sign in with Apple** -> **Configure**
 7. Configure:
    - **Primary App ID:** Selecione seu App ID

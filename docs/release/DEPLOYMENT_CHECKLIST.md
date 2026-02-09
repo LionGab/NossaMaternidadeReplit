@@ -77,7 +77,7 @@ eas secret:list
 
 - [ ] Conta Apple Developer ativa
 - [ ] App criado no App Store Connect
-- [ ] Bundle ID configurado: `com.nossamaternidade.app`
+- [ ] Bundle ID configurado: `br.com.nossamaternidade.app`
 - [ ] Metadata preenchida:
   - [ ] Nome: "Nossa Maternidade"
   - [ ] Subtítulo: "Apoio emocional para mães"
@@ -93,7 +93,7 @@ eas secret:list
 
 - [ ] Conta Google Play Console criada
 - [ ] App criado no Play Console
-- [ ] Package name configurado: `com.nossamaternidade.app`
+- [ ] Package name configurado: `com.liongab.nossamaternidade`
 - [ ] Metadata preenchida:
   - [ ] Nome: "Nossa Maternidade"
   - [ ] Descrição curta

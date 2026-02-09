@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import * as Sentry from "@sentry/react-native";
-import { QueryClientProvider } from "@tanstack/react-query";
 import Constants from "expo-constants";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
@@ -8,7 +7,6 @@ import { useEffect, useState } from "react";
 import { Platform, Text, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { queryClient } from "./src/api/queryClient";
 import { supabase } from "./src/api/supabase";
 import { ErrorBoundary } from "./src/components/ErrorBoundary";
 import { OfflineBanner } from "./src/components/OfflineBanner";
@@ -21,6 +19,7 @@ import { usePremiumListener } from "./src/hooks/usePremiumListener";
 import { useTheme } from "./src/hooks/useTheme";
 import { navigationRef } from "./src/navigation/navigationRef";
 import RootNavigator from "./src/navigation/RootNavigator";
+import { QueryProvider } from "./src/providers/QueryProvider";
 import { usePremiumStore } from "./src/state/premium-store";
 import { brand, maternal, nathAccent, text } from "./src/theme/tokens";
 import { validateCriticalEnv } from "./src/config/env";
@@ -249,7 +248,7 @@ function App() {
 
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
+      <QueryProvider>
         <GestureHandlerRootView style={{ flex: 1, backgroundColor: colors.background.primary }}>
           <SafeAreaProvider>
             <ToastProvider>
@@ -263,7 +262,7 @@ function App() {
             </ToastProvider>
           </SafeAreaProvider>
         </GestureHandlerRootView>
-      </QueryClientProvider>
+      </QueryProvider>
     </ErrorBoundary>
   );
 }

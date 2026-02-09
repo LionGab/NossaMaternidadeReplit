@@ -20,7 +20,7 @@ import {
   getRandomFallbackMessage,
   prepareMessagesForAPI,
 } from "../config/nathia";
-import { useChatStore, useAppStore } from "../state/store";
+import { useChatStore, useAppStore } from "../state";
 import { useNathJourneyOnboardingStore } from "../state/nath-journey-onboarding-store";
 import { usePrivacyStore } from "../state/usePrivacyStore";
 import { usePremiumStatus } from "./usePremiumStatus";

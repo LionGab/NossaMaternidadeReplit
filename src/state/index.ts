@@ -2,7 +2,7 @@
  * State Management - Zustand Stores
  *
  * This file re-exports all stores from their individual files.
- * Import stores from "@/state" or "@/state/store" for backward compatibility.
+ * Import stores from "@/state".
  *
  * Example:
  *   import { useAppStore, useChatStore } from "@/state";

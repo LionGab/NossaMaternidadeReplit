@@ -50,8 +50,8 @@ interface StageCardProps {
 
 const COLORS = {
   white: Tokens.neutral[0],
-  glassWhite: "rgba(255, 255, 255, 0.9)",
-  glassBorder: "rgba(255, 255, 255, 0.6)",
+  glassWhite: Tokens.glass.light.medium,
+  glassBorder: Tokens.glass.light.border,
   selectedBorder: Tokens.brand.accent[400],
   selectedGlow: Tokens.brand.accent[200],
   checkGradient: [Tokens.brand.accent[400], Tokens.brand.accent[500]] as const,

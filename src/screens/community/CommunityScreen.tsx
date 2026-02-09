@@ -14,7 +14,7 @@ import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { Pencil, Search, Shield } from "lucide-react-native";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   ActivityIndicator,
   Pressable,
@@ -36,9 +36,9 @@ import { WeeklyHighlights } from "@/components/community/WeeklyHighlights";
 import { Body, Caption, NathButton, NathCard, Subtitle, Title } from "@/components/ui";
 
 // Hooks & State
+import { useCommunityPosts, useCreatePost, useTogglePostLike } from "@/api/hooks";
 import { useTheme } from "@/hooks/useTheme";
-import { useCommunityStore } from "@/state/community-store";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 
 // Theme
 import { Tokens, brand, radius, spacing } from "@/theme/tokens";
@@ -119,17 +119,12 @@ export default function CommunityScreen({ navigation }: Props) {
   const { isDark } = useTheme();
   const user = useAppStore((s) => s.user);
 
-  // Store selectors (atômicos para evitar re-renders)
-  const posts = useCommunityStore((s) => s.posts);
-  const isLoading = useCommunityStore((s) => s.isLoading);
-  const isRefreshing = useCommunityStore((s) => s.isRefreshing);
-  const isCreating = useCommunityStore((s) => s.isCreating);
-  const error = useCommunityStore((s) => s.error);
-  const loadPosts = useCommunityStore((s) => s.loadPosts);
-  const refreshPosts = useCommunityStore((s) => s.refreshPosts);
-  const loadMorePosts = useCommunityStore((s) => s.loadMorePosts);
-  const createPost = useCommunityStore((s) => s.createPost);
-  const toggleLike = useCommunityStore((s) => s.toggleLike);
+  // TanStack Query hooks (server state)
+  const { data: posts = [], isLoading, isRefetching, refetch } = useCommunityPosts();
+  const createPostMutation = useCreatePost();
+  const toggleLikeMutation = useTogglePostLike();
+  const isCreating = createPostMutation.isPending;
+  const error = createPostMutation.error?.message ?? null;
 
   // Local state
   const [showNewPostModal, setShowNewPostModal] = useState(false);
@@ -151,11 +146,6 @@ export default function CommunityScreen({ navigation }: Props) {
     []
   );
 
-  // Load posts on mount
-  useEffect(() => {
-    loadPosts();
-  }, [loadPosts]);
-
   // Handlers
   const handleCreatePost = useCallback(
     async (
@@ -164,19 +154,21 @@ export default function CommunityScreen({ navigation }: Props) {
       _mediaType?: "image" | "video",
       _postType?: PostType
     ) => {
-      const success = await createPost(content, mediaUri);
-      if (success) {
+      try {
+        await createPostMutation.mutateAsync({ content, imageUrl: mediaUri });
         setShowNewPostModal(false);
+      } catch {
+        // Error handled by TanStack Query (onError in mutation config)
       }
     },
-    [createPost]
+    [createPostMutation]
   );
 
   const handleLike = useCallback(
     (postId: string) => {
-      toggleLike(postId);
+      toggleLikeMutation.mutate(postId);
     },
-    [toggleLike]
+    [toggleLikeMutation]
   );
 
   const handleComment = useCallback(
@@ -209,12 +201,8 @@ export default function CommunityScreen({ navigation }: Props) {
   );
 
   const handleRefresh = useCallback(() => {
-    refreshPosts();
-  }, [refreshPosts]);
-
-  const handleEndReached = useCallback(() => {
-    loadMorePosts();
-  }, [loadMorePosts]);
+    refetch();
+  }, [refetch]);
 
   const handleOpenComposer = useCallback(async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -405,7 +393,7 @@ export default function CommunityScreen({ navigation }: Props) {
     }
 
     if (error) {
-      return <EmptyStateCommunity variant="error" onRetry={loadPosts} />;
+      return <EmptyStateCommunity variant="error" onRetry={() => refetch()} />;
     }
 
     return (
@@ -418,7 +406,7 @@ export default function CommunityScreen({ navigation }: Props) {
         }}
       />
     );
-  }, [isLoading, error, loadPosts, handleOpenComposer]);
+  }, [isLoading, error, refetch, handleOpenComposer]);
 
   return (
     <View style={[styles.container, { backgroundColor: bgColor, paddingTop: insets.top }]}>
@@ -469,11 +457,10 @@ export default function CommunityScreen({ navigation }: Props) {
         ListHeaderComponent={ListHeaderComponent}
         ListFooterComponent={posts.length > 0 ? ListFooterComponent : null}
         ListEmptyComponent={ListEmptyComponent}
-        onEndReached={handleEndReached}
         onEndReachedThreshold={0.5}
         refreshControl={
           <RefreshControl
-            refreshing={isRefreshing}
+            refreshing={isRefetching}
             onRefresh={handleRefresh}
             tintColor={brand.accent[500]}
             colors={[brand.accent[500]]}

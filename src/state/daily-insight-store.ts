@@ -3,13 +3,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 
-type DailyInsightCache = {
+interface DailyInsightCache {
   lastShownDate: string | null; // YYYY-MM-DD
   lastInsightId: string | null;
   lastJourney: string | null;
   setDailyInsightCache: (payload: { date: string; insightId: string; journey: string }) => void;
   resetDailyInsightCache: () => void;
-};
+}
 
 export const useDailyInsightStore = create<DailyInsightCache>()(
   persist(

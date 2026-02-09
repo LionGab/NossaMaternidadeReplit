@@ -52,7 +52,7 @@ TestFlight é a plataforma oficial da Apple para testes beta de apps antes de pu
    - **Platform:** iOS
    - **Name:** Nossa Maternidade
    - **Primary Language:** Português (Brasil)
-   - **Bundle ID:** `com.nossamaternidade.app`
+   - **Bundle ID:** `br.com.nossamaternidade.app`
    - **SKU:** `NOSSA_MATERNIDADE_2025`
 4. Clique em **Create**
 

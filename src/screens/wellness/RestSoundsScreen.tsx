@@ -165,11 +165,11 @@ export default function RestSoundsScreen() {
   const textPrimary = Tokens.neutral[50];
   const textSecondary = Tokens.neutral[400];
   const textMuted = Tokens.neutral[500];
-  const cardBg = "rgba(255,255,255,0.06)";
+  const cardBg = Tokens.surface.dark.elevatedSoft;
   const cardBgActive = (color: string) => `${color}15`;
-  const glassBg = "rgba(255,255,255,0.08)";
-  const tabBg = "rgba(255,255,255,0.06)";
-  const tabActive = "rgba(255,255,255,0.15)";
+  const glassBg = Tokens.glass.dark.medium;
+  const tabBg = Tokens.surface.dark.elevatedSoft;
+  const tabActive = Tokens.accent.dark.whiteHeavy;
 
   // Dark gradient for relaxation screen
   const restGradient = isDark
@@ -415,7 +415,7 @@ export default function RestSoundsScreen() {
                     padding: spacing.lg,
                     borderWidth: 1,
                     borderColor:
-                      playingSound === item.id ? `${item.color}40` : "rgba(255,255,255,0.06)",
+                      playingSound === item.id ? `${item.color}40` : Tokens.glass.dark.light,
                     ...shadows.flo.soft,
                   }}
                 >
@@ -427,7 +427,7 @@ export default function RestSoundsScreen() {
                         height: 52,
                         borderRadius: 26,
                         backgroundColor:
-                          playingSound === item.id ? item.color : "rgba(255,255,255,0.08)",
+                          playingSound === item.id ? item.color : Tokens.glass.dark.medium,
                         alignItems: "center",
                         justifyContent: "center",
                         marginRight: spacing.md,
@@ -491,7 +491,7 @@ export default function RestSoundsScreen() {
                         backgroundColor:
                           playingSound === item.id || loadingSound === item.id
                             ? item.color
-                            : "rgba(255,255,255,0.08)",
+                            : Tokens.glass.dark.medium,
                         alignItems: "center",
                         justifyContent: "center",
                         ...(playingSound === item.id || loadingSound === item.id
@@ -519,7 +519,7 @@ export default function RestSoundsScreen() {
                         marginTop: spacing.md,
                         paddingTop: spacing.md,
                         borderTopWidth: 1,
-                        borderTopColor: "rgba(255,255,255,0.08)",
+                        borderTopColor: Tokens.glass.dark.medium,
                       }}
                     >
                       <View
@@ -567,11 +567,11 @@ export default function RestSoundsScreen() {
         >
           <View
             style={{
-              backgroundColor: `${Tokens.brand.secondary[500]}10`,
+              backgroundColor: Tokens.accent.light.secondaryVeryLight,
               borderRadius: Tokens.radius["2xl"],
               padding: spacing.lg,
               borderWidth: 1,
-              borderColor: `${Tokens.brand.secondary[500]}20`,
+              borderColor: Tokens.accent.light.secondarySoft,
               ...shadows.flo.minimal,
             }}
           >
@@ -581,7 +581,7 @@ export default function RestSoundsScreen() {
                   width: 32,
                   height: 32,
                   borderRadius: 16,
-                  backgroundColor: `${Tokens.brand.secondary[400]}20`,
+                  backgroundColor: Tokens.accent.light.secondarySoft,
                   alignItems: "center",
                   justifyContent: "center",
                   marginRight: spacing.md,

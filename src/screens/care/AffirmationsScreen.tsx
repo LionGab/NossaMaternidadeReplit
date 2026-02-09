@@ -13,7 +13,7 @@ import Animated, {
   withTiming,
   interpolate,
 } from "react-native-reanimated";
-import { useAffirmationsStore } from "@/state/store";
+import { useAffirmationsStore } from "@/state";
 import { RootStackScreenProps, Affirmation } from "@/types/navigation";
 import { useTheme } from "@/hooks/useTheme";
 import { Tokens, typography } from "@/theme/tokens";

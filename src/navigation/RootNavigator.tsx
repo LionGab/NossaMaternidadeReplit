@@ -19,7 +19,7 @@ import {
   isOnboardingBypassActive,
 } from "../config/dev-bypass";
 import { useNotificationSetup } from "../hooks/useNotificationSetup";
-import { useAppStore } from "../state/store";
+import { useAppStore } from "../state";
 import { COLORS } from "../theme/tokens";
 import { FlowState, resolveNavigationFlags } from "./flowResolver";
 

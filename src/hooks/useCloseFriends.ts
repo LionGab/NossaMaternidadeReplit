@@ -6,7 +6,7 @@
  */
 
 import { useMemo } from "react";
-import { useAppStore } from "../state/store";
+import { useAppStore } from "../state";
 import { useIsPremium, usePremiumStore } from "../state/premium-store";
 
 interface UseCloseFriendsReturn {

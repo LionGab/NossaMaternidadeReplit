@@ -8,7 +8,7 @@
 
   "autoCompact": {
     "enabled": true,
-    "triggerTokens": 40000
+    "triggerTokens": 80000
   },
 
   "statusline": {

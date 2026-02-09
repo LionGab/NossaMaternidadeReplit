@@ -48,7 +48,7 @@ import {
   Subtitle,
   Title,
 } from "@/components/ui";
-import { useHabitsStore } from "@/state/habits-store";
+import { useHabits, useToggleHabit } from "@/api/hooks";
 import { brand, mockupColors, nathAccent, radius, shadows, spacing, Tokens } from "@/theme/tokens";
 import { MainTabScreenProps } from "@/types/navigation";
 
@@ -82,9 +82,9 @@ const COLOR_MAP: Record<string, { bg: string; icon: string; gradient: readonly [
     gradient: [mockupColors.rosa.claro, mockupColors.rosa.suave] as const,
   },
   warning: {
-    bg: "#FEF3C7",
-    icon: "#F59E0B",
-    gradient: ["#FEF3C7", "#FDE68A"] as const,
+    bg: Tokens.semantic.light.warningLight,
+    icon: Tokens.semantic.light.warning,
+    gradient: [Tokens.semantic.light.warningLight, Tokens.premium.special.gold] as const,
   },
   success: {
     bg: brand.teal[50],
@@ -239,12 +239,11 @@ type Props = MainTabScreenProps<"MyCare">;
 
 export default function HabitosScreenNathia({ navigation: _navigation }: Props) {
   const insets = useSafeAreaInsets();
-  const habits = useHabitsStore((s) => s.habits);
-  const toggleHabit = useHabitsStore((s) => s.toggleHabit);
-  const getCompletedToday = useHabitsStore((s) => s.getCompletedToday);
+  const { data: habits = [] } = useHabits();
+  const toggleHabitMutation = useToggleHabit();
 
   const today = new Date().toISOString().split("T")[0];
-  const completedToday = getCompletedToday();
+  const completedToday = habits.filter((habit) => habit.completed).length;
   const totalHabits = habits.length;
   const progressPercent = totalHabits > 0 ? (completedToday / totalHabits) * 100 : 0;
 
@@ -295,9 +294,9 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
 
   const handleToggleHabit = useCallback(
     (habitId: string) => {
-      toggleHabit(habitId, today);
+      toggleHabitMutation.mutate({ habitId, date: today });
     },
-    [toggleHabit, today]
+    [today, toggleHabitMutation]
   );
 
   const completedHabits = habits.filter((h) => h.completed);

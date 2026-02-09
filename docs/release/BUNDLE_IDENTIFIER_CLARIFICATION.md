@@ -15,7 +15,7 @@ ios: {
 
 ## Historical Context
 
-Some older documentation references `com.nossamaternidade.app`, but the actual configured and in-use bundle identifier is `br.com.nossamaternidade.app`.
+Some older documentation references `com.liongab.nossamaternidade`, but the actual configured and in-use bundle identifier is `br.com.nossamaternidade.app`.
 
 ## Why the "br.com" prefix?
 
@@ -62,7 +62,7 @@ However, for **Android** the package name is different:
 ✅ **Correct Bundle Identifier**: `br.com.nossamaternidade.app`  
 ✅ **Used in**: app.config.js, eas.json, Apple Developer account  
 ✅ **App Store Connect ID**: 6756980888  
-❌ **Incorrect**: `com.nossamaternidade.app` (old documentation)
+❌ **Incorrect**: `com.liongab.nossamaternidade` (old documentation)
 
 **No action needed** - current configuration is correct and working.
 

@@ -78,14 +78,14 @@ Complete setup guide for Nossa Maternidade subscriptions with RevenueCat.
 
 1. Go to **Projects** → **Nossa Maternidade** → **Apps**
 2. Add **Apple App Store** app:
-   - Bundle ID: `com.nossamaternidade.app`
+   - Bundle ID: `br.com.nossamaternidade.app`
    - App Store Connect App-Specific Shared Secret: (paste from step 1.3)
 3. Click **Fetch products** to sync
 
 ### 3.3 Configure Android
 
 1. Add **Google Play Store** app:
-   - Package name: `com.nossamaternidade.app`
+   - Package name: `com.liongab.nossamaternidade`
    - Service Account JSON: (upload from step 2.3)
 2. Click **Fetch products** to sync
 

@@ -49,7 +49,7 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
     return (
       <Animated.View entering={FadeInUp.duration(500).delay(100)}>
         <LinearGradient
-          colors={[maternal.warmth.blush, "#E8D4F0", maternal.calm.lavender]}
+          colors={[maternal.warmth.blush, nathAccent.closeFriends.purpleLight, maternal.calm.lavender]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={styles.closeFriendsCard}
@@ -57,10 +57,10 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
           <View style={styles.closeFriendsHeader}>
             <View style={styles.closeFriendsIconContainer}>
               <LinearGradient
-                colors={["#9B59B6", "#8E44AD"]}
+                colors={[nathAccent.closeFriends.purple, nathAccent.closeFriends.purpleGradient]}
                 style={styles.closeFriendsIcon}
               >
-                <Star size={20} color="#FFF" fill="#FFF" />
+                <Star size={20} color={neutral[0]} fill={neutral[0]} />
               </LinearGradient>
             </View>
             
@@ -68,7 +68,7 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
               <View style={styles.closeFriendsTitle}>
                 <Text style={styles.closeFriendsTitleText}>Close Friends</Text>
                 <Animated.View style={sparkleStyle}>
-                  <Sparkles size={16} color="#9B59B6" />
+                  <Sparkles size={16} color={nathAccent.closeFriends.purple} />
                 </Animated.View>
               </View>
               <Text style={styles.closeFriendsSubtitle}>
@@ -86,7 +86,7 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
               />
               <View style={styles.exclusiveTextContainer}>
                 <View style={styles.exclusiveBadge}>
-                  <Crown size={10} color="#9B59B6" />
+                  <Crown size={10} color={nathAccent.closeFriends.purple} />
                   <Text style={styles.exclusiveBadgeText}>Novo</Text>
                 </View>
                 <Text style={styles.exclusiveTitle}>
@@ -107,7 +107,7 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
             onPress={onViewContent}
           >
             <Text style={styles.viewContentText}>Ver conteúdo exclusivo</Text>
-            <Heart size={16} color="#FFF" />
+            <Heart size={16} color={neutral[0]} />
           </Pressable>
         </LinearGradient>
       </Animated.View>
@@ -117,16 +117,16 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
   return (
     <Animated.View entering={FadeInUp.duration(500).delay(100)}>
       <LinearGradient
-        colors={["#F8F4FB", "#F0E8F5", "#E8E0F0"]}
+        colors={[maternal.calm.lavender, maternal.bond.together, nathAccent.closeFriends.purpleLight]}
         style={styles.lockedCard}
       >
         <View style={styles.lockedContent}>
           <View style={styles.lockedIconContainer}>
             <LinearGradient
-              colors={["#9B59B6", "#8E44AD"]}
+              colors={[nathAccent.closeFriends.purple, nathAccent.closeFriends.purpleGradient]}
               style={styles.lockedIcon}
             >
-              <Lock size={24} color="#FFF" />
+              <Lock size={24} color={neutral[0]} />
             </LinearGradient>
           </View>
           
@@ -137,15 +137,23 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
           
           <View style={styles.benefitsList}>
             <View style={styles.benefitItem}>
-              <Star size={14} color="#9B59B6" fill="#9B59B6" />
+              <Star
+                size={14}
+                color={nathAccent.closeFriends.purple}
+                fill={nathAccent.closeFriends.purple}
+              />
               <Text style={styles.benefitText}>Diário pessoal da Nath</Text>
             </View>
             <View style={styles.benefitItem}>
-              <Heart size={14} color="#9B59B6" fill="#9B59B6" />
+              <Heart
+                size={14}
+                color={nathAccent.closeFriends.purple}
+                fill={nathAccent.closeFriends.purple}
+              />
               <Text style={styles.benefitText}>Mensagens exclusivas</Text>
             </View>
             <View style={styles.benefitItem}>
-              <Users size={14} color="#9B59B6" />
+              <Users size={14} color={nathAccent.closeFriends.purple} />
               <Text style={styles.benefitText}>Lives privadas</Text>
             </View>
           </View>
@@ -158,10 +166,10 @@ export function CloseFriendsSection({ onUpgrade, onViewContent }: CloseFriendsSe
             onPress={onUpgrade}
           >
             <LinearGradient
-              colors={["#9B59B6", "#8E44AD"]}
+              colors={[nathAccent.closeFriends.purple, nathAccent.closeFriends.purpleGradient]}
               style={styles.upgradeGradient}
             >
-              <Crown size={18} color="#FFF" />
+              <Crown size={18} color={neutral[0]} />
               <Text style={styles.upgradeText}>Tornar-se Close Friend</Text>
             </LinearGradient>
           </Pressable>
@@ -237,7 +245,7 @@ const styles = StyleSheet.create({
 
   exclusivePost: {
     flexDirection: "row",
-    backgroundColor: "rgba(255, 255, 255, 0.7)",
+    backgroundColor: nathAccent.closeFriends.panelGlass,
     borderRadius: radius.xl,
     padding: spacing.md,
   },
@@ -259,7 +267,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     alignSelf: "flex-start",
-    backgroundColor: "rgba(155, 89, 182, 0.15)",
+    backgroundColor: nathAccent.closeFriends.badge,
     paddingHorizontal: spacing.sm,
     paddingVertical: 2,
     borderRadius: radius.full,
@@ -315,7 +323,7 @@ const styles = StyleSheet.create({
     borderRadius: radius["2xl"],
     padding: spacing.xl,
     borderWidth: 1,
-    borderColor: "rgba(155, 89, 182, 0.2)",
+    borderColor: nathAccent.closeFriends.border,
   },
 
   lockedContent: {

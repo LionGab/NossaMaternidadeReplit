@@ -134,8 +134,13 @@ export const nathAccent = {
   closeFriends: {
     purple: "#9B59B6",
     purpleDark: "#4A2060",
+    purpleGradient: "#8E44AD",
+    purpleLight: "#E8D4F0",
     purpleMuted: "#7B5D8F",
     purpleGray: "#5D4E6D",
+    panelGlass: "rgba(255, 255, 255, 0.7)",
+    badge: "rgba(155, 89, 182, 0.15)",
+    border: "rgba(155, 89, 182, 0.2)",
   },
 } as const;
 
@@ -406,8 +411,16 @@ export const surface = {
     elevated: "#FFFFFF",
     /** Tertiary: separadores, dividers - azul sutil */
     tertiary: "#F0F9FF",
+    /** Subtle: superfícies neutras sutis */
+    subtle: "#F9FAFB",
+    /** Muted: superfícies de apoio */
+    muted: "#F3F4F6",
     /** Soft: background alternativo suave - azul claríssimo */
     soft: "#F0F9FF",
+    /** Accent soft: highlights rosados discretos */
+    accentSoft: "rgba(244, 63, 104, 0.08)",
+    /** Accent medium: highlights rosados de média intensidade */
+    accentMedium: "rgba(244, 63, 104, 0.15)",
     /** Overlay: modais, sheets */
     overlay: "rgba(0, 0, 0, 0.4)",
     /** Glass: elementos com blur - toque de azul */
@@ -424,12 +437,55 @@ export const surface = {
     elevated: "#15283A",
     /** Tertiary: separadores */
     tertiary: "#1F3A4F",
+    /** Subtle: superfícies quase transparentes */
+    subtle: "rgba(255, 255, 255, 0.02)",
+    /** Muted: superfícies de apoio dark */
+    muted: "rgba(255, 255, 255, 0.04)",
+    /** Elevated soft: cards dark levemente elevados */
+    elevatedSoft: "rgba(255, 255, 255, 0.06)",
+    /** Elevated medium: cards dark com mais destaque */
+    elevatedMedium: "rgba(255, 255, 255, 0.08)",
+    /** Accent soft: destaque rosado discreto em dark */
+    accentSoft: "rgba(244, 63, 104, 0.15)",
+    /** Accent medium: destaque rosado médio em dark */
+    accentMedium: "rgba(244, 63, 104, 0.2)",
+    /** Accent strong: destaque rosado forte em dark */
+    accentStrong: "rgba(244, 63, 104, 0.3)",
+    /** Secondary soft: destaque roxo discreto em dark */
+    secondarySoft: "rgba(168, 85, 247, 0.15)",
     /** Overlay */
     overlay: "rgba(0, 0, 0, 0.7)",
     /** Glass */
     glass: "rgba(15, 30, 45, 0.72)",
     /** Card alpha */
     cardAlpha: "rgba(15, 30, 45, 0.95)",
+  },
+} as const;
+
+// ===========================================
+// GLASS TOKENS - Glassmorphism helpers
+// ===========================================
+
+export const glass = {
+  light: {
+    ultraLight: "rgba(255, 255, 255, 0.7)",
+    soft: "rgba(255, 255, 255, 0.8)",
+    medium: "rgba(255, 255, 255, 0.9)",
+    strong: "rgba(255, 255, 255, 0.95)",
+    border: "rgba(255, 255, 255, 0.6)",
+  },
+  dark: {
+    subtle: "rgba(255, 255, 255, 0.02)",
+    ultraLight: "rgba(255, 255, 255, 0.04)",
+    light: "rgba(255, 255, 255, 0.06)",
+    medium: "rgba(255, 255, 255, 0.08)",
+    strong: "rgba(255, 255, 255, 0.1)",
+    heavy: "rgba(255, 255, 255, 0.12)",
+    border: "rgba(255, 255, 255, 0.08)",
+    borderStrong: "rgba(255, 255, 255, 0.12)",
+    text60: "rgba(255, 255, 255, 0.6)",
+    text80: "rgba(255, 255, 255, 0.8)",
+    text90: "rgba(255, 255, 255, 0.9)",
   },
 } as const;
 
@@ -1210,6 +1266,45 @@ export const overlay = {
 } as const;
 
 // ===========================================
+// ACCENT TOKENS - Alpha accent helpers
+// ===========================================
+
+export const accent = {
+  light: {
+    subtle: "rgba(244, 63, 104, 0.08)",
+    soft: "rgba(244, 63, 104, 0.12)",
+    medium: "rgba(244, 63, 104, 0.2)",
+    strong: "rgba(244, 63, 104, 0.3)",
+    secondaryVeryLight: "rgba(168, 85, 247, 0.06)",
+    secondarySoft: "rgba(168, 85, 247, 0.15)",
+  },
+  dark: {
+    subtle: "rgba(244, 63, 104, 0.1)",
+    soft: "rgba(244, 63, 104, 0.15)",
+    medium: "rgba(244, 63, 104, 0.2)",
+    strong: "rgba(244, 63, 104, 0.3)",
+    secondaryVeryLight: "rgba(168, 85, 247, 0.06)",
+    secondarySoft: "rgba(168, 85, 247, 0.15)",
+    secondarySubtle: "rgba(168, 85, 247, 0.05)",
+    primarySoft: "rgba(56, 189, 248, 0.15)",
+    primarySubtle: "rgba(56, 189, 248, 0.05)",
+    warningSoft: "rgba(251, 191, 36, 0.15)",
+    warningSubtle: "rgba(251, 191, 36, 0.05)",
+    whiteSubtle: "rgba(255, 255, 255, 0.02)",
+    whiteLight: "rgba(255, 255, 255, 0.04)",
+    whiteSoft: "rgba(255, 255, 255, 0.06)",
+    whiteMedium: "rgba(255, 255, 255, 0.08)",
+    whiteStrong: "rgba(255, 255, 255, 0.1)",
+    whiteHeavy: "rgba(255, 255, 255, 0.15)",
+    whiteText60: "rgba(255, 255, 255, 0.6)",
+    whiteText80: "rgba(255, 255, 255, 0.8)",
+    whiteText90: "rgba(255, 255, 255, 0.9)",
+    blackSubtle: "rgba(0, 0, 0, 0.02)",
+    blackSoft: "rgba(0, 0, 0, 0.04)",
+  },
+} as const;
+
+// ===========================================
 // PREMIUM TOKENS - Dark Immersive Screens
 // (Paywall, Premium features, Cinematic UI)
 // ===========================================
@@ -1368,6 +1463,8 @@ export type ThemeMode = "light" | "dark";
 export const getThemeTokens = (mode: ThemeMode) => ({
   brand,
   surface: surface[mode],
+  glass: glass[mode],
+  accent: accent[mode],
   text: text[mode],
   semantic: semantic[mode],
   neutral,
@@ -1526,6 +1623,8 @@ export const Tokens = {
   text,
   semantic,
   surface,
+  glass,
+  accent,
   gradients,
   ctaPrimary,
   DEFAULT_CHECKIN_TIME,

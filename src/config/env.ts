@@ -362,8 +362,8 @@ export function validateCriticalEnv(): void {
   if (!result.success) {
     const issues = result.error.issues
       .map(
-        (i: { path: (string | number)[]; message: string }) =>
-          `  - ${i.path.join(".")}: ${i.message}`
+        (i) =>
+          `  - ${String(i.path.join("."))}: ${i.message}`
       )
       .join("\n");
     throw new Error(

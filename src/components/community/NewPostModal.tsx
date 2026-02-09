@@ -36,7 +36,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import { useToast } from "../../context/ToastContext";
 import { useTheme } from "../../hooks/useTheme";
-import { useAppStore } from "../../state/store";
+import { useAppStore } from "../../state";
 import { brand, neutral, typography, spacing, radius, shadows, Tokens } from "../../theme/tokens";
 import { logger } from "../../utils/logger";
 import { Avatar } from "../ui";

@@ -8,7 +8,7 @@ import { View, Text, ScrollView, Pressable, StyleSheet, Modal } from "react-nati
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { SlideInLeft, SlideOutLeft } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Conversation } from "../../state/store";
+import { Conversation } from "../../state";
 import { Tokens, COLORS, COLORS_DARK } from "../../theme/tokens";
 import { useTheme } from "../../hooks/useTheme";
 

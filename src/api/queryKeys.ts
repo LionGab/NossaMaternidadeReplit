@@ -101,6 +101,23 @@ export const habitsKeys = {
 };
 
 /**
+ * Query keys para ciclo menstrual
+ */
+export const cycleKeys = {
+  // Raiz
+  all: ["cycle"] as const,
+
+  // Dados do ciclo (settings + logs)
+  data: () => [...cycleKeys.all, "data"] as const,
+
+  // Configurações
+  settings: () => [...cycleKeys.all, "settings"] as const,
+
+  // Logs diários
+  logs: () => [...cycleKeys.all, "logs"] as const,
+};
+
+/**
  * Query keys para NathIA (chat AI)
  */
 export const nathiaKeys = {

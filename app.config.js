@@ -31,7 +31,7 @@ module.exports = ({ config }) => {
       usesAppleSignIn: true,
       // Associated Domains para deep linking e universal links
       // TEMPORARIAMENTE DESABILITADO - provisioning profile precisa ser regenerado
-      // TODO: Habilitar após eas credentials --platform ios regenerar o profile
+      // Regenerar profile iOS: `npm run eas:credentials:regen:ios`
       // associatedDomains: [
       //   "applinks:nossamaternidade.app",
       //   "applinks:www.nossamaternidade.app",

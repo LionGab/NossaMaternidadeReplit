@@ -3,7 +3,7 @@ import { View, Text, Pressable, Modal } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Animated, { FadeIn, FadeInUp, ZoomIn } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
-import { useCheckInStore } from "../state/store";
+import { useCheckInStore } from "../state";
 import { useTheme } from "../hooks/useTheme";
 import {
   Tokens,

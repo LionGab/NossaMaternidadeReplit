@@ -21,7 +21,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import * as Haptics from "expo-haptics";
 
 import { MainTabScreenProps } from "@/types/navigation";
-import { useAppStore } from "@/state/store";
+import { useAppStore } from "@/state";
 import { useTheme } from "@/hooks/useTheme";
 import {
   FloScreenWrapper,

@@ -12,7 +12,7 @@
  */
 
 import { useCallback, useRef } from "react";
-import { useChatStore } from "../state/store";
+import { useChatStore } from "../state";
 import { supabase } from "../api/supabase";
 import { AIMessage, AIResponse } from "../types/ai";
 import { logger } from "../utils/logger";
