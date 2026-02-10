@@ -1,12 +1,12 @@
 /**
  * ModerationScreen - Tela de Moderação de Conteúdo
- * 
+ *
  * Permite ao time revisar posts pendentes:
  * - Lista os melhores posts para aprovação (ranqueados por qualidade)
  * - Mostra score de qualidade e flags de moderação
  * - Aprovar/Rejeitar com um toque
  * - Estatísticas em tempo real
- * 
+ *
  * Design Premium 2025
  */
 
@@ -79,7 +79,11 @@ const ModeratedItemCard = React.memo(function ModeratedItemCard({
       entering={FadeInDown.delay(index * 50).duration(300)}
       exiting={FadeOut.duration(200)}
     >
-      <NathCard variant="elevated" style={[styles.itemCard, { backgroundColor: bgCard }]} padding="lg">
+      <NathCard
+        variant="elevated"
+        style={[styles.itemCard, { backgroundColor: bgCard }]}
+        padding="lg"
+      >
         {/* Header */}
         <View style={styles.itemHeader}>
           <View style={styles.userInfo}>
@@ -183,7 +187,7 @@ export default function ModerationScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
   const { isDark } = useTheme();
   const { user } = useAuth();
-  
+
   const [items, setItems] = useState<ModerationQueueItem[]>([]);
   const [stats, setStats] = useState<ModerationStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -199,9 +203,7 @@ export default function ModerationScreen({ navigation }: Props) {
 
   const loadData = useCallback(async () => {
     const [queueResult, statsResult] = await Promise.all([
-      filter === "best" 
-        ? fetchTopPostsForReview(200) 
-        : fetchModerationQueue(100, "pending"),
+      filter === "best" ? fetchTopPostsForReview(200) : fetchModerationQueue(100, "pending"),
       fetchModerationStats(),
     ]);
 
@@ -220,27 +222,30 @@ export default function ModerationScreen({ navigation }: Props) {
     setIsRefreshing(false);
   };
 
-  const handleApprove = useCallback(async (item: ModerationQueueItem) => {
-    await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+  const handleApprove = useCallback(
+    async (item: ModerationQueueItem) => {
+      await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
 
-    const { success, error } = await approvePost(item.id, user?.id || "");
+      const { success, error } = await approvePost(item.id, user?.id || "");
 
-    if (success) {
-      setItems((prev) => prev.filter((i) => i.id !== item.id));
-      setStats((previousStats) => {
-        if (!previousStats) {
-          return previousStats;
-        }
-        return {
-          ...previousStats,
-          pending: previousStats.pending - 1,
-          approved: previousStats.approved + 1,
-        };
-      });
-    } else {
-      Alert.alert("Erro", error?.message || "Não foi possível aprovar o post.");
-    }
-  }, [user?.id]);
+      if (success) {
+        setItems((prev) => prev.filter((i) => i.id !== item.id));
+        setStats((previousStats) => {
+          if (!previousStats) {
+            return previousStats;
+          }
+          return {
+            ...previousStats,
+            pending: previousStats.pending - 1,
+            approved: previousStats.approved + 1,
+          };
+        });
+      } else {
+        Alert.alert("Erro", error?.message || "Não foi possível aprovar o post.");
+      }
+    },
+    [user?.id]
+  );
 
   const handleReject = useCallback((item: ModerationQueueItem) => {
     setRejectingId(item.id);
@@ -249,17 +254,17 @@ export default function ModerationScreen({ navigation }: Props) {
 
   const confirmReject = async () => {
     if (!rejectingId) return;
-    
+
     await Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
-    
+
     const { success, error } = await rejectPost(
       rejectingId,
       user?.id || "",
       rejectReason || "Conteúdo não aprovado"
     );
-    
+
     if (success) {
-      setItems(prev => prev.filter(i => i.id !== rejectingId));
+      setItems((prev) => prev.filter((i) => i.id !== rejectingId));
       if (stats) {
         setStats({
           ...stats,
@@ -270,7 +275,7 @@ export default function ModerationScreen({ navigation }: Props) {
     } else {
       Alert.alert("Erro", error?.message || "Não foi possível rejeitar o post.");
     }
-    
+
     setRejectingId(null);
     setRejectReason("");
   };
@@ -297,7 +302,12 @@ export default function ModerationScreen({ navigation }: Props) {
         colors={[mockupColors.rosa.blush, mockupColors.azul.sereno + "30"]}
         style={styles.header}
       >
-        <Pressable onPress={() => navigation.goBack()} style={styles.backBtn} accessibilityRole="button" accessibilityLabel="Voltar">
+        <Pressable
+          onPress={() => navigation.goBack()}
+          style={styles.backBtn}
+          accessibilityRole="button"
+          accessibilityLabel="Voltar"
+        >
           <Ionicons name="arrow-back" size={24} color={textPrimary} />
         </Pressable>
         <Title style={{ color: textPrimary }}>Moderação</Title>
@@ -344,10 +354,7 @@ export default function ModerationScreen({ navigation }: Props) {
           onPress={() => setFilter("best")}
           accessibilityRole="button"
           accessibilityLabel="Filtrar por top 200 melhores posts"
-          style={[
-            styles.filterBtn,
-            filter === "best" && styles.filterBtnActive,
-          ]}
+          style={[styles.filterBtn, filter === "best" && styles.filterBtnActive]}
         >
           <Filter size={14} color={filter === "best" ? brand.accent[600] : textSecondary} />
           <Caption style={{ color: filter === "best" ? brand.accent[600] : textSecondary }}>
@@ -358,10 +365,7 @@ export default function ModerationScreen({ navigation }: Props) {
           onPress={() => setFilter("all")}
           accessibilityRole="button"
           accessibilityLabel="Filtrar por todos os posts pendentes"
-          style={[
-            styles.filterBtn,
-            filter === "all" && styles.filterBtnActive,
-          ]}
+          style={[styles.filterBtn, filter === "all" && styles.filterBtnActive]}
         >
           <Caption style={{ color: filter === "all" ? brand.accent[600] : textSecondary }}>
             Todos Pendentes
@@ -380,9 +384,7 @@ export default function ModerationScreen({ navigation }: Props) {
       ) : items.length === 0 ? (
         <View style={styles.emptyContainer}>
           <Shield size={48} color={brand.teal[400]} />
-          <Subtitle style={{ color: textPrimary, marginTop: 16 }}>
-            Nenhum post pendente!
-          </Subtitle>
+          <Subtitle style={{ color: textPrimary, marginTop: 16 }}>Nenhum post pendente!</Subtitle>
           <Caption style={{ color: textSecondary, textAlign: "center", marginTop: 8 }}>
             Todos os posts foram moderados. Volte mais tarde.
           </Caption>
@@ -411,9 +413,7 @@ export default function ModerationScreen({ navigation }: Props) {
             entering={FadeInDown.duration(200)}
             style={[styles.modal, { backgroundColor: bgCard }]}
           >
-            <Title style={{ color: textPrimary, marginBottom: 16 }}>
-              Motivo da Rejeição
-            </Title>
+            <Title style={{ color: textPrimary, marginBottom: 16 }}>Motivo da Rejeição</Title>
 
             {REJECTION_REASONS.map((reason, idx) => (
               <Pressable
@@ -421,12 +421,11 @@ export default function ModerationScreen({ navigation }: Props) {
                 onPress={() => setRejectReason(reason)}
                 accessibilityRole="button"
                 accessibilityLabel={`Selecionar motivo: ${reason}`}
-                style={[
-                  styles.reasonOption,
-                  rejectReason === reason && styles.reasonOptionActive,
-                ]}
+                style={[styles.reasonOption, rejectReason === reason && styles.reasonOptionActive]}
               >
-                <Caption style={{ color: rejectReason === reason ? brand.accent[600] : textPrimary }}>
+                <Caption
+                  style={{ color: rejectReason === reason ? brand.accent[600] : textPrimary }}
+                >
                   {reason}
                 </Caption>
               </Pressable>

@@ -1,7 +1,7 @@
 /**
  * useCloseFriends Hook
  * Verifica se o usuário atual é "Close Friend" da Nath
- * 
+ *
  * Close Friends têm acesso a conteúdo exclusivo no MundodaNath
  */
 
@@ -17,11 +17,11 @@ interface UseCloseFriendsReturn {
 
 /**
  * Hook para verificar se o usuário atual é Close Friend
- * 
+ *
  * Critérios para ser Close Friend:
  * 1. Ser assinante Premium ativo (acesso ao conteúdo exclusivo via RevenueCat)
  * 2. Estar autenticado no app
- * 
+ *
  * @example
  * const { isCloseFriend } = useCloseFriends();
  * if (isCloseFriend) {
@@ -47,7 +47,7 @@ export function useCloseFriends(): UseCloseFriendsReturn {
     if (!isCloseFriend) {
       return null;
     }
-    
+
     const activeEntitlements = customerInfo?.entitlements?.active;
     if (activeEntitlements) {
       const premiumEntitlement = activeEntitlements.premium || activeEntitlements.Pro;
@@ -55,7 +55,7 @@ export function useCloseFriends(): UseCloseFriendsReturn {
         return new Date(premiumEntitlement.originalPurchaseDate);
       }
     }
-    
+
     return null;
   }, [isCloseFriend, customerInfo]);
 

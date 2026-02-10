@@ -13,4 +13,3 @@ export async function toggleHabit(input: ToggleHabitInput): Promise<Habit[]> {
   useHabitsStore.getState().toggleHabit(input.habitId, input.date);
   return useHabitsStore.getState().habits;
 }
-

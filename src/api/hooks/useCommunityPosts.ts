@@ -15,4 +15,3 @@ export function useCommunityPosts(limit: number = 20, offset: number = 0) {
     },
   });
 }
-

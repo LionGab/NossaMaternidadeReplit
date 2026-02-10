@@ -177,9 +177,7 @@ export function useStreaming() {
             break;
           }
 
-          const endpointErrorBody = await endpointResponse
-            .text()
-            .catch(() => "(empty response)");
+          const endpointErrorBody = await endpointResponse.text().catch(() => "(empty response)");
           lastEndpointError = new Error(
             `Endpoint ${endpoint} unavailable: ${endpointResponse.status} ${endpointErrorBody}`
           );

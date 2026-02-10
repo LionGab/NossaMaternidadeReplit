@@ -22,4 +22,3 @@ export function createWrapper() {
     return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
   };
 }
-

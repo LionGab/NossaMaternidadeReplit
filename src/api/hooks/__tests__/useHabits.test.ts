@@ -38,4 +38,3 @@ describe("useHabits", () => {
     expect(result.current.error?.message).toBe("Habits failed");
   });
 });
-

@@ -1,8 +1,4 @@
-import {
-  updateCycleSettings,
-  upsertDailyLog,
-  type UpdateCycleSettingsInput,
-} from "@/api/cycle";
+import { updateCycleSettings, upsertDailyLog, type UpdateCycleSettingsInput } from "@/api/cycle";
 import { cycleKeys } from "@/api/queryKeys";
 import type { DailyLog } from "@/types/navigation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -28,4 +24,3 @@ export function useSaveCycleDailyLog() {
     },
   });
 }
-

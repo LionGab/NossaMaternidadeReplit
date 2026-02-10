@@ -40,6 +40,7 @@ YourAppName/
 ## 📊 ESTATÍSTICAS DO PROJETO
 
 ### Código:
+
 - **Linhas de código**: ~2,500+
 - **Arquivos Swift**: 6
 - **Testes**: 80+
@@ -47,6 +48,7 @@ YourAppName/
 - **SwiftLint Compliance**: ✅
 
 ### Funcionalidades:
+
 - **Views**: 10+
 - **Models**: 5+
 - **Services**: 2 (Auth, Database)
@@ -58,6 +60,7 @@ YourAppName/
 ## 🎯 RESPONSABILIDADES POR ARQUIVO
 
 ### App.swift (Entry Point)
+
 ```
 - AppDelegate setup
 - Scene configuration
@@ -68,6 +71,7 @@ YourAppName/
 ```
 
 ### ContentView.swift (Main Views)
+
 ```
 Views:
 ├── LoadingView          # Splash/Loading screen
@@ -83,6 +87,7 @@ Components:
 ```
 
 ### AuthenticationView.swift (Auth Flow)
+
 ```
 Views:
 ├── AuthenticationView   # Login screen
@@ -98,6 +103,7 @@ Features:
 ```
 
 ### Models.swift (Data Layer)
+
 ```
 Models:
 ├── User                # User model
@@ -115,6 +121,7 @@ Extensions:
 ```
 
 ### SupabaseClient.swift (Networking)
+
 ```
 Services:
 ├── SupabaseClient     # Singleton client
@@ -138,6 +145,7 @@ Features:
 ```
 
 ### Tests.swift (Quality Assurance)
+
 ```
 Test Suites:
 ├── UserModelTests           # User model logic
@@ -216,6 +224,7 @@ SwiftUI Re-render
 ## 📦 DEPENDÊNCIAS
 
 ### Externas:
+
 ```
 NENHUMA! 🎉
 
@@ -227,6 +236,7 @@ Este projeto é 100% nativo:
 ```
 
 ### Internas:
+
 ```
 - SupabaseClient (custom implementation)
 - Error handling utilities
@@ -239,6 +249,7 @@ Este projeto é 100% nativo:
 ## 🎨 DESIGN SYSTEM
 
 ### Cores:
+
 ```swift
 - Primary: Color.blue
 - Secondary: Color(.secondarySystemBackground)
@@ -248,6 +259,7 @@ Este projeto é 100% nativo:
 ```
 
 ### Tipografia:
+
 ```swift
 - Title: .title / .largeTitle
 - Headline: .headline
@@ -257,6 +269,7 @@ Este projeto é 100% nativo:
 ```
 
 ### Espaçamento:
+
 ```swift
 - Small: 8pt
 - Medium: 16pt
@@ -265,6 +278,7 @@ Este projeto é 100% nativo:
 ```
 
 ### Animações:
+
 ```swift
 - Duration: 0.3s
 - Curve: .easeInOut / .spring
@@ -276,6 +290,7 @@ Este projeto é 100% nativo:
 ## 🔐 SEGURANÇA
 
 ### Dados Sensíveis:
+
 ```
 ✅ Environment variables (.env)
 ✅ UserDefaults (session - migrar para Keychain)
@@ -285,6 +300,7 @@ Este projeto é 100% nativo:
 ```
 
 ### Próximos Passos:
+
 ```
 ⏳ Keychain para tokens
 ⏳ Certificate pinning
@@ -297,6 +313,7 @@ Este projeto é 100% nativo:
 ## 📊 MÉTRICAS DE QUALIDADE
 
 ### Code Quality:
+
 ```
 ✅ SwiftLint: 0 errors
 ✅ Warnings: 0
@@ -307,6 +324,7 @@ Este projeto é 100% nativo:
 ```
 
 ### Performance:
+
 ```
 ✅ Launch Time: < 2s
 ✅ Memory Usage: < 100MB
@@ -316,6 +334,7 @@ Este projeto é 100% nativo:
 ```
 
 ### UX:
+
 ```
 ✅ Loading States: Everywhere
 ✅ Error States: Handled
@@ -329,6 +348,7 @@ Este projeto é 100% nativo:
 ## 🚀 BUILD PROCESS
 
 ### Development:
+
 ```bash
 1. ⌘ + R           # Run
 2. ⌘ + U           # Test
@@ -337,6 +357,7 @@ Este projeto é 100% nativo:
 ```
 
 ### TestFlight:
+
 ```bash
 1. Archive         # ⌘ + Shift + B
 2. Validate        # Organizer → Validate
@@ -351,6 +372,7 @@ Este projeto é 100% nativo:
 ## 📈 ROADMAP
 
 ### MVP (✅ Completo):
+
 - [x] Autenticação
 - [x] Home feed
 - [x] Profile
@@ -360,6 +382,7 @@ Este projeto é 100% nativo:
 - [x] Tests
 
 ### V1.1:
+
 - [ ] Keychain integration
 - [ ] Firebase Crashlytics
 - [ ] Analytics
@@ -367,6 +390,7 @@ Este projeto é 100% nativo:
 - [ ] Deep linking
 
 ### V2.0:
+
 - [ ] Offline mode
 - [ ] Core Data persistence
 - [ ] Background sync
@@ -378,17 +402,20 @@ Este projeto é 100% nativo:
 ## 🎯 COMO USAR ESTE PROJETO
 
 ### Para Desenvolvedores:
+
 1. Ler `QUICKSTART.md` para começar
 2. Seguir `README.md` para entender
 3. Consultar `TESTFLIGHT_GUIDE.md` para deploy
 
 ### Para Revisão de Código:
+
 1. Começar por `App.swift` (entry point)
 2. Seguir para `Models.swift` (data layer)
 3. Revisar `SupabaseClient.swift` (networking)
 4. Verificar `Tests.swift` (coverage)
 
 ### Para TestFlight:
+
 1. Executar `build_for_testflight.sh`
 2. Ou seguir manual em `TESTFLIGHT_GUIDE.md`
 
@@ -432,4 +459,4 @@ Este projeto é 100% nativo:
 
 **Estrutura criada com ❤️ e excelência técnica.**
 
-*Última atualização: 2026-02-10*
+_Última atualização: 2026-02-10_

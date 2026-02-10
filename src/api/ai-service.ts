@@ -283,9 +283,11 @@ export async function getNathIAResponse(
             retryable: (error) => {
               if (isAppError(error)) {
                 // Não retry em erros que não devem ser retentados
-                return ![ErrorCode.UNAUTHORIZED, ErrorCode.FORBIDDEN, ErrorCode.INVALID_INPUT].includes(
-                  error.code as ErrorCode
-                );
+                return ![
+                  ErrorCode.UNAUTHORIZED,
+                  ErrorCode.FORBIDDEN,
+                  ErrorCode.INVALID_INPUT,
+                ].includes(error.code as ErrorCode);
               }
               return true;
             },

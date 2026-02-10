@@ -8,7 +8,15 @@
  * Baseado em Apple HIG e Material Design 3
  */
 
-import { accent, brand, feeling as feelingColors, gradients, neutral, overlay, semantic } from "../theme/tokens";
+import {
+  accent,
+  brand,
+  feeling as feelingColors,
+  gradients,
+  neutral,
+  overlay,
+  semantic,
+} from "../theme/tokens";
 
 // Re-exporta colors do tokens com compatibilidade
 export const Colors = {

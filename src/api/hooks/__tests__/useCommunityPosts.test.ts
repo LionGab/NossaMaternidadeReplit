@@ -43,4 +43,3 @@ describe("useCommunityPosts", () => {
     expect(result.current.error?.message).toBe("Network error");
   });
 });
-

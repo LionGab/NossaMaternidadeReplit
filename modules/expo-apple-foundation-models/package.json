@@ -5,9 +5,14 @@
   "main": "index.js",
   "types": "index.d.ts",
   "license": "MIT",
-  "keywords": ["expo", "react-native", "ios", "apple-intelligence", "foundation-models"],
+  "keywords": [
+    "expo",
+    "react-native",
+    "ios",
+    "apple-intelligence",
+    "foundation-models"
+  ],
   "peerDependencies": {
     "expo-modules-core": "*"
   }
 }
-

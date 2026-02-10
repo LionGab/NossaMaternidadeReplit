@@ -18,4 +18,3 @@ export async function updateUserAiMetadata(data: Record<string, unknown>): Promi
 
   logger.info("AI metadata synced to Supabase", CONTEXT, data);
 }
-

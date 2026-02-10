@@ -134,16 +134,18 @@ const MundoDaNathScreenRedesign = withSuspense(
 const PaywallScreen = withSuspense(lazy(() => import("../screens/premium/PaywallScreenRedesign")));
 
 // Legal screens
-const PrivacyPolicyScreen = withSuspense(lazy(() => import("../screens/legal/PrivacyPolicyScreen")));
-const TermsOfServiceScreen = withSuspense(lazy(() => import("../screens/legal/TermsOfServiceScreen")));
+const PrivacyPolicyScreen = withSuspense(
+  lazy(() => import("../screens/legal/PrivacyPolicyScreen"))
+);
+const TermsOfServiceScreen = withSuspense(
+  lazy(() => import("../screens/legal/TermsOfServiceScreen"))
+);
 
 // Admin Screens - Lazy loaded (restricted access)
 const AdminDashboardScreen = withSuspense(
   lazy(() => import("../screens/admin/AdminDashboardScreen"))
 );
-const ModerationScreen = withSuspense(
-  lazy(() => import("../screens/admin/ModerationScreen"))
-);
+const ModerationScreen = withSuspense(lazy(() => import("../screens/admin/ModerationScreen")));
 const AdminPostsListScreen = withSuspense(
   lazy(() => import("../screens/admin/AdminPostsListScreen"))
 );

@@ -13,6 +13,7 @@
 ### 1. Xcode Project Settings
 
 #### General Tab:
+
 - [ ] Bundle Identifier único (com.seudominio.seuapp)
 - [ ] Version: 1.0.0
 - [ ] Build: 1 (incrementar a cada upload)
@@ -20,12 +21,14 @@
 - [ ] Team selecionado
 
 #### Signing & Capabilities:
+
 - [ ] Automatically manage signing: ✅
 - [ ] Team correto selecionado
 - [ ] Signing Certificate: Apple Distribution
 - [ ] Provisioning Profile: App Store
 
 #### Build Settings:
+
 - [ ] Code Signing Identity: Apple Distribution
 - [ ] Development Team: Seu time
 - [ ] Enable Bitcode: No (deprecated)
@@ -53,6 +56,7 @@
 ## 🧪 Testes Finais
 
 ### Code Quality:
+
 ```bash
 # Rodar SwiftLint
 swiftlint
@@ -78,6 +82,7 @@ iPhone SE, iPhone 15, iPhone 15 Pro Max, iPad
 - [ ] Testado com VoiceOver
 
 ### Funcionalidades:
+
 - [ ] Login/Logout funcionando
 - [ ] Navegação fluida
 - [ ] Loading states corretos
@@ -110,6 +115,7 @@ xcodebuild clean -project YourApp.xcodeproj -scheme YourApp
 ### 3. Validate App
 
 No Organizer:
+
 1. Selecione o archive recém-criado
 2. Clique "Validate App"
 3. Escolha "App Store Connect"
@@ -139,6 +145,7 @@ No Organizer:
 Acesse: https://appstoreconnect.apple.com
 
 #### App Information:
+
 - [ ] Nome do app
 - [ ] Idioma principal: Português (Brasil)
 - [ ] Bundle ID
@@ -147,6 +154,7 @@ Acesse: https://appstoreconnect.apple.com
 - [ ] Categoria secundária (opcional)
 
 #### Pricing and Availability:
+
 - [ ] Preço: Grátis ou definir valor
 - [ ] Países disponíveis
 - [ ] Data de disponibilidade
@@ -154,6 +162,7 @@ Acesse: https://appstoreconnect.apple.com
 ### 2. TestFlight Configuration
 
 #### Test Information:
+
 - [ ] Beta App Description (descrever o que testar)
 - [ ] Feedback Email
 - [ ] Marketing URL (opcional)
@@ -161,6 +170,7 @@ Acesse: https://appstoreconnect.apple.com
 - [ ] Test Instructions (instruções para testers)
 
 #### What to Test (exemplo):
+
 ```
 📱 Bem-vindo ao Beta Test!
 
@@ -192,10 +202,12 @@ Use o botão de feedback do TestFlight ou envie email para: feedback@seuapp.com
 ### 3. Adicionar Beta Testers
 
 #### Internal Testing (até 100 testers):
+
 - [ ] Adicionar membros do time
 - [ ] Ativar testing automático
 
 #### External Testing (até 10,000 testers):
+
 1. Criar grupo de teste
 2. Adicionar testers por:
    - [ ] Email individual
@@ -207,6 +219,7 @@ Use o botão de feedback do TestFlight ou envie email para: feedback@seuapp.com
 ### 4. Build Processing
 
 Aguarde processamento do build:
+
 - **Status**: "Processing" → "Ready to Submit" → "Testing"
 - **Tempo**: ~10-30 minutos (pode variar)
 - Você receberá email quando estiver pronto
@@ -248,21 +261,25 @@ Aguarde processamento do build:
 ### Build falhou na validação:
 
 **Error: Missing Compliance**
+
 ```
 Solução: Adicionar ITSAppUsesNonExemptEncryption no Info.plist
 ```
 
 **Error: Invalid Bundle**
+
 ```
 Solução: Verificar Bundle ID e Signing
 ```
 
 **Error: Missing Icon**
+
 ```
 Solução: Adicionar App Icon 1024x1024
 ```
 
 **Error: Missing Privacy Description**
+
 ```
 Solução: Adicionar NS*UsageDescription no Info.plist
 ```
@@ -288,12 +305,14 @@ FirebaseApp.configure()
 ## 📊 Métricas e Analytics
 
 ### TestFlight Metrics:
+
 - Sessions
 - Crashes
 - Feedback
 - Adoption rate
 
 ### Adicionar Analytics:
+
 ```swift
 // Firebase Analytics
 import FirebaseAnalytics
@@ -334,6 +353,7 @@ Analytics.logEvent("screen_view", parameters: [
 ## ✅ Checklist Final
 
 ### Antes do Upload:
+
 - [ ] Version e Build incrementados
 - [ ] Testes passando
 - [ ] Código limpo (SwiftLint)
@@ -343,6 +363,7 @@ Analytics.logEvent("screen_view", parameters: [
 - [ ] Archive criado com sucesso
 
 ### App Store Connect:
+
 - [ ] App criado
 - [ ] Informações preenchidas
 - [ ] TestFlight configurado
@@ -351,6 +372,7 @@ Analytics.logEvent("screen_view", parameters: [
 - [ ] Feedback sendo coletado
 
 ### Release:
+
 - [ ] Screenshots prontos
 - [ ] Descrição escrita
 - [ ] Keywords definidos

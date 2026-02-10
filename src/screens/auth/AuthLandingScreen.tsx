@@ -67,7 +67,8 @@ const PRIVACY_URL = "https://nossamaternidade.com.br/privacidade";
 
 const METADATA = {
   title: "Nossa Maternidade | Login",
-  description: "Entre com sua conta ou crie uma nova para acessar conteúdo personalizado sobre maternidade.",
+  description:
+    "Entre com sua conta ou crie uma nova para acessar conteúdo personalizado sobre maternidade.",
 };
 
 // ===========================================

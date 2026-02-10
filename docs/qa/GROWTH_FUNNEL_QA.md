@@ -105,6 +105,7 @@ LIMIT 20;
 ```
 
 **Esperado:**
+
 - [ ] 1 linha por toque válido (deep link com UTM)
 - [ ] `source`, `campaign`, `content_id`, `creator_cta_id` preenchidos conforme link
 
@@ -117,6 +118,7 @@ LIMIT 20;
 ```
 
 **Esperado:**
+
 - [ ] 1 linha por exibição do paywall
 - [ ] `experiment_name`, `variant` preenchidos
 
@@ -129,6 +131,7 @@ LIMIT 20;
 ```
 
 **Esperado:**
+
 - [ ] 1 linha por ação (purchased, cancelled, restored, restore_failed, skipped)
 - [ ] `outcome_type` coerente com ação do usuário
 
@@ -141,6 +144,7 @@ LIMIT 20;
 ```
 
 **Esperado:**
+
 - [ ] Contadores atualizados por `source`, `content_id`, `creator_cta_id`
 - [ ] `day_date` = data do teste
 
@@ -180,28 +184,29 @@ LIMIT 10;
 ```
 
 **Esperado:**
+
 - [ ] Inserção em `notification_queue` com `journey_name` e `payload` corretos
 
 ---
 
 ## 7. Critérios de Aceite (Checklist Final)
 
-| # | Critério | Status |
-|---|----------|--------|
-| 1 | 1 linha em `user_attribution` por toque válido (deep link UTM) | [ ] |
-| 2 | Exposição registrada em `paywall_exposures` | [ ] |
-| 3 | Outcome correto em `paywall_outcomes` (purchased/cancelled/restored/skipped) | [ ] |
-| 4 | Contadores atualizados em `creator_content_performance` | [ ] |
-| 5 | Sem regressão de navegação (onboarding → paywall → CTA) | [ ] |
-| 6 | Sem regressão de compra (trial/restore/skip funcionam) | [ ] |
-| 7 | `/enqueue-journey` insere em `notification_queue` | [ ] |
+| #   | Critério                                                                     | Status |
+| --- | ---------------------------------------------------------------------------- | ------ |
+| 1   | 1 linha em `user_attribution` por toque válido (deep link UTM)               | [ ]    |
+| 2   | Exposição registrada em `paywall_exposures`                                  | [ ]    |
+| 3   | Outcome correto em `paywall_outcomes` (purchased/cancelled/restored/skipped) | [ ]    |
+| 4   | Contadores atualizados em `creator_content_performance`                      | [ ]    |
+| 5   | Sem regressão de navegação (onboarding → paywall → CTA)                      | [ ]    |
+| 6   | Sem regressão de compra (trial/restore/skip funcionam)                       | [ ]    |
+| 7   | `/enqueue-journey` insere em `notification_queue`                            | [ ]    |
 
 ---
 
 ## 8. Evidências e Notas
 
 | Data | Executor | Deep Link Testado | Resultado | Observações |
-|------|----------|-------------------|-----------|-------------|
+| ---- | -------- | ----------------- | --------- | ----------- |
 |      |          |                   |           |             |
 
 ---

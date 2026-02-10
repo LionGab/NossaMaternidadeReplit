@@ -2,9 +2,10 @@
 
 ## ⚠️ Arquivos Swift Removidos
 
-Os arquivos Swift foram **removidos a pedido do usuário**. 
+Os arquivos Swift foram **removidos a pedido do usuário**.
 
 ### Arquivos Removidos:
+
 - ❌ `App.swift` - Entry point com App State Management
 - ❌ `ContentView.swift` - Views principais (Home, Profile, Explore)
 - ❌ `AuthenticationView.swift` - Login/SignUp flows
@@ -17,6 +18,7 @@ Os arquivos Swift foram **removidos a pedido do usuário**.
 ## ✅ Arquivos Mantidos
 
 ### 📚 Documentação Completa:
+
 - ✅ `README.md` - Documentação geral
 - ✅ `TESTFLIGHT_GUIDE.md` - Guia para TestFlight
 - ✅ `EXECUTIVE_SUMMARY.md` - Resumo executivo
@@ -24,6 +26,7 @@ Os arquivos Swift foram **removidos a pedido do usuário**.
 - ✅ `PROJECT_STRUCTURE.md` - Estrutura do projeto
 
 ### ⚙️ Configuração:
+
 - ✅ `Info.plist` - Configurações iOS
 - ✅ `.swiftlint.yml` - Regras de qualidade
 - ✅ `.gitignore` - Git ignore rules
@@ -31,6 +34,7 @@ Os arquivos Swift foram **removidos a pedido do usuário**.
 - ✅ `Package.swift` - SPM configuration
 
 ### 🤖 Automação:
+
 - ✅ `build_for_testflight.sh` - Build script
 - ✅ `.github/workflows/ios-ci-cd.yml` - CI/CD pipeline
 - ✅ `remove_swift_files.sh` - Script de limpeza
@@ -51,16 +55,16 @@ Todos os detalhes de implementação estão documentados para referência futura
 
 ## 📞 Documentação Disponível
 
-| Documento | Descrição | Status |
-|-----------|-----------|--------|
-| `README.md` | Visão geral e setup | ✅ Disponível |
-| `TESTFLIGHT_GUIDE.md` | Guia para TestFlight | ✅ Disponível |
-| `EXECUTIVE_SUMMARY.md` | Resumo executivo | ✅ Disponível |
-| `QUICKSTART.md` | Quick start (5 min) | ✅ Disponível |
-| `PROJECT_STRUCTURE.md` | Estrutura completa | ✅ Disponível |
-| `Info.plist` | Configurações iOS | ✅ Disponível |
-| `.swiftlint.yml` | Regras de qualidade | ✅ Disponível |
-| `build_for_testflight.sh` | Build automation | ✅ Disponível |
+| Documento                 | Descrição            | Status        |
+| ------------------------- | -------------------- | ------------- |
+| `README.md`               | Visão geral e setup  | ✅ Disponível |
+| `TESTFLIGHT_GUIDE.md`     | Guia para TestFlight | ✅ Disponível |
+| `EXECUTIVE_SUMMARY.md`    | Resumo executivo     | ✅ Disponível |
+| `QUICKSTART.md`           | Quick start (5 min)  | ✅ Disponível |
+| `PROJECT_STRUCTURE.md`    | Estrutura completa   | ✅ Disponível |
+| `Info.plist`              | Configurações iOS    | ✅ Disponível |
+| `.swiftlint.yml`          | Regras de qualidade  | ✅ Disponível |
+| `build_for_testflight.sh` | Build automation     | ✅ Disponível |
 
 ---
 
@@ -77,6 +81,7 @@ chmod +x remove_swift_files.sh
 ```
 
 Ou remover manualmente:
+
 ```bash
 rm -f App.swift
 rm -f ContentView.swift

@@ -8,11 +8,11 @@
 
 ## Publico-Alvo
 
-| Segmento | Faixa | Perfil |
-|---|---|---|
-| **Core** | Mulheres 18-28 anos | Seguidoras da Natalia, primeira gravidez ou pos-parto |
-| **Amplo** | Mulheres 18-40 anos | Interessadas em maternidade, bem-estar, lifestyle |
-| **Demografico** | Classe C/B | Brasil, com interesse em empreendedorismo feminino |
+| Segmento        | Faixa               | Perfil                                                |
+| --------------- | ------------------- | ----------------------------------------------------- |
+| **Core**        | Mulheres 18-28 anos | Seguidoras da Natalia, primeira gravidez ou pos-parto |
+| **Amplo**       | Mulheres 18-40 anos | Interessadas em maternidade, bem-estar, lifestyle     |
+| **Demografico** | Classe C/B          | Brasil, com interesse em empreendedorismo feminino    |
 
 ### Personas Principais
 
@@ -24,32 +24,32 @@
 
 ## Precificacao
 
-| Plano | Preco | Desconto |
-|---|---|---|
-| **Mensal** | R$29,90/mes | - |
-| **Anual** | R$249,90/ano | ~30% off vs mensal |
+| Plano      | Preco        | Desconto           |
+| ---------- | ------------ | ------------------ |
+| **Mensal** | R$29,90/mes  | -                  |
+| **Anual**  | R$249,90/ano | ~30% off vs mensal |
 
 ### Free vs Premium
 
-| Feature | Free | Premium |
-|---|---|---|
-| Feed publico | Ilimitado | Ilimitado |
-| IA da Nat (texto) | 6 msgs/dia | Ilimitado |
-| IA da Nat (voz) | - | Ilimitado (futuro) |
-| Habit Tracker | Basico | Completo + historico |
-| Mundo da Nat | - | Acesso total |
-| Comunidade | - | Acesso total |
-| Impacto Social | - | Acesso total (futuro) |
-| Desafios mensais | - | Participacao + selos |
+| Feature           | Free       | Premium               |
+| ----------------- | ---------- | --------------------- |
+| Feed publico      | Ilimitado  | Ilimitado             |
+| IA da Nat (texto) | 6 msgs/dia | Ilimitado             |
+| IA da Nat (voz)   | -          | Ilimitado (futuro)    |
+| Habit Tracker     | Basico     | Completo + historico  |
+| Mundo da Nat      | -          | Acesso total          |
+| Comunidade        | -          | Acesso total          |
+| Impacto Social    | -          | Acesso total (futuro) |
+| Desafios mensais  | -          | Participacao + selos  |
 
 ## Estimativas (Conservadoras)
 
-| Metrica | Premissa | Valor |
-|---|---|---|
-| Downloads mes 1 | 5% dos 10M IG followers | 500k |
-| Conversao premium | 1-2% | 5k-10k assinantes |
-| MRR (mes 3) | 7k x R$29,90 | ~R$209k/mes |
-| Churn mensal | 8-12% | Requer conteudo constante |
+| Metrica           | Premissa                | Valor                     |
+| ----------------- | ----------------------- | ------------------------- |
+| Downloads mes 1   | 5% dos 10M IG followers | 500k                      |
+| Conversao premium | 1-2%                    | 5k-10k assinantes         |
+| MRR (mes 3)       | 7k x R$29,90            | ~R$209k/mes               |
+| Churn mensal      | 8-12%                   | Requer conteudo constante |
 
 ## Fontes de Receita
 
@@ -60,20 +60,21 @@
 
 ## Roadmap de Implementacao (8 Semanas)
 
-| Semana | Entregavel | Status |
-|---|---|---|
-| 1 | Setup + Auth + Onboarding | Implementado |
-| 2 | Feed publico + Home | Parcial (Home existe, Feed futuro) |
-| 3 | IA da Nat (texto) | Implementado |
-| 4 | Rituais da Nat (Habit Tracker) | Implementado |
-| 5 | Paywall + Assinatura | Implementado |
-| 6 | IA Voz (ElevenLabs) + Mundo da Nat | Parcial (Mundo existe, Voz futuro) |
-| 7 | Comunidade + Impacto | Parcial (Comunidade existe, Impacto futuro) |
-| 8 | Polish + Deploy | Em andamento |
+| Semana | Entregavel                         | Status                                      |
+| ------ | ---------------------------------- | ------------------------------------------- |
+| 1      | Setup + Auth + Onboarding          | Implementado                                |
+| 2      | Feed publico + Home                | Parcial (Home existe, Feed futuro)          |
+| 3      | IA da Nat (texto)                  | Implementado                                |
+| 4      | Rituais da Nat (Habit Tracker)     | Implementado                                |
+| 5      | Paywall + Assinatura               | Implementado                                |
+| 6      | IA Voz (ElevenLabs) + Mundo da Nat | Parcial (Mundo existe, Voz futuro)          |
+| 7      | Comunidade + Impacto               | Parcial (Comunidade existe, Impacto futuro) |
+| 8      | Polish + Deploy                    | Em andamento                                |
 
 ## Checklist de Deploy
 
 ### Tecnico
+
 - [x] Expo SDK 54 + React Native 0.81
 - [x] TypeScript strict mode
 - [x] TanStack Query + Zustand configurados
@@ -85,6 +86,7 @@
 - [ ] Analytics instrumentados (PostHog/Mixpanel)
 
 ### Produto
+
 - [x] Onboarding completo (9 telas)
 - [ ] Feed publico funcional
 - [x] IA texto funcionando (Gemini)
@@ -95,6 +97,7 @@
 - [ ] IA voz (ElevenLabs)
 
 ### Conteudo (Natalia)
+
 - [ ] Audio para clone de voz (10-30 min, limpo)
 - [x] Personality prompt aprovado
 - [x] Packs de habitos curados
@@ -104,6 +107,7 @@
 - [x] Frases rotativas para Habit Tracker
 
 ### Legal
+
 - [ ] Termos de uso
 - [ ] Politica de privacidade (LGPD)
 - [ ] Consentimento de uso de voz (ElevenLabs)
@@ -112,5 +116,5 @@
 
 ---
 
-*Fonte: Documento Consolidado App Nat (fev/2026)*
-*Ultima atualizacao: 2026-02-09*
+_Fonte: Documento Consolidado App Nat (fev/2026)_
+_Ultima atualizacao: 2026-02-09_

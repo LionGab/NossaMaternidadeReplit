@@ -44,4 +44,3 @@ describe("useCycleData", () => {
     expect(result.current.error?.message).toBe("Cycle fetch failed");
   });
 });
-
