@@ -153,6 +153,7 @@ module.exports = ({ config }) => {
       "expo-tracking-transparency",
       "expo-video",
       "expo-web-browser",
+      "expo-notifications",
       [
         "expo-image-picker",
         {
@@ -168,6 +169,11 @@ module.exports = ({ config }) => {
           ios: {
             // Deployment target mínimo 15.1 (requerido por expo-build-properties)
             deploymentTarget: "15.1",
+          },
+          android: {
+            // SDK 55 / RN 0.83.1 requer compileSdk e targetSdk 36
+            compileSdkVersion: 36,
+            targetSdkVersion: 36,
           },
         },
       ],

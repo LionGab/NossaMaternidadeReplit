@@ -6,10 +6,10 @@
   },
   "build": {
     "base": {
-      "node": "22.22.0",
+      "node": "20.19.4",
       "prebuildCommand": "npx expo prebuild",
       "cache": {
-        "key": "nossamaternidade-v5-splash-fix",
+        "key": "nossamaternidade-v6-sdk55",
         "paths": ["node_modules"]
       }
     },
