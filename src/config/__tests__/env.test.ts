@@ -8,6 +8,19 @@
  * When not set, tests use mocked Constants.expoConfig.extra values.
  */
 
+jest.mock("expo-constants", () => ({
+  __esModule: true,
+  default: {
+    expoConfig: {
+      extra: {
+        supabaseUrl: "https://example.supabase.co",
+        supabaseAnonKey: "example-anon-key",
+        supabaseFunctionsUrl: "https://example.supabase.co/functions/v1",
+      },
+    },
+  },
+}));
+
 import {
   getEnv,
   getEnvOrThrow,
