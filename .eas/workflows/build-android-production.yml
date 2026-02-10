@@ -3,7 +3,7 @@ name: Android production build
 on:
   push:
     branches:
-      - main
+      - release
 
 jobs:
   build_android:

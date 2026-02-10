@@ -1,8 +1,6 @@
 name: EAS Build
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
     inputs:
       platform:
@@ -79,4 +77,4 @@ jobs:
           echo "- **Profile:** ${{ github.event.inputs.profile || 'preview' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔗 [View builds on Expo](https://expo.dev/accounts/nossa-maternidade/projects/nossamaternidade-3gmjtcwmjxn4ec-nzlri/builds)" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 [View builds on Expo](https://expo.dev/accounts/liongab/projects/nossamaternidade/builds)" >> $GITHUB_STEP_SUMMARY

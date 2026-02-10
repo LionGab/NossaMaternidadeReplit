@@ -31,7 +31,9 @@ module.exports = ({ config }) => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "br.com.nossamaternidade.app",
-      buildNumber: "202602100415",
+      // Must always be >= the latest build already uploaded to App Store Connect.
+      // EAS autoIncrement will bump from this baseline for store builds.
+      buildNumber: "202602102131",
       // CRÍTICO: Habilitar Sign in with Apple (obrigatório para apps com login social)
       usesAppleSignIn: true,
       // Associated Domains para deep linking e universal links
@@ -183,7 +185,8 @@ module.exports = ({ config }) => {
       checkAutomatically: isProduction ? "NEVER" : "ON_ERROR_RECOVERY",
       // fallbackToCacheTimeout: 0 = usa embedded bundle imediatamente se cache falhar
       fallbackToCacheTimeout: 0,
-      url: "https://u.expo.dev/f4a40c9e-0c58-49a4-a48a-001353a23df4",
+      // Must match extra.eas.projectId (and the active EAS project).
+      url: "https://u.expo.dev/ec07a024-3e98-4023-af9b-1c5ecb9df2af",
       requestHeaders: {
         "expo-platform": "ios",
       },

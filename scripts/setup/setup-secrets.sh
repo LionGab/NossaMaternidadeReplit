@@ -15,15 +15,42 @@ if ! npx supabase projects list &>/dev/null; then
   exit 1
 fi
 
-# Configurar secrets (substitua pelos valores reais)
+# Configurar secrets (NUNCA hardcode secrets no repo)
 echo "📝 Configurando secrets..."
 echo ""
 
-npx supabase secrets set OPENAI_API_KEY="***REMOVED***" --project-ref "$PROJECT_REF"
-npx supabase secrets set GEMINI_API_KEY="***REMOVED***" --project-ref "$PROJECT_REF"
-npx supabase secrets set ANTHROPIC_API_KEY="***REMOVED***" --project-ref "$PROJECT_REF"
-npx supabase secrets set PERPLEXITY_API_KEY="***REMOVED***" --project-ref "$PROJECT_REF"
-npx supabase secrets set ELEVENLABS_API_KEY="***REMOVED***" --project-ref "$PROJECT_REF"
+required_vars=(
+  OPENAI_API_KEY
+  GEMINI_API_KEY
+  ANTHROPIC_API_KEY
+  PERPLEXITY_API_KEY
+  ELEVENLABS_API_KEY
+)
+
+missing=0
+for v in "${required_vars[@]}"; do
+  if [ -z "${!v}" ]; then
+    echo "❌ Missing env var: $v"
+    missing=1
+  fi
+done
+
+if [ "$missing" -ne 0 ]; then
+  echo ""
+  echo "Defina as variaveis acima e rode novamente. Exemplo:"
+  echo "  export OPENAI_API_KEY='sk-proj-...'"
+  echo "  export GEMINI_API_KEY='AIzaSy...'"
+  echo "  export ANTHROPIC_API_KEY='sk-ant-...'"
+  echo "  export PERPLEXITY_API_KEY='pplx-...'"
+  echo "  export ELEVENLABS_API_KEY='sk_...'"
+  exit 1
+fi
+
+npx supabase secrets set OPENAI_API_KEY="$OPENAI_API_KEY" --project-ref "$PROJECT_REF"
+npx supabase secrets set GEMINI_API_KEY="$GEMINI_API_KEY" --project-ref "$PROJECT_REF"
+npx supabase secrets set ANTHROPIC_API_KEY="$ANTHROPIC_API_KEY" --project-ref "$PROJECT_REF"
+npx supabase secrets set PERPLEXITY_API_KEY="$PERPLEXITY_API_KEY" --project-ref "$PROJECT_REF"
+npx supabase secrets set ELEVENLABS_API_KEY="$ELEVENLABS_API_KEY" --project-ref "$PROJECT_REF"
 
 echo ""
 echo "✅ Secrets configurados!"

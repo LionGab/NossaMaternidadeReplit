@@ -5,12 +5,12 @@ Este diretório contém workflows automáticos do EAS (Expo Application Services
 ## Workflows Disponíveis
 
 ### 📱 build-ios-production.yml
-- **Trigger**: Push na branch `main`
+- **Trigger**: Push na branch `release` (evita submit acidental em `main`)
 - **Ações**: Build iOS + Submit para TestFlight
 - **Profile**: production
 
 ### 🤖 build-android-production.yml  
-- **Trigger**: Push na branch `main`
+- **Trigger**: Push na branch `release` (evita submit acidental em `main`)
 - **Ações**: Build Android + Submit para Google Play (internal track)
 - **Profile**: production
 

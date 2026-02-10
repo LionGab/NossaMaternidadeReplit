@@ -21,7 +21,7 @@ SUPABASE_PROJECT_ID="lqahkqfpynypbmhtffyi"
 # ============================================
 # ElevenLabs - Text-to-Speech (Opcional)
 # ============================================
-EXPO_ELEVENLABS_API_KEY="***REMOVED***"
+EXPO_ELEVENLABS_API_KEY="sk_..."
 VOICE_ID="ux2J2EvwciGXj9xGOHNN"
 "@
 

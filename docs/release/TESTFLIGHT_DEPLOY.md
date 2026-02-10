@@ -308,7 +308,7 @@ git push origin v1.0.2
 | Apple Team ID  | `KZPW4S77UH`                           |
 | ASC App ID     | `6756980888`                           |
 | Apple ID       | `gabrielvesz_@hotmail.com`             |
-| EAS Project ID | `f4a40c9e-0c58-49a4-a48a-001353a23df4` |
+| EAS Project ID | `ec07a024-3e98-4023-af9b-1c5ecb9df2af` |
 
 ---
 

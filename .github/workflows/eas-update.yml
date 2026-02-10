@@ -4,14 +4,6 @@
 name: EAS Update
 
 on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-      - '.github/**'
-      - 'docs/**'
-
   workflow_dispatch:
     inputs:
       channel:
@@ -118,7 +110,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
-    if: github.ref == 'refs/heads/develop'
+    if: false
 
     steps:
       - name: Checkout
