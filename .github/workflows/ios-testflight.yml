@@ -20,11 +20,12 @@ jobs:
     concurrency:
       group: ios-testflight
       cancel-in-progress: false
+    env:
+      EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
 
     steps:
       - name: Check required secrets
         env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
           APPLE_ASC_API_KEY_JSON: ${{ secrets.APPLE_ASC_API_KEY_JSON }}
         run: |
           # Don't interpolate JSON secrets directly into bash; quotes would break the script.
@@ -40,12 +41,11 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
 
-      - name: Setup Expo and EAS
-        uses: expo/expo-github-action@v8
-        with:
-          expo-version: latest
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
+      - name: Install EAS CLI
+        run: |
+          npm i -g eas-cli@16.32.0
+          eas --version
+          eas whoami
 
       - name: Enable EAS local build plugin
         run: npm i -g eas-cli-local-build-plugin
