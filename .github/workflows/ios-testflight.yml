@@ -23,9 +23,13 @@ jobs:
 
     steps:
       - name: Check required secrets
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+          APPLE_ASC_API_KEY_JSON: ${{ secrets.APPLE_ASC_API_KEY_JSON }}
         run: |
-          test -n "${{ secrets.EXPO_TOKEN }}" || (echo "EXPO_TOKEN missing" && exit 1)
-          test -n "${{ secrets.APPLE_ASC_API_KEY_JSON }}" || (echo "APPLE_ASC_API_KEY_JSON missing" && exit 1)
+          # Don't interpolate JSON secrets directly into bash; quotes would break the script.
+          test -n "$EXPO_TOKEN" || (echo "EXPO_TOKEN missing" && exit 1)
+          test -n "$APPLE_ASC_API_KEY_JSON" || (echo "APPLE_ASC_API_KEY_JSON missing" && exit 1)
 
       - name: Checkout
         uses: actions/checkout@v4
