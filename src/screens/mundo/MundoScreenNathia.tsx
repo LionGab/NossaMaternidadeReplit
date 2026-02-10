@@ -1,13 +1,14 @@
 /**
- * MundoScreenNathia - Mundo da Nath (Feed de conteúdo)
- * Design inspirado no Nathia App - mundo.tsx
+ * MundoScreenNathia - Mundo da Nath
  *
- * Estrutura:
- * - Header com avatar + status ao vivo
- * - Welcome card com mensagem do dia
- * - Feed de posts (foto, destaque da comunidade, insight)
+ * Personal editorial feed by Nathalia - curated content,
+ * daily messages, community highlights, and insights.
+ * Premium design matching HomeScreen standard.
+ *
+ * @version 2.0 - Premium Redesign Feb 2026
  */
 
+import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import {
@@ -19,340 +20,509 @@ import {
   Send,
   Share2,
   Sparkles,
-  Star,
 } from "lucide-react-native";
-import React from "react";
-import { Pressable, ScrollView, StyleSheet, View } from "react-native";
+import React, { useMemo } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-// Components
-import { Body, Caption, NathAvatar, NathBadge, NathCard, Subtitle, Title } from "@/components/ui";
-import { CloseFriendsSection } from "@/components/mundo/CloseFriendsSection";
-
-// Theme
-import { Tokens, radius, shadows, spacing } from "@/theme/tokens";
-
-// Navigation
+import { useTheme } from "@/hooks/useTheme";
+import { brand, maternal, neutral, Tokens, typography, spacing, radius } from "@/theme/tokens";
 import { MainTabScreenProps } from "@/types/navigation";
+import { staggeredFadeUp } from "@/utils/animations";
+import { getGreeting } from "@/utils/greeting";
+import { shadowPresets } from "@/utils/shadow";
 
-// Logo URL
 const LOGO_URL =
   "https://vgbujcuwptvheqijyjbe.supabase.co/storage/v1/object/public/hmac-uploads/uploads/536c9e80-8601-4c9c-80ad-f85c011a033a/1769082966051-d9ef612a/logo.png";
 
-// Hero Image
 const nathWorldMomImage = require("../../../assets/images/nath-world-mom.png");
-
-// Cores do design Nathia
-const nathColors = {
-  rosa: { DEFAULT: Tokens.brand.accent[300], light: Tokens.brand.accent[100] },
-  azul: {
-    DEFAULT: Tokens.brand.primary[200],
-    light: Tokens.brand.primary[50],
-    dark: Tokens.brand.primary[300],
-  },
-  verde: {
-    DEFAULT: Tokens.brand.teal[200],
-    light: Tokens.brand.teal[50],
-    dark: Tokens.brand.teal[300],
-  },
-  laranja: {
-    DEFAULT: Tokens.maternal.warmth.peach,
-    light: Tokens.maternal.warmth.honey,
-    dark: Tokens.brand.accent[300],
-  },
-  cream: Tokens.maternal.warmth.cream,
-  white: Tokens.neutral[0],
-  text: {
-    DEFAULT: Tokens.neutral[800],
-    muted: Tokens.neutral[500],
-    light: Tokens.neutral[600],
-  },
-  border: Tokens.neutral[200],
-  input: Tokens.neutral[50],
-};
-
-// Gradients
-const gradients = {
-  rosaTOazul: [nathColors.rosa.DEFAULT, nathColors.azul.DEFAULT] as const,
-};
 
 type Props = MainTabScreenProps<"MundoNath">;
 
-export default function MundoScreenNathia({ navigation }: Props) {
+export default function MundoScreenNathia(_props: Props) {
   const insets = useSafeAreaInsets();
+  const tabBarHeight = useBottomTabBarHeight();
+  const { isDark, colors, text } = useTheme();
 
-  const handleUpgradeToPremium = () => {
-    const rootNav = navigation.getParent();
-    if (rootNav) {
-      rootNav.navigate("Paywall", { source: "close_friends" });
-    }
-  };
+  const textMain = text.primary;
+  const textSecondary = text.secondary;
+  const greeting = useMemo(() => getGreeting(), []);
 
-  const handleViewExclusiveContent = () => {
-    const rootNav = navigation.getParent();
-    if (rootNav) {
-      rootNav.navigate("ComingSoon", {
-        title: "Close Friends",
-        description: "Conteúdo exclusivo da Nath para assinantes premium. Em breve você terá acesso a diários, mensagens especiais e lives privadas!",
-        emoji: "💜",
-        primaryCtaLabel: "Voltar",
-      });
-    }
-  };
+  const gradientColors: readonly [string, string, string] = isDark
+    ? [neutral[900], neutral[800], neutral[900]]
+    : [maternal.warmth.blush, maternal.warmth.cream, brand.primary[50]];
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top }]}>
+    <LinearGradient colors={gradientColors} style={styles.container} locations={[0, 0.3, 1]}>
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.headerLeft}>
-          <View style={styles.avatarRing}>
-            <Image source={{ uri: LOGO_URL }} style={styles.avatar} contentFit="cover" />
-            <View style={styles.statusBadge}>
-              <Star size={8} color={nathColors.white} fill={nathColors.white} />
+      <Animated.View entering={staggeredFadeUp(0)}>
+        <View style={[styles.header, { paddingTop: insets.top + spacing.sm }]}>
+          <View style={styles.headerLeft}>
+            <LinearGradient
+              colors={[brand.accent[400], brand.primary[400], brand.secondary[400]]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.avatarRing}
+            >
+              <View style={[styles.avatarInner, { backgroundColor: colors.background.card }]}>
+                <Image source={{ uri: LOGO_URL }} style={styles.avatar} contentFit="cover" />
+              </View>
+            </LinearGradient>
+            <View>
+              <Text
+                style={[
+                  styles.headerTitle,
+                  { color: textMain, fontFamily: typography.fontFamily.bold },
+                ]}
+              >
+                Mundo da Nath
+              </Text>
+              <Text
+                style={[
+                  styles.headerSubtitle,
+                  { color: textSecondary, fontFamily: typography.fontFamily.base },
+                ]}
+              >
+                Conteúdo exclusivo
+              </Text>
             </View>
           </View>
-          <View>
-            <Title style={{ fontSize: 18 }}>Mundo da Nath</Title>
-            <View style={styles.liveIndicator}>
-              <View style={styles.liveDot} />
-              <Caption style={{ color: nathColors.rosa.DEFAULT }} weight="medium">
-                Ao vivo agora
-              </Caption>
-            </View>
-          </View>
-        </View>
 
-        <Pressable
-          style={({ pressed }) => [styles.bellButton, { opacity: pressed ? 0.7 : 1 }]}
-          accessibilityLabel="Notificações"
-          accessibilityRole="button"
-        >
-          <Bell size={22} color={nathColors.text.DEFAULT} />
-        </Pressable>
-      </View>
+          <Pressable
+            style={({ pressed }) => [
+              styles.bellButton,
+              {
+                backgroundColor: colors.background.card,
+                ...shadowPresets.sm,
+              },
+              pressed && { opacity: 0.7 },
+            ]}
+            accessibilityLabel="Notificações"
+            accessibilityRole="button"
+          >
+            <Bell size={20} color={textSecondary} strokeWidth={2} />
+          </Pressable>
+        </View>
+      </Animated.View>
 
       <ScrollView
         style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={[
+          styles.scrollContent,
+          { paddingBottom: tabBarHeight + spacing["3xl"] },
+        ]}
         showsVerticalScrollIndicator={false}
       >
-        {/* Close Friends Section */}
-        <CloseFriendsSection 
-          onUpgrade={handleUpgradeToPremium}
-          onViewContent={handleViewExclusiveContent}
-        />
-
         {/* Welcome Card */}
-        <LinearGradient
-          colors={[Tokens.maternal.warmth.blush, Tokens.maternal.calm.lavender]}
-          style={styles.welcomeCard}
-        >
-          <View style={styles.welcomeRow}>
-            <View style={styles.welcomeContent}>
-              <View style={styles.welcomeHeader}>
-                <NathBadge variant="muted" style={{ backgroundColor: Tokens.glass.light.soft }}>
-                  🌞 Bom dia
-                </NathBadge>
-                <Caption>8:30 AM</Caption>
-              </View>
-
-              <Subtitle style={{ marginTop: spacing.md, marginBottom: spacing.sm }}>
-                Vamos focar em nós hoje?
-              </Subtitle>
-
-              <Body style={{ color: nathColors.text.light, lineHeight: 22 }}>
-                A louça pode esperar, mas o meu café quentinho não! ☕️
-              </Body>
-            </View>
-            <Image
-              source={nathWorldMomImage}
-              style={styles.welcomeImage}
-              contentFit="contain"
-              transition={300}
-            />
-          </View>
-        </LinearGradient>
-
-        {/* Post 1: Photo Post */}
-        <NathCard variant="outlined" style={styles.postCard} padding="md">
-          <View style={styles.postHeader}>
-            <View style={styles.postAuthor}>
-              <Image source={{ uri: LOGO_URL }} style={styles.postAvatar} contentFit="cover" />
-              <View>
-                <Body weight="bold">Nathália</Body>
-                <Caption>Há 2 horas • Rotina da Manhã</Caption>
-              </View>
-            </View>
-            <Pressable
-              style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
-              accessibilityLabel="Compartilhar"
-              accessibilityRole="button"
-            >
-              <Send size={18} color={nathColors.text.muted} />
-            </Pressable>
-          </View>
-
-          <View style={styles.postImagePlaceholder}>
-            <LinearGradient colors={gradients.rosaTOazul} style={styles.imagePlaceholder}>
-              <Caption style={{ color: nathColors.white }}>📸 Imagem do momento</Caption>
-            </LinearGradient>
-          </View>
-
-          <Body style={styles.postCaption}>
-            O segredo não é ter tempo, é{" "}
-            <Body weight="bold" style={{ color: nathColors.rosa.DEFAULT }}>
-              criar tempo
-            </Body>
-            . Esses 15 minutos salvam meu dia inteiro. Tente hoje! 💖
-          </Body>
-
-          <View style={styles.postActions}>
-            <Pressable
-              style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
-              accessibilityLabel="Curtir post"
-              accessibilityRole="button"
-            >
-              <Heart size={20} color={nathColors.text.muted} />
-              <Caption>2.4k</Caption>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
-              accessibilityLabel="Comentar post"
-              accessibilityRole="button"
-            >
-              <MessageCircle size={20} color={nathColors.text.muted} />
-              <Caption>342</Caption>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [styles.shareButton, { opacity: pressed ? 0.7 : 1 }]}
-              accessibilityLabel="Compartilhar post"
-              accessibilityRole="button"
-            >
-              <Send size={20} color={nathColors.text.muted} />
-            </Pressable>
-          </View>
-        </NathCard>
-
-        {/* Post 2: Community Highlight */}
-        <NathCard
-          variant="outlined"
-          style={[styles.postCard, { borderColor: nathColors.azul.light }]}
-          padding="none"
-        >
-          <View style={styles.highlightHeader}>
-            <Sparkles size={14} color={nathColors.azul.DEFAULT} />
-            <Caption weight="bold" style={{ color: nathColors.azul.DEFAULT, letterSpacing: 1 }}>
-              DESTAQUE DA COMUNIDADE
-            </Caption>
-          </View>
-
-          <View style={{ padding: spacing.lg }}>
-            <View style={styles.communityAuthor}>
-              <NathAvatar
-                initials="MJ"
-                size="sm"
-                gradientColors={[nathColors.input, nathColors.border]}
-              />
-              <View>
-                <Caption weight="bold">Maria Júlia</Caption>
-                <Caption style={{ fontSize: 10 }}>Mãe de 2 • Postado ontem</Caption>
-              </View>
-            </View>
-
-            <View style={styles.quote}>
-              <Body style={{ fontStyle: "italic", color: nathColors.text.light }}>
-                &quot;Depois de 3 semanas seguindo a dica da Nath sobre o &apos;banho da paz&apos;
-                antes de dormir, meu bebê finalmente dormiu a noite toda! 😭🙌&quot;
-              </Body>
-            </View>
-
-            <View style={styles.nathResponse}>
-              <Image
-                source={{ uri: LOGO_URL }}
-                style={styles.nathResponseAvatar}
-                contentFit="cover"
-              />
-              <View style={styles.nathResponseContent}>
-                <Caption weight="bold">Nathália respondeu:</Caption>
-                <Caption style={{ lineHeight: 18 }}>
-                  Que emoção, Ju! 🎉 O descanso da mãe muda a casa toda. Orgulho de você por
-                  persistir!
-                </Caption>
-              </View>
-            </View>
-          </View>
-        </NathCard>
-
-        {/* Post 3: Insight Card */}
-        <LinearGradient
-          colors={[Tokens.neutral[800], Tokens.neutral[900]]}
-          style={styles.insightCard}
-        >
-          <View style={styles.insightDecor}>
-            <Quote size={80} color={Tokens.accent.dark.whiteStrong} />
-          </View>
-
-          <View style={styles.insightMeta}>
-            <NathBadge variant="muted" style={{ backgroundColor: Tokens.premium.glass.border }}>
-              INSIGHT
-            </NathBadge>
-            <Caption style={{ color: Tokens.glass.dark.text60 }}>Leitura de 1 min</Caption>
-          </View>
-
-          <Subtitle style={{ color: nathColors.white, marginBottom: spacing.md }}>
-            Maternidade não é sobre ser perfeita. É sobre ser presente.
-          </Subtitle>
-
-          <Body
-            style={{ color: Tokens.glass.dark.text80, lineHeight: 22, marginBottom: spacing.lg }}
+        <Animated.View entering={staggeredFadeUp(1)}>
+          <LinearGradient
+            colors={
+              isDark
+                ? [colors.primary[800], colors.primary[900]]
+                : [maternal.warmth.blush, maternal.calm.lavender]
+            }
+            style={[styles.welcomeCard, shadowPresets.md]}
           >
-            Sempre que você sentir que &quot;falhou&quot; hoje, lembre-se: seu filho não quer uma
-            mãe de comercial de margarina. Ele quer você.
-          </Body>
+            <View style={styles.welcomeRow}>
+              <View style={styles.welcomeContent}>
+                <View
+                  style={[
+                    styles.welcomeBadge,
+                    {
+                      backgroundColor: isDark ? Tokens.glass.dark.medium : Tokens.glass.light.soft,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.welcomeBadgeText,
+                      {
+                        color: isDark ? neutral[200] : neutral[600],
+                        fontFamily: typography.fontFamily.semibold,
+                      },
+                    ]}
+                  >
+                    {greeting.text}
+                  </Text>
+                </View>
 
-          <View style={styles.insightActions}>
-            <Pressable
-              style={({ pressed }) => [styles.insightButton, { opacity: pressed ? 0.7 : 1 }]}
-              accessibilityLabel="Ler reflexão completa"
-              accessibilityRole="button"
+                <Text
+                  style={[
+                    styles.welcomeTitle,
+                    {
+                      color: isDark ? neutral[100] : neutral[800],
+                      fontFamily: typography.fontFamily.bold,
+                    },
+                  ]}
+                >
+                  Vamos focar em nós hoje?
+                </Text>
+
+                <Text
+                  style={[
+                    styles.welcomeBody,
+                    {
+                      color: isDark ? neutral[300] : neutral[600],
+                      fontFamily: typography.fontFamily.base,
+                    },
+                  ]}
+                >
+                  A louça pode esperar, mas o meu café quentinho não!
+                </Text>
+              </View>
+              <Image
+                source={nathWorldMomImage}
+                style={styles.welcomeImage}
+                contentFit="contain"
+                transition={300}
+              />
+            </View>
+          </LinearGradient>
+        </Animated.View>
+
+        {/* Photo Post */}
+        <Animated.View entering={staggeredFadeUp(2)}>
+          <View
+            style={[
+              styles.postCard,
+              { backgroundColor: colors.background.card, ...shadowPresets.sm },
+            ]}
+          >
+            <View style={styles.postHeader}>
+              <View style={styles.postAuthor}>
+                <Image
+                  source={{ uri: LOGO_URL }}
+                  style={[
+                    styles.postAvatar,
+                    { backgroundColor: isDark ? colors.primary[800] : brand.accent[100] },
+                  ]}
+                  contentFit="cover"
+                />
+                <View>
+                  <Text
+                    style={[
+                      styles.postAuthorName,
+                      { color: textMain, fontFamily: typography.fontFamily.semibold },
+                    ]}
+                  >
+                    Nathalia
+                  </Text>
+                  <Text
+                    style={[
+                      styles.postTime,
+                      { color: textSecondary, fontFamily: typography.fontFamily.base },
+                    ]}
+                  >
+                    Há 2 horas - Rotina da Manhã
+                  </Text>
+                </View>
+              </View>
+              <Pressable
+                style={({ pressed }) => ({ opacity: pressed ? 0.7 : 1 })}
+                accessibilityLabel="Compartilhar"
+                accessibilityRole="button"
+              >
+                <Send size={18} color={textSecondary} strokeWidth={2} />
+              </Pressable>
+            </View>
+
+            <View style={styles.postImageContainer}>
+              <LinearGradient
+                colors={
+                  isDark
+                    ? [brand.accent[800], brand.primary[800]]
+                    : [brand.accent[200], brand.primary[200]]
+                }
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.imagePlaceholder}
+              >
+                <Text
+                  style={[
+                    styles.imagePlaceholderText,
+                    {
+                      color: isDark ? neutral[300] : neutral[0],
+                      fontFamily: typography.fontFamily.base,
+                    },
+                  ]}
+                >
+                  Imagem do momento
+                </Text>
+              </LinearGradient>
+            </View>
+
+            <Text
+              style={[
+                styles.postCaption,
+                { color: textMain, fontFamily: typography.fontFamily.base },
+              ]}
             >
-              <BookOpen size={16} color={Tokens.glass.dark.text90} />
-              <Caption style={{ color: Tokens.glass.dark.text90 }} weight="medium">
-                Ler reflexão completa
-              </Caption>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [styles.insightShareButton, { opacity: pressed ? 0.7 : 1 }]}
-              accessibilityLabel="Compartilhar insight"
-              accessibilityRole="button"
+              O segredo não é ter tempo, é{" "}
+              <Text style={{ color: brand.accent[500], fontFamily: typography.fontFamily.bold }}>
+                criar tempo
+              </Text>
+              . Esses 15 minutos salvam meu dia inteiro. Tente hoje!
+            </Text>
+
+            <View
+              style={[styles.postActions, { borderTopColor: isDark ? neutral[700] : neutral[200] }]}
             >
-              <Share2 size={16} color={nathColors.white} />
-            </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel="Curtir post"
+                accessibilityRole="button"
+              >
+                <Heart size={20} color={textSecondary} strokeWidth={2} />
+                <Text
+                  style={[
+                    styles.actionText,
+                    { color: textSecondary, fontFamily: typography.fontFamily.base },
+                  ]}
+                >
+                  2.4k
+                </Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.actionButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel="Comentar post"
+                accessibilityRole="button"
+              >
+                <MessageCircle size={20} color={textSecondary} strokeWidth={2} />
+                <Text
+                  style={[
+                    styles.actionText,
+                    { color: textSecondary, fontFamily: typography.fontFamily.base },
+                  ]}
+                >
+                  342
+                </Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.shareButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel="Compartilhar post"
+                accessibilityRole="button"
+              >
+                <Send size={20} color={textSecondary} strokeWidth={2} />
+              </Pressable>
+            </View>
           </View>
-        </LinearGradient>
+        </Animated.View>
 
-        {/* Bottom spacing for tab bar */}
-        <View style={{ height: 120 }} />
+        {/* Community Highlight */}
+        <Animated.View entering={staggeredFadeUp(3)}>
+          <View
+            style={[
+              styles.highlightCard,
+              {
+                backgroundColor: colors.background.card,
+                borderColor: isDark ? colors.primary[700] : brand.primary[100],
+                ...shadowPresets.sm,
+              },
+            ]}
+          >
+            <View
+              style={[
+                styles.highlightHeader,
+                {
+                  backgroundColor: isDark ? `${brand.primary[500]}15` : `${brand.primary[500]}10`,
+                },
+              ]}
+            >
+              <Sparkles size={14} color={colors.primary[500]} strokeWidth={2} />
+              <Text
+                style={[
+                  styles.highlightLabel,
+                  { color: colors.primary[500], fontFamily: typography.fontFamily.bold },
+                ]}
+              >
+                DESTAQUE DA COMUNIDADE
+              </Text>
+            </View>
+
+            <View style={styles.highlightBody}>
+              <View style={styles.communityAuthor}>
+                <View
+                  style={[
+                    styles.communityAvatar,
+                    { backgroundColor: isDark ? colors.primary[800] : colors.primary[50] },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.communityAvatarText,
+                      { color: colors.primary[500], fontFamily: typography.fontFamily.bold },
+                    ]}
+                  >
+                    MJ
+                  </Text>
+                </View>
+                <View>
+                  <Text
+                    style={[
+                      styles.communityAuthorName,
+                      { color: textMain, fontFamily: typography.fontFamily.semibold },
+                    ]}
+                  >
+                    Maria Julia
+                  </Text>
+                  <Text
+                    style={[
+                      styles.communityAuthorMeta,
+                      { color: textSecondary, fontFamily: typography.fontFamily.base },
+                    ]}
+                  >
+                    Mãe de 2 - Postado ontem
+                  </Text>
+                </View>
+              </View>
+
+              <View
+                style={[
+                  styles.quote,
+                  { borderLeftColor: isDark ? colors.primary[600] : brand.primary[200] },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.quoteText,
+                    {
+                      color: isDark ? neutral[300] : neutral[600],
+                      fontFamily: typography.fontFamily.base,
+                    },
+                  ]}
+                >
+                  &quot;Depois de 3 semanas seguindo a dica da Nath sobre o &apos;banho da paz&apos;
+                  antes de dormir, meu bebê finalmente dormiu a noite toda!&quot;
+                </Text>
+              </View>
+
+              <View
+                style={[
+                  styles.nathResponse,
+                  { backgroundColor: isDark ? neutral[800] : maternal.warmth.cream },
+                ]}
+              >
+                <Image
+                  source={{ uri: LOGO_URL }}
+                  style={styles.nathResponseAvatar}
+                  contentFit="cover"
+                />
+                <View style={styles.nathResponseContent}>
+                  <Text
+                    style={[
+                      styles.nathResponseName,
+                      { color: textMain, fontFamily: typography.fontFamily.semibold },
+                    ]}
+                  >
+                    Nathalia respondeu:
+                  </Text>
+                  <Text
+                    style={[
+                      styles.nathResponseText,
+                      { color: textSecondary, fontFamily: typography.fontFamily.base },
+                    ]}
+                  >
+                    Que emoção, Ju! O descanso da mãe muda a casa toda. Orgulho de você por
+                    persistir!
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </Animated.View>
+
+        {/* Insight Card */}
+        <Animated.View entering={staggeredFadeUp(4)}>
+          <LinearGradient
+            colors={[neutral[800], neutral[900]]}
+            style={[styles.insightCard, shadowPresets.lg]}
+          >
+            <View style={styles.insightDecor}>
+              <Quote size={80} color={Tokens.accent.dark.whiteStrong} strokeWidth={1} />
+            </View>
+
+            <View style={styles.insightMeta}>
+              <View style={styles.insightBadge}>
+                <Text style={[styles.insightBadgeText, { fontFamily: typography.fontFamily.bold }]}>
+                  INSIGHT
+                </Text>
+              </View>
+              <Text
+                style={[
+                  styles.insightReadTime,
+                  { color: Tokens.glass.dark.text60, fontFamily: typography.fontFamily.base },
+                ]}
+              >
+                Leitura de 1 min
+              </Text>
+            </View>
+
+            <Text
+              style={[
+                styles.insightTitle,
+                { color: neutral[0], fontFamily: typography.fontFamily.bold },
+              ]}
+            >
+              Maternidade não é sobre ser perfeita. É sobre ser presente.
+            </Text>
+
+            <Text
+              style={[
+                styles.insightBody,
+                { color: Tokens.glass.dark.text80, fontFamily: typography.fontFamily.base },
+              ]}
+            >
+              Sempre que você sentir que &quot;falhou&quot; hoje, lembre-se: seu filho não quer uma
+              mãe de comercial de margarina. Ele quer você.
+            </Text>
+
+            <View style={styles.insightActions}>
+              <Pressable
+                style={({ pressed }) => [styles.insightButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel="Ler reflexão completa"
+                accessibilityRole="button"
+              >
+                <BookOpen size={16} color={Tokens.glass.dark.text90} strokeWidth={2} />
+                <Text
+                  style={[
+                    styles.insightButtonText,
+                    {
+                      color: Tokens.glass.dark.text90,
+                      fontFamily: typography.fontFamily.semibold,
+                    },
+                  ]}
+                >
+                  Ler reflexão completa
+                </Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [styles.insightShareButton, { opacity: pressed ? 0.7 : 1 }]}
+                accessibilityLabel="Compartilhar insight"
+                accessibilityRole="button"
+              >
+                <Share2 size={16} color={neutral[0]} strokeWidth={2} />
+              </Pressable>
+            </View>
+          </LinearGradient>
+        </Animated.View>
       </ScrollView>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: nathColors.cream,
   },
 
+  // Header
   header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-    backgroundColor: Tokens.glass.light.medium,
-    borderBottomWidth: 1,
-    borderBottomColor: nathColors.border + "80",
+    paddingBottom: spacing.md,
   },
 
   headerLeft: {
@@ -362,45 +532,33 @@ const styles = StyleSheet.create({
   },
 
   avatarRing: {
-    padding: 2,
-    borderRadius: radius.full,
-    position: "relative",
-  },
-
-  avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 2,
-    borderColor: nathColors.white,
-  },
-
-  statusBadge: {
-    position: "absolute",
-    bottom: -2,
-    right: -2,
-    width: 14,
-    height: 14,
-    borderRadius: 7,
-    backgroundColor: nathColors.verde.dark,
-    borderWidth: 2,
-    borderColor: nathColors.white,
+    width: 48,
+    height: 48,
+    borderRadius: 24,
     alignItems: "center",
     justifyContent: "center",
   },
 
-  liveIndicator: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-    marginTop: 2,
+  avatarInner: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+    overflow: "hidden",
   },
 
-  liveDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: nathColors.rosa.DEFAULT,
+  avatar: {
+    width: 42,
+    height: 42,
+    borderRadius: 21,
+  },
+
+  headerTitle: {
+    fontSize: typography.titleMedium.fontSize,
+  },
+
+  headerSubtitle: {
+    fontSize: typography.caption.fontSize,
+    marginTop: 1,
   },
 
   bellButton: {
@@ -411,22 +569,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
+  // Scroll
   scrollView: {
     flex: 1,
   },
 
   scrollContent: {
-    padding: spacing.xl,
+    paddingHorizontal: spacing.xl,
+    paddingTop: spacing.md,
+    gap: spacing.xl,
   },
 
+  // Welcome Card
   welcomeCard: {
     borderRadius: radius["2xl"],
-    padding: spacing.lg,
-    marginBottom: spacing.xl,
-    position: "relative",
+    padding: spacing.xl,
     overflow: "hidden",
-    borderWidth: 1,
-    borderColor: nathColors.rosa.light + "40",
   },
 
   welcomeRow: {
@@ -437,9 +595,29 @@ const styles = StyleSheet.create({
 
   welcomeContent: {
     flex: 1,
-    position: "relative",
-    zIndex: 1,
     paddingRight: spacing.sm,
+  },
+
+  welcomeBadge: {
+    alignSelf: "flex-start",
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.full,
+    marginBottom: spacing.md,
+  },
+
+  welcomeBadgeText: {
+    fontSize: typography.caption.fontSize,
+  },
+
+  welcomeTitle: {
+    fontSize: typography.titleMedium.fontSize,
+    marginBottom: spacing.sm,
+  },
+
+  welcomeBody: {
+    fontSize: typography.bodySmall.fontSize,
+    lineHeight: 22,
   },
 
   welcomeImage: {
@@ -447,23 +625,17 @@ const styles = StyleSheet.create({
     height: 120,
   },
 
-  welcomeHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-
+  // Post Card
   postCard: {
-    marginBottom: spacing.xl,
+    borderRadius: radius["2xl"],
+    padding: spacing.xl,
   },
 
   postHeader: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: spacing.xs,
-    paddingTop: spacing.xs,
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
 
   postAuthor: {
@@ -473,16 +645,24 @@ const styles = StyleSheet.create({
   },
 
   postAvatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: nathColors.rosa.light,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
   },
 
-  postImagePlaceholder: {
+  postAuthorName: {
+    fontSize: typography.bodyMedium.fontSize,
+  },
+
+  postTime: {
+    fontSize: typography.caption.fontSize,
+    marginTop: 1,
+  },
+
+  postImageContainer: {
     borderRadius: radius.lg,
     overflow: "hidden",
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
 
   imagePlaceholder: {
@@ -491,19 +671,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 
+  imagePlaceholderText: {
+    fontSize: typography.bodySmall.fontSize,
+  },
+
   postCaption: {
+    fontSize: typography.bodyMedium.fontSize,
     lineHeight: 22,
-    paddingHorizontal: spacing.xs,
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
   },
 
   postActions: {
     flexDirection: "row",
     alignItems: "center",
-    paddingTop: spacing.sm,
+    paddingTop: spacing.md,
     borderTopWidth: 1,
-    borderTopColor: nathColors.border,
-    marginHorizontal: spacing.xs,
   },
 
   actionButton: {
@@ -513,37 +695,81 @@ const styles = StyleSheet.create({
     marginRight: spacing.lg,
   },
 
+  actionText: {
+    fontSize: typography.caption.fontSize,
+  },
+
   shareButton: {
     marginLeft: "auto",
+  },
+
+  // Highlight Card
+  highlightCard: {
+    borderRadius: radius["2xl"],
+    overflow: "hidden",
+    borderWidth: 1,
   },
 
   highlightHeader: {
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.sm,
-    backgroundColor: nathColors.azul.light + "30",
-    paddingHorizontal: spacing.lg,
+    paddingHorizontal: spacing.xl,
     paddingVertical: spacing.sm,
+  },
+
+  highlightLabel: {
+    fontSize: typography.caption.fontSize,
+    letterSpacing: 1,
+  },
+
+  highlightBody: {
+    padding: spacing.xl,
   },
 
   communityAuthor: {
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.md,
-    marginBottom: spacing.md,
+    marginBottom: spacing.lg,
+  },
+
+  communityAvatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  communityAvatarText: {
+    fontSize: typography.caption.fontSize,
+  },
+
+  communityAuthorName: {
+    fontSize: typography.bodySmall.fontSize,
+  },
+
+  communityAuthorMeta: {
+    fontSize: 11,
+    marginTop: 1,
   },
 
   quote: {
     borderLeftWidth: 2,
-    borderLeftColor: nathColors.azul.light,
     paddingLeft: spacing.md,
     marginBottom: spacing.lg,
+  },
+
+  quoteText: {
+    fontSize: typography.bodySmall.fontSize,
+    fontStyle: "italic",
+    lineHeight: 22,
   },
 
   nathResponse: {
     flexDirection: "row",
     gap: spacing.md,
-    backgroundColor: nathColors.cream,
     padding: spacing.md,
     borderRadius: radius.xl,
   },
@@ -558,12 +784,22 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
+  nathResponseName: {
+    fontSize: typography.caption.fontSize,
+    marginBottom: 2,
+  },
+
+  nathResponseText: {
+    fontSize: typography.caption.fontSize,
+    lineHeight: 18,
+  },
+
+  // Insight Card
   insightCard: {
     borderRadius: radius["2xl"],
     padding: spacing.xl,
     position: "relative",
     overflow: "hidden",
-    ...shadows.lg,
   },
 
   insightDecor: {
@@ -579,6 +815,35 @@ const styles = StyleSheet.create({
     marginBottom: spacing.lg,
   },
 
+  insightBadge: {
+    backgroundColor: Tokens.premium.glass.border,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 3,
+    borderRadius: radius.sm,
+  },
+
+  insightBadgeText: {
+    fontSize: 10,
+    color: Tokens.glass.dark.text90,
+    letterSpacing: 1,
+  },
+
+  insightReadTime: {
+    fontSize: typography.caption.fontSize,
+  },
+
+  insightTitle: {
+    fontSize: typography.titleMedium.fontSize,
+    lineHeight: 26,
+    marginBottom: spacing.md,
+  },
+
+  insightBody: {
+    fontSize: typography.bodySmall.fontSize,
+    lineHeight: 22,
+    marginBottom: spacing.lg,
+  },
+
   insightActions: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -589,6 +854,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: spacing.sm,
+  },
+
+  insightButtonText: {
+    fontSize: typography.bodySmall.fontSize,
   },
 
   insightShareButton: {

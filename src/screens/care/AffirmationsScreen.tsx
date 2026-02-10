@@ -23,70 +23,70 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const AFFIRMATIONS: Affirmation[] = [
   {
     id: "1",
-    text: "Eu transformo meus sonhos em objetivos, meus objetivos em passos e meus passos em acao.",
-    category: "motivacao",
+    text: "Eu transformo meus sonhos em objetivos, meus objetivos em passos e meus passos em ação.",
+    category: "motivação",
   },
   {
     id: "2",
-    text: "Meu corpo e minha casa, e eu cuido dele com amor e gratidao.",
+    text: "Meu corpo é minha casa, e eu cuido dele com amor e gratidão.",
     category: "autocuidado",
   },
   {
     id: "3",
-    text: "Cada dia e uma nova oportunidade para crescer e me tornar a melhor versao de mim mesma.",
+    text: "Cada dia é uma nova oportunidade para crescer e me tornar a melhor versão de mim mesma.",
     category: "crescimento",
   },
-  { id: "4", text: "Eu mereço amor, paz e felicidade em abundancia.", category: "amor-proprio" },
+  { id: "4", text: "Eu mereço amor, paz e felicidade em abundância.", category: "amor-próprio" },
   {
     id: "5",
-    text: "Minha forca interior e maior do que qualquer desafio que eu enfrente.",
-    category: "forca",
+    text: "Minha força interior é maior do que qualquer desafio que eu enfrente.",
+    category: "força",
   },
   {
     id: "6",
-    text: "Eu escolho pensamentos que nutrem minha alma e elevam meu espirito.",
+    text: "Eu escolho pensamentos que nutrem minha alma e elevam meu espírito.",
     category: "positividade",
   },
   {
     id: "7",
-    text: "Sou capaz de criar a vida que desejo com determinacao e fe.",
-    category: "determinacao",
+    text: "Sou capaz de criar a vida que desejo com determinação e fé.",
+    category: "determinação",
   },
   {
     id: "8",
-    text: "Meu valor nao depende da opiniao dos outros. Eu sou suficiente.",
+    text: "Meu valor não depende da opinião dos outros. Eu sou suficiente.",
     category: "autoestima",
   },
   {
     id: "9",
-    text: "Eu libero o que nao me serve mais e abro espaco para o novo.",
-    category: "renovacao",
+    text: "Eu libero o que não me serve mais e abro espaço para o novo.",
+    category: "renovação",
   },
   {
     id: "10",
-    text: "A maternidade me transforma e revela forcas que eu nao sabia que tinha.",
+    text: "A maternidade me transforma e revela forças que eu não sabia que tinha.",
     category: "maternidade",
   },
   {
     id: "11",
-    text: "Cada respiro me conecta com a calma interior que sempre esta disponivel para mim.",
+    text: "Cada respiro me conecta com a calma interior que sempre está disponível para mim.",
     category: "serenidade",
   },
   {
     id: "12",
     text: "Eu confio no processo da vida e sei que tudo acontece no tempo certo.",
-    category: "confianca",
+    category: "confiança",
   },
-  { id: "13", text: "Minha intuicao e minha guia. Eu confio em mim mesma.", category: "intuicao" },
+  { id: "13", text: "Minha intuição é minha guia. Eu confio em mim mesma.", category: "intuição" },
   {
     id: "14",
-    text: "Eu sou grata por este momento e por todas as benções em minha vida.",
-    category: "gratidao",
+    text: "Eu sou grata por este momento e por todas as bênçãos em minha vida.",
+    category: "gratidão",
   },
   {
     id: "15",
-    text: "Minha jornada e unica e linda. Eu celebro cada passo.",
-    category: "celebracao",
+    text: "Minha jornada é única e linda. Eu celebro cada passo.",
+    category: "celebração",
   },
 ];
 
@@ -268,7 +268,7 @@ export default function AffirmationsScreen({ navigation }: RootStackScreenProps<
               className="text-sm text-center uppercase tracking-widest mb-8"
               style={{ color: Tokens.premium.text.secondary }}
             >
-              Afirmacao do Dia
+              Afirmação do Dia
             </Text>
           </Animated.View>
 

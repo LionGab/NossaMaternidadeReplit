@@ -1,0 +1,38 @@
+- generic [ref=e54] [cursor=pointer]:
+  - button "Voltar" [ref=e56]:
+    - generic [ref=e57]: 
+  - generic [ref=e58]:
+    - generic [ref=e59]:
+      - generic [ref=e60]: Bem-vinda de volta
+      - generic [ref=e61]: Entre com seu e-mail e senha
+    - switch "Modo login ativo. Toque para criar conta" [ref=e63]:
+      - generic [ref=e65]:
+        - generic [ref=e66]: Entrar
+        - generic [ref=e67]: Criar conta
+    - generic [ref=e68]:
+      - generic [ref=e70]:
+        - generic [ref=e71]: E-mail
+        - generic [ref=e72]:
+          - generic [ref=e73]: 
+          - textbox "Endereço de e-mail" [ref=e74]:
+            - /placeholder: seu@email.com
+            - text: teste
+      - generic [ref=e76]:
+        - generic [ref=e77]: Senha
+        - generic [ref=e78]:
+          - generic [ref=e79]: 
+          - textbox "Senha" [active] [ref=e80]:
+            - /placeholder: Mínimo 6 caracteres
+            - text: "123"
+          - button "Mostrar senha" [ref=e81]:
+            - generic [ref=e82]: 
+      - link "Esqueceu a senha?" [ref=e84]:
+        - generic [ref=e85]: Esqueceu a senha?
+    - generic [ref=e87]:
+      - button "Entrar" [disabled]:
+        - generic [ref=e88]: Entrar
+        - generic [ref=e89]: 
+    - generic [ref=e90]:
+      - generic [ref=e91]: Não tem uma conta?
+      - button "Criar uma conta" [ref=e92]:
+        - generic [ref=e93]: Criar conta

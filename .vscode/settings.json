@@ -407,5 +407,6 @@
   "debug.toolBarLocation": "docked",
   "chat.tools.terminal.autoApprove": {
     "ssh": true
-  }
+  },
+  "claudeCode.useTerminal": true
 }

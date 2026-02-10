@@ -12,9 +12,9 @@
 
 import { useBottomTabBarHeight } from "@react-navigation/bottom-tabs";
 import { LinearGradient } from "expo-linear-gradient";
-import { Heart, Sparkles, TrendingUp } from "lucide-react-native";
+import { Heart, TrendingUp } from "lucide-react-native";
 import React, { useCallback, useMemo, useState } from "react";
-import { RefreshControl, ScrollView, StatusBar, StyleSheet, View } from "react-native";
+import { RefreshControl, ScrollView, StatusBar, StyleSheet } from "react-native";
 import Animated from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -96,7 +96,7 @@ export default function HomeScreen({ navigation }: MainTabScreenProps<"Home">): 
         <PremiumHeader greeting={greeting} userName={userName} />
 
         {insight && (
-          <Animated.View entering={staggeredFadeUp(0)}>
+          <Animated.View entering={staggeredFadeUp(0)} style={styles.section}>
             <DailyInsightCard
               insight={insight}
               dayIndex={dayIndex}
@@ -125,17 +125,10 @@ export default function HomeScreen({ navigation }: MainTabScreenProps<"Home">): 
 
         <Animated.View entering={staggeredFadeUp(1)} style={styles.section}>
           <SectionHeader title="Como você está?" icon={<Heart size={20} color={COLORS.accent} />} />
-          <View style={styles.cardWrapper}>
-            <EmotionalCheckInPrimary />
-          </View>
+          <EmotionalCheckInPrimary />
         </Animated.View>
 
         <Animated.View entering={staggeredFadeUp(2)} style={styles.section}>
-          <SectionHeader
-            title="Micro-ações do dia"
-            icon={<Sparkles size={20} color={COLORS.teal} />}
-            subtitle="Pequenos passos, grande diferença"
-          />
           <DailyMicroActions />
         </Animated.View>
 
@@ -171,12 +164,10 @@ const styles = StyleSheet.create({
   },
 
   scrollContent: {
-    gap: spacing.lg,
+    gap: spacing["2xl"],
   },
 
   section: {
     paddingHorizontal: spacing.xl,
   },
-
-  cardWrapper: {},
 });

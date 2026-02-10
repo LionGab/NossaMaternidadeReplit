@@ -27,7 +27,8 @@ import Animated, {
 import { fetchWeeklyHighlights } from "@/api/highlights";
 import { Body, Caption, Subtitle } from "@/components/ui";
 import { useTheme } from "@/hooks/useTheme";
-import { brand, mockupColors, nathAccent, radius, shadows, spacing, Tokens } from "@/theme/tokens";
+import { brand, mockupColors, nathAccent, radius, spacing, Tokens } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 import type { Post } from "@/types/navigation";
 import { formatTimeAgo } from "@/utils/formatters";
 import { logger } from "@/utils/logger";
@@ -115,7 +116,7 @@ const HighlightCard = React.memo(
                 styles.card,
                 {
                   backgroundColor: bgCard,
-                  ...shadows.lg,
+                  ...shadowPresets.sm,
                 },
               ]}
             >
@@ -127,9 +128,9 @@ const HighlightCard = React.memo(
                 style={styles.rankBadge}
               >
                 {index === 0 ? (
-                  <Crown size={12} color={Tokens.neutral[0]} />
+                  <Crown size={10} color={Tokens.neutral[0]} />
                 ) : (
-                  <Caption weight="bold" style={{ color: Tokens.neutral[0], fontSize: 10 }}>
+                  <Caption weight="bold" style={{ color: Tokens.neutral[0], fontSize: 9 }}>
                     #{index + 1}
                   </Caption>
                 )}
@@ -360,7 +361,7 @@ export const WeeklyHighlights: React.FC<WeeklyHighlightsProps> = ({ onPostPress,
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
   },
   header: {
     flexDirection: "row",
@@ -386,7 +387,7 @@ const styles = StyleSheet.create({
     marginRight: CARD_MARGIN,
   },
   card: {
-    borderRadius: radius.xl,
+    borderRadius: radius["2xl"],
     overflow: "hidden",
   },
   rankBadge: {
@@ -394,20 +395,20 @@ const styles = StyleSheet.create({
     top: spacing.sm,
     left: spacing.sm,
     zIndex: 10,
-    width: 26,
-    height: 26,
+    width: 22,
+    height: 22,
     borderRadius: radius.full,
     alignItems: "center",
     justifyContent: "center",
   },
   cardImage: {
     width: "100%",
-    height: 140,
+    height: 100,
     alignItems: "center",
     justifyContent: "center",
   },
   cardContent: {
-    padding: spacing.md,
+    padding: spacing.sm,
   },
   authorRow: {
     flexDirection: "row",

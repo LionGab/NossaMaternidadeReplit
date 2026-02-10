@@ -37,11 +37,11 @@ const { width: SCREEN_WIDTH } = Dimensions.get("window");
 const MOODS: Array<{ id: MoodType; label: string; color: string }> = [
   { id: "happy", label: "Feliz", color: Tokens.mood.happy },
   { id: "calm", label: "Calma", color: Tokens.mood.calm },
-  { id: "energetic", label: "Energica", color: Tokens.mood.energetic },
+  { id: "energetic", label: "Enérgica", color: Tokens.mood.energetic },
   { id: "anxious", label: "Ansiosa", color: Tokens.mood.anxious },
   { id: "sad", label: "Triste", color: Tokens.mood.sad },
   { id: "irritated", label: "Irritada", color: Tokens.mood.irritated },
-  { id: "sensitive", label: "Sensivel", color: Tokens.mood.sensitive },
+  { id: "sensitive", label: "Sensível", color: Tokens.mood.sensitive },
   { id: "tired", label: "Cansada", color: Tokens.mood.tired },
 ];
 
@@ -130,7 +130,7 @@ export default function DailyLogScreen({ navigation, route }: RootStackScreenPro
 
   const handleSave = async () => {
     if (!selectedMood) {
-      showError("Selecione como voce esta se sentindo");
+      showError("Selecione como você está se sentindo");
       return;
     }
 
@@ -169,7 +169,7 @@ export default function DailyLogScreen({ navigation, route }: RootStackScreenPro
     const months = [
       "janeiro",
       "fevereiro",
-      "marco",
+      "março",
       "abril",
       "maio",
       "junho",
@@ -270,7 +270,7 @@ export default function DailyLogScreen({ navigation, route }: RootStackScreenPro
                   letterSpacing: -0.5,
                 }}
               >
-                Como voce esta hoje?
+                Como você está hoje?
               </Text>
               <Text
                 style={{
@@ -304,7 +304,7 @@ export default function DailyLogScreen({ navigation, route }: RootStackScreenPro
                     onPress={() => handleMoodSelect(mood.id)}
                     accessibilityLabel={`Selecionar humor ${mood.label}`}
                     accessibilityRole="button"
-                    accessibilityHint={`Toque para registrar que voce esta se sentindo ${mood.label.toLowerCase()}`}
+                    accessibilityHint={`Toque para registrar que você está se sentindo ${mood.label.toLowerCase()}`}
                     style={{ alignItems: "center" }}
                   >
                     <View
@@ -378,7 +378,7 @@ export default function DailyLogScreen({ navigation, route }: RootStackScreenPro
 
             <Pressable
               onPress={() => setSelectedMood(null)}
-              accessibilityLabel="Mudar selecao de humor"
+              accessibilityLabel="Mudar seleção de humor"
               accessibilityRole="button"
               accessibilityHint="Toque para escolher outro humor"
               hitSlop={{ top: 12, bottom: 12, left: 16, right: 16 }}

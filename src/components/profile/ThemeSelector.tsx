@@ -1,161 +1,144 @@
 /**
  * ThemeSelector - Theme selection component (light/dark/system)
+ *
+ * Clean card with three toggle buttons.
+ * Uses lucide-react-native icons for consistency.
+ *
+ * @version 2.0 - Feb 2026
  */
 
-import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { Moon, Monitor, Sun } from "lucide-react-native";
+import type { LucideIcon } from "lucide-react-native";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
-import Animated, { FadeInUp } from "react-native-reanimated";
+import { Pressable, StyleSheet, Text, View } from "react-native";
 
-import { useTheme } from "@/hooks/useTheme";
+import { useTheme, type ThemeMode } from "@/hooks/useTheme";
 import { typography, spacing, radius } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 
-interface ThemeSelectorProps {
-  animationDelay?: number;
-}
-
-type ThemeOption = "light" | "dark" | "system";
-
-interface ThemeButtonProps {
-  value: ThemeOption;
+interface ThemeOptionConfig {
+  value: ThemeMode;
   label: string;
-  icon: keyof typeof Ionicons.glyphMap;
-  selected: boolean;
-  onPress: () => void;
-  textSecondary: string;
-  colors: ReturnType<typeof useTheme>["colors"];
-  isDark: boolean;
-  position: "left" | "center" | "right";
+  icon: LucideIcon;
 }
 
-function ThemeButton({
-  value: _value,
-  label,
-  icon,
-  selected,
-  onPress,
-  textSecondary,
-  colors,
-  isDark,
-  position,
-}: ThemeButtonProps) {
-  const handlePress = async () => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onPress();
-  };
+const THEME_OPTIONS: ThemeOptionConfig[] = [
+  { value: "light", label: "Claro", icon: Sun },
+  { value: "dark", label: "Escuro", icon: Moon },
+  { value: "system", label: "Sistema", icon: Monitor },
+];
 
-  const marginStyle =
-    position === "left"
-      ? { marginRight: spacing.sm }
-      : position === "right"
-        ? { marginLeft: spacing.sm }
-        : { marginHorizontal: spacing.sm };
-
-  return (
-    <Pressable
-      onPress={handlePress}
-      accessibilityLabel={`Tema ${label.toLowerCase()}`}
-      accessibilityRole="button"
-      accessibilityState={{ selected }}
-      style={{
-        flex: 1,
-        alignItems: "center",
-        backgroundColor: selected
-          ? isDark
-            ? colors.primary[800]
-            : colors.primary[50]
-          : "transparent",
-        borderRadius: radius.lg,
-        paddingVertical: spacing.lg,
-        ...marginStyle,
-        borderWidth: 2,
-        borderColor: selected ? colors.primary[500] : isDark ? colors.neutral[700] : "transparent",
-      }}
-    >
-      <Ionicons name={icon} size={28} color={selected ? colors.primary[500] : textSecondary} />
-      <Text
-        style={{
-          fontSize: typography.titleSmall.fontSize,
-          fontWeight: "600",
-          marginTop: spacing.sm,
-          color: selected ? colors.primary[500] : textSecondary,
-        }}
-      >
-        {label}
-      </Text>
-    </Pressable>
-  );
-}
-
-export function ThemeSelector({ animationDelay = 300 }: ThemeSelectorProps) {
+export function ThemeSelector() {
   const { colors, theme, setTheme, isDark, text } = useTheme();
 
   const textMain = text.primary;
   const textSecondary = text.secondary;
 
   return (
-    <Animated.View
-      entering={FadeInUp.delay(animationDelay).duration(600).springify()}
-      style={{ paddingHorizontal: spacing["2xl"], marginBottom: spacing["3xl"] }}
-    >
+    <View>
       <Text
-        style={{
-          color: textMain,
-          fontSize: typography.titleMedium.fontSize,
-          fontWeight: "600",
-          marginBottom: spacing.lg,
-        }}
+        style={[
+          styles.title,
+          {
+            color: textMain,
+            fontFamily: typography.fontFamily.semibold,
+          },
+        ]}
       >
         Aparencia
       </Text>
       <View
-        style={{
-          backgroundColor: colors.background.card,
-          borderRadius: radius["2xl"],
-          padding: spacing.xl,
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 4 },
-          shadowOpacity: 0.04,
-          shadowRadius: 12,
-        }}
+        style={[
+          styles.card,
+          {
+            backgroundColor: colors.background.card,
+            ...shadowPresets.sm,
+          },
+        ]}
       >
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <ThemeButton
-            value="light"
-            label="Claro"
-            icon="sunny"
-            selected={theme === "light"}
-            onPress={() => setTheme("light")}
-            textSecondary={textSecondary}
-            colors={colors}
-            isDark={isDark}
-            position="left"
-          />
-          <ThemeButton
-            value="dark"
-            label="Escuro"
-            icon="moon"
-            selected={theme === "dark"}
-            onPress={() => setTheme("dark")}
-            textSecondary={textSecondary}
-            colors={colors}
-            isDark={isDark}
-            position="center"
-          />
-          <ThemeButton
-            value="system"
-            label="Sistema"
-            icon="phone-portrait"
-            selected={theme === "system"}
-            onPress={() => setTheme("system")}
-            textSecondary={textSecondary}
-            colors={colors}
-            isDark={isDark}
-            position="right"
-          />
+        <View style={styles.row}>
+          {THEME_OPTIONS.map((option) => {
+            const selected = theme === option.value;
+            const Icon = option.icon;
+
+            return (
+              <Pressable
+                key={option.value}
+                onPress={async () => {
+                  await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                  setTheme(option.value);
+                }}
+                accessibilityLabel={`Tema ${option.label.toLowerCase()}`}
+                accessibilityRole="button"
+                accessibilityState={{ selected }}
+                style={[
+                  styles.option,
+                  {
+                    backgroundColor: selected
+                      ? isDark
+                        ? colors.primary[800]
+                        : colors.primary[50]
+                      : "transparent",
+                    borderColor: selected
+                      ? colors.primary[500]
+                      : isDark
+                        ? colors.neutral[700]
+                        : "transparent",
+                  },
+                ]}
+              >
+                <Icon
+                  size={24}
+                  color={selected ? colors.primary[500] : textSecondary}
+                  strokeWidth={2}
+                />
+                <Text
+                  style={[
+                    styles.optionLabel,
+                    {
+                      color: selected ? colors.primary[500] : textSecondary,
+                      fontFamily: typography.fontFamily.semibold,
+                    },
+                  ]}
+                >
+                  {option.label}
+                </Text>
+              </Pressable>
+            );
+          })}
         </View>
       </View>
-    </Animated.View>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  title: {
+    fontSize: typography.titleMedium.fontSize,
+    marginBottom: spacing.md,
+  },
+
+  card: {
+    borderRadius: radius["2xl"],
+    padding: spacing.md,
+  },
+
+  row: {
+    flexDirection: "row",
+    gap: spacing.sm,
+  },
+
+  option: {
+    flex: 1,
+    alignItems: "center",
+    borderRadius: radius.lg,
+    paddingVertical: spacing.lg,
+    borderWidth: 2,
+  },
+
+  optionLabel: {
+    fontSize: typography.titleSmall.fontSize,
+    marginTop: spacing.xs,
+  },
+});

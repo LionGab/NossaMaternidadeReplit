@@ -61,7 +61,7 @@ const SOUNDS: SoundItem[] = [
   {
     id: "forest",
     title: "Floresta",
-    subtitle: "Passaros e natureza",
+    subtitle: "Pássaros e natureza",
     duration: "40 min",
     icon: "leaf",
     color: Tokens.semantic.light.success,
@@ -79,8 +79,8 @@ const SOUNDS: SoundItem[] = [
   // Meditation
   {
     id: "breathe",
-    title: "Respiracao Guiada",
-    subtitle: "Para maes",
+    title: "Respiração Guiada",
+    subtitle: "Para mães",
     duration: "10 min",
     icon: "heart",
     color: Tokens.brand.accent[500],
@@ -89,7 +89,7 @@ const SOUNDS: SoundItem[] = [
   {
     id: "body-scan",
     title: "Relaxamento Corporal",
-    subtitle: "Meditacao guiada",
+    subtitle: "Meditação guiada",
     duration: "15 min",
     icon: "body",
     color: Tokens.brand.secondary[500],
@@ -97,8 +97,8 @@ const SOUNDS: SoundItem[] = [
   },
   {
     id: "loving-kindness",
-    title: "Amor Proprio",
-    subtitle: "Meditacao de bondade",
+    title: "Amor Próprio",
+    subtitle: "Meditação de bondade",
     duration: "12 min",
     icon: "sparkles",
     color: Tokens.brand.primary[500],
@@ -107,8 +107,8 @@ const SOUNDS: SoundItem[] = [
   // Sleep
   {
     id: "lullaby",
-    title: "Cancao de Ninar",
-    subtitle: "Para voce e seu bebe",
+    title: "Canção de Ninar",
+    subtitle: "Para você e seu bebê",
     duration: "20 min",
     icon: "musical-notes",
     color: Tokens.brand.secondary[400],
@@ -116,8 +116,8 @@ const SOUNDS: SoundItem[] = [
   },
   {
     id: "sleep-story",
-    title: "Historia para Dormir",
-    subtitle: "Narracao tranquila",
+    title: "História para Dormir",
+    subtitle: "Narração tranquila",
     duration: "25 min",
     icon: "book",
     color: Tokens.brand.accent[400],
@@ -125,8 +125,8 @@ const SOUNDS: SoundItem[] = [
   },
   {
     id: "white-noise",
-    title: "Ruido Branco",
-    subtitle: "Som continuo suave",
+    title: "Ruído Branco",
+    subtitle: "Som contínuo suave",
     duration: "60 min",
     icon: "radio",
     color: Tokens.neutral[400],
@@ -142,7 +142,7 @@ const CATEGORIES = [
   },
   {
     id: "meditation" as SoundCategory,
-    name: "Meditacao",
+    name: "Meditação",
     icon: "heart" as keyof typeof Ionicons.glyphMap,
   },
   {
@@ -609,8 +609,8 @@ export default function RestSoundsScreen() {
                     lineHeight: 20,
                   }}
                 >
-                  Use fones de ouvido para uma experiencia mais imersiva. Sons da natureza podem
-                  ajudar seu bebe a dormir melhor tambem.
+                  Use fones de ouvido para uma experiência mais imersiva. Sons da natureza podem
+                  ajudar seu bebê a dormir melhor também.
                 </Text>
               </View>
             </View>

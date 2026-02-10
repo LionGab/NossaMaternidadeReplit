@@ -1,0 +1,22 @@
+# Environment Variables Template
+# Copy this file to .env and fill with your values
+
+# Supabase Configuration
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_ANON_KEY=your-anon-key-here
+
+# App Configuration
+APP_NAME=YourAppName
+BUNDLE_IDENTIFIER=com.yourcompany.yourapp
+
+# API Configuration
+API_TIMEOUT=30
+MAX_RETRIES=3
+
+# Feature Flags (optional)
+ENABLE_ANALYTICS=true
+ENABLE_CRASH_REPORTING=true
+ENABLE_DEBUG_LOGGING=false
+
+# Environment
+ENVIRONMENT=production # development, staging, production

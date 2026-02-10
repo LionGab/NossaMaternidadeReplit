@@ -285,6 +285,9 @@ export function useDeepLinking() {
       }
 
       const path = parsed.path || "/";
+      if (path === "/" && !isAuthCallback(path, url)) {
+        return;
+      }
       const attributionContext = extractAttributionFromParsedUrl(parsed, url);
 
       if (attributionContext) {

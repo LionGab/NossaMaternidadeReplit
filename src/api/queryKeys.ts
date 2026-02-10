@@ -29,6 +29,9 @@ export const communityKeys = {
   // Busca de posts
   search: (query: string) => [...communityKeys.all, "search", query] as const,
 
+  // Stats da comunidade
+  stats: () => [...communityKeys.all, "stats"] as const,
+
   // Grupos
   groups: () => [...communityKeys.all, "groups"] as const,
   group: (id: string) => [...communityKeys.all, "group", id] as const,

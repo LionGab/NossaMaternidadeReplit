@@ -1,37 +1,39 @@
 /**
- * ProfileHeader - Profile card with avatar, name, and stats
+ * ProfileHeader - Premium profile card with gradient avatar ring
+ *
+ * Design: Flo Health inspired, card-based with refined shadows
+ * - Gradient ring around avatar (brand accent -> primary)
+ * - Stage badge with subtle background
+ * - Stats row with clean dividers
+ *
+ * @version 2.0 - Premium Redesign Feb 2026
  */
 
-import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { Pressable, Text, View } from "react-native";
-import Animated, { FadeInDown } from "react-native-reanimated";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { LinearGradient } from "expo-linear-gradient";
 import * as Haptics from "expo-haptics";
+import { Camera, Crown } from "lucide-react-native";
+import React from "react";
+import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { useTheme } from "@/hooks/useTheme";
-import { Tokens, typography, spacing, radius } from "@/theme/tokens";
+import { useIsPremium } from "@/state/premium-store";
+import { brand, Tokens, typography, spacing, radius } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 import { getStageLabel } from "@/utils/formatters";
 import type { UserProfile } from "@/types/navigation";
 
 interface ProfileHeaderProps {
   user: UserProfile | null;
   onEditPress: () => void;
-  onSettingsPress: () => void;
 }
 
-export function ProfileHeader({ user, onEditPress, onSettingsPress }: ProfileHeaderProps) {
-  const insets = useSafeAreaInsets();
+export function ProfileHeader({ user, onEditPress }: ProfileHeaderProps) {
   const { colors, isDark, text } = useTheme();
+  const isPremium = useIsPremium();
 
   const textMain = text.primary;
   const textSecondary = text.secondary;
   const borderColor = isDark ? Tokens.neutral[700] : Tokens.neutral[200];
-
-  const handleSettingsPress = async () => {
-    await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    onSettingsPress();
-  };
 
   const handleAvatarPress = async () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -39,167 +41,129 @@ export function ProfileHeader({ user, onEditPress, onSettingsPress }: ProfileHea
   };
 
   return (
-    <Animated.View
-      entering={FadeInDown.duration(600).springify()}
-      style={{
-        paddingTop: insets.top + spacing.xl,
-        paddingHorizontal: spacing["2xl"],
-        paddingBottom: spacing["3xl"],
-      }}
-    >
-      {/* Title Row */}
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          justifyContent: "space-between",
-          marginBottom: spacing["3xl"],
-        }}
-      >
-        <Text
-          style={{
-            color: textMain,
-            fontSize: typography.headlineLarge.fontSize,
-            fontFamily: typography.fontFamily.display,
-          }}
-        >
-          Perfil
-        </Text>
-        <Pressable
-          onPress={handleSettingsPress}
-          accessibilityLabel="Abrir configurações"
-          accessibilityRole="button"
-          style={{
-            padding: spacing.sm,
-            backgroundColor: colors.background.card,
-            borderRadius: radius.md,
-            shadowColor: colors.neutral[900],
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.04,
-            shadowRadius: 8,
-          }}
-        >
-          <Ionicons name="settings-outline" size={24} color={textSecondary} />
-        </Pressable>
-      </View>
-
-      {/* Profile Card */}
-      <View
-        style={{
+    <View
+      style={[
+        styles.card,
+        {
           backgroundColor: colors.background.card,
-          borderRadius: spacing["3xl"],
-          padding: spacing["3xl"],
-          shadowColor: colors.neutral[900],
-          shadowOffset: { width: 0, height: 8 },
-          shadowOpacity: isDark ? 0.3 : 0.06,
-          shadowRadius: 24,
-        }}
-      >
-        <View style={{ alignItems: "center" }}>
-          {/* Avatar Container with Badge */}
-          <View style={{ position: "relative", marginBottom: spacing.xl }}>
-            <Pressable
-              onPress={handleAvatarPress}
-              accessibilityLabel="Adicionar foto de perfil"
-              accessibilityRole="button"
-              style={{
-                width: 112,
-                height: 112,
-                borderRadius: 56,
-                alignItems: "center",
-                justifyContent: "center",
-                backgroundColor: isDark ? colors.primary[800] : colors.primary[100],
-              }}
-            >
-              <Ionicons name="person" size={52} color={textSecondary} />
-            </Pressable>
-
-            {/* Add Photo Badge */}
-            <Pressable
-              onPress={handleAvatarPress}
-              accessibilityLabel="Adicionar foto"
-              accessibilityRole="button"
-              style={{
-                position: "absolute",
-                bottom: 0,
-                right: 0,
-                width: 36,
-                height: 36,
-                borderRadius: 18,
-                backgroundColor: colors.primary[500],
-                alignItems: "center",
-                justifyContent: "center",
-                borderWidth: 3,
-                borderColor: colors.background.card,
-                shadowColor: colors.neutral[900],
-                shadowOffset: { width: 0, height: 2 },
-                shadowOpacity: 0.15,
-                shadowRadius: 4,
-                elevation: 3,
-              }}
-            >
-              <Ionicons name="camera" size={18} color={Tokens.neutral[0]} />
-            </Pressable>
-          </View>
-
-          {/* Name */}
-          <Text
-            style={{
-              color: textMain,
-              fontSize: typography.headlineSmall.fontSize,
-              fontFamily: typography.fontFamily.display,
-              marginBottom: spacing.md,
-            }}
+          ...shadowPresets.md,
+        },
+      ]}
+    >
+      <View style={styles.topSection}>
+        {/* Avatar with Gradient Ring */}
+        <View style={styles.avatarContainer}>
+          <LinearGradient
+            colors={[brand.accent[400], brand.primary[400], brand.secondary[400]]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.avatarRing}
           >
-            {user?.name || "Usuaria"}
-          </Text>
-
-          {/* Stage Badge */}
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <View
-              style={{
-                paddingHorizontal: spacing.lg,
-                paddingVertical: spacing.sm,
-                borderRadius: radius.full,
-                backgroundColor: isDark ? colors.primary[800] : colors.primary[50],
-              }}
+            <Pressable
+              onPress={handleAvatarPress}
+              accessibilityLabel="Foto de perfil"
+              accessibilityRole="button"
+              style={[styles.avatarInner, { backgroundColor: colors.background.card }]}
             >
-              <Text
-                style={{
-                  color: colors.primary[500],
-                  fontSize: typography.bodyLarge.fontSize,
-                  fontWeight: "600",
-                }}
-              >
-                {getStageLabel(user?.stage)}
-              </Text>
-            </View>
-          </View>
+              {user?.avatarUrl ? (
+                <Image
+                  source={{ uri: user.avatarUrl }}
+                  style={styles.avatarImage}
+                  resizeMode="cover"
+                />
+              ) : (
+                <View
+                  style={[
+                    styles.avatarPlaceholder,
+                    {
+                      backgroundColor: isDark ? colors.primary[800] : colors.primary[50],
+                    },
+                  ]}
+                >
+                  <Text style={styles.avatarInitial}>
+                    {(user?.name || "U").charAt(0).toUpperCase()}
+                  </Text>
+                </View>
+              )}
+            </Pressable>
+          </LinearGradient>
+
+          {/* Camera Badge */}
+          <Pressable
+            onPress={handleAvatarPress}
+            accessibilityLabel="Editar foto"
+            accessibilityRole="button"
+            style={[
+              styles.cameraBadge,
+              {
+                backgroundColor: brand.accent[500],
+                borderColor: colors.background.card,
+              },
+            ]}
+          >
+            <Camera size={14} color={Tokens.neutral[0]} strokeWidth={2.5} />
+          </Pressable>
         </View>
 
-        {/* Stats */}
-        <View
-          style={{
-            flexDirection: "row",
-            marginTop: spacing["3xl"],
-            paddingTop: spacing["3xl"],
-            borderTopWidth: 1,
-            borderTopColor: borderColor,
-          }}
-        >
-          <StatItem label="Posts" value={0} textMain={textMain} textSecondary={textSecondary} />
-          <View style={{ width: 1, backgroundColor: borderColor }} />
-          <StatItem label="Grupos" value={0} textMain={textMain} textSecondary={textSecondary} />
-          <View style={{ width: 1, backgroundColor: borderColor }} />
-          <StatItem
-            label="Interesses"
-            value={user?.interests?.length || 0}
-            textMain={textMain}
-            textSecondary={textSecondary}
-          />
+        {/* Name + Stage */}
+        <View style={styles.nameSection}>
+          <View style={styles.nameRow}>
+            <Text
+              style={[
+                styles.name,
+                {
+                  color: textMain,
+                  fontFamily: typography.fontFamily.bold,
+                },
+              ]}
+              numberOfLines={1}
+            >
+              {user?.name || "Usuaria"}
+            </Text>
+            {isPremium && (
+              <View
+                style={[
+                  styles.premiumBadge,
+                  {
+                    backgroundColor: isDark ? brand.accent[900] : brand.accent[50],
+                  },
+                ]}
+              >
+                <Crown size={12} color={brand.accent[500]} strokeWidth={2.5} />
+                <Text style={[styles.premiumText, { color: brand.accent[500] }]}>PRO</Text>
+              </View>
+            )}
+          </View>
+
+          <View
+            style={[
+              styles.stageBadge,
+              {
+                backgroundColor: isDark ? colors.primary[800] : colors.primary[50],
+              },
+            ]}
+          >
+            <Text style={[styles.stageText, { color: colors.primary[500] }]}>
+              {getStageLabel(user?.stage)}
+            </Text>
+          </View>
         </View>
       </View>
-    </Animated.View>
+
+      {/* Stats Row */}
+      <View style={[styles.statsRow, { borderTopColor: borderColor }]}>
+        <StatItem label="Posts" value={0} textMain={textMain} textSecondary={textSecondary} />
+        <View style={[styles.statDivider, { backgroundColor: borderColor }]} />
+        <StatItem label="Grupos" value={0} textMain={textMain} textSecondary={textSecondary} />
+        <View style={[styles.statDivider, { backgroundColor: borderColor }]} />
+        <StatItem
+          label="Interesses"
+          value={user?.interests?.length || 0}
+          textMain={textMain}
+          textSecondary={textSecondary}
+        />
+      </View>
+    </View>
   );
 }
 
@@ -212,20 +176,165 @@ interface StatItemProps {
 
 function StatItem({ label, value, textMain, textSecondary }: StatItemProps) {
   return (
-    <View style={{ flex: 1, alignItems: "center" }}>
+    <View style={styles.statItem}>
       <Text
-        style={{
-          color: textMain,
-          fontSize: typography.headlineSmall.fontSize,
-          fontWeight: "700",
-          marginBottom: spacing.xs,
-        }}
+        style={[
+          styles.statValue,
+          {
+            color: textMain,
+            fontFamily: typography.fontFamily.bold,
+          },
+        ]}
       >
         {value}
       </Text>
-      <Text style={{ color: textSecondary, fontSize: typography.titleSmall.fontSize }}>
+      <Text
+        style={[
+          styles.statLabel,
+          {
+            color: textSecondary,
+            fontFamily: typography.fontFamily.base,
+          },
+        ]}
+      >
         {label}
       </Text>
     </View>
   );
 }
+
+const AVATAR_SIZE = 96;
+const RING_SIZE = AVATAR_SIZE + 8;
+
+const styles = StyleSheet.create({
+  card: {
+    borderRadius: radius["2xl"],
+    padding: spacing.xl,
+  },
+
+  topSection: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  avatarContainer: {
+    position: "relative",
+  },
+
+  avatarRing: {
+    width: RING_SIZE,
+    height: RING_SIZE,
+    borderRadius: RING_SIZE / 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  avatarInner: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    overflow: "hidden",
+  },
+
+  avatarImage: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+  },
+
+  avatarPlaceholder: {
+    width: AVATAR_SIZE,
+    height: AVATAR_SIZE,
+    borderRadius: AVATAR_SIZE / 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+
+  avatarInitial: {
+    fontSize: 36,
+    fontFamily: typography.fontFamily.bold,
+    color: brand.primary[400],
+  },
+
+  cameraBadge: {
+    position: "absolute",
+    bottom: 2,
+    right: 2,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2.5,
+  },
+
+  nameSection: {
+    flex: 1,
+    marginLeft: spacing.xl,
+  },
+
+  nameRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: spacing.sm,
+    marginBottom: spacing.sm,
+  },
+
+  name: {
+    fontSize: typography.headlineMedium.fontSize,
+    lineHeight: typography.headlineMedium.lineHeight,
+    flexShrink: 1,
+  },
+
+  premiumBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 3,
+    paddingHorizontal: spacing.sm,
+    paddingVertical: 3,
+    borderRadius: radius.sm,
+  },
+
+  premiumText: {
+    fontSize: 10,
+    fontFamily: typography.fontFamily.bold,
+    letterSpacing: 0.5,
+  },
+
+  stageBadge: {
+    alignSelf: "flex-start",
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    borderRadius: radius.full,
+  },
+
+  stageText: {
+    fontSize: typography.bodySmall.fontSize,
+    fontFamily: typography.fontFamily.semibold,
+  },
+
+  statsRow: {
+    flexDirection: "row",
+    marginTop: spacing.xl,
+    paddingTop: spacing.xl,
+    borderTopWidth: 1,
+  },
+
+  statItem: {
+    flex: 1,
+    alignItems: "center",
+  },
+
+  statValue: {
+    fontSize: typography.headlineSmall.fontSize,
+    marginBottom: 2,
+  },
+
+  statLabel: {
+    fontSize: typography.caption.fontSize,
+  },
+
+  statDivider: {
+    width: 1,
+  },
+});

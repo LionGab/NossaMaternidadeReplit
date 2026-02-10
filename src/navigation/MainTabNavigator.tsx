@@ -23,7 +23,7 @@ import Animated, {
   withSequence,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Tokens, brand, neutral, spacing } from "../theme/tokens";
+import { brand, neutral, spacing } from "../theme/tokens";
 import { MainTabParamList, MainTabScreenProps } from "../types/navigation";
 
 // Avatar da NathIA
@@ -131,7 +131,7 @@ const NathIATabButton = memo<{ focused: boolean; onPress: () => void }>(({ focus
 
   useEffect(() => {
     glowOpacity.value = withRepeat(
-      withSequence(withTiming(0.6, { duration: 1500 }), withTiming(0.2, { duration: 1500 })),
+      withSequence(withTiming(0.3, { duration: 1500 }), withTiming(0.08, { duration: 1500 })),
       -1
     );
   }, [glowOpacity]);
@@ -141,7 +141,7 @@ const NathIATabButton = memo<{ focused: boolean; onPress: () => void }>(({ focus
   }));
 
   const glowStyle = useAnimatedStyle(() => ({
-    opacity: focused ? glowOpacity.value : 0,
+    opacity: focused ? glowOpacity.value : 0.05,
   }));
 
   const handlePress = async () => {
@@ -168,9 +168,12 @@ const NathIATabButton = memo<{ focused: boolean; onPress: () => void }>(({ focus
           colors={
             focused
               ? [brand.primary[500], brand.accent[300]]
-              : [Tokens.glass.light.soft, Tokens.glass.light.medium]
+              : [brand.primary[50], brand.accent[50]]
           }
-          style={styles.centerTabGradient}
+          style={[
+            styles.centerTabGradient,
+            { borderColor: focused ? brand.primary[300] : brand.primary[200] },
+          ]}
         >
           <Image
             source={NATHIA_AVATAR}
@@ -209,7 +212,7 @@ const CustomTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => 
 
   return (
     <BlurView
-      intensity={80}
+      intensity={92}
       tint="light"
       style={[styles.tabBar, { paddingBottom: Math.max(insets.bottom, spacing.sm) }]}
     >
@@ -265,9 +268,9 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: "row",
-    backgroundColor: Platform.OS === "ios" ? "transparent" : Tokens.glass.light.soft,
+    backgroundColor: "rgba(255,255,255,0.96)",
     borderTopWidth: StyleSheet.hairlineWidth,
-    borderTopColor: Tokens.border.light.subtle,
+    borderTopColor: neutral[200],
     paddingTop: spacing.sm,
     height: Platform.OS === "ios" ? 88 : 72,
   },
@@ -317,8 +320,7 @@ const styles = StyleSheet.create({
     borderRadius: 28,
     alignItems: "center",
     justifyContent: "center",
-    borderWidth: 3,
-    borderColor: Tokens.neutral[50],
+    borderWidth: 2.5,
   },
 
   centerTabAvatar: {

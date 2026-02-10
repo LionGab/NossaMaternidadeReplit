@@ -40,11 +40,11 @@ import Animated, {
  */
 const CATEGORIES = [
   { id: "all", label: "Todas", icon: "sparkles" as const },
-  { id: "strength", label: "Forca", icon: "fitness" as const },
-  { id: "confidence", label: "Confianca", icon: "heart" as const },
-  { id: "patience", label: "Paciencia", icon: "leaf" as const },
+  { id: "strength", label: "Força", icon: "fitness" as const },
+  { id: "confidence", label: "Confiança", icon: "heart" as const },
+  { id: "patience", label: "Paciência", icon: "leaf" as const },
   { id: "love", label: "Amor", icon: "flower" as const },
-  { id: "gratitude", label: "Gratidao", icon: "sunny" as const },
+  { id: "gratitude", label: "Gratidão", icon: "sunny" as const },
 ];
 
 /**
@@ -54,8 +54,8 @@ const AFFIRMATIONS = [
   {
     id: "1",
     category: "strength",
-    categoryLabel: "Forca Interior",
-    text: "Voce e mais forte do que imagina. Cada desafio e uma oportunidade de descobrir sua coragem.",
+    categoryLabel: "Força Interior",
+    text: "Você é mais forte do que imagina. Cada desafio é uma oportunidade de descobrir sua coragem.",
     author: "Nathalia Valente",
     gradientLight: [Tokens.brand.accent[100], Tokens.brand.accent[50], Tokens.neutral[0]] as const,
     gradientDark: [Tokens.accent.dark.soft, Tokens.accent.dark.subtle] as const,
@@ -63,8 +63,8 @@ const AFFIRMATIONS = [
   {
     id: "2",
     category: "confidence",
-    categoryLabel: "Autoconfianca",
-    text: "Seu corpo esta fazendo um trabalho extraordinario. Confie no processo e em voce mesma.",
+    categoryLabel: "Autoconfiança",
+    text: "Seu corpo está fazendo um trabalho extraordinário. Confie no processo e em você mesma.",
     author: "Nathalia Valente",
     gradientLight: [
       Tokens.brand.secondary[200],
@@ -76,7 +76,7 @@ const AFFIRMATIONS = [
   {
     id: "3",
     category: "patience",
-    categoryLabel: "Paciencia",
+    categoryLabel: "Paciência",
     text: "Tudo acontece no tempo certo. Respire fundo e permita-se viver cada momento desta jornada.",
     author: "Nathalia Valente",
     gradientLight: [
@@ -89,8 +89,8 @@ const AFFIRMATIONS = [
   {
     id: "4",
     category: "love",
-    categoryLabel: "Amor-proprio",
-    text: "Voce merece descanso, carinho e cuidado. Nao e egoismo, e necessidade.",
+    categoryLabel: "Amor-próprio",
+    text: "Você merece descanso, carinho e cuidado. Não é egoísmo, é necessidade.",
     author: "Nathalia Valente",
     gradientLight: [Tokens.brand.accent[200], Tokens.brand.accent[50], Tokens.neutral[0]] as const,
     gradientDark: [Tokens.accent.dark.soft, Tokens.accent.dark.subtle] as const,
@@ -98,8 +98,8 @@ const AFFIRMATIONS = [
   {
     id: "5",
     category: "gratitude",
-    categoryLabel: "Gratidao",
-    text: "Hoje, celebre cada pequena vitoria. Voce esta construindo algo incrivel.",
+    categoryLabel: "Gratidão",
+    text: "Hoje, celebre cada pequena vitória. Você está construindo algo incrível.",
     author: "Nathalia Valente",
     gradientLight: [
       Tokens.maternal.warmth.honey,
@@ -189,7 +189,7 @@ export function AffirmationsScreenRedesign({ navigation }: AffirmationsScreenRed
       {/* Header */}
       <View style={{ paddingHorizontal: spacing.xl }}>
         <FloHeader
-          title="Afirmacoes"
+          title="Afirmações"
           subtitle="Palavras que fortalecem"
           showBack
           onBack={() => navigation.goBack()}
@@ -253,7 +253,7 @@ export function AffirmationsScreenRedesign({ navigation }: AffirmationsScreenRed
       {/* Today's Affirmation */}
       <View style={{ paddingHorizontal: spacing.xl, marginTop: spacing.lg }}>
         <FloSectionTitle
-          title="Afirmacao de Hoje"
+          title="Afirmação de Hoje"
           icon="star"
           iconColor={Tokens.premium.special.gold}
           animationDelay={300}
@@ -273,8 +273,8 @@ export function AffirmationsScreenRedesign({ navigation }: AffirmationsScreenRed
       {otherAffirmations.length > 0 && (
         <View style={{ paddingHorizontal: spacing.xl, marginTop: spacing["2xl"] }}>
           <FloSectionTitle
-            title="Mais Afirmacoes"
-            subtitle={`${otherAffirmations.length} disponiveis`}
+            title="Mais Afirmações"
+            subtitle={`${otherAffirmations.length} disponíveis`}
             animationDelay={500}
           />
 

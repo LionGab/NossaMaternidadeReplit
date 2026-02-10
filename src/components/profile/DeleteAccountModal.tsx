@@ -233,11 +233,11 @@ function Step1Warning({
   iconContainerStyle,
 }: Step1Props) {
   const deletionItems = [
-    "Todos os seus posts e comentarios",
-    "Historico de ciclo e saude",
+    "Todos os seus posts e comentários",
+    "Histórico de ciclo e saúde",
     "Conversas com NathIA",
-    "Afirmacoes e habitos",
-    "Todas as suas preferencias",
+    "Afirmações e hábitos",
+    "Todas as suas preferências",
   ];
 
   return (
@@ -267,7 +267,7 @@ function Step1Warning({
           marginBottom: spacing["2xl"],
         }}
       >
-        Esta acao e{" "}
+        Esta ação é{" "}
         <Text style={{ fontWeight: "700", color: colors.semantic.error }}>
           permanente e irreversivel
         </Text>
@@ -290,7 +290,7 @@ function Step1Warning({
             marginBottom: spacing.md,
           }}
         >
-          O que sera deletado:
+          O que será deletado:
         </Text>
         <View style={{ gap: spacing.sm }}>
           {deletionItems.map((item) => (
@@ -316,7 +316,7 @@ function Step1Warning({
           marginBottom: spacing.sm,
         }}
       >
-        Por que voce quer sair? (opcional)
+        Por que você quer sair? (opcional)
       </Text>
       <TextInput
         value={reason}
@@ -431,7 +431,7 @@ function Step2Confirmation({
           marginBottom: spacing.md,
         }}
       >
-        Confirmacao final
+        Confirmação final
       </Text>
 
       <Text
@@ -444,7 +444,7 @@ function Step2Confirmation({
         }}
       >
         Digite <Text style={{ fontWeight: "700", color: colors.semantic.error }}>DELETAR</Text> para
-        confirmar a exclusao permanente.
+        confirmar a exclusão permanente.
       </Text>
 
       <TextInput
@@ -504,7 +504,7 @@ function Step2Confirmation({
             opacity: isConfirmValid ? 1 : 0.5,
           }}
           accessibilityRole="button"
-          accessibilityLabel={isDeleting ? "Deletando conta" : "Confirmar exclusao da conta"}
+          accessibilityLabel={isDeleting ? "Deletando conta" : "Confirmar exclusão da conta"}
           accessibilityState={{ disabled: isDeleting || !isConfirmValid }}
         >
           <Text

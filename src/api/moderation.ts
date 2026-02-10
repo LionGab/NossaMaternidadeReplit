@@ -1,16 +1,16 @@
 /**
  * Moderation API Service
- * 
+ *
  * Sistema completo de moderação de conteúdo:
  * - Análise automática de posts
  * - Ranking de qualidade para seleção
  * - Fila de moderação para aprovação
  * - Métricas de moderação
- * 
- * NOTA: Usa type assertions porque moderation_queue não está no Database type gerado
+ *
+ * NOTA: Usa untypedFrom() para moderation_queue (não existe no Database type gerado)
  */
 
-import { supabase } from "./supabase";
+import { supabase, untypedFrom } from "./supabase";
 import {
   analyzeProfanity,
   needsHumanReview,
@@ -93,12 +93,19 @@ export function calculateQualityScore(
 
   // Palavras positivas
   const positiveWords = [
-    "obrigada", "ajuda", "dica", "experiência", "compartilhar",
-    "conselho", "apoio", "amor", "carinho", "feliz", "gratidão"
+    "obrigada",
+    "ajuda",
+    "dica",
+    "experiência",
+    "compartilhar",
+    "conselho",
+    "apoio",
+    "amor",
+    "carinho",
+    "feliz",
+    "gratidão",
   ];
-  const hasPositive = positiveWords.some(word => 
-    content.toLowerCase().includes(word)
-  );
+  const hasPositive = positiveWords.some((word) => content.toLowerCase().includes(word));
   if (hasPositive) {
     score += 15;
   }
@@ -176,9 +183,9 @@ interface ModerationQueueRow {
 
 /**
  * Busca itens pendentes na fila de moderação
- * 
- * NOTE: Uses 'any' type assertions because moderation_queue table
- * is not in the generated Database types yet
+ *
+ * NOTE: Uses untypedFrom() because moderation_queue table
+ * is not in the generated Database types
  */
 export async function fetchModerationQueue(
   limit: number = 50,
@@ -189,12 +196,11 @@ export async function fetchModerationQueue(
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = supabase as any;
-    
-    let query = client
-      .from("moderation_queue")
-      .select(`
+    const client = supabase!;
+
+    let query = untypedFrom(client, "moderation_queue")
+      .select(
+        `
         id,
         user_id,
         post_id,
@@ -208,7 +214,8 @@ export async function fetchModerationQueue(
         action,
         moderator_notes,
         created_at
-      `)
+      `
+      )
       .order("quality_score", { ascending: false, nullsFirst: false })
       .order("created_at", { ascending: true })
       .limit(limit);
@@ -219,7 +226,7 @@ export async function fetchModerationQueue(
     } else {
       query = query.eq("reviewed", true);
     }
-    
+
     const { data, error } = await query;
 
     if (error) {
@@ -264,7 +271,7 @@ export async function fetchTopPostsForReview(
   limit: number = 200
 ): Promise<{ data: ModerationQueueItem[]; error: Error | null }> {
   const result = await fetchModerationQueue(limit, "pending");
-  
+
   if (result.error) return result;
 
   // Already sorted by quality_score from database, just limit
@@ -287,19 +294,16 @@ export async function approvePost(
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = supabase as any;
-    
+    const client = supabase!;
+
     // 1. Buscar o post_id da fila
-    const { data: queueItem } = await client
-      .from("moderation_queue")
+    const { data: queueItem } = await untypedFrom(client, "moderation_queue")
       .select("post_id")
       .eq("id", queueItemId)
       .single();
 
     // 2. Atualizar a fila de moderação
-    const { error: queueError } = await client
-      .from("moderation_queue")
+    const { error: queueError } = await untypedFrom(client, "moderation_queue")
       .update({
         reviewed: true,
         action: "approved",
@@ -314,7 +318,7 @@ export async function approvePost(
 
     // 3. Atualizar o status do post original para "approved"
     if (queueItem?.post_id) {
-      const { error: postError } = await supabase
+      const { error: postError } = await supabase!
         .from("community_posts")
         .update({ status: "approved" })
         .eq("id", queueItem.post_id);
@@ -346,19 +350,16 @@ export async function rejectPost(
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = supabase as any;
-    
+    const client = supabase!;
+
     // 1. Buscar o post_id da fila
-    const { data: queueItem } = await client
-      .from("moderation_queue")
+    const { data: queueItem } = await untypedFrom(client, "moderation_queue")
       .select("post_id")
       .eq("id", queueItemId)
       .single();
 
     // 2. Atualizar a fila de moderação
-    const { error: queueError } = await client
-      .from("moderation_queue")
+    const { error: queueError } = await untypedFrom(client, "moderation_queue")
       .update({
         reviewed: true,
         action: "rejected",
@@ -373,7 +374,7 @@ export async function rejectPost(
 
     // 3. Atualizar o status do post original para "rejected"
     if (queueItem?.post_id) {
-      const { error: postError } = await supabase
+      const { error: postError } = await supabase!
         .from("community_posts")
         .update({ status: "rejected" })
         .eq("id", queueItem.post_id);
@@ -420,21 +421,20 @@ export async function addToModerationQueue(
   }
 
   // Suporta chamada antiga (4 params) e nova (objeto)
-  const params: AddToModerationQueueParams = typeof userIdOrParams === "string"
-    ? {
-        userId: userIdOrParams,
-        content: content || "",
-        category: category || "review",
-        severity: severity || 0,
-      }
-    : userIdOrParams;
+  const params: AddToModerationQueueParams =
+    typeof userIdOrParams === "string"
+      ? {
+          userId: userIdOrParams,
+          content: content || "",
+          category: category || "review",
+          severity: severity || 0,
+        }
+      : userIdOrParams;
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = supabase as any;
-    
-    const { data, error } = await client
-      .from("moderation_queue")
+    const client = supabase!;
+
+    const { data, error } = await untypedFrom(client, "moderation_queue")
       .insert({
         user_id: params.userId,
         post_id: params.postId || null,
@@ -473,23 +473,20 @@ export async function fetchModerationStats(): Promise<{
   }
 
   try {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const client = supabase as any;
-    
+    const client = supabase!;
+
     // Buscar contagens
-    const { count: pendingCount } = await client
-      .from("moderation_queue")
+    const { count: pendingCount } = await untypedFrom(client, "moderation_queue")
       .select("id", { count: "exact", head: true })
       .eq("reviewed", false);
 
-    const { data: reviewedData } = await client
-      .from("moderation_queue")
+    const { data: reviewedData } = await untypedFrom(client, "moderation_queue")
       .select("id, action")
       .eq("reviewed", true);
 
     const pending = pendingCount || 0;
     const reviewed = (reviewedData || []) as { id: string; action: string }[];
-    
+
     const approved = reviewed.filter((r) => r.action === "approved").length;
     const rejected = reviewed.filter((r) => r.action === "rejected").length;
     const autoBlocked = reviewed.filter((r) => r.action === "auto_blocked").length;

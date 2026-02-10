@@ -18,7 +18,8 @@ import Svg, { Circle } from "react-native-svg";
 
 import { useTheme } from "@/hooks/useTheme";
 import { useHabitsStore, useCheckInStore } from "@/state";
-import { accessibility, brand, neutral, spacing, radius, shadows } from "@/theme/tokens";
+import { accessibility, brand, neutral, spacing, radius } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 import { getHabitsMessage } from "@/utils/contextual-messages";
 import type { MainTabParamList } from "@/types/navigation";
 
@@ -80,7 +81,7 @@ function ProgressRing({
 // ============================================================================
 
 export const DailyProgressBar: React.FC = () => {
-  const { isDark, text, surface } = useTheme();
+  const { isDark, text } = useTheme();
   const navigation = useNavigation<BottomTabNavigationProp<MainTabParamList>>();
 
   // Stores - seletores atômicos
@@ -97,7 +98,7 @@ export const DailyProgressBar: React.FC = () => {
   const habitsMsg = getHabitsMessage(completedHabits, totalHabits);
 
   // Colors
-  const cardBg = isDark ? surface.card : neutral[50];
+  const cardBg = isDark ? neutral[800] : neutral[0];
   const textPrimary = isDark ? text.primary : neutral[800];
   const textSecondary = isDark ? text.secondary : neutral[500];
   const progressColor = brand.primary[500];
@@ -185,9 +186,9 @@ export const DailyProgressBar: React.FC = () => {
 
 const styles = StyleSheet.create({
   outerContainer: {
-    borderRadius: radius.xl,
-    padding: spacing.lg,
-    ...shadows.sm,
+    borderRadius: radius["2xl"],
+    padding: spacing.xl,
+    ...shadowPresets.sm,
   },
   container: {
     flexDirection: "row",

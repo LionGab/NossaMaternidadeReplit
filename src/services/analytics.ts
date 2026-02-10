@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Constants from "expo-constants";
 import { Platform } from "react-native";
 import { supabase } from "@/api/supabase";
-import { getSupabaseFunctionsUrl } from "@/config/env";
+import { getEnv, getSupabaseFunctionsUrl } from "@/config/env";
 import type {
   AnalyticsEventInput,
   AttributionContext,
@@ -76,10 +76,31 @@ async function getAccessToken(): Promise<string | null> {
   return session?.access_token ?? null;
 }
 
+function getAuthorizationHeaders(token: string | null, requireAuthFallback?: boolean): Record<string, string> {
+  const headers: Record<string, string> = {};
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+    return headers;
+  }
+
+  if (requireAuthFallback) {
+    const anonKey = getEnv("EXPO_PUBLIC_SUPABASE_ANON_KEY");
+    if (anonKey) {
+      headers.Authorization = `Bearer ${anonKey}`;
+      headers.ApiKey = anonKey;
+      return headers;
+    }
+    logger.warn("Supabase anon key missing, cannot send fallback auth header", "AnalyticsService");
+  }
+
+  return headers;
+}
+
 async function postToEdgeFunction(
   endpointPath: string,
   payload: unknown,
-  options: { requireAuth: boolean }
+  options: { requireAuth: boolean; requireAuthFallback?: boolean }
 ): Promise<{ ok: boolean; data?: unknown }> {
   const baseUrl = getFunctionsBaseUrl();
   if (!baseUrl) {
@@ -96,7 +117,7 @@ async function postToEdgeFunction(
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...getAuthorizationHeaders(token, options.requireAuthFallback),
       },
       body: JSON.stringify(payload),
     });
@@ -242,7 +263,10 @@ export async function trackEvent(event: AnalyticsEventInput): Promise<void> {
     },
   };
 
-  await postToEdgeFunction("analytics/track", payload, { requireAuth: false });
+  await postToEdgeFunction("analytics/track", payload, {
+    requireAuth: false,
+    requireAuthFallback: true,
+  });
 }
 
 export async function trackConversion(

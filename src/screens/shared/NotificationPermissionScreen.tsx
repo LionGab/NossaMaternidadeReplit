@@ -90,14 +90,14 @@ const NOTIFICATION_PREVIEWS = [
   {
     icon: "heart" as const,
     title: "Nossa Maternidade",
-    message: "Bom dia! Como voce esta se sentindo hoje?",
+    message: "Bom dia! Como você está se sentindo hoje?",
     time: "agora",
     colors: [Tokens.brand.primary[400], Tokens.brand.primary[500]] as const,
   },
   {
     icon: "sparkles" as const,
-    title: "Sua afirmacao do dia",
-    message: "Voce e forte e capaz. Confie no processo.",
+    title: "Sua afirmação do dia",
+    message: "Você é forte e capaz. Confie no processo.",
     time: "8:00",
     colors: [Tokens.brand.primary[400], Tokens.brand.primary[500]] as const,
   },

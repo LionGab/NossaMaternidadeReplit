@@ -1,0 +1,212 @@
+name: iOS CI/CD - TestFlight
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch: # Permite executar manualmente
+
+env:
+  SCHEME: YourAppName
+  CONFIGURATION: Release
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: macos-14 # macOS Sonoma com Xcode 15+
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app
+      
+    - name: Show Xcode version
+      run: xcodebuild -version
+      
+    - name: Install SwiftLint
+      run: brew install swiftlint
+      
+    - name: Run SwiftLint
+      run: swiftlint lint --reporter github-actions-logging
+      
+    - name: Run Tests
+      run: |
+        xcodebuild test \
+          -scheme ${{ env.SCHEME }} \
+          -destination 'platform=iOS Simulator,name=iPhone 15 Pro,OS=17.2' \
+          -enableCodeCoverage YES \
+          | xcpretty --report html --output ./test_results/report.html
+      
+    - name: Upload Test Results
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-results
+        path: ./test_results/
+        
+    - name: Code Coverage
+      run: |
+        xcrun xccov view --report --only-targets \
+          $(find ~/Library/Developer/Xcode/DerivedData -name '*.xcresult' | head -n 1)
+
+  build:
+    name: Build for TestFlight
+    needs: test
+    runs-on: macos-14
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app
+      
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'
+        bundler-cache: true
+        
+    - name: Install dependencies
+      run: |
+        brew install xcpretty
+        gem install fastlane
+        
+    - name: Setup signing
+      env:
+        CERTIFICATES_P12: ${{ secrets.CERTIFICATES_P12 }}
+        CERTIFICATES_PASSWORD: ${{ secrets.CERTIFICATES_PASSWORD }}
+        PROVISIONING_PROFILE: ${{ secrets.PROVISIONING_PROFILE }}
+        KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+      run: |
+        # Criar keychain temporário
+        security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+        security default-keychain -s build.keychain
+        security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+        security set-keychain-settings -t 3600 -u build.keychain
+        
+        # Importar certificado
+        echo "$CERTIFICATES_P12" | base64 --decode > certificate.p12
+        security import certificate.p12 -k build.keychain -P "$CERTIFICATES_PASSWORD" -T /usr/bin/codesign
+        security set-key-partition-list -S apple-tool:,apple: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+        
+        # Instalar provisioning profile
+        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+        echo "$PROVISIONING_PROFILE" | base64 --decode > ~/Library/MobileDevice/Provisioning\ Profiles/profile.mobileprovision
+        
+    - name: Increment build number
+      run: |
+        BUILD_NUMBER=$(($(xcrun agvtool what-version -terse) + 1))
+        xcrun agvtool new-version -all $BUILD_NUMBER
+        echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+        
+    - name: Build Archive
+      run: |
+        xcodebuild archive \
+          -scheme ${{ env.SCHEME }} \
+          -configuration ${{ env.CONFIGURATION }} \
+          -archivePath ./build/App.xcarchive \
+          -destination 'generic/platform=iOS' \
+          CODE_SIGN_STYLE=Manual \
+          | xcpretty
+          
+    - name: Export IPA
+      run: |
+        cat > ./build/ExportOptions.plist << EOF
+        <?xml version="1.0" encoding="UTF-8"?>
+        <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+        <plist version="1.0">
+        <dict>
+            <key>method</key>
+            <string>app-store</string>
+            <key>uploadSymbols</key>
+            <true/>
+            <key>uploadBitcode</key>
+            <false/>
+            <key>manageAppVersionAndBuildNumber</key>
+            <true/>
+        </dict>
+        </plist>
+        EOF
+        
+        xcodebuild -exportArchive \
+          -archivePath ./build/App.xcarchive \
+          -exportPath ./build/ipa \
+          -exportOptionsPlist ./build/ExportOptions.plist
+          
+    - name: Upload to TestFlight
+      env:
+        APPLE_ID: ${{ secrets.APPLE_ID }}
+        APP_SPECIFIC_PASSWORD: ${{ secrets.APP_SPECIFIC_PASSWORD }}
+      run: |
+        xcrun altool --upload-app \
+          --type ios \
+          --file $(find ./build/ipa -name "*.ipa" | head -n 1) \
+          --username "$APPLE_ID" \
+          --password "$APP_SPECIFIC_PASSWORD"
+          
+    - name: Upload IPA Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ipa-build-${{ env.BUILD_NUMBER }}
+        path: ./build/ipa/*.ipa
+        
+    - name: Cleanup keychain
+      if: always()
+      run: |
+        security delete-keychain build.keychain
+        rm -f certificate.p12
+
+  notify:
+    name: Notify Team
+    needs: build
+    runs-on: ubuntu-latest
+    if: always()
+    
+    steps:
+    - name: Send Slack notification
+      if: success()
+      uses: slackapi/slack-github-action@v1
+      with:
+        payload: |
+          {
+            "text": "✅ New TestFlight build available!",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "*TestFlight Build Successful* :rocket:\n\n*Repo:* ${{ github.repository }}\n*Branch:* ${{ github.ref_name }}\n*Commit:* <${{ github.event.head_commit.url }}|${{ github.sha }}>\n*Author:* ${{ github.actor }}"
+                }
+              }
+            ]
+          }
+      env:
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        
+    - name: Create GitHub Release
+      if: success() && github.ref == 'refs/heads/main'
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: build-${{ github.run_number }}
+        release_name: TestFlight Build ${{ github.run_number }}
+        body: |
+          ## TestFlight Build ${{ github.run_number }}
+          
+          **Branch:** ${{ github.ref_name }}
+          **Commit:** ${{ github.sha }}
+          **Author:** ${{ github.actor }}
+          
+          ### Changes
+          ${{ github.event.head_commit.message }}
+          
+          ### TestFlight
+          Build will be available in TestFlight after Apple processing (10-30 minutes).
+        draft: false
+        prerelease: true

@@ -26,23 +26,21 @@ import { NewPostModal } from "@/components/community/NewPostModal";
 import { PostType } from "@/components/community/PostTypeSelector";
 import { QuickComposerCard } from "@/components/community/QuickComposerCard";
 import { WeeklyHighlights } from "@/components/community/WeeklyHighlights";
-import {
-  Body,
-  Caption,
-  ListSkeleton,
-  NathButton,
-  NathCard,
-  Subtitle,
-  Title,
-} from "@/components/ui";
+import { Body, Caption, ListSkeleton, NathButton, NathCard, Subtitle } from "@/components/ui";
 
 // Hooks & State
-import { useCommunityPosts, useCreatePost, useTogglePostLike } from "@/api/hooks";
+import {
+  useCommunityPosts,
+  useCommunityStats,
+  useCreatePost,
+  useTogglePostLike,
+} from "@/api/hooks";
 import { useTheme } from "@/hooks/useTheme";
 import { useAppStore } from "@/state";
 
 // Theme
-import { Tokens, brand, radius, spacing } from "@/theme/tokens";
+import { Tokens, brand, neutral, radius, spacing } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 
 // Navigation
 import { MainTabScreenProps } from "@/types/navigation";
@@ -54,12 +52,14 @@ import type { Post } from "@/types/navigation";
 // Utils
 import { logger } from "@/utils/logger";
 
-// Stats mockados (integração real em próxima iteração)
-const communityStats = {
-  members: "12.5K",
-  posts: "2.4K",
-  engagement: "89%",
-};
+/**
+ * Formata número com sufixo K/M para exibição compacta
+ */
+function formatCompactNumber(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1).replace(/\.0$/, "")}M`;
+  if (n >= 1_000) return `${(n / 1_000).toFixed(1).replace(/\.0$/, "")}K`;
+  return String(n);
+}
 
 // Imagens da Nath
 const nathCommunityImage = require("../../../assets/images/nath-community-elegant.png");
@@ -112,6 +112,7 @@ function adaptPostToCommunityPost(post: Post): CommunityPost {
       avatar_url: post.authorAvatar || "",
     },
     signed_media_url: post.imageUrl || post.videoUrl || null,
+    isLiked: post.isLiked,
   };
 }
 
@@ -122,6 +123,7 @@ export default function CommunityScreen({ navigation }: Props) {
 
   // TanStack Query hooks (server state)
   const { data: posts = [], isLoading, isRefetching, refetch } = useCommunityPosts();
+  const { data: stats } = useCommunityStats();
   const createPostMutation = useCreatePost();
   const toggleLikeMutation = useTogglePostLike();
   const isCreating = createPostMutation.isPending;
@@ -239,7 +241,7 @@ export default function CommunityScreen({ navigation }: Props) {
       <View style={styles.headerContainer}>
         {/* Welcome Card - Comunidade Moderada */}
         <Animated.View entering={FadeInDown.delay(50).duration(400)}>
-          <NathCard variant="elevated" style={styles.welcomeCard} padding="none">
+          <View style={styles.welcomeCard}>
             <LinearGradient
               colors={[Tokens.maternal.warmth.blush, Tokens.maternal.calm.lavender]}
               start={{ x: 0, y: 0 }}
@@ -265,39 +267,47 @@ export default function CommunityScreen({ navigation }: Props) {
                 />
               </View>
             </LinearGradient>
-          </NathCard>
+          </View>
         </Animated.View>
 
         {/* Community Stats */}
         <Animated.View entering={FadeInDown.delay(100).duration(400)}>
-          <LinearGradient
-            colors={[
-              isDark ? `${nathColors.azul}30` : `${nathColors.azul}20`,
-              isDark ? `${nathColors.verde}30` : `${nathColors.verde}20`,
-            ]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.statsCard}
-          >
+          <View style={[styles.statsCard, { backgroundColor: isDark ? neutral[800] : neutral[0] }]}>
             <View style={styles.statItem}>
-              <Subtitle>{communityStats.members}</Subtitle>
-              <Caption style={styles.statLabel}>Mulheres na{"\n"}Comunidade</Caption>
+              <Subtitle>{formatCompactNumber(stats?.members ?? 0)}</Subtitle>
+              <Caption style={[styles.statLabel, { color: isDark ? neutral[400] : neutral[500] }]}>
+                Mulheres
+              </Caption>
             </View>
 
-            <View style={[styles.statDivider, { backgroundColor: borderColor }]} />
+            <View
+              style={[
+                styles.statDivider,
+                { backgroundColor: isDark ? neutral[700] : neutral[100] },
+              ]}
+            />
 
             <View style={styles.statItem}>
-              <Subtitle>{communityStats.posts}</Subtitle>
-              <Caption style={styles.statLabel}>Postagens{"\n"}Essa Semana</Caption>
+              <Subtitle>{formatCompactNumber(stats?.posts ?? 0)}</Subtitle>
+              <Caption style={[styles.statLabel, { color: isDark ? neutral[400] : neutral[500] }]}>
+                Postagens
+              </Caption>
             </View>
 
-            <View style={[styles.statDivider, { backgroundColor: borderColor }]} />
+            <View
+              style={[
+                styles.statDivider,
+                { backgroundColor: isDark ? neutral[700] : neutral[100] },
+              ]}
+            />
 
             <View style={styles.statItem}>
-              <Subtitle style={{ color: nathColors.verde }}>{communityStats.engagement}</Subtitle>
-              <Caption style={styles.statLabel}>Taxa de{"\n"}Engajamento</Caption>
+              <Subtitle style={{ color: nathColors.verde }}>{stats?.engagement ?? 0}%</Subtitle>
+              <Caption style={[styles.statLabel, { color: isDark ? neutral[400] : neutral[500] }]}>
+                Engajamento
+              </Caption>
             </View>
-          </LinearGradient>
+          </View>
         </Animated.View>
 
         {/* Quick Composer */}
@@ -313,7 +323,7 @@ export default function CommunityScreen({ navigation }: Props) {
         <WeeklyHighlights onPostPress={handlePostPress} onLike={handleLike} />
       </View>
     ),
-    [isDark, nathColors, borderColor, handleOpenComposer, isCreating, handlePostPress, handleLike]
+    [isDark, nathColors, handleOpenComposer, isCreating, handlePostPress, handleLike]
   );
 
   // Footer component (ChallengeCard + spacing)
@@ -410,23 +420,25 @@ export default function CommunityScreen({ navigation }: Props) {
         entering={FadeInDown.duration(300)}
         style={[styles.header, { backgroundColor: headerBg, borderBottomColor: borderColor }]}
       >
-        <Title>Mães Valente</Title>
+        <Subtitle>Mães Valente</Subtitle>
         <View style={styles.headerActions}>
           <Pressable
             style={({ pressed }) => [
               styles.actionButton,
-              { backgroundColor: brand.accent[500], opacity: pressed ? 0.8 : 1 },
+              {
+                backgroundColor: isDark ? Tokens.neutral[700] : Tokens.neutral[100],
+                opacity: pressed ? 0.8 : 1,
+              },
             ]}
             onPress={handleOpenComposer}
             accessibilityLabel="Criar novo post"
             accessibilityRole="button"
           >
-            <Pencil size={16} color={Tokens.neutral[0]} />
+            <Pencil size={14} color={textMuted} />
           </Pressable>
           <Pressable
             style={({ pressed }) => [
               styles.actionButton,
-              styles.searchButton,
               {
                 backgroundColor: isDark ? Tokens.neutral[700] : Tokens.neutral[100],
                 opacity: pressed ? 0.8 : 1,
@@ -439,7 +451,7 @@ export default function CommunityScreen({ navigation }: Props) {
             accessibilityLabel="Buscar na comunidade"
             accessibilityRole="button"
           >
-            <Search size={18} color={textMuted} />
+            <Search size={16} color={textMuted} />
           </Pressable>
         </View>
       </Animated.View>
@@ -485,25 +497,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: spacing.xl,
-    paddingVertical: spacing.md,
-    borderBottomWidth: 1,
+    paddingVertical: spacing.sm,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
 
   headerActions: {
     flexDirection: "row",
-    gap: spacing.md,
+    gap: spacing.sm,
   },
 
   actionButton: {
-    width: 36,
-    height: 36,
+    width: 32,
+    height: 32,
     borderRadius: radius.full,
     alignItems: "center",
     justifyContent: "center",
-  },
-
-  searchButton: {
-    // backgroundColor override in component
   },
 
   listContent: {
@@ -516,12 +524,14 @@ const styles = StyleSheet.create({
   },
 
   welcomeCard: {
+    borderRadius: radius["2xl"],
     marginBottom: spacing.md,
     overflow: "hidden",
+    ...shadowPresets.sm,
   },
 
   welcomeGradient: {
-    padding: spacing.md,
+    padding: spacing.lg,
   },
 
   welcomeContent: {
@@ -555,20 +565,21 @@ const styles = StyleSheet.create({
 
   welcomeSubtitle: {
     fontSize: 13,
-    color: Tokens.neutral[600],
+    color: Tokens.neutral[700],
     lineHeight: 18,
   },
 
   welcomeImage: {
-    width: 90,
-    height: 130,
+    width: 80,
+    height: 110,
   },
 
   statsCard: {
     flexDirection: "row",
-    borderRadius: radius.xl,
-    padding: spacing.lg,
+    borderRadius: radius["2xl"],
+    padding: spacing.md,
     marginBottom: spacing.md,
+    ...shadowPresets.sm,
   },
 
   statItem: {
@@ -578,13 +589,13 @@ const styles = StyleSheet.create({
 
   statLabel: {
     textAlign: "center",
-    marginTop: 4,
+    marginTop: 2,
     fontSize: 10,
-    lineHeight: 12,
+    lineHeight: 14,
   },
 
   statDivider: {
-    width: 1,
+    width: StyleSheet.hairlineWidth,
     marginVertical: spacing.xs,
   },
 

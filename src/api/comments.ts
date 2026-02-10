@@ -4,15 +4,16 @@
  * Serviço para interagir com a tabela community_comments do Supabase
  */
 
+import { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { logger } from "../utils/logger";
 import { validateWithSchema } from "../utils/validation";
-import { getSupabaseDiagnostics, supabase } from "./supabase";
+import { Database, getSupabaseDiagnostics, supabase, untypedFrom } from "./supabase";
 
 /**
  * Type guard para verificar se Supabase está configurado
  */
-function checkSupabase() {
+function checkSupabase(): SupabaseClient<Database> {
   if (!supabase) {
     const diagnostics = getSupabaseDiagnostics();
     const errorMessage = [
@@ -59,6 +60,19 @@ export interface CreateCommentInput {
 }
 
 /**
+ * Shape do comentário retornado pelo Supabase (antes de mapear para Comment)
+ */
+interface SupabaseComment {
+  id: string;
+  post_id: string;
+  user_id: string;
+  content: string;
+  likes_count: number | null;
+  created_at: string | null;
+  profiles: { full_name?: string; avatar_url?: string } | null;
+}
+
+/**
  * Busca comentários de um post
  */
 export async function fetchComments(
@@ -73,9 +87,7 @@ export async function fetchComments(
       data: { session },
     } = await client.auth.getSession();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (client as any)
-      .from("community_comments")
+    const { data, error } = await untypedFrom(client, "community_comments")
       .select(
         `
         id,
@@ -101,27 +113,22 @@ export async function fetchComments(
     // Verificar quais comentários o usuário curtiu
     let likedCommentIds: Set<string> = new Set();
     if (session?.user?.id && data && data.length > 0) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const commentIds = data.map((c: any) => c.id);
+      const commentIds = data.map((c: { id: string }) => c.id);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: likesData, error: likesError } = await (client as any)
-        .from("community_likes")
+      const { data: likesData, error: likesError } = await untypedFrom(client, "community_likes")
         .select("comment_id")
         .eq("user_id", session.user.id)
         .in("comment_id", commentIds);
 
       if (!likesError && likesData) {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        likedCommentIds = new Set(likesData.map((l: any) => l.comment_id));
+        likedCommentIds = new Set(likesData.map((l: { comment_id: string }) => l.comment_id));
       }
     }
 
     // Mapear para formato do app
     const comments: Comment[] =
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      data?.map((comment: any) => {
-        const profile = comment.profiles as { full_name?: string; avatar_url?: string } | null;
+      (data as SupabaseComment[] | null)?.map((comment: SupabaseComment) => {
+        const profile = comment.profiles;
         return {
           id: comment.id,
           postId: comment.post_id,
@@ -174,9 +181,7 @@ export async function createComment(
       return { data: null, error: new Error("Usuário não autenticado") };
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (client as any)
-      .from("community_comments")
+    const { data, error } = await untypedFrom(client, "community_comments")
       .insert({
         post_id: input.postId,
         user_id: session.user.id,
@@ -202,17 +207,18 @@ export async function createComment(
       throw new Error(error.message);
     }
 
-    const profile = data?.profiles as { full_name?: string; avatar_url?: string } | null;
+    const typedData = data as SupabaseComment | null;
+    const profile = typedData?.profiles;
     const comment: Comment = {
-      id: data?.id,
-      postId: data?.post_id,
-      authorId: data?.user_id,
+      id: typedData?.id ?? "",
+      postId: typedData?.post_id ?? "",
+      authorId: typedData?.user_id ?? "",
       authorName: profile?.full_name || "Você",
       authorAvatar: profile?.avatar_url || undefined,
-      content: data?.content,
-      likesCount: data?.likes_count ?? 0,
+      content: typedData?.content ?? "",
+      likesCount: typedData?.likes_count ?? 0,
       isLiked: false,
-      createdAt: data?.created_at || new Date().toISOString(),
+      createdAt: typedData?.created_at || new Date().toISOString(),
     };
 
     logger.info("Comentário criado com sucesso", "CommentsAPI", { postId: input.postId });
@@ -242,9 +248,7 @@ export async function toggleCommentLike(
     }
 
     // Verificar se já curtiu (community_likes com comment_id)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data: existingLike } = await (client as any)
-      .from("community_likes")
+    const { data: existingLike } = await untypedFrom(client, "community_likes")
       .select("id")
       .eq("comment_id", commentId)
       .eq("user_id", session.user.id)
@@ -252,9 +256,7 @@ export async function toggleCommentLike(
 
     if (existingLike) {
       // Remover like
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: deleteError } = await (client as any)
-        .from("community_likes")
+      const { error: deleteError } = await untypedFrom(client, "community_likes")
         .delete()
         .eq("comment_id", commentId)
         .eq("user_id", session.user.id);
@@ -266,8 +268,7 @@ export async function toggleCommentLike(
       return { liked: false, error: null };
     } else {
       // Adicionar like
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { error: insertError } = await (client as any).from("community_likes").insert({
+      const { error: insertError } = await untypedFrom(client, "community_likes").insert({
         comment_id: commentId,
         user_id: session.user.id,
       });
@@ -303,9 +304,7 @@ export async function deleteComment(
     }
 
     // Deletar comentário (hard delete já que não temos is_deleted)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (client as any)
-      .from("community_comments")
+    const { error } = await untypedFrom(client, "community_comments")
       .delete()
       .eq("id", commentId)
       .eq("user_id", session.user.id);
