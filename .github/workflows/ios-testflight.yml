@@ -1,0 +1,67 @@
+name: Build and Submit to TestFlight
+
+on:  
+  workflow_dispatch:  
+    inputs:  
+      profile:  
+        description: 'Choose profile: testflight or production'  
+        required: true  
+        default: 'testflight'
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Configure Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '$(cat .nvmrc)'
+
+      - name: Install Dependencies
+        run: |
+          yarn install
+
+      - name: Set up Expo and EAS
+        run: |
+          npm install -g expo-cli eas-cli
+          echo "$EXPO_TOKEN" | eas whoami
+        env:
+          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build iOS App
+        run: |
+          eas build -p ios --profile ${{ github.event.inputs.profile }} --local --output build.tar.gz
+
+      - name: Extract IPA File
+        id: extract_ipa
+        run: |
+          IFS=$'\n' read -d '' -r ipa < <(find . -name '*.ipa' -print -quit)
+          if [ -z "${ipa}" ]; then 
+            echo 'No IPA file found!';
+            exit 1;
+          fi
+          echo "ipa_path=${ipa}" >> $GITHUB_OUTPUT
+
+      - name: Submit to TestFlight
+        run: |
+          eas submit -p ios --profile ${{ github.event.inputs.profile }} --path ${{ steps.extract_ipa.outputs.ipa_path }}
+
+      - name: Cache Yarn Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.yarn/cache
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Cache iOS Pods
+        uses: actions/cache@v2
+        with:
+          path: ios/Pods
+          key: ${{ runner.os }}-ios-pods
+          restore-keys: |
+            ${{ runner.os }}-ios-pods
