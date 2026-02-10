@@ -17,7 +17,7 @@ module.exports = ({ config }) => {
     ...config,
     name: "Nossa Maternidade",
     slug: "nossamaternidade",
-    owner: "liongab",
+    owner: "nossa-maternidade",
     version: "1.0.1",
     orientation: "portrait",
     icon: "./assets/icon.png",
@@ -30,7 +30,7 @@ module.exports = ({ config }) => {
     assetBundlePatterns: ["**/*"],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: "br.com.nossamaternidade.app",
+      bundleIdentifier: "com.valenteapp.nossamaternidade",
       // Must always be >= the latest build already uploaded to App Store Connect.
       // EAS autoIncrement will bump from this baseline for store builds.
       buildNumber: "202602102131",
@@ -186,7 +186,7 @@ module.exports = ({ config }) => {
       // fallbackToCacheTimeout: 0 = usa embedded bundle imediatamente se cache falhar
       fallbackToCacheTimeout: 0,
       // Must match extra.eas.projectId (and the active EAS project).
-      url: "https://u.expo.dev/ec07a024-3e98-4023-af9b-1c5ecb9df2af",
+      url: "https://u.expo.dev/285dbca4-2c0a-44ba-be26-6aed411e883f",
       requestHeaders: {
         "expo-platform": "ios",
       },
@@ -202,7 +202,7 @@ module.exports = ({ config }) => {
     runtimeVersion: "3.0.0",
     extra: {
       eas: {
-        projectId: "ec07a024-3e98-4023-af9b-1c5ecb9df2af",
+        projectId: "285dbca4-2c0a-44ba-be26-6aed411e883f",
       },
       // Mapear variáveis de ambiente para extra (runtime access)
       // Necessário porque getEnv() em src/config/env.ts lê de Constants.expoConfig.extra

@@ -71,4 +71,4 @@ jobs:
           echo "- **Profile:** ${{ github.event.inputs.profile || 'preview' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔗 [View builds on Expo](https://expo.dev/accounts/liongab/projects/nossamaternidade/builds)" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 [View builds on Expo](https://expo.dev/accounts/nossa-maternidade/projects/nossamaternidade/builds)" >> $GITHUB_STEP_SUMMARY

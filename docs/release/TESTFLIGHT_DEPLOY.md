@@ -304,11 +304,11 @@ git push origin v1.0.2
 
 | Constante      | Valor                                  |
 | -------------- | -------------------------------------- |
-| Bundle ID      | `br.com.nossamaternidade.app`          |
+| Bundle ID      | `com.valenteapp.nossamaternidade`      |
 | Apple Team ID  | `KZPW4S77UH`                           |
 | ASC App ID     | `6756980888`                           |
 | Apple ID       | `gabrielvesz_@hotmail.com`             |
-| EAS Project ID | `ec07a024-3e98-4023-af9b-1c5ecb9df2af` |
+| EAS Project ID | `285dbca4-2c0a-44ba-be26-6aed411e883f` |
 
 ---
 

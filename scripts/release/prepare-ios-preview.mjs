@@ -18,7 +18,7 @@ const ROOT_DIR = path.resolve(__dirname, '../..');
 
 // Configurações do projeto
 const CONFIG = {
-  bundleId: 'br.com.nossamaternidade.app',
+  bundleId: 'com.valenteapp.nossamaternidade',
   appleTeamId: 'KZPW4S77UH',
   appStoreConnectAppId: '6756980888',
   testDeviceUdids: ['00008140-001655C03C50801C'],
