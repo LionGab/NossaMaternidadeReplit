@@ -17,7 +17,9 @@ function main() {
   const jsonPath = path.resolve(process.cwd(), REPORT_JSON);
 
   if (!fs.existsSync(jsonPath)) {
-    console.error('No report JSON found. Run "npm run design:ci" (or "npm run design:audit") first.');
+    console.error(
+      'No report JSON found. Run "npm run design:ci" (or "npm run design:audit") first.'
+    );
     process.exit(1);
   }
 
@@ -92,4 +94,3 @@ function generateHtml(results) {
 }
 
 main();
-
