@@ -12,7 +12,7 @@
     "apple-intelligence",
     "foundation-models"
   ],
-  "peerDependencies": {
-    "expo-modules-core": "*"
+  "dependencies": {
+    "expo-modules-core": "~55.0.8"
   }
 }

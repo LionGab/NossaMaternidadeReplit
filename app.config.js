@@ -21,8 +21,6 @@ module.exports = ({ config }) => {
     version: "1.0.1",
     orientation: "portrait",
     icon: "./assets/icon.png",
-    // New Architecture habilitada (requerida por react-native-reanimated 4.x)
-    newArchEnabled: true,
     userInterfaceStyle: "automatic",
     splash: {
       image: "./assets/splash.png",
@@ -140,6 +138,21 @@ module.exports = ({ config }) => {
       bundler: "metro",
     },
     plugins: [
+      // SDK 55: plugins list must be declared manually because this is a dynamic (JS) config.
+      "@react-native-community/datetimepicker",
+      "@sentry/react-native",
+      "expo-asset",
+      "expo-audio",
+      "expo-font",
+      "expo-image",
+      "expo-localization",
+      "expo-mail-composer",
+      "expo-secure-store",
+      "expo-sharing",
+      "expo-sqlite",
+      "expo-tracking-transparency",
+      "expo-video",
+      "expo-web-browser",
       [
         "expo-image-picker",
         {
@@ -164,6 +177,8 @@ module.exports = ({ config }) => {
       // ErrorRecovery.crash() causava crash em 0.7s após launch devido cache OTA corrompido
       // Solução: desabilitar no JS E no nativo (via EXUpdatesEnabled no infoPlist)
       enabled: !disableUpdates && !isProduction,
+      // Enable bsdiff patches for smaller EAS Update downloads (only used when updates are enabled).
+      enableBsdiffPatchSupport: true,
       // CRÍTICO: "NEVER" para produção - não verificar updates automaticamente
       checkAutomatically: isProduction ? "NEVER" : "ON_ERROR_RECOVERY",
       // fallbackToCacheTimeout: 0 = usa embedded bundle imediatamente se cache falhar
@@ -180,7 +195,8 @@ module.exports = ({ config }) => {
     // e volta a iniciar com o bundle embutido.
     // HOTFIX: Bump de runtimeVersion força app a ignorar cache OTA antigo
     // 1.0.3 → 2.0.0: Build 48 - Reset definitivo + expo-updates desabilitado no nativo
-    runtimeVersion: "2.0.1",
+    // 2.0.1 → 3.0.0: SDK 55 / RN 0.83.x (mudança de runtime nativo)
+    runtimeVersion: "3.0.0",
     extra: {
       eas: {
         projectId: "ec07a024-3e98-4023-af9b-1c5ecb9df2af",

@@ -6,7 +6,7 @@
   },
   "build": {
     "base": {
-      "node": "20.11.1",
+      "node": "22.22.0",
       "prebuildCommand": "npx expo prebuild",
       "cache": {
         "key": "nossamaternidade-v5-splash-fix",

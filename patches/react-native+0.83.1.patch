@@ -1,0 +1,98 @@
+diff --git a/node_modules/react-native/scripts/cocoapods/rncore.rb b/node_modules/react-native/scripts/cocoapods/rncore.rb
+index 597c4b4..2e8578c 100644
+--- a/node_modules/react-native/scripts/cocoapods/rncore.rb
++++ b/node_modules/react-native/scripts/cocoapods/rncore.rb
+@@ -6,6 +6,7 @@
+ require 'json'
+ require 'net/http'
+ require 'rexml/document'
++require 'uri'
+ 
+ require_relative './utils.rb'
+ 
+@@ -143,7 +144,8 @@ class ReactNativeCoreUtils
+         rncore_log("  #{Pathname.new(destinationDebug).relative_path_from(Pathname.pwd).to_s}")
+         rncore_log("  #{Pathname.new(destinationRelease).relative_path_from(Pathname.pwd).to_s}")
+ 
+-        return {:http => URI::File.build(path: destinationDebug).to_s }
++        # URI::File.build can choke on paths with spaces; escape explicitly.
++        return {:http => "file://#{URI::DEFAULT_PARSER.escape(destinationDebug)}" }
+     end
+ 
+     def self.podspec_source_download_prebuilt_nightly_tarball()
+@@ -179,7 +181,8 @@ class ReactNativeCoreUtils
+         rncore_log("Resolved nightly ReactNativeCore-prebuilt version:")
+         rncore_log("  #{Pathname.new(destinationDebug).relative_path_from(Pathname.pwd).to_s}")
+         rncore_log("  #{Pathname.new(destinationRelease).relative_path_from(Pathname.pwd).to_s}")
+-        return {:http => URI::File.build(path: destinationDebug).to_s }
++        # URI::File.build can choke on paths with spaces; escape explicitly.
++        return {:http => "file://#{URI::DEFAULT_PARSER.escape(destinationDebug)}" }
+     end
+ 
+     def self.process_dsyms(frameworkTarball, dSymsTarball)
+diff --git a/node_modules/react-native/scripts/cocoapods/rndependencies.rb b/node_modules/react-native/scripts/cocoapods/rndependencies.rb
+index a901840..eccf2a3 100644
+--- a/node_modules/react-native/scripts/cocoapods/rndependencies.rb
++++ b/node_modules/react-native/scripts/cocoapods/rndependencies.rb
+@@ -6,6 +6,7 @@
+ require "json"
+ require 'net/http'
+ require 'rexml/document'
++require 'uri'
+ 
+ require_relative './utils.rb'
+ 
+@@ -161,7 +162,8 @@ class ReactNativeDependenciesUtils
+         destinationDebug = download_stable_rndeps(@@react_native_path, @@react_native_version, :debug)
+         download_stable_rndeps(@@react_native_path, @@react_native_version, :release)
+ 
+-        return {:http => URI::File.build(path: destinationDebug).to_s }
++        # URI::File.build can choke on paths with spaces; escape explicitly.
++        return {:http => "file://#{URI::DEFAULT_PARSER.escape(destinationDebug)}" }
+     end
+ 
+     def self.release_tarball_url(version, build_type)
+@@ -228,7 +230,8 @@ class ReactNativeDependenciesUtils
+         destinationDebug = download_nightly_rndeps(@@react_native_path, @@react_native_version, :debug)
+         download_nightly_rndeps(@@react_native_path, @@react_native_version, :release)
+ 
+-        return {:http => URI::File.build(path: destinationDebug).to_s }
++        # URI::File.build can choke on paths with spaces; escape explicitly.
++        return {:http => "file://#{URI::DEFAULT_PARSER.escape(destinationDebug)}" }
+         return {:http => url}
+     end
+ 
+diff --git a/node_modules/react-native/scripts/cocoapods/spm.rb b/node_modules/react-native/scripts/cocoapods/spm.rb
+index 0b13207..650c153 100644
+--- a/node_modules/react-native/scripts/cocoapods/spm.rb
++++ b/node_modules/react-native/scripts/cocoapods/spm.rb
+@@ -31,6 +31,10 @@ class SPMManager
+         )
+         log " Adding workaround for Swift package not found issue"
+         target = project.targets.find { |t| t.name == pod_name}
++        if target.nil?
++          log_warning "Target #{pod_name} not found in Pods project. Skipping SPM workaround."
++          next
++        end
+         target.build_configurations.each do |config|
+           target.build_settings(config.name)['SWIFT_INCLUDE_PATHS'] ||= ['$(inherited)']
+           search_path = '${SYMROOT}/${CONFIGURATION}${EFFECTIVE_PLATFORM_NAME}/'
+@@ -66,6 +70,8 @@ class SPMManager
+   end
+ 
+   def add_spm_to_target(project, target, url, requirement, products)
++    return if target.nil?
++
+     pkg_class = Xcodeproj::Project::Object::XCRemoteSwiftPackageReference
+     ref_class = Xcodeproj::Project::Object::XCSwiftPackageProductDependency
+     pkg = project.root_object.package_references.find { |p| p.class == pkg_class && p.repositoryURL == url }
+@@ -76,6 +82,9 @@ class SPMManager
+       log(" Adding package to workspace: #{pkg.inspect}")
+       project.root_object.package_references << pkg
+     end
++
++    target.package_product_dependencies ||= []
++
+     products.each do |product_name|
+       ref = target.package_product_dependencies.find do |r|
+         r.class == ref_class && r.package == pkg && r.product_name == product_name
