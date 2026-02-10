@@ -83,13 +83,13 @@ const { user } = useAppStore((s) => ({ user: s.user }));
 
 ## IMMUTABLE CONSTANTS
 
-| Constante          | Valor                           |
-| ------------------ | ------------------------------- |
-| Bundle ID iOS      | `br.com.nossamaternidade.app`   |
-| Bundle ID Android  | `com.liongab.nossamaternidade`  |
-| Apple Team ID      | `KZPW4S77UH`                    |
-| RevenueCat Product | `premium`                       |
-| Supabase Project   | `lqahkqfpynypbmhtffyi`          |
+| Constante          | Valor                          |
+| ------------------ | ------------------------------ |
+| Bundle ID iOS      | `br.com.nossamaternidade.app`  |
+| Bundle ID Android  | `com.liongab.nossamaternidade` |
+| Apple Team ID      | `KZPW4S77UH`                   |
+| RevenueCat Product | `premium`                      |
+| Supabase Project   | `lqahkqfpynypbmhtffyi`         |
 
 ---
 
@@ -194,6 +194,14 @@ npm run generate-types         # Schema changed
 
 ## DOCUMENTATION
 
+### Contexto para IAs
+
+| Docs                                     | Conteúdo                                                                                                    |
+| ---------------------------------------- | ----------------------------------------------------------------------------------------------------------- |
+| [PROJECT_CONTEXT.md](PROJECT_CONTEXT.md) | Raio-X completo do projeto (stack, estrutura, padrões, constantes) — cole em prompts para planejar features |
+
+### Setup e Arquitetura
+
 | Docs                                                              | Conteúdo                 |
 | ----------------------------------------------------------------- | ------------------------ |
 | [CLAUDE_CODE_GUIDE_2026.md](docs/setup/CLAUDE_CODE_GUIDE_2026.md) | Best practices 2026      |
@@ -203,11 +211,11 @@ npm run generate-types         # Schema changed
 
 ### Produto (`docs/product/`)
 
-| Docs                                                                | Conteudo               |
-| ------------------------------------------------------------------- | ---------------------- |
-| [NATALIA_BRAND.md](docs/product/NATALIA_BRAND.md)                   | Quem e Natalia Valente |
-| [PRODUCT_VISION.md](docs/product/PRODUCT_VISION.md)                 | Visao do produto       |
-| [BUSINESS_MODEL.md](docs/product/BUSINESS_MODEL.md)                 | Modelo de negocio      |
+| Docs                                                | Conteudo               |
+| --------------------------------------------------- | ---------------------- |
+| [NATALIA_BRAND.md](docs/product/NATALIA_BRAND.md)   | Quem e Natalia Valente |
+| [PRODUCT_VISION.md](docs/product/PRODUCT_VISION.md) | Visao do produto       |
+| [BUSINESS_MODEL.md](docs/product/BUSINESS_MODEL.md) | Modelo de negocio      |
 
 > **Nota**: Docs de produto sao visao estrategica, NAO spec tecnica. A arquitetura real esta aqui e em `src/CLAUDE.md`.
 

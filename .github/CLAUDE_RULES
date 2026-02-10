@@ -1,0 +1,35 @@
+REPO: NossaMaternidade (React Native + Expo + TypeScript + Supabase)
+
+STACK
+- Expo SDK 54
+- React Native 0.81.x
+- TypeScript strict
+- Zustand
+- React Navigation 7
+- Supabase
+- Sentry
+
+NON-NEGOTIABLE RULES
+1) SCOPE LOCK: Edit only files explicitly requested. Ask before touching others.
+2) CHECKPOINT: Create a commit checkpoint before any "quick fix".
+3) REASONING FIRST: Explain approach, risks, and rollback before coding.
+4) REAL CONTEXT: Read real repository files; do not invent functions or paths.
+5) TS STRICT: No any, no ts-ignore, no console.log.
+
+GATES (DONE CRITERIA)
+- lint/format pass
+- tsc --noEmit pass
+- tests pass (or explicitly document manual validation)
+- minimum diff
+- include one short paragraph: risks + rollback
+
+DO NOT
+- Touch supabase/**, .env*, android/**, ios/** without explicit permission
+- Do "free" refactors unrelated to the request
+- Add fake production data
+
+RESPONSE FORMAT
+1) Plan (3-7 steps)
+2) Implementation
+3) Evidence (commands + key output)
+4) DoD checklist + risks

@@ -3,7 +3,7 @@
  *
  * Player inline para reproducao de voz da NathIA nas mensagens.
  * Mostra botao de play/pause com estados de loading.
- * Exibe icone de cadeado para usuarios nao-premium.
+ * Exibe icone de cadeado para usuários não-premium.
  */
 
 import React, { memo, useCallback } from "react";
@@ -181,7 +181,7 @@ export const VoiceMessagePlayer: React.FC<VoiceMessagePlayerProps> = memo(
      * Handler de toque no botao
      */
     const handlePress = useCallback(async () => {
-      // Se nao tem acesso (AI consent nao concedido), mostrar mensagem
+      // Se não tem acesso (AI consent não concedido), mostrar mensagem
       if (!hasAccess) {
         onPremiumRequired?.();
         return;
@@ -205,7 +205,7 @@ export const VoiceMessagePlayer: React.FC<VoiceMessagePlayerProps> = memo(
         return <AudioWaveIndicator color={iconColor} />;
       }
 
-      // Sem acesso (AI consent nao concedido) - mostrar cadeado
+      // Sem acesso (AI consent não concedido) - mostrar cadeado
       if (!hasAccess) {
         return (
           <View className="relative">
@@ -292,7 +292,7 @@ export const VoiceMessagePlayer: React.FC<VoiceMessagePlayerProps> = memo(
         {/* Progress bar quando tocando */}
         {isPlaying && <ProgressBar progress={voice.progress} color={iconColor} />}
 
-        {/* Indicador de voz quando nao tocando */}
+        {/* Indicador de voz quando não tocando */}
         {!isPlaying && (
           <View className="flex-row items-center ml-2">
             <Ionicons name="mic-outline" size={14} color={iconColor} />

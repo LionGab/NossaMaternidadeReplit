@@ -1,0 +1,206 @@
+# Nossa Maternidade — Cursor Rules
+
+> Regras essenciais para geração de código com IA no Cursor.
+> Para detalhes completos: CLAUDE.md, AGENTS.md e src/CLAUDE.md
+
+---
+
+## Stack
+
+- **Framework**: Expo SDK 54, React 19.1, React Native 0.81
+- **Linguagem**: TypeScript strict (sem `any`, sem `@ts-ignore` sem justificativa)
+- **UI**: NativeWind 4 (Tailwind para RN), design tokens em `src/theme/tokens.ts`
+- **Estado Client/UI**: Zustand (não usar para server state)
+- **Estado Server**: TanStack Query v5 (queries, mutations, cache)
+- **Backend**: Supabase (auth, DB, Edge Functions), RevenueCat (IAP), Gemini (NathIA)
+- **Navegação**: React Navigation 7 (stack + bottom tabs) — sem Expo Router
+- **Listas**: FlashList (longas), FlatList (curtas)
+- **Touch**: `Pressable` (não `TouchableOpacity` por padrão)
+- **Logging**: `logger.*` de `src/utils/logger.ts`
+
+---
+
+## Estrutura de Pastas
+
+```
+src/
+├── api/            # Supabase, API calls, hooks TanStack Query (api/hooks/)
+├── components/     # UI components (ui/ = atoms, pastas de domínio)
+├── hooks/          # Custom hooks (useAuth, useTheme, usePremium, etc.)
+├── navigation/     # React Navigation (RootNavigator, MainTabNavigator)
+├── screens/        # Telas completas (auth, onboarding, home, community, etc.)
+├── services/       # Lógica de negócio (analytics, revenuecat, notifications)
+├── state/          # Zustand stores (UI state apenas — não server state)
+├── theme/          # Design tokens (tokens.ts), presets
+├── types/          # Tipos TypeScript
+└── utils/          # Utilitários (logger, cn, formatters)
+
+supabase/
+├── functions/      # Edge Functions
+└── migrations/     # SQL migrations
+```
+
+**Path alias**: `@/*` → `src/*`
+
+---
+
+## Padrões Obrigatórios
+
+### Estado
+
+- **Server state** → TanStack Query (`useQuery`, `useMutation`)
+  - Hooks em `src/api/hooks/`
+  - Query keys centralizadas em `src/api/queryKeys.ts`
+  - Padrão: `['domain', 'operation', ...params]`
+- **Client/UI state** → Zustand em `src/state/`
+  - Seletor atômico: `useStore((s) => s.value)` ✅
+  - Não: `useStore((s) => ({ ...s }))` ❌ (cria nova ref todo render)
+
+### Listas
+
+- Listas longas → `FlashList` com `estimatedItemSize`
+- Listas curtas → `FlatList` com `keyExtractor` e `getItemLayout`
+- Nunca: `ScrollView` + `.map()` para arrays grandes
+
+### UI
+
+- Cores → `Tokens.*` ou `useThemeColors()` (nunca hardcoded: `#xxx`, `'white'`, `'black'`)
+- Touch → `Pressable` (não `TouchableOpacity` exceto se necessário)
+- Itens de lista → `React.memo()` nos componentes
+- Acessibilidade → `accessibilityLabel`, `accessibilityRole`, contraste WCAG AAA (7:1)
+
+### TypeScript
+
+- Sempre tipos explícitos em returns de funções exportadas
+- `unknown` + type guards em vez de `any`
+- `@ts-ignore` / `@ts-expect-error` só com justificativa em comentário
+
+### Logging
+
+- Use `logger.*` (de `src/utils/logger.ts`): `logger.info()`, `logger.error()`, etc.
+- **Proibido**: `console.log` ou `console.*` em `src/`
+
+---
+
+## Proibições Absolutas
+
+1. ❌ `console.log` em `src/`
+2. ❌ `: any` sem necessidade
+3. ❌ `@ts-ignore` sem justificativa
+4. ❌ Fetch de servidor dentro de Zustand store
+5. ❌ Cores hardcoded (`#fff`, `rgba()`, `'white'`, `'black'`)
+6. ❌ `TouchableOpacity` por padrão
+7. ❌ `ScrollView` + `.map()` para listas longas
+8. ❌ Imports relativos profundos (`../../../`) quando há alias `@/`
+9. ❌ Adicionar dependências sem necessidade
+
+---
+
+## Query Key Convention
+
+```typescript
+// Padrão: ['domain', 'operation', ...params]
+['community', 'posts']
+['community', 'posts', { filter: 'recent' }]
+['cycle', 'data', userId]
+['habits', 'list']
+['habits', 'detail', habitId]
+```
+
+---
+
+## Zustand Pattern (CRÍTICO)
+
+```typescript
+// ✅ CORRETO — seletor atômico
+const user = useAppStore((s) => s.user);
+const isPremium = usePremiumStore((s) => s.isPremium);
+
+// ❌ ERRADO — cria nova referência todo render (loop infinito)
+const { user } = useAppStore((s) => ({ user: s.user }));
+const store = useAppStore(); // também errado
+```
+
+---
+
+## Screen Pattern
+
+Ordem recomendada em telas:
+
+1. Hooks de navegação e tema (`useNavigation`, `useThemeColors`)
+2. Seletores de store (UI state)
+3. Hooks TanStack Query (server state)
+4. Handlers memoizados (`useCallback`)
+5. Render com loading/erro tratados
+
+```typescript
+export default function MinhaTela() {
+  // 1. Navegação e tema
+  const navigation = useNavigation();
+  const colors = useThemeColors();
+  
+  // 2. UI state (Zustand)
+  const filter = useMyStore((s) => s.filter);
+  
+  // 3. Server state (TanStack Query)
+  const { data, isLoading, error } = useMyQuery();
+  
+  // 4. Handlers
+  const handlePress = useCallback(() => {
+    // ...
+  }, []);
+  
+  // 5. Render
+  if (isLoading) return <LoadingSpinner />;
+  if (error) return <ErrorView error={error} />;
+  
+  return (
+    <View style={styles.container}>
+      {/* ... */}
+    </View>
+  );
+}
+```
+
+---
+
+## Quando Sugerir Código
+
+- **Sempre TypeScript** com tipagem completa
+- **Sempre tratar**: loading, erro, empty state
+- **Sempre seguir** os padrões acima
+- **Sempre usar** os componentes existentes em `src/components/ui/` antes de criar novos
+- **Sempre invalidar** query keys relacionadas no `onSuccess` de mutations
+
+---
+
+## Quality Gate
+
+Antes de qualquer commit ou PR, rodar:
+
+```bash
+npm run quality-gate
+```
+
+Antes de build de produção:
+
+```bash
+npm run quality-gate && npm run build:prod:ios  # ou :android
+```
+
+---
+
+## Detalhes e Release
+
+Para fluxo completo de **build**, **quality-gate**, **release gates** (G1–G7) e **skills**:
+- **CLAUDE.md** — Guia completo, skills 2026, workflow agentic
+- **AGENTS.md** — Fluxo de build iOS, checklist P0, persistência
+- **src/CLAUDE.md** — Padrões de frontend, hooks, stores
+
+Para **contexto do projeto** (colar em prompts para planejar features):
+- **PROJECT_CONTEXT.md** — Raio-X do projeto, stack, estrutura, onde está cada coisa
+
+---
+
+**Versão**: 1.0  
+**Última atualização**: 2026-02-10

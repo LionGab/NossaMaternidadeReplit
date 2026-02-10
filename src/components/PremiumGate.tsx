@@ -2,7 +2,7 @@
  * PremiumGate
  *
  * Componente wrapper que verifica acesso premium.
- * Redireciona para Paywall se usuario nao for premium.
+ * Redireciona para Paywall se usuário não for premium.
  * Usado para proteger telas e features exclusivas.
  */
 
@@ -199,7 +199,7 @@ export const PremiumGate: React.FC<PremiumGateProps> = ({
     if (!isLoading) {
       setHasChecked(true);
 
-      // Se nao tem acesso e deve redirecionar automaticamente
+      // Se não tem acesso e deve redirecionar automaticamente
       if (!hasAccess && !noAutoRedirect) {
         onAccessDenied?.();
       }

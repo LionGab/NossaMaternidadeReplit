@@ -4,7 +4,8 @@
  * Serviço para interagir com a tabela community_posts do Supabase
  * Mapeia campos do Supabase para o tipo Post usado no app
  *
- * NOTA: Usa type assertions porque community_posts não está no Database type ainda
+ * NOTA: community_posts e profiles usam o typed client diretamente.
+ * community_likes não está no Database type — usa untypedFrom() de ./supabase
  */
 
 import { z } from "zod";
@@ -12,7 +13,7 @@ import type { ReportContentType, ReportReason, UserBlock } from "../types/commun
 import type { Post } from "../types/navigation";
 import { logger } from "../utils/logger";
 import { imagemUrlSchema, uuidSchema, validateWithSchema } from "../utils/validation";
-import { getSupabaseDiagnostics, supabase } from "./supabase";
+import { getSupabaseDiagnostics, supabase, untypedFrom } from "./supabase";
 
 /**
  * Type guard para verificar se Supabase está configurado
@@ -135,7 +136,7 @@ interface SupabasePost {
   moderation_status?: "safe" | "flagged" | "blocked" | null;
   is_hidden?: boolean | null | undefined;
   profiles?: {
-    name: string;
+    name: string | null;
     avatar_url?: string | null;
   } | null;
 }
@@ -188,8 +189,7 @@ export async function searchPosts(
     } = await client.auth.getSession();
 
     // Buscar posts que contenham o texto (case insensitive)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (client as unknown as { from: (table: string) => any })
+    const { data, error } = await client
       .from("community_posts")
       .select(
         `
@@ -224,11 +224,9 @@ export async function searchPosts(
     // Verificar quais posts o usuário curtiu
     let likedPostIds: Set<string> = new Set();
     if (session?.user?.id && data && data.length > 0) {
-      const postIds = data.map((p: SupabasePost) => p.id);
+      const postIds = data.map((p) => p.id);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: likesData, error: likesError } = await (client as unknown as { from: (table: string) => any })
-        .from("community_likes")
+      const { data: likesData, error: likesError } = await untypedFrom(client, "community_likes")
         .select("post_id")
         .eq("user_id", session.user.id)
         .in("post_id", postIds);
@@ -240,7 +238,7 @@ export async function searchPosts(
 
     // Mapear para formato do app
     const posts: Post[] =
-      data?.map((post: SupabasePost) =>
+      (data as SupabasePost[])?.map((post) =>
         mapSupabasePostToAppPost(post, likedPostIds.has(post.id))
       ) || [];
 
@@ -273,8 +271,7 @@ export async function fetchPosts(
 
     // Query com join em profiles para pegar nome do autor
     // FILTRO DE MODERAÇÃO: safe ou null (posts antigos sem status)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (client as unknown as { from: (table: string) => any })
+    const { data, error } = await client
       .from("community_posts")
       .select(
         `
@@ -308,11 +305,9 @@ export async function fetchPosts(
     // Verificar quais posts o usuário curtiu
     let likedPostIds: Set<string> = new Set();
     if (session?.user?.id && data && data.length > 0) {
-      const postIds = data.map((p: SupabasePost) => p.id);
+      const postIds = (data as SupabasePost[]).map((p) => p.id);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: likesData, error: likesError } = await (client as unknown as { from: (table: string) => any })
-        .from("community_likes")
+      const { data: likesData, error: likesError } = await untypedFrom(client, "community_likes")
         .select("post_id")
         .eq("user_id", session.user.id)
         .in("post_id", postIds);
@@ -324,7 +319,7 @@ export async function fetchPosts(
 
     // Mapear para formato do app
     const posts: Post[] =
-      data?.map((post: SupabasePost) =>
+      (data as SupabasePost[])?.map((post) =>
         mapSupabasePostToAppPost(post, likedPostIds.has(post.id))
       ) || [];
 
@@ -359,8 +354,7 @@ export async function fetchPostById(
       data: { session },
     } = await client.auth.getSession();
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (client as unknown as { from: (table: string) => any })
+    const { data, error } = await client
       .from("community_posts")
       .select(
         `
@@ -396,9 +390,7 @@ export async function fetchPostById(
     // Verificar se o usuário curtiu este post
     let isLiked = false;
     if (session?.user?.id) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: likeData } = await (client as unknown as { from: (table: string) => any })
-        .from("community_likes")
+      const { data: likeData } = await untypedFrom(client, "community_likes")
         .select("id")
         .eq("post_id", postId)
         .eq("user_id", session.user.id)
@@ -440,8 +432,7 @@ export async function fetchMyPosts(
     const userId = session.user.id;
 
     // Busca posts do próprio usuário (sem filtro de moderação)
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { data, error } = await (client as unknown as { from: (table: string) => any })
+    const { data, error } = await client
       .from("community_posts")
       .select(
         `
@@ -474,11 +465,9 @@ export async function fetchMyPosts(
     // Verificar quais posts o usuário curtiu
     let likedPostIds: Set<string> = new Set();
     if (data && data.length > 0) {
-      const postIds = data.map((p: SupabasePost) => p.id);
+      const postIds = (data as SupabasePost[]).map((p) => p.id);
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const { data: likesData, error: likesError } = await (client as unknown as { from: (table: string) => any })
-        .from("community_likes")
+      const { data: likesData, error: likesError } = await untypedFrom(client, "community_likes")
         .select("post_id")
         .eq("user_id", userId)
         .in("post_id", postIds);
@@ -490,7 +479,7 @@ export async function fetchMyPosts(
 
     // Mapear para formato do app
     const posts: Post[] =
-      data?.map((post: SupabasePost) =>
+      (data as SupabasePost[])?.map((post) =>
         mapSupabasePostToAppPost(post, likedPostIds.has(post.id))
       ) || [];
 
@@ -650,11 +639,11 @@ export async function togglePostLike(
       }
       return { data: false, error: null }; // Like removido
     } else {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { error } = await (client as any).from("community_likes").insert({
-      post_id: postId,
-      user_id: userId,
-    });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const { error } = await (client as any).from("community_likes").insert({
+        post_id: postId,
+        user_id: userId,
+      });
 
       if (error) {
         throw new Error(error.message);
@@ -921,5 +910,69 @@ export async function getBlockedUsers(): Promise<{
     const errorObj = error instanceof Error ? error : new Error(String(error));
     logger.error("Erro ao buscar usuários bloqueados", "CommunityAPI", errorObj);
     return { users: [], error: errorObj };
+  }
+}
+
+// ============================================================================
+// COMMUNITY STATS
+// ============================================================================
+
+export interface CommunityStats {
+  members: number;
+  posts: number;
+  engagement: number; // 0-100 percentage
+}
+
+/**
+ * Busca estatísticas reais da comunidade
+ */
+export async function fetchCommunityStats(): Promise<{
+  data: CommunityStats | null;
+  error: Error | null;
+}> {
+  try {
+    const client = checkSupabase();
+
+    // Queries em paralelo para performance
+    const [membersResult, postsResult, engagementResult] = await Promise.all([
+      // Count de membros (profiles com onboarding completo)
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (client as any).from("profiles").select("id", { count: "exact", head: true }),
+      // Count de posts aprovados
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (client as any)
+        .from("community_posts")
+        .select("id", { count: "exact", head: true })
+        .eq("is_deleted", false),
+      // Posts com likes/comments para calcular engajamento
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (client as any)
+        .from("community_posts")
+        .select("likes_count, comments_count")
+        .eq("is_deleted", false)
+        .limit(100),
+    ]);
+
+    const members = membersResult.count ?? 0;
+    const posts = postsResult.count ?? 0;
+
+    // Calcular engajamento: % de posts com pelo menos 1 interação
+    let engagement = 0;
+    if (engagementResult.data && engagementResult.data.length > 0) {
+      const postsWithInteraction = engagementResult.data.filter(
+        (p: { likes_count: number | null; comments_count: number | null }) =>
+          (p.likes_count ?? 0) + (p.comments_count ?? 0) > 0
+      ).length;
+      engagement = Math.round((postsWithInteraction / engagementResult.data.length) * 100);
+    }
+
+    return {
+      data: { members, posts, engagement },
+      error: null,
+    };
+  } catch (error) {
+    const errorObj = error instanceof Error ? error : new Error(String(error));
+    logger.error("Erro ao buscar stats da comunidade", "CommunityAPI", errorObj);
+    return { data: null, error: errorObj };
   }
 }

@@ -7,4 +7,5 @@
 
 export { ProfileHeader } from "./ProfileHeader";
 export { ThemeSelector } from "./ThemeSelector";
+export { SettingsSection, type SettingsItem } from "./SettingsSection";
 export { DeleteAccountModal } from "./DeleteAccountModal";

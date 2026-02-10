@@ -1,11 +1,10 @@
 /**
- * QuickComposerCard - Card de composer rápido no topo do feed
+ * QuickComposerCard - Card de composer rapido no topo do feed
  *
- * Design premium com:
- * - Avatar do usuário
- * - Prompt acolhedor
- * - Ícones de ação (foto, vídeo)
- * - Animação sutil ao pressionar
+ * Design compacto:
+ * - Avatar 40px
+ * - Botoes de acao compactos com icone + label
+ * - shadowPresets.sm cross-platform
  */
 
 import { Ionicons } from "@expo/vector-icons";
@@ -23,7 +22,8 @@ import Animated, {
 
 import { useTheme } from "../../hooks/useTheme";
 import { useAppStore } from "../../state";
-import { brand, neutral, radius, semantic, shadows, spacing, typography } from "../../theme/tokens";
+import { brand, neutral, radius, semantic, spacing, typography } from "../../theme/tokens";
+import { shadowPresets } from "../../utils/shadow";
 
 interface QuickComposerCardProps {
   onPress: () => void;
@@ -37,7 +37,7 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
     const user = useAppStore((s) => s.user);
     const scale = useSharedValue(1);
 
-    // Scales individuais para cada botão de ação
+    // Scales individuais para cada botao de acao
     const photoScale = useSharedValue(1);
     const videoScale = useSharedValue(1);
     const questionScale = useSharedValue(1);
@@ -50,7 +50,7 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
       transform: [{ scale: scale.value }],
     }));
 
-    // Estilos animados para cada botão
+    // Estilos animados para cada botao
     const photoAnimatedStyle = useAnimatedStyle(() => ({
       transform: [{ scale: photoScale.value }],
     }));
@@ -69,7 +69,7 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
       scale.value = withSpring(1, { damping: 12 });
     }, [scale]);
 
-    // Handlers para botões de ação com animação individual
+    // Handlers para botoes de acao com animacao individual
     const createActionHandlers = useCallback(
       (scaleValue: SharedValue<number>) => ({
         onPressIn: () => {
@@ -99,15 +99,7 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
         entering={FadeInDown.duration(400).springify()}
         style={[animatedStyle, styles.container]}
       >
-        <Pressable
-          onPress={handlePress}
-          onPressIn={handlePressIn}
-          onPressOut={handlePressOut}
-          disabled={disabled}
-          accessibilityRole="button"
-          accessibilityLabel="Criar nova publicação"
-          accessibilityHint="Toque para escrever um novo post na comunidade"
-          accessibilityState={{ disabled: !!disabled }}
+        <View
           style={[
             styles.card,
             {
@@ -118,7 +110,17 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
           ]}
         >
           {/* Top row: Avatar + Input placeholder */}
-          <View style={styles.topRow}>
+          <Pressable
+            onPress={handlePress}
+            onPressIn={handlePressIn}
+            onPressOut={handlePressOut}
+            disabled={disabled}
+            accessibilityRole="button"
+            accessibilityLabel="Criar nova publicação"
+            accessibilityHint="Toque para escrever um novo post na comunidade"
+            accessibilityState={{ disabled: !!disabled }}
+            style={styles.topRow}
+          >
             {/* User Avatar */}
             <View style={styles.avatarContainer}>
               {user?.avatarUrl ? (
@@ -130,7 +132,7 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
                 />
               ) : (
                 <View style={[styles.avatarPlaceholder, { backgroundColor: brand.primary[100] }]}>
-                  <Ionicons name="person" size={20} color={brand.primary[500]} />
+                  <Ionicons name="person" size={18} color={brand.primary[500]} />
                 </View>
               )}
               {/* Online indicator */}
@@ -144,14 +146,14 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
                 Compartilhe sua experiência...
               </Text>
             </View>
-          </View>
+          </Pressable>
 
           {/* Divider */}
           <View style={[styles.divider, { backgroundColor: borderColor }]} />
 
           {/* Bottom row: Action icons */}
           <View style={styles.bottomRow}>
-            <Animated.View style={photoAnimatedStyle}>
+            <Animated.View style={[photoAnimatedStyle, styles.actionFlex]}>
               <Pressable
                 onPress={handlePhotoPress}
                 {...createActionHandlers(photoScale)}
@@ -166,15 +168,14 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
                     borderWidth: 1,
                     borderColor: isDark ? `${brand.accent[500]}30` : brand.accent[100],
                   },
-                  !isDark && shadows.sm,
                 ]}
               >
-                <Ionicons name="image-outline" size={18} color={brand.accent[500]} />
+                <Ionicons name="image-outline" size={16} color={brand.accent[500]} />
                 <Text style={[styles.actionText, { color: brand.accent[600] }]}>Foto</Text>
               </Pressable>
             </Animated.View>
 
-            <Animated.View style={videoAnimatedStyle}>
+            <Animated.View style={[videoAnimatedStyle, styles.actionFlex]}>
               <Pressable
                 onPress={handlePress}
                 {...createActionHandlers(videoScale)}
@@ -189,15 +190,14 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
                     borderWidth: 1,
                     borderColor: isDark ? `${brand.primary[500]}30` : brand.primary[100],
                   },
-                  !isDark && shadows.sm,
                 ]}
               >
-                <Ionicons name="videocam-outline" size={18} color={brand.primary[500]} />
+                <Ionicons name="videocam-outline" size={16} color={brand.primary[500]} />
                 <Text style={[styles.actionText, { color: brand.primary[600] }]}>Vídeo</Text>
               </Pressable>
             </Animated.View>
 
-            <Animated.View style={questionAnimatedStyle}>
+            <Animated.View style={[questionAnimatedStyle, styles.actionFlex]}>
               <Pressable
                 onPress={handlePress}
                 {...createActionHandlers(questionScale)}
@@ -212,15 +212,14 @@ export const QuickComposerCard: React.FC<QuickComposerCardProps> = React.memo(
                     borderWidth: 1,
                     borderColor: isDark ? `${brand.teal[500]}30` : brand.teal[100],
                   },
-                  !isDark && shadows.sm,
                 ]}
               >
-                <Ionicons name="help-circle-outline" size={18} color={brand.teal[500]} />
+                <Ionicons name="help-circle-outline" size={16} color={brand.teal[500]} />
                 <Text style={[styles.actionText, { color: brand.teal[600] }]}>Dúvida</Text>
               </Pressable>
             </Animated.View>
           </View>
-        </Pressable>
+        </View>
       </Animated.View>
     );
   }
@@ -230,14 +229,13 @@ QuickComposerCard.displayName = "QuickComposerCard";
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: spacing.md,
-    marginBottom: spacing.lg,
+    marginBottom: spacing.md,
   },
   card: {
     borderRadius: radius["2xl"],
     borderWidth: 1,
-    padding: spacing.lg, // 16px (era 12px) - mais espaço interno
-    ...shadows.flo.soft, // sombra mais suave e elegante
+    padding: spacing.md,
+    ...shadowPresets.sm,
   },
   cardDisabled: {
     opacity: 0.6,
@@ -245,20 +243,20 @@ const styles = StyleSheet.create({
   topRow: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.lg, // 16px (era 12px) - mais espaço
+    gap: spacing.md,
   },
   avatarContainer: {
     position: "relative",
   },
   avatar: {
-    width: 48, // 48px (era 44px) - um pouco maior
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
   avatarPlaceholder: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -266,11 +264,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     right: 0,
-    width: 14, // 14px (era 12px)
-    height: 14,
-    borderRadius: 7,
+    width: 12,
+    height: 12,
+    borderRadius: 6,
     backgroundColor: semantic.light.success,
-    borderWidth: 2,
+    borderWidth: 1.5,
     borderColor: neutral[0],
   },
   inputPlaceholder: {
@@ -279,36 +277,36 @@ const styles = StyleSheet.create({
   greeting: {
     fontSize: 12,
     fontFamily: typography.fontFamily.medium,
-    marginBottom: 4, // 4px (era 2px)
+    marginBottom: 2,
   },
   placeholder: {
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: typography.fontFamily.medium,
   },
   divider: {
-    height: 1,
-    marginVertical: spacing.lg, // 16px (era 12px) - mais respiração
+    height: StyleSheet.hairlineWidth,
+    marginVertical: spacing.md,
   },
   bottomRow: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    gap: spacing.md, // 12px (era 8px)
-    paddingTop: spacing.xs, // pequeno espaço extra no topo
+    gap: spacing.sm,
+  },
+  actionFlex: {
+    flex: 1,
   },
   actionButton: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    gap: spacing.sm, // 8px (era 4px) - mais espaço entre ícone e texto
-    paddingVertical: spacing.md, // 12px - bom touch target
-    paddingHorizontal: spacing.xl, // 20px (era 16px) - mais área de toque
-    borderRadius: radius.xl, // 20px - mais arredondado e convidativo
-    minHeight: 48, // 48px (era 44px) - melhor touch target
-    minWidth: 96, // largura mínima para consistência
+    gap: spacing.xs,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.md,
+    borderRadius: radius.lg,
+    minHeight: 40,
   },
   actionText: {
-    fontSize: 13,
+    fontSize: 12,
     fontFamily: typography.fontFamily.semibold,
-    letterSpacing: 0.2, // leve espaçamento para legibilidade
+    letterSpacing: 0.2,
   },
 });

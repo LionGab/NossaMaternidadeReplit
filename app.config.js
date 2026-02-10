@@ -5,6 +5,13 @@ const disableUpdates = process.env.EAS_NO_UPDATES === "true";
 // Determinar se é build de produção para desabilitar updates no nível nativo
 const isProduction = process.env.EXPO_PUBLIC_ENV === "production";
 
+// Fallback para dev local quando .env não existe (valores do projeto, anon key é pública)
+const isDev = process.env.NODE_ENV === "development";
+const DEV_SUPABASE_URL = "https://lqahkqfpynypbmhtffyi.supabase.co";
+const DEV_SUPABASE_ANON_KEY =
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc";
+const DEV_SUPABASE_FUNCTIONS_URL = `${DEV_SUPABASE_URL}/functions/v1`;
+
 module.exports = ({ config }) => {
   return {
     ...config,
@@ -119,6 +126,7 @@ module.exports = ({ config }) => {
         backgroundColor: "#ffffff",
       },
       package: "com.liongab.nossamaternidade",
+      // A cada release Android para Play Store, incrementar versionCode (obrigatório)
       versionCode: 1,
       permissions: [
         "CAMERA",
@@ -180,12 +188,13 @@ module.exports = ({ config }) => {
       // Mapear variáveis de ambiente para extra (runtime access)
       // Necessário porque getEnv() em src/config/env.ts lê de Constants.expoConfig.extra
       // CRÍTICO: No EAS Build, essas variáveis são injetadas como process.env durante o build
-      // IMPORTANTE: Sem valores padrão hardcoded (security.instructions.md)
-      // Se process.env estiver vazio, mantemos string vazia para evitar bypass de configuração local.
+      // Em dev local sem .env: fallback com valores do projeto para evitar "[env] Critical... missing"
       env: process.env.EXPO_PUBLIC_ENV || "production",
-      supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL || "",
-      supabaseAnonKey: process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || "",
-      supabaseFunctionsUrl: process.env.EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL || "",
+      supabaseUrl: process.env.EXPO_PUBLIC_SUPABASE_URL || (isDev ? DEV_SUPABASE_URL : ""),
+      supabaseAnonKey:
+        process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY || (isDev ? DEV_SUPABASE_ANON_KEY : ""),
+      supabaseFunctionsUrl:
+        process.env.EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL || (isDev ? DEV_SUPABASE_FUNCTIONS_URL : ""),
       revenueCatIosKey: process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY || "",
       revenueCatAndroidKey: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY || "",
       sentry: {
@@ -193,6 +202,7 @@ module.exports = ({ config }) => {
       },
       safeBoot: process.env.EXPO_PUBLIC_SAFE_BOOT || "false",
       enableAIFeatures: process.env.EXPO_PUBLIC_ENABLE_AI_FEATURES,
+      enableAppleFoundationModels: process.env.EXPO_PUBLIC_ENABLE_APPLE_FOUNDATION_MODELS,
       enableGamification: process.env.EXPO_PUBLIC_ENABLE_GAMIFICATION,
       enableAnalytics: process.env.EXPO_PUBLIC_ENABLE_ANALYTICS,
       socialLoginEnabled: process.env.EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED,

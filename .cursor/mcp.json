@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "expo-mcp": {
+      "url": "https://mcp.expo.dev/mcp",
+      "description": "Expo MCP — EAS Build, submit, docs, automação (requer plano EAS pago)"
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp"],
+      "description": "Documentação atualizada de bibliotecas"
+    },
+    "xcode-mcp": {
+      "command": "npx",
+      "args": ["-y", "xcodebuildmcp@beta"],
+      "description": "Xcode — simuladores, projetos iOS (macOS + Xcode 16)",
+      "env": {}
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "expo-apple-foundation-models",
+  "version": "0.1.0",
+  "description": "Expo module bridging Apple's Foundation Models framework (Apple Intelligence) for on-device text generation.",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "license": "MIT",
+  "keywords": ["expo", "react-native", "ios", "apple-intelligence", "foundation-models"],
+  "peerDependencies": {
+    "expo-modules-core": "*"
+  }
+}
+

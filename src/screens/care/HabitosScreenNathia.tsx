@@ -1,6 +1,6 @@
 /**
  * HabitosScreenNathia - Meus Cuidados (Premium Design)
- * 
+ *
  * Design Premium 2025:
  * - Gradientes suaves e modernos
  * - Animações fluidas com Reanimated
@@ -49,8 +49,10 @@ import {
   Title,
 } from "@/components/ui";
 import { useHabits, useToggleHabit } from "@/api/hooks";
-import { brand, mockupColors, nathAccent, radius, shadows, spacing, Tokens } from "@/theme/tokens";
+import { brand, mockupColors, nathAccent, radius, spacing, Tokens } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 import { MainTabScreenProps } from "@/types/navigation";
+import { getGreeting } from "@/utils/greeting";
 
 const habitsWomanImage = require("../../../assets/images/habits-woman.png");
 
@@ -65,173 +67,176 @@ const ICON_MAP: Record<string, React.ElementType> = {
   "hand-left": Moon,
 };
 
-const COLOR_MAP: Record<string, { bg: string; icon: string; gradient: readonly [string, string] }> = {
-  [Tokens.brand.secondary[400]]: {
-    bg: brand.primary[50],
-    icon: brand.primary[500],
-    gradient: [brand.primary[100], brand.primary[200]] as const,
-  },
-  [Tokens.mood.sensitive]: {
-    bg: brand.accent[50],
-    icon: brand.accent[500],
-    gradient: [brand.accent[100], brand.accent[200]] as const,
-  },
-  [Tokens.mood.energetic]: {
-    bg: mockupColors.rosa.blush,
-    icon: nathAccent.rose,
-    gradient: [mockupColors.rosa.claro, mockupColors.rosa.suave] as const,
-  },
-  warning: {
-    bg: Tokens.semantic.light.warningLight,
-    icon: Tokens.semantic.light.warning,
-    gradient: [Tokens.semantic.light.warningLight, Tokens.premium.special.gold] as const,
-  },
-  success: {
-    bg: brand.teal[50],
-    icon: brand.teal[500],
-    gradient: [brand.teal[100], brand.teal[200]] as const,
-  },
-  [Tokens.mood.tired]: {
-    bg: brand.secondary[50],
-    icon: brand.secondary[500],
-    gradient: [brand.secondary[100], brand.secondary[200]] as const,
-  },
-  [Tokens.brand.accent[500]]: {
-    bg: brand.accent[50],
-    icon: brand.accent[500],
-    gradient: [brand.accent[100], brand.accent[200]] as const,
-  },
-};
+const COLOR_MAP: Record<string, { bg: string; icon: string; gradient: readonly [string, string] }> =
+  {
+    [Tokens.brand.secondary[400]]: {
+      bg: brand.primary[50],
+      icon: brand.primary[500],
+      gradient: [brand.primary[100], brand.primary[200]] as const,
+    },
+    [Tokens.mood.sensitive]: {
+      bg: brand.accent[50],
+      icon: brand.accent[500],
+      gradient: [brand.accent[100], brand.accent[200]] as const,
+    },
+    [Tokens.mood.energetic]: {
+      bg: mockupColors.rosa.blush,
+      icon: nathAccent.rose,
+      gradient: [mockupColors.rosa.claro, mockupColors.rosa.suave] as const,
+    },
+    warning: {
+      bg: Tokens.semantic.light.warningLight,
+      icon: Tokens.semantic.light.warning,
+      gradient: [Tokens.semantic.light.warningLight, Tokens.premium.special.gold] as const,
+    },
+    success: {
+      bg: brand.teal[50],
+      icon: brand.teal[500],
+      gradient: [brand.teal[100], brand.teal[200]] as const,
+    },
+    [Tokens.mood.tired]: {
+      bg: brand.secondary[50],
+      icon: brand.secondary[500],
+      gradient: [brand.secondary[100], brand.secondary[200]] as const,
+    },
+    [Tokens.brand.accent[500]]: {
+      bg: brand.accent[50],
+      icon: brand.accent[500],
+      gradient: [brand.accent[100], brand.accent[200]] as const,
+    },
+  };
 
 const getColorConfig = (color: string) => {
-  return COLOR_MAP[color] || {
-    bg: brand.primary[50],
-    icon: brand.primary[500],
-    gradient: [brand.primary[100], brand.primary[200]] as const,
-  };
+  return (
+    COLOR_MAP[color] || {
+      bg: brand.primary[50],
+      icon: brand.primary[500],
+      gradient: [brand.primary[100], brand.primary[200]] as const,
+    }
+  );
 };
 
-const HabitCard = React.memo(({
-  habit,
-  index,
-  onToggle,
-}: {
-  habit: {
-    id: string;
-    title: string;
-    description: string;
-    icon: string;
-    color: string;
-    completed: boolean;
-    streak: number;
-  };
-  index: number;
-  onToggle: () => void;
-}) => {
-  const scale = useSharedValue(1);
-  const colorConfig = getColorConfig(habit.color);
-  const Icon = ICON_MAP[habit.icon] || Sparkles;
+const HabitCard = React.memo(
+  ({
+    habit,
+    index,
+    onToggle,
+  }: {
+    habit: {
+      id: string;
+      title: string;
+      description: string;
+      icon: string;
+      color: string;
+      completed: boolean;
+      streak: number;
+    };
+    index: number;
+    onToggle: () => void;
+  }) => {
+    const scale = useSharedValue(1);
+    const colorConfig = getColorConfig(habit.color);
+    const Icon = ICON_MAP[habit.icon] || Sparkles;
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-  }));
+    const animatedStyle = useAnimatedStyle(() => ({
+      transform: [{ scale: scale.value }],
+    }));
 
-  const handlePress = async () => {
-    await Haptics.impactAsync(
-      habit.completed
-        ? Haptics.ImpactFeedbackStyle.Light
-        : Haptics.ImpactFeedbackStyle.Medium
-    );
-    scale.value = withSpring(0.95, { damping: 10 });
-    setTimeout(() => {
-      scale.value = withSpring(1, { damping: 10 });
-    }, 100);
-    onToggle();
-  };
+    const handlePress = async () => {
+      await Haptics.impactAsync(
+        habit.completed ? Haptics.ImpactFeedbackStyle.Light : Haptics.ImpactFeedbackStyle.Medium
+      );
+      scale.value = withSpring(0.95, { damping: 10 });
+      setTimeout(() => {
+        scale.value = withSpring(1, { damping: 10 });
+      }, 100);
+      onToggle();
+    };
 
-  return (
-    <Animated.View
-      entering={FadeInDown.delay(index * 60).duration(400).springify()}
-      style={styles.habitCardContainer}
-    >
-      <Animated.View style={animatedStyle}>
-        <Pressable onPress={handlePress} accessibilityRole="button">
-          <NathCard
-            variant={habit.completed ? "elevated" : "outlined"}
-            style={[
-              styles.habitCard,
-              habit.completed && {
-                borderColor: brand.teal[200],
-                borderWidth: 1.5,
-              },
-            ]}
-            padding="lg"
-          >
-            {/* Gradient overlay for completed */}
-            {habit.completed && (
-              <LinearGradient
-                colors={[`${brand.teal[100]}40`, `${brand.teal[50]}20`]}
-                style={StyleSheet.absoluteFill}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              />
-            )}
+    return (
+      <Animated.View
+        entering={FadeInDown.delay(index * 60)
+          .duration(400)
+          .springify()}
+        style={styles.habitCardContainer}
+      >
+        <Animated.View style={animatedStyle}>
+          <Pressable onPress={handlePress} accessibilityRole="button">
+            <NathCard
+              variant={habit.completed ? "elevated" : "outlined"}
+              style={[
+                styles.habitCard,
+                habit.completed && {
+                  borderColor: brand.teal[200],
+                  borderWidth: 1.5,
+                },
+              ]}
+              padding="lg"
+            >
+              {/* Gradient overlay for completed */}
+              {habit.completed && (
+                <LinearGradient
+                  colors={[`${brand.teal[100]}40`, `${brand.teal[50]}20`]}
+                  style={StyleSheet.absoluteFill}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                />
+              )}
 
-            <View style={styles.habitHeader}>
-              {/* Icon */}
-              <LinearGradient
-                colors={colorConfig.gradient}
-                style={styles.habitIconContainer}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-              >
-                <Icon size={22} color={colorConfig.icon} />
-              </LinearGradient>
+              <View style={styles.habitHeader}>
+                {/* Icon */}
+                <LinearGradient
+                  colors={colorConfig.gradient}
+                  style={styles.habitIconContainer}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                >
+                  <Icon size={22} color={colorConfig.icon} />
+                </LinearGradient>
 
-              {/* Content */}
-              <View style={styles.habitContent}>
-                <Body weight="bold" style={styles.habitTitle}>
-                  {habit.title}
-                </Body>
-                <Caption style={styles.habitDescription} numberOfLines={1}>
-                  {habit.description}
-                </Caption>
+                {/* Content */}
+                <View style={styles.habitContent}>
+                  <Body weight="bold" style={styles.habitTitle}>
+                    {habit.title}
+                  </Body>
+                  <Caption style={styles.habitDescription} numberOfLines={1}>
+                    {habit.description}
+                  </Caption>
+                </View>
+
+                {/* Status */}
+                {habit.completed ? (
+                  <Animated.View entering={ZoomIn.duration(300)}>
+                    <LinearGradient
+                      colors={[brand.teal[400], brand.teal[500]]}
+                      style={styles.completedBadge}
+                    >
+                      <CheckCircle size={16} color={Tokens.neutral[0]} />
+                    </LinearGradient>
+                  </Animated.View>
+                ) : habit.streak > 0 ? (
+                  <NathBadge variant="warning" size="sm">
+                    <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+                      <Flame size={10} color={nathAccent.coral} />
+                      <Caption style={{ color: nathAccent.coral }}>{habit.streak}</Caption>
+                    </View>
+                  </NathBadge>
+                ) : null}
               </View>
 
-              {/* Status */}
-              {habit.completed ? (
-                <Animated.View entering={ZoomIn.duration(300)}>
-                  <LinearGradient
-                    colors={[brand.teal[400], brand.teal[500]]}
-                    style={styles.completedBadge}
-                  >
-                    <CheckCircle size={16} color={Tokens.neutral[0]} />
-                  </LinearGradient>
-                </Animated.View>
-              ) : habit.streak > 0 ? (
-                <NathBadge variant="warning" size="sm">
-                  <View style={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
-                    <Flame size={10} color={nathAccent.coral} />
-                    <Caption style={{ color: nathAccent.coral }}>{habit.streak}</Caption>
-                  </View>
-                </NathBadge>
-              ) : null}
-            </View>
-
-            {/* Action hint */}
-            {!habit.completed && (
-              <View style={styles.actionHint}>
-                <Caption style={{ color: colorConfig.icon }}>
-                  Toque para completar
-                </Caption>
-              </View>
-            )}
-          </NathCard>
-        </Pressable>
+              {/* Action hint */}
+              {!habit.completed && (
+                <View style={styles.actionHint}>
+                  <Caption style={{ color: colorConfig.icon }}>Toque para completar</Caption>
+                </View>
+              )}
+            </NathCard>
+          </Pressable>
+        </Animated.View>
       </Animated.View>
-    </Animated.View>
-  );
-});
+    );
+  }
+);
 
 HabitCard.displayName = "HabitCard";
 
@@ -242,6 +247,7 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
   const { data: habits = [] } = useHabits();
   const toggleHabitMutation = useToggleHabit();
 
+  const greeting = useMemo(() => getGreeting(), []);
   const today = new Date().toISOString().split("T")[0];
   const completedToday = habits.filter((habit) => habit.completed).length;
   const totalHabits = habits.length;
@@ -251,11 +257,11 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
     const days = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
     const todayIndex = new Date().getDay();
     const now = new Date();
-    
+
     return days.map((day, index) => {
       const isToday = index === todayIndex;
       const isPast = index < todayIndex;
-      
+
       if (isToday) {
         return {
           day,
@@ -264,17 +270,17 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
           progress: progressPercent,
         };
       }
-      
+
       if (isPast) {
         const dayDate = new Date(now);
         dayDate.setDate(now.getDate() - (todayIndex - index));
         const dateStr = dayDate.toISOString().split("T")[0];
-        
-        const habitsCompletedThatDay = habits.filter(h => 
+
+        const habitsCompletedThatDay = habits.filter((h) =>
           h.completedDates.includes(dateStr)
         ).length;
         const dayProgress = totalHabits > 0 ? (habitsCompletedThatDay / totalHabits) * 100 : 0;
-        
+
         return {
           day,
           isToday: false,
@@ -282,7 +288,7 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
           progress: dayProgress,
         };
       }
-      
+
       return {
         day,
         isToday: false,
@@ -304,10 +310,7 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Premium Header */}
-      <LinearGradient
-        colors={[Tokens.neutral[0], mockupColors.rosa.blush]}
-        style={styles.header}
-      >
+      <LinearGradient colors={[Tokens.neutral[0], mockupColors.rosa.blush]} style={styles.header}>
         <Title style={styles.headerTitle}>Meus Cuidados</Title>
         <Pressable
           style={({ pressed }) => [styles.addButton, { opacity: pressed ? 0.8 : 1 }]}
@@ -344,7 +347,7 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
                     ? "Parabéns! 🎉"
                     : completedToday > 0
                       ? "Continue assim!"
-                      : "Bom dia!"}
+                      : `${greeting.text}!`}
                 </Title>
                 <Body style={styles.heroSubtitle}>
                   {completedToday === totalHabits && totalHabits > 0
@@ -354,14 +357,8 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
 
                 {/* Progress Ring */}
                 <View style={styles.progressContainer}>
-                  <NathProgressBar
-                    progress={progressPercent}
-                    color="rosa"
-                    style={{ flex: 1 }}
-                  />
-                  <Caption style={styles.progressText}>
-                    {Math.round(progressPercent)}%
-                  </Caption>
+                  <NathProgressBar progress={progressPercent} color="rosa" style={{ flex: 1 }} />
+                  <Caption style={styles.progressText}>{Math.round(progressPercent)}%</Caption>
                 </View>
               </View>
               <Image
@@ -381,7 +378,7 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
             <NathBadge variant="rosa" size="sm">
               <Flame size={10} color={brand.primary[600]} />
               <Caption style={{ color: brand.primary[600], marginLeft: 4 }}>
-                {habits.filter(h => h.streak > 0).length} sequências
+                {habits.filter((h) => h.streak > 0).length} sequências
               </Caption>
             </NathBadge>
           </View>
@@ -411,10 +408,7 @@ export default function HabitosScreenNathia({ navigation: _navigation }: Props) 
                         ? [brand.accent[100], brand.accent[200]]
                         : [Tokens.neutral[100], Tokens.neutral[200]]
                   }
-                  style={[
-                    styles.dayCircle,
-                    day.isToday && styles.dayTodayRing,
-                  ]}
+                  style={[styles.dayCircle, day.isToday && styles.dayTodayRing]}
                 >
                   {day.completed || (day.isToday && progressPercent === 100) ? (
                     <Check size={14} color={Tokens.neutral[0]} />
@@ -498,7 +492,7 @@ const styles = StyleSheet.create({
   },
   addButton: {
     borderRadius: radius.full,
-    ...shadows.md,
+    ...shadowPresets.md,
   },
   addButtonGradient: {
     width: 40,
@@ -524,10 +518,10 @@ const styles = StyleSheet.create({
     marginBottom: spacing.md,
   },
   heroCard: {
-    borderRadius: radius.xl,
-    padding: spacing.lg,
+    borderRadius: radius["2xl"],
+    padding: spacing.xl,
     marginBottom: spacing.xl,
-    ...shadows.lg,
+    ...shadowPresets.lg,
   },
   heroContent: {
     flexDirection: "row",
@@ -565,8 +559,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     backgroundColor: Tokens.neutral[0],
     padding: spacing.md,
-    borderRadius: radius.xl,
-    ...shadows.sm,
+    borderRadius: radius["2xl"],
+    ...shadowPresets.sm,
   },
   dayColumn: {
     alignItems: "center",

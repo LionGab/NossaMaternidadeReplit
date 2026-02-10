@@ -26,7 +26,8 @@ import Animated, {
 
 import { useTheme } from "@/hooks/useTheme";
 import { useReducedMotion } from "@/hooks/useReducedMotion";
-import { brand, neutral, spacing, radius, accessibility, shadows } from "@/theme/tokens";
+import { brand, neutral, spacing, radius, accessibility } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 import { useHabitsStore } from "@/state/habits-store";
 
 // ============================================================================
@@ -129,7 +130,7 @@ function ConfettiParticle({ particle: p, progress }: ConfettiParticleProps): Rea
 // ============================================================================
 
 export const DailyMicroActions: React.FC = () => {
-  const { isDark, text, surface } = useTheme();
+  const { isDark, text } = useTheme();
   const { shouldAnimate } = useReducedMotion();
 
   // Zustand store
@@ -154,7 +155,7 @@ export const DailyMicroActions: React.FC = () => {
   );
 
   // Colors
-  const cardBg = isDark ? surface.card : neutral[50];
+  const cardBg = isDark ? neutral[800] : neutral[0];
   const textPrimary = isDark ? text.primary : neutral[800];
   const textSecondary = isDark ? text.secondary : neutral[500];
   const completedBg = isDark ? brand.primary[700] : brand.primary[50];
@@ -171,16 +172,9 @@ export const DailyMicroActions: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: cardBg }]}>
-      {/* Header com título + toggle */}
-      <View style={styles.header}>
-        <View>
-          <Text style={[styles.title, { color: textPrimary }]}>Micro-ações do dia</Text>
-          <Text style={[styles.subtitle, { color: textSecondary }]}>
-            Pequenos passos, grande diferença
-          </Text>
-        </View>
-
-        {/* Botão "Ver todas (8)" */}
+      {/* Header: título + botão na mesma linha, subtítulo abaixo */}
+      <View style={styles.headerRow}>
+        <Text style={[styles.title, { color: textPrimary }]}>Micro-ações do dia</Text>
         <Pressable
           onPress={() => setShowAll(!showAll)}
           style={styles.toggleButton}
@@ -192,6 +186,9 @@ export const DailyMicroActions: React.FC = () => {
           </Text>
         </Pressable>
       </View>
+      <Text style={[styles.subtitle, { color: textSecondary }]}>
+        Pequenos passos, grande diferença
+      </Text>
 
       {/* Lista de ações */}
       <View style={styles.actionsContainer}>
@@ -283,62 +280,50 @@ function MicroActionItem({
         styles.actionRow,
         {
           backgroundColor: isCompleted ? completedBg : "transparent",
-          opacity: pressed ? 0.8 : 1,
+          opacity: pressed ? 0.85 : 1,
         },
       ]}
     >
-      <View style={styles.actionLeft}>
-        {/* Ícone com círculo colorido */}
-        <View
+      <View style={styles.actionContent}>
+        {/* Indicador: ícone quando pendente, check quando concluído */}
+        <Animated.View
           style={[
             styles.iconCircle,
             {
-              backgroundColor: iconBgColor,
+              backgroundColor: isCompleted ? checkColor : iconBgColor,
             },
+            checkAnimatedStyle,
           ]}
         >
-          <Ionicons
-            name={habit.icon as keyof typeof Ionicons.glyphMap}
-            size={18}
-            color={iconColor}
-          />
-        </View>
+          {isCompleted ? (
+            <Ionicons name="checkmark" size={14} color={neutral[0]} />
+          ) : (
+            <Ionicons
+              name={habit.icon as keyof typeof Ionicons.glyphMap}
+              size={15}
+              color={iconColor}
+            />
+          )}
+        </Animated.View>
 
+        {/* Texto */}
         <View style={styles.actionTextContainer}>
           <Text
             style={[
               styles.actionLabel,
               {
                 color: isCompleted ? completedText : textPrimary,
-                textDecorationLine: isCompleted ? "line-through" : "none",
+                opacity: isCompleted ? 0.55 : 1,
               },
             ]}
           >
             {habit.title}
           </Text>
-          <Text
-            style={[
-              styles.actionMeta,
-              {
-                color: textSecondary,
-              },
-            ]}
-          >
+          <Text style={[styles.actionMeta, { color: textSecondary }]}>
             {estimatedTime} • {habit.description}
           </Text>
         </View>
       </View>
-
-      {/* Checkbox com animação */}
-      <Animated.View
-        style={[
-          styles.checkbox,
-          isCompleted && { borderColor: checkColor, backgroundColor: brand.primary[500] },
-          checkAnimatedStyle,
-        ]}
-      >
-        {isCompleted && <Ionicons name="checkmark" size={16} color={neutral[0]} />}
-      </Animated.View>
 
       {/* Confetti ao completar (apenas se animações habilitadas) */}
       {isCompleted && shouldAnimate && <ConfettiBurst activeKey={localBurstKey} />}
@@ -352,25 +337,24 @@ function MicroActionItem({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: radius.xl,
-    padding: spacing.lg,
-    ...shadows.sm,
+    borderRadius: radius["2xl"],
+    padding: spacing.xl,
+    ...shadowPresets.sm,
   },
-  header: {
+  headerRow: {
     flexDirection: "row",
-    alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: spacing.md,
   },
   title: {
     fontSize: 16,
     fontWeight: "600",
     fontFamily: "Manrope_600SemiBold",
-    marginBottom: spacing.xs,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: "Manrope_400Regular",
+    marginBottom: spacing.md,
   },
   toggleButton: {
     paddingVertical: spacing.xs,
@@ -387,19 +371,15 @@ const styles = StyleSheet.create({
     gap: spacing.sm,
   },
   actionRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingVertical: spacing.sm,
-    paddingHorizontal: spacing.md,
     borderRadius: radius.lg,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.sm,
     minHeight: accessibility.minTapTarget,
   },
-  actionLeft: {
+  actionContent: {
     flexDirection: "row",
     alignItems: "center",
-    gap: spacing.sm,
-    flex: 1,
+    gap: spacing.md,
   },
   actionTextContainer: {
     flex: 1,
@@ -412,21 +392,11 @@ const styles = StyleSheet.create({
   actionMeta: {
     fontSize: 12,
     fontFamily: "Manrope_400Regular",
-    opacity: 0.7,
-  },
-  checkbox: {
-    width: 24,
-    height: 24,
-    borderRadius: 6,
-    borderWidth: 2,
-    borderColor: neutral[300],
-    alignItems: "center",
-    justifyContent: "center",
   },
   iconCircle: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
     alignItems: "center",
     justifyContent: "center",
   },

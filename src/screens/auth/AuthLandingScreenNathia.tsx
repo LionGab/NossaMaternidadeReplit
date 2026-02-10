@@ -49,6 +49,7 @@ import type { RootStackScreenProps } from "@/types/navigation";
 
 // Utils
 import { logger } from "../../utils/logger";
+import { useDocumentMetadata } from "../../hooks/useDocumentMetadata";
 
 // ===========================================
 // TYPES
@@ -65,6 +66,12 @@ const isCompact = Dimensions.get("window").height < 700;
 const NATHIA_AVATAR = require("../../../assets/nathia-app.png");
 const TERMS_URL = "https://nossamaternidade.com.br/termos";
 const PRIVACY_URL = "https://nossamaternidade.com.br/privacidade";
+
+const METADATA = {
+  title: "NathIA | Nossa Maternidade",
+  description:
+    "Receba apoio personalizado com NathIA: dicas de maternidade, rotinas e acompanhamento emocional em um só lugar.",
+};
 
 // Cores do design Nathia
 const nathColors = {
@@ -213,6 +220,7 @@ const Divider = ({ text }: { text: string }) => (
 
 export default function AuthLandingScreenNathia({ navigation }: Props) {
   const insets = useSafeAreaInsets();
+  useDocumentMetadata(METADATA.title, METADATA.description);
 
   // Loading states
   const [appleLoading, setAppleLoading] = useState(false);

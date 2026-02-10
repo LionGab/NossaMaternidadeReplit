@@ -57,7 +57,7 @@ export { default as AppCard } from "./AppCard";
 export { default as Avatar } from "./Avatar";
 export { default as Chip } from "./Chip";
 export { default as IconButton } from "./IconButton";
-export { default as SectionHeader } from "./SectionHeader";
+export { SectionHeader } from "./SectionHeader";
 
 // Constants and helpers
 export const AVATAR_SIZES = {

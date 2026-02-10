@@ -16,17 +16,13 @@ import { Pressable, StyleSheet, Text, View, ActionSheetIOS, Platform, Alert } fr
 import Animated, { FadeInUp } from "react-native-reanimated";
 import { useTheme } from "../../hooks/useTheme";
 import { moderationService } from "../../services/moderation";
-import { Tokens, radius, shadows, spacing } from "../../theme/tokens";
+import { Tokens, radius, spacing } from "../../theme/tokens";
 import { CommunityPost } from "../../types/community";
 import { formatTimeAgo } from "../../utils/formatters";
+import { shadowPresets } from "../../utils/shadow";
 import { PostStatusBadge, PostStatus } from "./PostStatusBadge";
 import { ReportModal } from "./ReportModal";
 import { PressableScale } from "../ui/PressableScale";
-
-// Aliases
-const RADIUS = radius;
-const SHADOWS = shadows;
-const SPACING = spacing;
 
 interface PostCardProps {
   post: CommunityPost;
@@ -97,12 +93,9 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
 
     const postStatus = getPostStatus();
 
-    // Mocks para dados ainda não implementados no backend (likes/comments)
-    // O backend atual retorna JSON puro da tabela, precisamos de counts via join ou RPC futuramente.
-    // Para MVP visual, usamos 0 ou random se preferir, mas 0 é mais honesto.
-    const likesCount = 0;
-    const commentsCount = 0;
-    const isLiked = false;
+    const likesCount = post.likes_count ?? 0;
+    const commentsCount = post.comments_count ?? 0;
+    const isLiked = post.isLiked ?? false;
 
     // Handle block user (defined before handleMorePress to avoid temporal dead zone)
     const handleBlockUser = useCallback(async () => {
@@ -240,7 +233,7 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
                   accessibilityLabel={`Foto de perfil de ${post.profiles?.name || "usuaria"}`}
                 />
               ) : (
-                <Ionicons name="person" size={22} color={Tokens.brand.primary[500]} />
+                <Ionicons name="person" size={18} color={Tokens.brand.primary[500]} />
               )}
             </View>
 
@@ -270,7 +263,9 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
           {/* Content */}
           {post.text && (
             <View style={styles.contentWrapper}>
-              <Text style={[styles.content, { color: textPrimary }]}>{post.text}</Text>
+              <Text numberOfLines={3} style={[styles.content, { color: textPrimary }]}>
+                {post.text}
+              </Text>
             </View>
           )}
 
@@ -317,7 +312,7 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
               >
                 <Ionicons
                   name={isLiked ? "heart" : "heart-outline"}
-                  size={24}
+                  size={20}
                   color={isLiked ? Tokens.brand.accent[500] : textSecondary}
                 />
                 <Text
@@ -337,7 +332,7 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
                 accessibilityLabel={`Comentar. ${commentsCount} comentários`}
                 accessibilityRole="button"
               >
-                <Ionicons name="chatbubble-outline" size={22} color={textSecondary} />
+                <Ionicons name="chatbubble-outline" size={18} color={textSecondary} />
                 <Text style={[styles.actionText, { color: textSecondary }]}>{commentsCount}</Text>
               </Pressable>
 
@@ -348,7 +343,7 @@ export const CommunityPostCard: React.FC<PostCardProps> = React.memo(
                 accessibilityLabel="Compartilhar post"
                 accessibilityRole="button"
               >
-                <Ionicons name="share-outline" size={22} color={textSecondary} />
+                <Ionicons name="share-outline" size={18} color={textSecondary} />
               </Pressable>
             </View>
           </View>
@@ -372,81 +367,81 @@ CommunityPostCard.displayName = "CommunityPostCard";
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: SPACING["2xl"],
+    marginBottom: spacing.md,
   },
   card: {
-    borderRadius: RADIUS["2xl"],
+    borderRadius: radius["2xl"],
     borderWidth: 1,
-    ...SHADOWS.md,
+    ...shadowPresets.sm,
     overflow: "hidden",
   },
   statusBadgeContainer: {
-    paddingHorizontal: SPACING.lg,
-    paddingTop: SPACING.md,
+    paddingHorizontal: spacing.lg,
+    paddingTop: spacing.md,
   },
   header: {
     flexDirection: "row",
     alignItems: "center",
-    padding: SPACING.lg,
-    paddingBottom: SPACING.md,
+    padding: spacing.md,
+    paddingBottom: spacing.sm,
   },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   avatarImage: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
+    width: 40,
+    height: 40,
+    borderRadius: 20,
   },
   authorInfo: {
     flex: 1,
-    marginLeft: SPACING.md,
+    marginLeft: spacing.sm,
   },
   authorName: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "600",
     fontFamily: "Manrope_600SemiBold",
     letterSpacing: -0.3,
   },
   timeAgo: {
-    fontSize: 13,
+    fontSize: 12,
     fontFamily: "Manrope_500Medium",
-    marginTop: 2,
+    marginTop: 1,
   },
   moreButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
   },
   contentWrapper: {
-    paddingHorizontal: SPACING.lg,
-    paddingBottom: SPACING.md,
+    paddingHorizontal: spacing.md,
+    paddingBottom: spacing.sm,
   },
   content: {
-    fontSize: 15,
-    lineHeight: 24,
+    fontSize: 14,
+    lineHeight: 20,
     fontFamily: "Manrope_500Medium",
     letterSpacing: -0.2,
   },
   imageWrapper: {
-    marginHorizontal: SPACING.lg,
-    marginBottom: SPACING.lg,
+    marginHorizontal: spacing.md,
+    marginBottom: spacing.md,
   },
   image: {
     width: "100%",
-    height: 240,
-    borderRadius: RADIUS.xl,
+    height: 160,
+    borderRadius: radius.xl,
   },
   actionsWrapper: {
-    borderTopWidth: 1,
-    paddingHorizontal: SPACING.lg,
-    paddingVertical: SPACING.md,
+    borderTopWidth: StyleSheet.hairlineWidth,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
   actionsRow: {
     flexDirection: "row",
@@ -455,18 +450,18 @@ const styles = StyleSheet.create({
   actionButton: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: SPACING.sm,
-    paddingRight: SPACING["2xl"],
-    gap: SPACING.sm,
+    paddingVertical: spacing.xs,
+    paddingRight: spacing.xl,
+    gap: spacing.xs,
   },
   actionText: {
-    fontSize: 15,
+    fontSize: 13,
     fontWeight: "600",
     fontFamily: "Manrope_600SemiBold",
     letterSpacing: -0.2,
   },
   shareButton: {
     marginLeft: "auto",
-    padding: SPACING.sm,
+    padding: spacing.xs,
   },
 });

@@ -1,0 +1,661 @@
+- generic [ref=e1]:
+  - banner "App Store Connect" [ref=e3]:
+    - generic [ref=e4]:
+      - heading "App Store Connect" [level=1] [ref=e6]:
+        - link "App Store Connect" [ref=e7] [cursor=pointer]:
+          - /url: /
+      - navigation "Global" [ref=e8]:
+        - list [ref=e10]:
+          - listitem [ref=e11]:
+            - link "Apps" [ref=e12] [cursor=pointer]:
+              - /url: /apps
+          - listitem [ref=e13]:
+            - link "Análise" [ref=e14] [cursor=pointer]:
+              - /url: /analytics
+          - listitem [ref=e15]:
+            - link "Tendências" [ref=e16] [cursor=pointer]:
+              - /url: /trends
+          - listitem [ref=e17]:
+            - link "Relatórios" [ref=e18] [cursor=pointer]:
+              - /url: /itc/payments_and_financial_reports
+          - listitem [ref=e19]:
+            - link "Negócios" [ref=e20] [cursor=pointer]:
+              - /url: /business
+      - button "Gabriel Vesz Gabriel Vesz Account name menu" [ref=e24] [cursor=pointer]:
+        - generic:
+          - generic: Gabriel Vesz
+          - generic: Gabriel Vesz
+          - img [ref=e25]
+  - generic [ref=e30]:
+    - button "Menu de apps, Nossa Maternidade, selecionado" [ref=e35] [cursor=pointer]:
+      - generic [ref=e36]:
+        - generic "Nossa Maternidade" [ref=e37]:
+          - img "Nossa Maternidade" [ref=e38]
+        - generic [ref=e40]: Nossa Maternidade
+      - img [ref=e42]
+    - navigation "Apps" [ref=e45]:
+      - list [ref=e46]:
+        - listitem [ref=e47]:
+          - link "Distribuição" [ref=e48] [cursor=pointer]:
+            - /url: /apps/6756980888/distribution
+        - listitem [ref=e49]:
+          - link "TestFlight" [ref=e50] [cursor=pointer]:
+            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight
+        - listitem [ref=e51]:
+          - link "Xcode Cloud" [ref=e52] [cursor=pointer]:
+            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/ci
+  - main [ref=e71]:
+    - generic [ref=e75]:
+      - navigation "TestFlight" [ref=e77]:
+        - list [ref=e78]:
+          - listitem [ref=e79]:
+            - heading "Compilações" [level=2] [ref=e81]
+            - list [ref=e82]:
+              - listitem [ref=e83]:
+                - link "iOS" [active] [ref=e84] [cursor=pointer]:
+                  - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios
+                  - generic [ref=e85]: iOS
+          - listitem [ref=e86]:
+            - separator [ref=e87]
+          - listitem [ref=e88]:
+            - heading "Feedback" [level=2] [ref=e90]
+            - list [ref=e91]:
+              - listitem [ref=e92]:
+                - link "Falhas" [ref=e93] [cursor=pointer]:
+                  - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/crashes
+                  - generic [ref=e94]: Falhas
+              - listitem [ref=e95]:
+                - link "Capturas de tela" [ref=e96] [cursor=pointer]:
+                  - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/screenshots
+                  - generic [ref=e97]: Capturas de tela
+          - listitem [ref=e98]:
+            - separator [ref=e99]
+          - listitem [ref=e100]:
+            - heading "Testers" [level=2] [ref=e102]
+            - list [ref=e103]:
+              - listitem [ref=e104]:
+                - link "Todos" [ref=e105] [cursor=pointer]:
+                  - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/testers
+                  - generic [ref=e106]: Todos
+            - generic [ref=e107]:
+              - generic [ref=e108]:
+                - heading "Testes internos" [level=3] [ref=e109]
+                - button "Novo grupo" [ref=e110] [cursor=pointer]:
+                  - img [ref=e111]
+              - list [ref=e113]:
+                - listitem [ref=e114]:
+                  - generic [ref=e115]:
+                    - link "QI QA Interno - Canary" [ref=e116] [cursor=pointer]:
+                      - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/groups/bbbaf41a-b59a-4081-a5a7-9da031bb53b6
+                      - generic [ref=e118]:
+                        - generic [ref=e120]: QI
+                        - generic [ref=e121]: QA Interno - Canary
+                    - button "Delete" [ref=e122] [cursor=pointer]:
+                      - img [ref=e124]:
+                        - img [ref=e126]
+                      - generic [ref=e128]: Delete
+                - listitem [ref=e129]:
+                  - generic [ref=e130]:
+                    - link "SB Stakeholders - Beta" [ref=e131] [cursor=pointer]:
+                      - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/groups/2717ce07-28b6-4dc5-8ec2-de37b1dddc03
+                      - generic [ref=e133]:
+                        - generic [ref=e135]: SB
+                        - generic [ref=e136]: Stakeholders - Beta
+                    - button "Delete" [ref=e137] [cursor=pointer]:
+                      - img [ref=e139]:
+                        - img [ref=e141]
+                      - generic [ref=e143]: Delete
+            - generic [ref=e144]:
+              - generic [ref=e145]:
+                - heading "Testes externos" [level=3] [ref=e146]
+                - button "Novo grupo" [ref=e147] [cursor=pointer]:
+                  - img [ref=e148]
+              - list
+          - listitem [ref=e150]:
+            - separator [ref=e151]
+          - listitem [ref=e152]:
+            - heading "Adicional" [level=2] [ref=e154]
+            - list [ref=e155]:
+              - listitem [ref=e156]:
+                - link "Informações de teste" [ref=e157] [cursor=pointer]:
+                  - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/test-info
+                  - generic [ref=e160]: Informações de teste
+              - listitem [ref=e161]:
+                - button "Sobre os dados do TestFlight" [ref=e165] [cursor=pointer]:
+                  - generic [ref=e166]: Sobre os dados do TestFlight
+                  - button [ref=e167]: "?"
+      - generic [ref=e993]:
+        - generic [ref=e995]:
+          - generic [ref=e999]:
+            - heading "Compilações do iOS" [level=2] [ref=e1001]
+            - paragraph [ref=e1002]:
+              - text: As compilações a seguir estão disponíveis para teste.
+              - link "Saiba mais sobre o status das compilações e métricas" [ref=e1003] [cursor=pointer]:
+                - /url: https://developer.apple.com/help/app-store-connect/test-a-beta-version/view-build-status-and-metrics
+              - text: .
+          - separator [ref=e1005]
+        - generic [ref=e1007]:
+          - button "Uploads de compilações" [expanded] [ref=e1008] [cursor=pointer]:
+            - img [ref=e1010]
+            - heading "Uploads de compilações" [level=3] [ref=e1012]
+          - region "Uploads de compilações" [ref=e1013]:
+            - generic [ref=e1016]:
+              - generic:
+                - heading [level=2]
+              - paragraph [ref=e1017]:
+                - generic [ref=e1018]:
+                  - text: Visualize o andamento dos envios de compilações, incluindo avisos, erros e registros de envio.
+                  - link "Saiba mais" [ref=e1019] [cursor=pointer]:
+                    - /url: https://developer.apple.com/help/app-store-connect/manage-builds/view-builds-and-metadata#view-build-upload-status
+            - generic [ref=e1022]:
+              - grid "Build Uploads" [ref=e1023]:
+                - rowgroup [ref=e1024]:
+                  - row "Versão e compilação Status Data de criação" [ref=e1025]:
+                    - columnheader "Versão e compilação" [ref=e1026]:
+                      - generic [ref=e1029]: Versão e compilação
+                    - columnheader "Status" [ref=e1030]:
+                      - generic [ref=e1034]: Status
+                    - columnheader "Data de criação" [ref=e1035]:
+                      - button "Data de criação" [ref=e1036] [cursor=pointer]:
+                        - generic [ref=e1037]:
+                          - generic [ref=e1038]: Data de criação
+                          - img [ref=e1040]
+                - rowgroup [ref=e1042]:
+                  - row "Ícone do app 1.0.1 (110)" [ref=e1043]:
+                    - rowheader "Ícone do app 1.0.1 (110)" [ref=e1044]:
+                      - generic [ref=e1046]:
+                        - generic "Ícone do app" [ref=e1048]:
+                          - img "Ícone do app" [ref=e1049]
+                        - generic [ref=e1052]:
+                          - text: 1.0.1 (
+                          - link "110" [ref=e1053] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/7adb431b-9468-4155-8b59-7d9ac179fa59
+                          - text: )
+                    - gridcell "Concluído" [ref=e1054]:
+                      - generic [ref=e1056]:
+                        - img [ref=e1057]
+                        - generic [ref=e1059]: Concluído
+                    - gridcell "Feb 10, 2026 12:42 AM" [ref=e1060]:
+                      - generic [ref=e1061]: Feb 10, 2026 12:42 AM
+                  - row "Ícone do app 1.0.1 (109)" [ref=e1062]:
+                    - rowheader "Ícone do app 1.0.1 (109)" [ref=e1063]:
+                      - generic [ref=e1065]:
+                        - generic "Ícone do app" [ref=e1067]:
+                          - img "Ícone do app" [ref=e1068]
+                        - generic [ref=e1071]:
+                          - text: 1.0.1 (
+                          - link "109" [ref=e1072] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/d030bfbb-9420-4066-8a5d-29f4ae2ab300
+                          - text: )
+                    - gridcell "Concluído" [ref=e1073]:
+                      - generic [ref=e1075]:
+                        - img [ref=e1076]
+                        - generic [ref=e1078]: Concluído
+                    - gridcell "Feb 4, 2026 1:20 AM" [ref=e1079]:
+                      - generic [ref=e1080]: Feb 4, 2026 1:20 AM
+                  - row "Ícone do app 1.0.1 (108)" [ref=e1081]:
+                    - rowheader "Ícone do app 1.0.1 (108)" [ref=e1082]:
+                      - generic [ref=e1084]:
+                        - generic "Ícone do app" [ref=e1086]:
+                          - img "Ícone do app" [ref=e1087]
+                        - generic [ref=e1091]: 1.0.1 (108)
+                    - gridcell "Falha" [ref=e1092]:
+                      - button "Falha" [ref=e1094] [cursor=pointer]:
+                        - generic [ref=e1095]:
+                          - img [ref=e1096]
+                          - generic [ref=e1098]: Falha
+                    - gridcell "Feb 3, 2026 11:34 PM" [ref=e1099]:
+                      - generic [ref=e1100]: Feb 3, 2026 11:34 PM
+                  - row "Ícone do app 1.0.1 (108)" [ref=e1101]:
+                    - rowheader "Ícone do app 1.0.1 (108)" [ref=e1102]:
+                      - generic [ref=e1104]:
+                        - generic "Ícone do app" [ref=e1106]:
+                          - img "Ícone do app" [ref=e1107]
+                        - generic [ref=e1110]:
+                          - text: 1.0.1 (
+                          - link "108" [ref=e1111] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/c0f3b60b-bc38-4f3f-8d29-a22ede513c57
+                          - text: )
+                    - gridcell "Concluído" [ref=e1112]:
+                      - generic [ref=e1114]:
+                        - img [ref=e1115]
+                        - generic [ref=e1117]: Concluído
+                    - gridcell "Feb 3, 2026 11:34 PM" [ref=e1118]:
+                      - generic [ref=e1119]: Feb 3, 2026 11:34 PM
+                  - row "Ícone do app 1.0.1 (107)" [ref=e1120]:
+                    - rowheader "Ícone do app 1.0.1 (107)" [ref=e1121]:
+                      - generic [ref=e1123]:
+                        - generic "Ícone do app" [ref=e1125]:
+                          - img "Ícone do app" [ref=e1126]
+                        - generic [ref=e1129]:
+                          - text: 1.0.1 (
+                          - link "107" [ref=e1130] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/6a9e5bad-634c-4b68-8d10-e6cd074ae095
+                          - text: )
+                    - gridcell "Concluído" [ref=e1131]:
+                      - generic [ref=e1133]:
+                        - img [ref=e1134]
+                        - generic [ref=e1136]: Concluído
+                    - gridcell "Feb 3, 2026 11:07 PM" [ref=e1137]:
+                      - generic [ref=e1138]: Feb 3, 2026 11:07 PM
+              - button "Ver mais" [ref=e1140] [cursor=pointer]
+        - generic [ref=e1141]:
+          - button "Versão 1.0.1" [expanded] [ref=e1142] [cursor=pointer]:
+            - img [ref=e1144]
+            - heading "Versão 1.0.1" [level=3] [ref=e1146]
+          - region "Versão 1.0.1" [ref=e1147]:
+            - generic [ref=e1149]:
+              - grid "Compilações" [ref=e1153]:
+                - rowgroup [ref=e1154]:
+                  - row "Compilação Status Grupos Convites Instalações Sessões Falhas Feedback" [ref=e1155]:
+                    - columnheader "Compilação" [ref=e1156]:
+                      - button "Compilação" [ref=e1157] [cursor=pointer]:
+                        - generic [ref=e1158]:
+                          - generic [ref=e1159]: Compilação
+                          - img [ref=e1161]
+                    - columnheader "Status" [ref=e1163]:
+                      - generic [ref=e1167]: Status
+                    - columnheader "Grupos" [ref=e1168]:
+                      - generic [ref=e1171]: Grupos
+                    - columnheader "Convites" [ref=e1172]:
+                      - generic [ref=e1175]: Convites
+                    - columnheader "Instalações" [ref=e1176]:
+                      - generic [ref=e1179]: Instalações
+                    - columnheader "Sessões" [ref=e1180]:
+                      - generic [ref=e1183]: Sessões
+                    - columnheader "Falhas" [ref=e1184]:
+                      - generic [ref=e1187]: Falhas
+                    - columnheader "Feedback" [ref=e1188]:
+                      - generic [ref=e1191]: Feedback
+                - rowgroup [ref=e1192]:
+                  - row "Compilação 110" [ref=e1193]:
+                    - rowheader "Compilação 110" [ref=e1194]:
+                      - generic [ref=e1196]:
+                        - link [ref=e1198] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/7adb431b-9468-4155-8b59-7d9ac179fa59
+                          - img [ref=e1200]
+                        - paragraph [ref=e1202]:
+                          - link "Compilação 110" [ref=e1203] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/7adb431b-9468-4155-8b59-7d9ac179fa59
+                            - generic [ref=e1204]: Compilação
+                            - text: "110"
+                    - gridcell "Pronta para envio Expira em 90 dias" [ref=e1205]:
+                      - generic [ref=e1207]:
+                        - generic [ref=e1208]:
+                          - img [ref=e1209]
+                          - text: Pronta para envio
+                        - generic [ref=e1211]: Expira em 90 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1212]:
+                      - generic [ref=e1214]:
+                        - generic [ref=e1215]:
+                          - generic "QA Interno - Canary" [ref=e1216]:
+                            - generic [ref=e1217]: QI
+                            - generic [ref=e1218]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1219]:
+                            - generic [ref=e1220]: SB
+                            - generic [ref=e1221]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1225] [cursor=pointer]:
+                          - img [ref=e1226]
+                    - gridcell "1" [ref=e1228]:
+                      - paragraph [ref=e1232]: "1"
+                    - gridcell "–" [ref=e1233]:
+                      - generic [ref=e1236]: –
+                    - gridcell "–" [ref=e1237]:
+                      - generic [ref=e1240]: –
+                    - gridcell "–" [ref=e1241]:
+                      - generic [ref=e1244]: –
+                    - gridcell "–" [ref=e1245]:
+                      - generic [ref=e1248]: –
+                  - row "Compilação 109" [ref=e1249]:
+                    - rowheader "Compilação 109" [ref=e1250]:
+                      - generic [ref=e1252]:
+                        - link [ref=e1254] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/d030bfbb-9420-4066-8a5d-29f4ae2ab300
+                          - img [ref=e1256]
+                        - paragraph [ref=e1258]:
+                          - link "Compilação 109" [ref=e1259] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/d030bfbb-9420-4066-8a5d-29f4ae2ab300
+                            - generic [ref=e1260]: Compilação
+                            - text: "109"
+                    - gridcell "Pronta para envio Expira em 84 dias" [ref=e1261]:
+                      - generic [ref=e1263]:
+                        - generic [ref=e1264]:
+                          - img [ref=e1265]
+                          - text: Pronta para envio
+                        - generic [ref=e1267]: Expira em 84 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1268]:
+                      - generic [ref=e1270]:
+                        - generic [ref=e1271]:
+                          - generic "QA Interno - Canary" [ref=e1272]:
+                            - generic [ref=e1273]: QI
+                            - generic [ref=e1274]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1275]:
+                            - generic [ref=e1276]: SB
+                            - generic [ref=e1277]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1281] [cursor=pointer]:
+                          - img [ref=e1282]
+                    - gridcell "1" [ref=e1284]:
+                      - paragraph [ref=e1288]: "1"
+                    - gridcell "3" [ref=e1289]:
+                      - paragraph [ref=e1293]: "3"
+                    - gridcell "4" [ref=e1294]:
+                      - paragraph [ref=e1298]: "4"
+                    - gridcell "–" [ref=e1299]:
+                      - generic [ref=e1302]: –
+                    - gridcell "–" [ref=e1303]:
+                      - generic [ref=e1306]: –
+                  - row "Compilação 108" [ref=e1307]:
+                    - rowheader "Compilação 108" [ref=e1308]:
+                      - generic [ref=e1310]:
+                        - link [ref=e1312] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/c0f3b60b-bc38-4f3f-8d29-a22ede513c57
+                          - img [ref=e1314]
+                        - paragraph [ref=e1316]:
+                          - link "Compilação 108" [ref=e1317] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/c0f3b60b-bc38-4f3f-8d29-a22ede513c57
+                            - generic [ref=e1318]: Compilação
+                            - text: "108"
+                    - gridcell "Pronta para envio Expira em 84 dias" [ref=e1319]:
+                      - generic [ref=e1321]:
+                        - generic [ref=e1322]:
+                          - img [ref=e1323]
+                          - text: Pronta para envio
+                        - generic [ref=e1325]: Expira em 84 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1326]:
+                      - generic [ref=e1328]:
+                        - generic [ref=e1329]:
+                          - generic "QA Interno - Canary" [ref=e1330]:
+                            - generic [ref=e1331]: QI
+                            - generic [ref=e1332]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1333]:
+                            - generic [ref=e1334]: SB
+                            - generic [ref=e1335]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1339] [cursor=pointer]:
+                          - img [ref=e1340]
+                    - gridcell "1" [ref=e1342]:
+                      - paragraph [ref=e1346]: "1"
+                    - gridcell "3" [ref=e1347]:
+                      - paragraph [ref=e1351]: "3"
+                    - gridcell "8" [ref=e1352]:
+                      - paragraph [ref=e1356]: "8"
+                    - gridcell "–" [ref=e1357]:
+                      - generic [ref=e1360]: –
+                    - gridcell "–" [ref=e1361]:
+                      - generic [ref=e1364]: –
+                  - row "Compilação 107" [ref=e1365]:
+                    - rowheader "Compilação 107" [ref=e1366]:
+                      - generic [ref=e1368]:
+                        - link [ref=e1370] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/6a9e5bad-634c-4b68-8d10-e6cd074ae095
+                          - img [ref=e1372]
+                        - paragraph [ref=e1374]:
+                          - link "Compilação 107" [ref=e1375] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/6a9e5bad-634c-4b68-8d10-e6cd074ae095
+                            - generic [ref=e1376]: Compilação
+                            - text: "107"
+                    - gridcell "Pronta para envio Expira em 84 dias" [ref=e1377]:
+                      - generic [ref=e1379]:
+                        - generic [ref=e1380]:
+                          - img [ref=e1381]
+                          - text: Pronta para envio
+                        - generic [ref=e1383]: Expira em 84 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1384]:
+                      - generic [ref=e1386]:
+                        - generic [ref=e1387]:
+                          - generic "QA Interno - Canary" [ref=e1388]:
+                            - generic [ref=e1389]: QI
+                            - generic [ref=e1390]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1391]:
+                            - generic [ref=e1392]: SB
+                            - generic [ref=e1393]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1397] [cursor=pointer]:
+                          - img [ref=e1398]
+                    - gridcell "1" [ref=e1400]:
+                      - paragraph [ref=e1404]: "1"
+                    - gridcell "4" [ref=e1405]:
+                      - paragraph [ref=e1409]: "4"
+                    - gridcell "5" [ref=e1410]:
+                      - paragraph [ref=e1414]: "5"
+                    - gridcell "–" [ref=e1415]:
+                      - generic [ref=e1418]: –
+                    - gridcell "–" [ref=e1419]:
+                      - generic [ref=e1422]: –
+                  - row "Compilação 106" [ref=e1423]:
+                    - rowheader "Compilação 106" [ref=e1424]:
+                      - generic [ref=e1426]:
+                        - link [ref=e1428] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/49414cca-1e2e-4829-87d3-c8b5a107424b
+                          - img [ref=e1430]
+                        - paragraph [ref=e1432]:
+                          - link "Compilação 106" [ref=e1433] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/49414cca-1e2e-4829-87d3-c8b5a107424b
+                            - generic [ref=e1434]: Compilação
+                            - text: "106"
+                    - gridcell "Pronta para envio Expira em 84 dias" [ref=e1435]:
+                      - generic [ref=e1437]:
+                        - generic [ref=e1438]:
+                          - img [ref=e1439]
+                          - text: Pronta para envio
+                        - generic [ref=e1441]: Expira em 84 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1442]:
+                      - generic [ref=e1444]:
+                        - generic [ref=e1445]:
+                          - generic "QA Interno - Canary" [ref=e1446]:
+                            - generic [ref=e1447]: QI
+                            - generic [ref=e1448]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1449]:
+                            - generic [ref=e1450]: SB
+                            - generic [ref=e1451]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1455] [cursor=pointer]:
+                          - img [ref=e1456]
+                    - gridcell "1" [ref=e1458]:
+                      - paragraph [ref=e1462]: "1"
+                    - gridcell "3" [ref=e1463]:
+                      - paragraph [ref=e1467]: "3"
+                    - gridcell "1" [ref=e1468]:
+                      - paragraph [ref=e1472]: "1"
+                    - gridcell "–" [ref=e1473]:
+                      - generic [ref=e1476]: –
+                    - gridcell "–" [ref=e1477]:
+                      - generic [ref=e1480]: –
+                  - row "Compilação 105" [ref=e1481]:
+                    - rowheader "Compilação 105" [ref=e1482]:
+                      - generic [ref=e1484]:
+                        - link [ref=e1486] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/71c3602f-15a2-4218-9e89-704d19dcd786
+                          - img [ref=e1488]
+                        - paragraph [ref=e1490]:
+                          - link "Compilação 105" [ref=e1491] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/71c3602f-15a2-4218-9e89-704d19dcd786
+                            - generic [ref=e1492]: Compilação
+                            - text: "105"
+                    - gridcell "Pronta para envio Expira em 83 dias" [ref=e1493]:
+                      - generic [ref=e1495]:
+                        - generic [ref=e1496]:
+                          - img [ref=e1497]
+                          - text: Pronta para envio
+                        - generic [ref=e1499]: Expira em 83 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1500]:
+                      - generic [ref=e1502]:
+                        - generic [ref=e1503]:
+                          - generic "QA Interno - Canary" [ref=e1504]:
+                            - generic [ref=e1505]: QI
+                            - generic [ref=e1506]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1507]:
+                            - generic [ref=e1508]: SB
+                            - generic [ref=e1509]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1513] [cursor=pointer]:
+                          - img [ref=e1514]
+                    - gridcell "1" [ref=e1516]:
+                      - paragraph [ref=e1520]: "1"
+                    - gridcell "4" [ref=e1521]:
+                      - paragraph [ref=e1525]: "4"
+                    - gridcell "5" [ref=e1526]:
+                      - paragraph [ref=e1530]: "5"
+                    - gridcell "–" [ref=e1531]:
+                      - generic [ref=e1534]: –
+                    - gridcell "–" [ref=e1535]:
+                      - generic [ref=e1538]: –
+                  - row "Compilação 104" [ref=e1539]:
+                    - rowheader "Compilação 104" [ref=e1540]:
+                      - generic [ref=e1542]:
+                        - link [ref=e1544] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/c0210445-b02e-4eab-8a13-0face0f71ade
+                          - img [ref=e1546]
+                        - paragraph [ref=e1548]:
+                          - link "Compilação 104" [ref=e1549] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/c0210445-b02e-4eab-8a13-0face0f71ade
+                            - generic [ref=e1550]: Compilação
+                            - text: "104"
+                    - gridcell "Expirou" [ref=e1551]:
+                      - generic [ref=e1554]:
+                        - img [ref=e1555]
+                        - text: Expirou
+                    - gridcell [ref=e1557]
+                    - gridcell "1" [ref=e1558]:
+                      - paragraph [ref=e1562]: "1"
+                    - gridcell "–" [ref=e1563]:
+                      - generic [ref=e1566]: –
+                    - gridcell "–" [ref=e1567]:
+                      - generic [ref=e1570]: –
+                    - gridcell "–" [ref=e1571]:
+                      - generic [ref=e1574]: –
+                    - gridcell "–" [ref=e1575]:
+                      - generic [ref=e1578]: –
+                  - row "Compilação 103" [ref=e1579]:
+                    - rowheader "Compilação 103" [ref=e1580]:
+                      - generic [ref=e1582]:
+                        - link [ref=e1584] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/0ca6983f-3408-40c2-b623-20afad68fd95
+                          - img [ref=e1586]
+                        - paragraph [ref=e1588]:
+                          - link "Compilação 103" [ref=e1589] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/0ca6983f-3408-40c2-b623-20afad68fd95
+                            - generic [ref=e1590]: Compilação
+                            - text: "103"
+                    - gridcell "Pronta para envio Expira em 83 dias" [ref=e1591]:
+                      - generic [ref=e1593]:
+                        - generic [ref=e1594]:
+                          - img [ref=e1595]
+                          - text: Pronta para envio
+                        - generic [ref=e1597]: Expira em 83 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1598]:
+                      - generic [ref=e1600]:
+                        - generic [ref=e1601]:
+                          - generic "QA Interno - Canary" [ref=e1602]:
+                            - generic [ref=e1603]: QI
+                            - generic [ref=e1604]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1605]:
+                            - generic [ref=e1606]: SB
+                            - generic [ref=e1607]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1611] [cursor=pointer]:
+                          - img [ref=e1612]
+                    - gridcell "1" [ref=e1614]:
+                      - paragraph [ref=e1618]: "1"
+                    - gridcell "2" [ref=e1619]:
+                      - paragraph [ref=e1623]: "2"
+                    - gridcell "5" [ref=e1624]:
+                      - paragraph [ref=e1628]: "5"
+                    - gridcell "–" [ref=e1629]:
+                      - generic [ref=e1632]: –
+                    - gridcell "–" [ref=e1633]:
+                      - generic [ref=e1636]: –
+                  - row "Compilação 102" [ref=e1637]:
+                    - rowheader "Compilação 102" [ref=e1638]:
+                      - generic [ref=e1640]:
+                        - link [ref=e1642] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/be14c12f-ad56-4364-a282-79b27167692c
+                          - img [ref=e1644]
+                        - paragraph [ref=e1646]:
+                          - link "Compilação 102" [ref=e1647] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/be14c12f-ad56-4364-a282-79b27167692c
+                            - generic [ref=e1648]: Compilação
+                            - text: "102"
+                    - gridcell "Pronta para envio Expira em 83 dias" [ref=e1649]:
+                      - generic [ref=e1651]:
+                        - generic [ref=e1652]:
+                          - img [ref=e1653]
+                          - text: Pronta para envio
+                        - generic [ref=e1655]: Expira em 83 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1656]:
+                      - generic [ref=e1658]:
+                        - generic [ref=e1659]:
+                          - generic "QA Interno - Canary" [ref=e1660]:
+                            - generic [ref=e1661]: QI
+                            - generic [ref=e1662]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1663]:
+                            - generic [ref=e1664]: SB
+                            - generic [ref=e1665]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1669] [cursor=pointer]:
+                          - img [ref=e1670]
+                    - gridcell "1" [ref=e1672]:
+                      - paragraph [ref=e1676]: "1"
+                    - gridcell "2" [ref=e1677]:
+                      - paragraph [ref=e1681]: "2"
+                    - gridcell "5" [ref=e1682]:
+                      - paragraph [ref=e1686]: "5"
+                    - gridcell "–" [ref=e1687]:
+                      - generic [ref=e1690]: –
+                    - gridcell "1" [ref=e1691]:
+                      - paragraph [ref=e1695]: "1"
+                  - row "Compilação 101" [ref=e1696]:
+                    - rowheader "Compilação 101" [ref=e1697]:
+                      - generic [ref=e1699]:
+                        - link [ref=e1701] [cursor=pointer]:
+                          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/7cc05780-66a7-4be5-96f1-682676fc34bb
+                          - img [ref=e1703]
+                        - paragraph [ref=e1705]:
+                          - link "Compilação 101" [ref=e1706] [cursor=pointer]:
+                            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios/7cc05780-66a7-4be5-96f1-682676fc34bb
+                            - generic [ref=e1707]: Compilação
+                            - text: "101"
+                    - gridcell "Pronta para envio Expira em 83 dias" [ref=e1708]:
+                      - generic [ref=e1710]:
+                        - generic [ref=e1711]:
+                          - img [ref=e1712]
+                          - text: Pronta para envio
+                        - generic [ref=e1714]: Expira em 83 dias
+                    - gridcell "QA Interno - Canary Stakeholders - Beta Adicionar grupo" [ref=e1715]:
+                      - generic [ref=e1717]:
+                        - generic [ref=e1718]:
+                          - generic "QA Interno - Canary" [ref=e1719]:
+                            - generic [ref=e1720]: QI
+                            - generic [ref=e1721]: QA Interno - Canary
+                          - generic "Stakeholders - Beta" [ref=e1722]:
+                            - generic [ref=e1723]: SB
+                            - generic [ref=e1724]: Stakeholders - Beta
+                        - button "Adicionar grupo" [ref=e1728] [cursor=pointer]:
+                          - img [ref=e1729]
+                    - gridcell "1" [ref=e1731]:
+                      - paragraph [ref=e1735]: "1"
+                    - gridcell "2" [ref=e1736]:
+                      - paragraph [ref=e1740]: "2"
+                    - gridcell "4" [ref=e1741]:
+                      - paragraph [ref=e1745]: "4"
+                    - gridcell "–" [ref=e1746]:
+                      - generic [ref=e1749]: –
+                    - gridcell "1" [ref=e1750]:
+                      - paragraph [ref=e1754]: "1"
+              - button "Ver mais" [ref=e1757] [cursor=pointer]
+        - button "Versão 1.0.0" [ref=e1759] [cursor=pointer]:
+          - img [ref=e1761]
+          - heading "Versão 1.0.0" [level=3] [ref=e1763]
+  - contentinfo [ref=e55]:
+    - generic [ref=e56]:
+      - list [ref=e57]:
+        - listitem [ref=e915]:
+          - link "App Store Connect" [ref=e916] [cursor=pointer]:
+            - /url: /apps
+      - list [ref=e60]:
+        - listitem [ref=e61]: Copyright © 2026 Apple Inc. Todos os direitos reservados. |
+        - listitem [ref=e62]:
+          - link "Termos de serviço" [ref=e63] [cursor=pointer]:
+            - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+          - text: "|"
+        - listitem [ref=e64]:
+          - link "Política de privacidade" [ref=e65] [cursor=pointer]:
+            - /url: https://www.apple.com/legal/privacy
+          - text: "|"
+        - listitem [ref=e66]:
+          - link "Fale conosco" [ref=e67] [cursor=pointer]:
+            - /url: /contact-us

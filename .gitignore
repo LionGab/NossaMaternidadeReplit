@@ -4,6 +4,7 @@
 node_modules/
 bun.lock
 bun.lockb
+pnpm-lock.yaml
 
 # npm cache (Windows artifacts)
 C:\npm-cache/
@@ -80,8 +81,9 @@ tree.txt
 docs/archive/
 docs/_archive/
 
-# Claude/Cursor local
-.cursor/
+# Claude/Cursor local (exceto config MCP compartilhada)
+.cursor/*
+!.cursor/mcp.json
 core
 
 # SSH Keys (private keys should never be committed)

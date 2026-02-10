@@ -17,6 +17,11 @@ const trackedFetch: typeof fetch = async (input, init?) => {
     return originalFetch(input, init);
   }
 
+  const reactotron = Reactotron;
+  if (!reactotron) {
+    return originalFetch(input, init);
+  }
+
   const startTime = Date.now();
   const url =
     typeof input === "string" ? input : input instanceof Request ? input.url : input.toString();
@@ -24,7 +29,7 @@ const trackedFetch: typeof fetch = async (input, init?) => {
 
   try {
     // Log request start
-    Reactotron.log?.(`🌐 ${method} ${url}`);
+    reactotron.log?.(`🌐 ${method} ${url}`);
 
     // Execute request
     const response = await originalFetch(input, init);
@@ -50,7 +55,7 @@ const trackedFetch: typeof fetch = async (input, init?) => {
     }
 
     // Log successful response
-    Reactotron.display?.({
+    reactotron.display?.({
       name: `${method} ${url}`,
       preview: `${response.status} ${response.statusText} (${duration}ms)`,
       value: {
@@ -77,7 +82,7 @@ const trackedFetch: typeof fetch = async (input, init?) => {
     const duration = Date.now() - startTime;
 
     // Log failed request
-    Reactotron.display?.({
+    reactotron.display?.({
       name: `${method} ${url}`,
       preview: `❌ FAILED (${duration}ms)`,
       value: {
@@ -106,8 +111,11 @@ const trackedFetch: typeof fetch = async (input, init?) => {
 export function initializeFetchInterceptor(): void {
   if (!__DEV__) return;
 
+  const reactotron = Reactotron;
+  if (!reactotron) return;
+
   global.fetch = trackedFetch;
-  Reactotron.log?.("🔌 Fetch interceptor initialized");
+  reactotron.log?.("🔌 Fetch interceptor initialized");
 }
 
 /**

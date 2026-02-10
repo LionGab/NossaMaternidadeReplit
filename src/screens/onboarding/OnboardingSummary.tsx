@@ -59,13 +59,13 @@ const FALLBACK_STAGE_ICON: React.ComponentProps<typeof Ionicons>["name"] = "hear
 
 const CONCERN_LABELS: Record<OnboardingConcern, string> = {
   ANSIEDADE_MEDO: "Ansiedade e medo",
-  FALTA_INFORMACAO: "Falta de informacao",
-  SINTOMAS_FISICOS: "Sintomas fisicos",
-  MUDANCAS_CORPO: "Mudancas no corpo",
+  FALTA_INFORMACAO: "Falta de informação",
+  SINTOMAS_FISICOS: "Sintomas físicos",
+  MUDANCAS_CORPO: "Mudanças no corpo",
   RELACIONAMENTO: "Relacionamento",
   TRABALHO_MATERNIDADE: "Trabalho e maternidade",
-  SOLIDAO: "Solidao",
-  FINANCAS: "Financas",
+  SOLIDAO: "Solidão",
+  FINANCAS: "Finanças",
 };
 
 // ===========================================
@@ -264,7 +264,7 @@ export default function OnboardingSummary({ navigation }: Props) {
                 title={stageCard.title}
                 subtitle={
                   stage !== "GENERAL" && pregnancyWeek !== null
-                    ? `Semana ${pregnancyWeek} da gestacao`
+                    ? `Semana ${pregnancyWeek} da gestação`
                     : stage === "GENERAL"
                       ? "Foco em autocuidado e bem-estar"
                       : undefined
@@ -274,7 +274,7 @@ export default function OnboardingSummary({ navigation }: Props) {
               />
             )}
 
-            {/* Card 2: Preocupacoes */}
+            {/* Card 2: Preocupações */}
             {concernsText && (
               <SummaryCard
                 icon="chatbubble-ellipses-outline"
@@ -289,16 +289,16 @@ export default function OnboardingSummary({ navigation }: Props) {
               <SummaryCard
                 icon="heart-outline"
                 title="Tom acolhedor sempre"
-                subtitle="Voce nao esta sozinha. CVV 188"
+                subtitle="Você não está sozinha. CVV 188"
                 delay={400}
               />
             )}
 
-            {/* Card 4: Check-in diario */}
+            {/* Card 4: Check-in diário */}
             {dailyCheckIn && (
               <SummaryCard
                 icon="notifications-outline"
-                title={`Check-in diario as ${checkInTime}`}
+                title={`Check-in diário às ${checkInTime}`}
                 delay={500}
               />
             )}
@@ -308,7 +308,7 @@ export default function OnboardingSummary({ navigation }: Props) {
               <SummaryCard
                 icon="sparkles-outline"
                 title={`Temporada "${seasonName}"`}
-                subtitle="Sua jornada comeca agora"
+                subtitle="Sua jornada começa agora"
                 delay={600}
               />
             )}

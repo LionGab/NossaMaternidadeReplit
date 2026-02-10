@@ -46,44 +46,209 @@ if [ -f "$CURSOR_SETTINGS" ]; then
     # Usar node para manipular JSON de forma segura
     NODE_SCRIPT=$(cat << 'EOF'
 const fs = require('fs');
-const path = process.argv[1];
 const settingsFile = process.argv[2];
+
+function stripJsonComments(input) {
+    let out = '';
+    let inString = false;
+    let quote = '"';
+    let escaped = false;
+    let inLineComment = false;
+    let inBlockComment = false;
+
+    for (let i = 0; i < input.length; i++) {
+        const c = input[i];
+        const n = input[i + 1];
+
+        if (inLineComment) {
+            if (c === '\n') {
+                inLineComment = false;
+                out += c;
+            }
+            continue;
+        }
+
+        if (inBlockComment) {
+            if (c === '*' && n === '/') {
+                inBlockComment = false;
+                i++;
+            } else if (c === '\n') {
+                // Preserve newlines to keep error locations roughly stable
+                out += '\n';
+            }
+            continue;
+        }
+
+        if (inString) {
+            out += c;
+            if (escaped) {
+                escaped = false;
+            } else if (c === '\\\\') {
+                escaped = true;
+            } else if (c === quote) {
+                inString = false;
+            }
+            continue;
+        }
+
+        if (c === '"' || c === "'") {
+            inString = true;
+            quote = c;
+            out += c;
+            continue;
+        }
+
+        if (c === '/' && n === '/') {
+            inLineComment = true;
+            i++;
+            continue;
+        }
+
+        if (c === '/' && n === '*') {
+            inBlockComment = true;
+            i++;
+            continue;
+        }
+
+        out += c;
+    }
+
+    return out;
+}
+
+function removeTrailingCommas(input) {
+    let out = '';
+    let inString = false;
+    let quote = '"';
+    let escaped = false;
+
+    for (let i = 0; i < input.length; i++) {
+        const c = input[i];
+
+        if (inString) {
+            out += c;
+            if (escaped) {
+                escaped = false;
+            } else if (c === '\\\\') {
+                escaped = true;
+            } else if (c === quote) {
+                inString = false;
+            }
+            continue;
+        }
+
+        if (c === '"' || c === "'") {
+            inString = true;
+            quote = c;
+            out += c;
+            continue;
+        }
+
+        if (c === ',') {
+            // If the next non-whitespace char closes the container, drop the comma.
+            let j = i + 1;
+            while (j < input.length && /\\s/.test(input[j])) j++;
+            if (j < input.length && (input[j] === '}' || input[j] === ']')) {
+                continue;
+            }
+        }
+
+        out += c;
+    }
+
+    return out;
+}
+
+function parseJsonOrJsonc(content, fileLabel) {
+    try {
+        return JSON.parse(content);
+    } catch (e1) {
+        try {
+            const stripped = stripJsonComments(content);
+            const cleaned = removeTrailingCommas(stripped);
+            return JSON.parse(cleaned);
+        } catch (e2) {
+            const msg = e2 && e2.message ? e2.message : String(e2);
+            console.error(`❌ settings.json inválido (${fileLabel}). Corrija o JSON/JSONC e rode o script novamente.`);
+            console.error(`   Detalhe: ${msg}`);
+            process.exit(1);
+        }
+    }
+}
 
 let settings = {};
 try {
     const content = fs.readFileSync(settingsFile, 'utf8');
-    settings = JSON.parse(content);
+    if (content.trim().length > 0) {
+        settings = parseJsonOrJsonc(content, settingsFile);
+    }
 } catch (e) {
     settings = {};
 }
 
-// Configuração de MCPs
+// Configuração de MCPs (espelha .claude/mcp-config.json)
 const mcpServers = {
-    "expo-mcp": {
-        "description": "Expo MCP Server para builds iOS/Android",
+    "expo": {
+        "description": "Expo MCP — EAS Build, submit, docs",
         "transport": "http",
         "url": "https://mcp.expo.dev/mcp"
     },
-    "context7": {
-        "description": "Documentação atualizada de libraries",
+    "xcode": {
+        "transport": "stdio",
+        "description": "Xcode — simuladores e ferramentas iOS",
         "command": "npx",
-        "args": ["-y", "@upstash/context7-mcp"]
+        "args": ["-y", "xcodebuildmcp@latest"]
+    },
+    "react-native-guide": {
+        "transport": "stdio",
+        "description": "Guia MCP para fluxos React Native",
+        "command": "npx",
+        "args": ["-y", "@mrnitro360/react-native-mcp-guide@1.1.0"]
+    },
+    "rn-debugger": {
+        "transport": "stdio",
+        "description": "Depuração MCP para React Native",
+        "command": "npx",
+        "args": ["-y", "@twodoorsdev/react-native-debugger-mcp"]
+    },
+    "sequential-thinking": {
+        "transport": "stdio",
+        "description": "Raciocínio sequencial para tarefas complexas",
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"]
+    },
+    "context7": {
+        "transport": "stdio",
+        "description": "Documentação atualizada de bibliotecas",
+        "command": "npx",
+        "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "github-readonly": {
+        "transport": "stdio",
+        "description": "GitHub MCP em modo read-only por padrão",
+        "command": "npx",
+        "args": ["-y", "@modelcontextprotocol/server-github"],
+        "env": {
+            "GITHUB_PERSONAL_ACCESS_TOKEN": "${COPILOT_MCP_GITHUB_TOKEN}"
+        }
     },
     "memory-keeper": {
+        "transport": "stdio",
         "description": "Persistência de contexto entre sessões",
         "command": "npx",
-        "args": ["-y", "mcp-memory-keeper"],
+        "args": ["-y", "@modelcontextprotocol/server-memory"],
         "env": {
             "MCP_MEMORY_DB_PATH": ".claude/context.db"
         }
     },
     "playwright": {
-        "description": "Testes visuais automatizados",
+        "transport": "stdio",
+        "description": "Automação de browser para testes visuais",
         "command": "npx",
-        "args": ["-y", "@anthropic/mcp-server-playwright"]
+        "args": ["-y", "@playwright/mcp@latest"]
     },
     "figma-devmode": {
-        "description": "Figma Dev Mode MCP Server (local)",
+        "description": "Figma Dev Mode MCP (opcional)",
         "transport": "sse",
         "url": "http://127.0.0.1:3845/sse"
     }
@@ -148,8 +313,13 @@ fi
 
 echo ""
 echo -e "${BLUE}📋 MCPs Configurados:${NC}"
-echo "  ✅ expo-mcp (HTTP)"
+echo "  ✅ expo (HTTP)"
+echo "  ✅ xcode (npx)"
+echo "  ✅ react-native-guide (npx)"
+echo "  ✅ rn-debugger (npx)"
+echo "  ✅ sequential-thinking (npx)"
 echo "  ✅ context7 (npx)"
+echo "  ✅ github-readonly (npx)"
 echo "  ✅ memory-keeper (npx)"
 echo "  ✅ playwright (npx)"
 echo "  ✅ figma-devmode (SSE - requer Figma Desktop)"
@@ -164,14 +334,14 @@ echo "   npx expo login"
 echo "   ou"
 echo "   eas login"
 echo ""
-echo "3. ${BLUE}Verifique Supabase CLI${NC} (se necessário):"
-echo "   supabase login"
+echo "3. ${BLUE}Configure token GitHub read-only${NC}:"
+echo "   export COPILOT_MCP_GITHUB_TOKEN=<seu_token_read_only>"
 echo ""
 echo "4. ${BLUE}Teste os MCPs${NC} após reiniciar:"
-echo "   - Context7: Use mcp_Context7_resolve-library-id"
-echo "   - Browser: Use mcp_cursor-browser-extension_browser_navigate"
+echo "   - Context7: execute um lookup de documentação"
+echo "   - Sequential Thinking: execute um plano curto"
+echo "   - GitHub (read-only): faça uma leitura de issue/PR"
 echo ""
 echo -e "${GREEN}✅ Setup concluído!${NC}"
 echo ""
-echo "Documentação completa: docs/MCP_SETUP.md"
-
+echo "Documentação completa: docs/setup/MCP_SETUP.md"

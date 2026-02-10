@@ -1,60 +1,69 @@
 {
   "$schema": "https://claude.ai/mcp/schema.json",
   "mcpServers": {
-    "expo-mcp": {
+    "expo": {
       "transport": "http",
       "url": "https://mcp.expo.dev/mcp",
-      "description": "Expo MCP Server para builds iOS/Android"
+      "description": "Expo MCP — EAS Build, submit, docs"
+    },
+    "xcode": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "xcodebuildmcp@latest"],
+      "description": "Xcode — simuladores e ferramentas iOS"
+    },
+    "react-native-guide": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@mrnitro360/react-native-mcp-guide@1.1.0"],
+      "description": "Guia MCP para fluxos React Native"
+    },
+    "rn-debugger": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@twodoorsdev/react-native-debugger-mcp"],
+      "description": "Depuração MCP para React Native"
+    },
+    "sequential-thinking": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "description": "Raciocínio sequencial para tarefas complexas"
+    },
+    "context7": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "description": "Documentação atualizada de bibliotecas"
+    },
+    "github-readonly": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${COPILOT_MCP_GITHUB_TOKEN}"
+      },
+      "description": "GitHub MCP em modo read-only por padrão"
     },
     "memory-keeper": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-memory"],
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
       "env": {
         "MCP_MEMORY_DB_PATH": ".claude/context.db"
       },
       "description": "Persistência de contexto entre sessões"
     },
-    "sequential-thinking": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "description": "Pensamento sequencial para tarefas complexas"
+    "playwright": {
+      "transport": "stdio",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "description": "Automação de browser para testes visuais"
     },
-    "context7": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@upstash/context7-mcp"],
-      "description": "Documentação atualizada: React Native, Expo, Supabase"
-    },
-    "github-readonly": {
-      "command": "cmd",
-      "args": ["/c", "npx", "-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "${COPILOT_MCP_GITHUB_TOKEN}"
-      },
-      "description": "GitHub MCP server (read-only mode for safety)",
-      "metadata": {
-        "url": "https://github.com/nossamaternidade/nossamaternidade",
-        "toolsets": ["readonly"],
-        "permissions": "read-only"
-      }
-    },
-    "filesystem-readonly": {
-      "command": "cmd",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "C:\\Users\\lion\\Documents\\NossaMaternidade"
-      ],
-      "description": "Local filesystem access (read-only for safety)",
-      "metadata": {
-        "allowedPaths": [
-          "C:\\Users\\lion\\Documents\\NossaMaternidade\\src",
-          "C:\\Users\\lion\\Documents\\NossaMaternidade\\docs",
-          "C:\\Users\\lion\\Documents\\NossaMaternidade\\supabase"
-        ],
-        "permissions": "read-only"
-      }
+    "figma-devmode": {
+      "transport": "sse",
+      "url": "http://127.0.0.1:3845/sse",
+      "description": "Figma Dev Mode MCP (opcional)"
     }
   },
   "security": {
@@ -71,9 +80,8 @@
     ]
   },
   "notes": {
-    "platform": "Windows (cmd)",
-    "vsCodeUsage": "This config works with GitHub Copilot Chat in VS Code",
-    "githubCodingAgent": "For GitHub Copilot coding agent, configure via repository Settings > Copilot",
-    "documentation": "See docs/setup/COPILOT_MCP_SETUP.md for full setup guide"
+    "platform": "macOS/Unix first",
+    "windowsCompatibility": "Windows sai do baseline operacional e pode ser configurado separadamente",
+    "documentation": "Veja docs/setup/MCP_SETUP.md para setup completo"
   }
 }

@@ -44,10 +44,11 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { signIn, signUp } from "../../api/auth";
+import { signIn, signUp } from "@/api/auth";
 import { Button } from "../../components/ui/Button";
 import { Tokens, brand, neutral, shadows, typography } from "../../theme/tokens";
 import { logger } from "../../utils/logger";
+import { useDocumentMetadata } from "../../hooks/useDocumentMetadata";
 
 // Navigation types
 type AuthStackParamList = {
@@ -87,6 +88,19 @@ const colors = {
   // Semantic
   error: Tokens.semantic.light.error,
   success: Tokens.semantic.light.success,
+};
+
+const EMAIL_AUTH_METADATA = {
+  login: {
+    title: "Entrar com e-mail | Nossa Maternidade",
+    description:
+      "Entre com seu e-mail e senha para acessar conteúdos, notificações e a comunidade que te entende.",
+  },
+  signup: {
+    title: "Criar conta | Nossa Maternidade",
+    description:
+      "Crie sua conta para guardar hábitos, lembretes e o histórico da sua jornada na maternidade.",
+  },
 };
 
 // ============================================
@@ -285,6 +299,9 @@ export default function EmailAuthScreen({ navigation }: Props) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const metadata = isLogin ? EMAIL_AUTH_METADATA.login : EMAIL_AUTH_METADATA.signup;
+  useDocumentMetadata(metadata.title, metadata.description);
+
   // Field-level errors
   const [nameError, setNameError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -298,9 +315,9 @@ export default function EmailAuthScreen({ navigation }: Props) {
 
   // Can submit
   const canSubmit = isLogin
-    ? email.trim().length > 0 && password.length >= 6 && !loading
-    : name.trim().length >= 2 &&
-      email.trim().length > 0 &&
+    ? isValidEmail(email) && password.length >= 6 && !loading
+    : isValidName(name) &&
+      isValidEmail(email) &&
       password.length >= 6 &&
       confirmPassword === password &&
       !loading;
@@ -346,7 +363,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
       setEmailError("Digite seu e-mail");
       valid = false;
     } else if (!isValidEmail(email)) {
-      setEmailError("E-mail invalido");
+      setEmailError("E-mail inválido");
       valid = false;
     }
 
@@ -356,7 +373,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
     }
 
     if (!isLogin && password !== confirmPassword) {
-      setConfirmPasswordError("As senhas nao coincidem");
+      setConfirmPasswordError("As senhas não coincidem");
       valid = false;
     }
 
@@ -409,7 +426,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
         if (apiError) {
           const errorMsg = apiError instanceof Error ? apiError.message : String(apiError);
           if (errorMsg.includes("already registered")) {
-            setError("Este e-mail ja esta cadastrado. Tente fazer login.");
+            setError("Este e-mail já está cadastrado. Tente fazer login.");
           } else {
             setError(errorMsg);
           }
@@ -430,7 +447,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
     } catch (e) {
       const errorMsg = e instanceof Error ? e.message : String(e);
       setError(errorMsg);
-      logger.error("Excecao no auth", "EmailAuth", e instanceof Error ? e : new Error(errorMsg));
+      logger.error("Exceção no auth", "EmailAuth", e instanceof Error ? e : new Error(errorMsg));
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
     } finally {
       setLoading(false);
@@ -475,7 +492,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
                   {isLogin ? "Bem-vinda de volta" : "Crie sua conta"}
                 </Text>
                 <Text style={styles.subtitle}>
-                  {isLogin ? "Entre com seu e-mail e senha" : "Preencha os dados para comecar"}
+                  {isLogin ? "Entre com seu e-mail e senha" : "Preencha os dados para começar"}
                 </Text>
               </Animated.View>
 
@@ -525,7 +542,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
                     inputRef={emailRef}
                     error={emailError}
                     disabled={loading}
-                    accessibilityLabel="Endereco de e-mail"
+                    accessibilityLabel="Endereço de e-mail"
                     accessibilityHint="Digite seu e-mail"
                   />
                 </Animated.View>
@@ -540,7 +557,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
                       setPassword(text);
                       if (passwordError) setPasswordError(null);
                     }}
-                    placeholder="Minimo 6 caracteres"
+                    placeholder="Mínimo 6 caracteres"
                     secureTextEntry={!showPassword}
                     returnKeyType={isLogin ? "done" : "next"}
                     onSubmitEditing={
@@ -641,7 +658,7 @@ export default function EmailAuthScreen({ navigation }: Props) {
                 style={styles.switchSection}
               >
                 <Text style={styles.switchText}>
-                  {isLogin ? "Nao tem uma conta?" : "Ja tem uma conta?"}
+                  {isLogin ? "Não tem uma conta?" : "Já tem uma conta?"}
                 </Text>
                 <Pressable
                   onPress={handleToggleMode}

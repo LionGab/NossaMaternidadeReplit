@@ -11,21 +11,24 @@
  */
 
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
-import Animated, { FadeIn, useAnimatedStyle, useSharedValue, withRepeat, withSequence, withTiming } from "react-native-reanimated";
+import Animated, {
+  FadeIn,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 
-import { brand, neutral, radius, spacing, Tokens } from "@/theme/tokens";
+import { useTheme } from "@/hooks/useTheme";
+import { brand, neutral, radius, spacing } from "@/theme/tokens";
 import { shadowPresets } from "@/utils/shadow";
 import type { DailyInsight } from "../../content/insights";
 
 const COLORS = {
   white: neutral[0],
-  cardBg: Tokens.neutral[0],
-  gradientStart: Tokens.cleanDesign.pink[50],
-  gradientMid: Tokens.maternal.calm.cloud,
-  gradientEnd: Tokens.neutral[0],
   accent: brand.accent[400],
   accentLight: brand.accent[100],
   accentSoft: brand.accent[50],
@@ -34,7 +37,6 @@ const COLORS = {
   textPrimary: neutral[900],
   textSecondary: neutral[600],
   textMuted: neutral[500],
-  border: Tokens.accent.dark.blackSoft,
 } as const;
 
 interface Props {
@@ -49,18 +51,12 @@ function SparkleIcon({ size = 20 }: { size?: number }) {
 
   React.useEffect(() => {
     scale.value = withRepeat(
-      withSequence(
-        withTiming(1.1, { duration: 1500 }),
-        withTiming(1, { duration: 1500 })
-      ),
+      withSequence(withTiming(1.1, { duration: 1500 }), withTiming(1, { duration: 1500 })),
       -1,
       true
     );
     rotate.value = withRepeat(
-      withSequence(
-        withTiming(8, { duration: 2000 }),
-        withTiming(-8, { duration: 2000 })
-      ),
+      withSequence(withTiming(8, { duration: 2000 }), withTiming(-8, { duration: 2000 })),
       -1,
       true
     );
@@ -78,17 +74,14 @@ function SparkleIcon({ size = 20 }: { size?: number }) {
 }
 
 export function DailyInsightCard({ insight, dayIndex, onPressCTA }: Props) {
+  const { isDark } = useTheme();
   const showCTA = Boolean(insight.ctaLabel && insight.ctaAction && onPressCTA);
+
+  const cardBg = isDark ? neutral[800] : neutral[0];
 
   return (
     <Animated.View entering={FadeIn.duration(500)} style={styles.cardWrapper}>
-      <LinearGradient
-        colors={[COLORS.gradientStart, COLORS.gradientMid, COLORS.gradientEnd]}
-        locations={[0, 0.5, 1]}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={styles.card}
-      >
+      <View style={[styles.card, { backgroundColor: cardBg }]}>
         <View style={styles.header}>
           <View style={styles.headerLeft}>
             <View style={styles.iconContainer}>
@@ -116,23 +109,19 @@ export function DailyInsightCard({ insight, dayIndex, onPressCTA }: Props) {
             <Ionicons name="arrow-forward" size={16} color={neutral[0]} />
           </Pressable>
         )}
-      </LinearGradient>
+      </View>
     </Animated.View>
   );
 }
 
 const styles = StyleSheet.create({
   cardWrapper: {
-    marginHorizontal: spacing.lg,
-    marginBottom: spacing.lg,
-    ...shadowPresets.md,
+    ...shadowPresets.sm,
   },
 
   card: {
     borderRadius: radius["2xl"],
     padding: spacing.xl,
-    borderWidth: 1,
-    borderColor: COLORS.border,
   },
 
   header: {

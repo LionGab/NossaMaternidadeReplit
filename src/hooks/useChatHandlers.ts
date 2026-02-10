@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef } from "react";
 import { FlashListRef } from "@shopify/flash-list";
 import * as Haptics from "expo-haptics";
 import { preClassifyMessage } from "../ai/policies/nathia.preClassifier";
+import { isAppleFoundationModelsAvailable } from "../ai/appleFoundationModels";
 import {
   detectCrisis,
   detectMedicalQuestion,
@@ -339,9 +340,13 @@ export function useChatHandlers(props: UseChatHandlersProps) {
       }
 
       // Determine if we should use streaming
-      // Streaming only for: no crisis, no grounding, no image
+      // Streaming only for: no crisis, no grounding, no image, and no on-device Apple provider
       const isCrisis = detectCrisis(userInput);
-      const shouldStream = !isCrisis && !requiresGrounding && !imageData;
+      const useAppleProvider = isAppleFoundationModelsAvailable();
+      const shouldStream = !useAppleProvider && !isCrisis && !requiresGrounding && !imageData;
+
+      const preferredProvider = useAppleProvider ? "apple" : "openai";
+      const preferredModel = preferredProvider === "openai" ? "gpt-4o-mini" : undefined;
 
       let aiContent: string;
       let grounding: { citations?: Array<{ title?: string }> } | undefined;
@@ -366,8 +371,8 @@ export function useChatHandlers(props: UseChatHandlersProps) {
           const response = await getNathIAResponse(apiMessages, {
             estimatedTokens: estimated,
             conversationId: currentConversationId || undefined,
-            preferredProvider: "openai",
-            preferredModel: "gpt-4o-mini",
+            preferredProvider,
+            ...(preferredModel && { preferredModel }),
           });
           aiContent = response.content;
           grounding = response.grounding;
@@ -387,8 +392,8 @@ export function useChatHandlers(props: UseChatHandlersProps) {
           imageData,
           isCrisis,
           conversationId: currentConversationId || undefined,
-          preferredProvider: "openai",
-          preferredModel: "gpt-4o-mini",
+          preferredProvider,
+          ...(preferredModel && { preferredModel }),
         });
         aiContent = response.content;
         grounding = response.grounding;

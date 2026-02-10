@@ -229,6 +229,25 @@ export function useDeleteComment() {
   });
 }
 
+// ============ COMMUNITY STATS ============
+
+import { fetchCommunityStats, type CommunityStats } from "@/api/community";
+
+/**
+ * Hook para buscar stats reais da comunidade (membros, posts, engajamento)
+ */
+export function useCommunityStats() {
+  return useQuery<CommunityStats>({
+    queryKey: communityKeys.stats(),
+    queryFn: async () => {
+      const { data, error } = await fetchCommunityStats();
+      if (error || !data) throw error ?? new Error("Stats indisponíveis");
+      return data;
+    },
+    staleTime: 1000 * 60 * 5, // 5 minutos
+  });
+}
+
 // ============ PHASE 2 HOOKS ============
 
 export { useCommunityPosts } from "./useCommunityPosts";

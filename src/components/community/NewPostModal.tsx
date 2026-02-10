@@ -51,7 +51,7 @@ interface NewPostModalProps {
     mediaUri?: string,
     mediaType?: "image" | "video",
     postType?: PostType
-  ) => void;
+  ) => void | Promise<void>;
 }
 
 export const NewPostModal: React.FC<NewPostModalProps> = ({ visible, onClose, onSubmit }) => {
@@ -141,9 +141,8 @@ export const NewPostModal: React.FC<NewPostModalProps> = ({ visible, onClose, on
     setIsSubmitting(true);
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
 
-    // Simulate API call
-    setTimeout(() => {
-      onSubmit(
+    try {
+      await onSubmit(
         content.trim(),
         selectedMedia ?? undefined,
         mediaType ?? undefined,
@@ -153,10 +152,13 @@ export const NewPostModal: React.FC<NewPostModalProps> = ({ visible, onClose, on
       setSelectedMedia(null);
       setMediaType(null);
       setPostType(null);
-      setIsSubmitting(false);
       showSuccess("Post enviado para revisão! Você será notificada quando for aprovado.");
       onClose();
-    }, 1500);
+    } catch {
+      // Error handling is done by the mutation in the parent
+    } finally {
+      setIsSubmitting(false);
+    }
   }, [content, selectedMedia, mediaType, postType, onSubmit, onClose, showSuccess]);
 
   const handleClose = useCallback(() => {

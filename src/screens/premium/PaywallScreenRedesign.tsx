@@ -31,14 +31,17 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { Ionicons } from "@expo/vector-icons";
 import type { PurchasesPackage } from "react-native-purchases";
-import { usePremium } from "../../hooks/usePremium";
-import { trackEvent, trackPaywallExposure, trackPaywallOutcome } from "../../services/analytics";
-import { Tokens } from "../../theme/tokens";
-import { logger } from "../../utils/logger";
-import { PRICES_BRL, calculateSavingsPercent } from "../../services/revenuecat";
-import { staggeredFadeUp } from "../../utils/animations";
+import type { RouteProp } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
+import type { RootStackParamList } from "@/types/navigation";
+import { usePremium } from "@/hooks/usePremium";
+import { trackEvent, trackPaywallExposure, trackPaywallOutcome } from "@/services/analytics";
+import { Tokens } from "@/theme/tokens";
+import { logger } from "@/utils/logger";
+import { PRICES_BRL, calculateSavingsPercent } from "@/services/revenuecat";
+import { staggeredFadeUp } from "@/utils/animations";
 import ReanimatedAnimated from "react-native-reanimated";
-import { GlowEffect } from "../../components/ui/GlowEffect";
+import { GlowEffect } from "@/components/ui/GlowEffect";
 
 /**
  * Theme-aware color tokens
@@ -85,7 +88,7 @@ const PREMIUM_FEATURES = [
   {
     icon: "mic-outline" as const,
     title: "Respostas em Voz",
-    description: "Ouqa NathIA falar com voce",
+    description: "Ouça NathIA falar com você",
   },
   {
     icon: "images-outline" as const,
@@ -94,20 +97,83 @@ const PREMIUM_FEATURES = [
   },
   {
     icon: "time-outline" as const,
-    title: "Historico Completo",
+    title: "Histórico Completo",
     description: "Acesse todas as conversas",
   },
   {
     icon: "sparkles-outline" as const,
-    title: "Afirmacoes Diarias",
+    title: "Afirmações Diárias",
     description: "Mensagens personalizadas",
   },
   {
     icon: "heart-outline" as const,
-    title: "Conteudo Exclusivo",
+    title: "Conteúdo Exclusivo",
     description: "Acesso ao Mundo da Nath",
   },
 ];
+
+interface PaywallContextConfig {
+  title: string;
+  subtitle: string;
+  ctaText: string;
+  highlightFeatures?: number[];
+}
+
+const PAYWALL_CONTEXT: Record<string, PaywallContextConfig> = {
+  chat_limit_reached: {
+    title: "Continue Conversando",
+    subtitle: "Desbloqueie mensagens ilimitadas com NathIA",
+    ctaText: "Desbloquear NathIA",
+    highlightFeatures: [0, 1, 3],
+  },
+  mundo_nath: {
+    title: "Conteúdo Exclusivo",
+    subtitle: "Acesse o Mundo da Nath e muito mais",
+    ctaText: "Acessar Conteúdo",
+    highlightFeatures: [5, 4, 0],
+  },
+  "paywall-gate": {
+    title: "Recurso Premium",
+    subtitle: "Desbloqueie todos os recursos exclusivos",
+    ctaText: "Desbloquear Agora",
+  },
+  "paywall-gate-inline": {
+    title: "Recurso Premium",
+    subtitle: "Desbloqueie todos os recursos exclusivos",
+    ctaText: "Desbloquear Agora",
+  },
+  affirmations: {
+    title: "Afirmações Diárias",
+    subtitle: "Receba mensagens personalizadas todos os dias",
+    ctaText: "Desbloquear Afirmações",
+    highlightFeatures: [4, 0, 5],
+  },
+  voice: {
+    title: "Respostas em Voz",
+    subtitle: "Ouça NathIA falar diretamente com você",
+    ctaText: "Desbloquear Voz",
+    highlightFeatures: [1, 0, 3],
+  },
+};
+
+const DEFAULT_CONTEXT: PaywallContextConfig = {
+  title: "Desbloqueie o Premium",
+  subtitle: "Tenha acesso completo a todos os recursos",
+  ctaText: "Assinar Agora",
+};
+
+function getPaywallContext(source?: string, feature?: string): PaywallContextConfig {
+  if (source && PAYWALL_CONTEXT[source]) return PAYWALL_CONTEXT[source];
+  if (feature && PAYWALL_CONTEXT[feature]) return PAYWALL_CONTEXT[feature];
+  return DEFAULT_CONTEXT;
+}
+
+function getOrderedFeatures(config: PaywallContextConfig) {
+  if (!config.highlightFeatures) return PREMIUM_FEATURES;
+  const highlighted = config.highlightFeatures.map((i) => PREMIUM_FEATURES[i]).filter(Boolean);
+  const rest = PREMIUM_FEATURES.filter((_, i) => !config.highlightFeatures!.includes(i));
+  return [...highlighted, ...rest];
+}
 
 interface PaywallScreenRedesignProps {
   feature?: string;
@@ -121,12 +187,12 @@ interface PaywallScreenRedesignProps {
 }
 
 export function PaywallScreenRedesign({
-  feature,
+  feature: featureProp,
   onSuccess,
   onClose,
   showCloseButton = true,
   variant = "control",
-  source,
+  source: sourceProp,
   campaign,
   sourceCampaign,
 }: PaywallScreenRedesignProps) {
@@ -134,8 +200,18 @@ export function PaywallScreenRedesign({
   const colorScheme = useColorScheme();
   const isDark = colorScheme === "dark";
   const colors = useMemo(() => getColors(isDark), [isDark]);
+
+  // Read route.params when used as navigation screen
+  const route = useRoute<RouteProp<RootStackParamList, "Paywall">>();
+  const source = sourceProp ?? route.params?.source;
+  const feature = featureProp ?? route.params?.feature;
+
   const resolvedSource = source ?? sourceCampaign;
   const resolvedCampaign = campaign ?? feature ?? variant;
+
+  // Contextual config based on source/feature
+  const context = useMemo(() => getPaywallContext(source, feature), [source, feature]);
+  const orderedFeatures = useMemo(() => getOrderedFeatures(context), [context]);
   const trackingSource = resolvedSource ?? undefined;
   const trackingCampaign = resolvedCampaign ?? undefined;
 
@@ -268,7 +344,7 @@ export function PaywallScreenRedesign({
     } finally {
       setIsPurchasing(false);
     }
-  }, [selectedPackage, purchase, variant, feature, sourceCampaign, onSuccess]);
+  }, [selectedPackage, purchase, variant, feature, trackingSource, trackingCampaign, onSuccess]);
 
   /**
    * Handle restore
@@ -309,7 +385,7 @@ export function PaywallScreenRedesign({
         });
         Alert.alert(
           "Nenhuma compra encontrada",
-          "Nao encontramos assinaturas anteriores nesta conta."
+          "Não encontramos assinaturas anteriores nesta conta."
         );
       }
     } catch (err) {
@@ -329,7 +405,7 @@ export function PaywallScreenRedesign({
     } finally {
       setIsRestoring(false);
     }
-  }, [restore, variant, sourceCampaign, feature, onSuccess]);
+  }, [restore, variant, feature, trackingSource, trackingCampaign, onSuccess]);
 
   // Loading state
   if (premiumLoading) {
@@ -345,7 +421,7 @@ export function PaywallScreenRedesign({
     return (
       <View style={[styles.errorContainer, { backgroundColor: colors.background }]}>
         <Ionicons name="alert-circle-outline" size={48} color={colors.textTertiary} />
-        <Text style={[styles.errorTitle, { color: colors.textPrimary }]}>Planos indisponiveis</Text>
+        <Text style={[styles.errorTitle, { color: colors.textPrimary }]}>Planos indisponíveis</Text>
         <Text style={[styles.errorDescription, { color: colors.textSecondary }]}>
           Tente novamente em instantes.
         </Text>
@@ -391,17 +467,15 @@ export function PaywallScreenRedesign({
 
         {/* Header */}
         <ReanimatedAnimated.View entering={staggeredFadeUp(0)} style={styles.header}>
-          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>
-            Desbloqueie o Premium
-          </Text>
+          <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>{context.title}</Text>
           <Text style={[styles.headerSubtitle, { color: colors.textSecondary }]}>
-            Tenha acesso completo a todos os recursos
+            {context.subtitle}
           </Text>
         </ReanimatedAnimated.View>
 
         {/* Features List */}
         <View style={styles.featuresContainer}>
-          {PREMIUM_FEATURES.map((feat, idx) => (
+          {orderedFeatures.map((feat, idx) => (
             <ReanimatedAnimated.View
               key={idx}
               entering={staggeredFadeUp(idx + 1)}
@@ -458,7 +532,7 @@ export function PaywallScreenRedesign({
                 </View>
                 <View style={styles.pricingRight}>
                   <Text style={[styles.priceEquivalent, { color: colors.textSecondary }]}>
-                    R$ {PRICES_BRL.YEARLY_MONTHLY_EQUIVALENT}/mes
+                    R$ {PRICES_BRL.YEARLY_MONTHLY_EQUIVALENT}/mês
                   </Text>
                   <Text style={[styles.priceTotal, { color: colors.textPrimary }]}>
                     {yearlyPackage.product.priceString}/ano
@@ -494,13 +568,13 @@ export function PaywallScreenRedesign({
                 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel={`Plano mensal: ${monthlyPackage.product.priceString} por mes`}
+              accessibilityLabel={`Plano mensal: ${monthlyPackage.product.priceString} por mês`}
             >
               <View style={styles.pricingCardContent}>
                 <View style={styles.pricingLeft}>
                   <Text style={[styles.planName, { color: colors.textPrimary }]}>Mensal</Text>
                   <Text style={[styles.planSavings, { color: colors.textSecondary }]}>
-                    Renovacao automatica
+                    Renovação automática
                   </Text>
                 </View>
                 <View style={styles.pricingRight}>
@@ -536,12 +610,14 @@ export function PaywallScreenRedesign({
                 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel={isPurchasing ? "Processando" : "Assinar agora"}
+              accessibilityLabel={isPurchasing ? "Processando" : context.ctaText}
             >
               {isPurchasing ? (
                 <ActivityIndicator color={colors.ctaText} size="small" />
               ) : (
-                <Text style={[styles.ctaButtonText, { color: colors.ctaText }]}>Assinar Agora</Text>
+                <Text style={[styles.ctaButtonText, { color: colors.ctaText }]}>
+                  {context.ctaText}
+                </Text>
               )}
             </Pressable>
           </GlowEffect>
@@ -560,7 +636,7 @@ export function PaywallScreenRedesign({
               <ActivityIndicator color={colors.textSecondary} size="small" />
             ) : (
               <Text style={[styles.restoreButtonText, { color: colors.textSecondary }]}>
-                Ja sou assinante
+                Já sou assinante
               </Text>
             )}
           </Pressable>
@@ -574,8 +650,8 @@ export function PaywallScreenRedesign({
 
         {/* Legal Text */}
         <Text style={[styles.legalText, { color: colors.textTertiary }]}>
-          Renovacao automatica. Cancele quando quiser nas configuracoes da loja. Ao continuar, voce
-          concorda com nossos Termos de Uso e Politica de Privacidade.
+          Renovação automática. Cancele quando quiser nas configurações da loja. Ao continuar, você
+          concorda com nossos Termos de Uso e Política de Privacidade.
         </Text>
       </ScrollView>
     </LinearGradient>

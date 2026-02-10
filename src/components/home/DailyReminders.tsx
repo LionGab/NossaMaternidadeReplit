@@ -5,9 +5,9 @@
  * retorno diário ao app (maior ganho de retenção).
  *
  * Features:
- * - Mock data (TODO: integrar com reminders-store real)
+ * - Dados reais via reminders-store
  * - Ícone + título + horário
- * - Link para ajustar lembretes
+ * - Link para NotificationPreferences
  * - WCAG AAA compliant
  */
 
@@ -21,8 +21,8 @@ import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useTheme } from "@/hooks/useTheme";
 import { useRemindersStore } from "@/state/reminders-store";
 import type { RootStackParamList } from "@/types/navigation";
-import { accessibility, brand, neutral, radius, shadows, spacing } from "@/theme/tokens";
-import { logger } from "@/utils/logger";
+import { accessibility, brand, neutral, radius, spacing } from "@/theme/tokens";
+import { shadowPresets } from "@/utils/shadow";
 
 type IoniconsName = ComponentProps<typeof Ionicons>["name"];
 
@@ -32,25 +32,21 @@ type IoniconsName = ComponentProps<typeof Ionicons>["name"];
 
 export const DailyReminders: React.FC = () => {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { isDark, text, surface } = useTheme();
+  const { isDark, text } = useTheme();
 
   // Busca os 2 próximos lembretes (não completados) do store
   const getUpcomingReminders = useRemindersStore((s) => s.getUpcomingReminders);
   const upcomingReminders = getUpcomingReminders(2);
 
   // Colors
-  const cardBg = isDark ? surface.card : neutral[50];
+  const cardBg = isDark ? neutral[800] : neutral[0];
   const textPrimary = isDark ? text.primary : neutral[800];
   const textSecondary = isDark ? text.secondary : neutral[500];
   const iconColor = isDark ? brand.primary[400] : brand.primary[500];
   const linkColor = brand.primary[600];
 
-  // Handler para ajustar lembretes
-  // TODO: Implementar tela Settings com tab de reminders
   const handleAdjust = () => {
-    logger.info("Adjust reminders clicked (Settings screen not implemented)", "DailyReminders");
-    // Placeholder: navegando para NotificationSettings até implementar Settings completo
-    navigation.navigate("NotificationSettings");
+    navigation.navigate("NotificationPreferences");
   };
 
   return (
@@ -88,9 +84,9 @@ export const DailyReminders: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: radius.xl,
-    padding: spacing.lg,
-    ...shadows.sm,
+    borderRadius: radius["2xl"],
+    padding: spacing.xl,
+    ...shadowPresets.sm,
   },
   header: {
     flexDirection: "row",

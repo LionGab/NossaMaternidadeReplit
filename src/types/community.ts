@@ -54,6 +54,7 @@ export interface CommunityPost {
   likes_count?: number | null;
   comments_count?: number | null;
   // Campos virtuais
+  isLiked?: boolean;
   profiles?: {
     name: string;
     avatar_url: string;

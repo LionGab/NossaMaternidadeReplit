@@ -13,6 +13,10 @@ import { supabase } from "./supabase";
 import { rateLimiter } from "../utils/rate-limiter";
 import { getSupabaseFunctionsUrl } from "../config/env";
 import { chatMessagesSchema, validateWithSchema } from "../utils/validation";
+import {
+  generateWithAppleFoundationModels,
+  isAppleFoundationModelsAvailable,
+} from "../ai/appleFoundationModels";
 
 const FUNCTIONS_URL = getSupabaseFunctionsUrl();
 const AI_FUNCTION_CANDIDATES = ["ai", "nathia-chat"] as const;
@@ -27,7 +31,7 @@ export interface AIContext {
   };
   isCrisis?: boolean; // Força Claude para situações de crise
   conversationId?: string; // ID da conversa para persistência no DB
-  preferredProvider?: "claude" | "gemini" | "openai";
+  preferredProvider?: "apple" | "claude" | "gemini" | "openai";
   preferredModel?: string;
   /** AbortSignal for request cancellation */
   abortSignal?: AbortSignal;
@@ -85,6 +89,8 @@ interface EdgeFunctionPayload {
   };
   conversationId?: string;
 }
+
+type AIProvider = "apple" | EdgeFunctionPayload["provider"];
 
 /**
  * Obter resposta da NathIA (Claude ou Gemini)
@@ -180,7 +186,7 @@ export async function getNathIAResponse(
     // 2. Decidir provider (NathIA v2.0)
     // Default: OpenAI GPT-4o Mini (estavel e custo-beneficio)
     // Crise/Imagem: Claude (mais seguro)
-    let provider: EdgeFunctionPayload["provider"] = context.preferredProvider || "openai";
+    let provider: AIProvider = context.preferredProvider || "openai";
     let grounding = false;
 
     // Detectar crise na última mensagem do usuário
@@ -203,6 +209,36 @@ export async function getNathIAResponse(
       provider = "gemini";
     }
     // Default: OpenAI (NathIA v2.1 - estabilidade)
+
+    // 2.1 Provider local (Apple Foundation Models)
+    // Só roda quando explicitamente escolhido (preferredProvider="apple") ou quando a UX decidir assim.
+    if (provider === "apple") {
+      if (!isAppleFoundationModelsAvailable()) {
+        logger.warn(
+          "Apple Foundation Models requested but unavailable; falling back to OpenAI",
+          "AIService"
+        );
+        provider = "openai";
+      } else {
+        try {
+          const startTime = Date.now();
+          const content = await generateWithAppleFoundationModels(messages);
+          const latency = Date.now() - startTime;
+          return {
+            content,
+            provider: "apple",
+            latency,
+            // Não temos contagem de tokens do modelo on-device; manter 0 para compatibilidade
+            usage: { promptTokens: 0, completionTokens: 0, totalTokens: 0 },
+          };
+        } catch (appleError) {
+          logger.warn("Apple Foundation Models failed; falling back to OpenAI", "AIService", {
+            error: appleError instanceof Error ? appleError.message : String(appleError),
+          });
+          provider = "openai";
+        }
+      }
+    }
 
     // 3. Preparar payload
     const payload: EdgeFunctionPayload = {

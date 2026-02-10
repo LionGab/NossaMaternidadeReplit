@@ -91,6 +91,16 @@ NossaMaternidade/
 - Como reportar problemas
 - Problemas comuns
 
+### 5. Fonte de Verdade TestFlight
+
+**Arquivo**: [`docs/release/TESTFLIGHT_SOURCE_OF_TRUTH.md`](./TESTFLIGHT_SOURCE_OF_TRUTH.md)  
+**Para**: Desenvolvedores, CI maintainers e release owners  
+**Conteúdo**:
+
+- Pipeline oficial Expo/EAS
+- Arquivos canônicos de release iOS
+- Escopo do que foi arquivado fora do fluxo ativo
+
 ## 🔧 Ferramentas
 
 ### Script: prepare-ios-preview.mjs

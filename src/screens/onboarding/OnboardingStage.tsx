@@ -158,7 +158,7 @@ function StageSelectionCard({ data, isSelected, onPress, index }: StageSelection
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         style={[styles.card, animatedCardStyle]}
-        accessibilityLabel={`${data.title}. ${isSelected ? "Selecionado" : "Nao selecionado"}`}
+        accessibilityLabel={`${data.title}. ${isSelected ? "Selecionado" : "Não selecionado"}`}
         accessibilityRole="button"
         accessibilityState={{ selected: isSelected }}
       >
@@ -309,7 +309,7 @@ export default function OnboardingStage({ navigation }: Props) {
       >
         {/* Title Section */}
         <Animated.View entering={FadeInUp.delay(100).duration(400)} style={styles.titleSection}>
-          <Text style={styles.title}>Onde voce esta agora?</Text>
+          <Text style={styles.title}>Onde você está agora?</Text>
           <Text style={styles.subtitle}>Escolha a fase que melhor descreve seu momento</Text>
         </Animated.View>
 
@@ -341,7 +341,7 @@ export default function OnboardingStage({ navigation }: Props) {
           fullWidth
           disabled={!isButtonEnabled}
           onPress={handleContinue}
-          accessibilityLabel="Continuar para a proxima etapa"
+          accessibilityLabel="Continuar para a próxima etapa"
         >
           Continuar
         </Button>

@@ -65,7 +65,7 @@ export type RootStackParamList = {
   RestSounds: undefined;
 
   // Premium
-  Paywall: { source?: string };
+  Paywall: { source?: string; feature?: string };
 
   // Mundo da Nath
   MundoDaNath: undefined;

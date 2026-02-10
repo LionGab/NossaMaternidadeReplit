@@ -44,6 +44,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { signInWithApple, signInWithGoogle } from "../../api/social-auth";
 import { logger } from "../../utils/logger";
 import { Tokens, brand, neutral, radius, shadows, spacing, typography } from "../../theme/tokens";
+import { useDocumentMetadata } from "../../hooks/useDocumentMetadata";
 
 // Types
 import type { RootStackScreenProps } from "@/types/navigation";
@@ -63,6 +64,11 @@ const isCompact = Dimensions.get("window").height < 700;
 const LOGO = require("../../../assets/logo.png");
 const TERMS_URL = "https://nossamaternidade.com.br/termos";
 const PRIVACY_URL = "https://nossamaternidade.com.br/privacidade";
+
+const METADATA = {
+  title: "Nossa Maternidade | Login",
+  description: "Entre com sua conta ou crie uma nova para acessar conteúdo personalizado sobre maternidade.",
+};
 
 // ===========================================
 // DESIGN TOKENS - Flo Minimal Style
@@ -214,6 +220,7 @@ const Divider = ({ text }: { text: string }) => (
 
 export default function AuthLandingScreen({ navigation }: Props) {
   const insets = useSafeAreaInsets();
+  useDocumentMetadata(METADATA.title, METADATA.description);
 
   // Loading states
   const [appleLoading, setAppleLoading] = useState(false);
@@ -257,7 +264,7 @@ export default function AuthLandingScreen({ navigation }: Props) {
       const errorMsg = e instanceof Error ? e.message : String(e);
       setError(errorMsg);
       logger.error(
-        "Excecao no login Apple",
+        "Exceção no login Apple",
         "AuthLanding",
         e instanceof Error ? e : new Error(errorMsg)
       );
@@ -286,7 +293,7 @@ export default function AuthLandingScreen({ navigation }: Props) {
       const errorMsg = e instanceof Error ? e.message : String(e);
       setError(errorMsg);
       logger.error(
-        "Excecao no login Google",
+        "Exceção no login Google",
         "AuthLanding",
         e instanceof Error ? e : new Error(errorMsg)
       );
@@ -407,7 +414,7 @@ export default function AuthLandingScreen({ navigation }: Props) {
         {/* Footer - Terms & Privacy */}
         <Animated.View entering={FadeInDown.delay(700)} style={styles.footer}>
           <Text style={styles.legalText}>
-            Ao continuar, voce concorda com nossos{" "}
+            Ao continuar, você concorda com nossos{" "}
             <Text
               style={styles.legalLink}
               onPress={() => handleOpenLink(TERMS_URL)}
@@ -421,7 +428,7 @@ export default function AuthLandingScreen({ navigation }: Props) {
               style={styles.legalLink}
               onPress={() => handleOpenLink(PRIVACY_URL)}
               accessibilityRole="link"
-              accessibilityLabel="Ver politica de privacidade"
+              accessibilityLabel="Ver política de privacidade"
             >
               Privacidade
             </Text>

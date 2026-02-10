@@ -136,6 +136,9 @@
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
       }
     },
+    "testflight": {
+      "extends": "ios_testflight"
+    },
     "android_internal": {
       "extends": "base",
       "distribution": "internal",
@@ -211,6 +214,13 @@
   },
   "submit": {
     "ios_testflight": {
+      "ios": {
+        "appleId": "gabrielvesz_@hotmail.com",
+        "ascAppId": "6756980888",
+        "appleTeamId": "KZPW4S77UH"
+      }
+    },
+    "testflight": {
       "ios": {
         "appleId": "gabrielvesz_@hotmail.com",
         "ascAppId": "6756980888",

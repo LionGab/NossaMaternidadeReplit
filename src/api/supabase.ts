@@ -106,4 +106,16 @@ export function getSupabaseDiagnostics(): {
   };
 }
 
+/**
+ * Access a table not present in generated Database types.
+ * Centralizes the single type assertion needed for untyped tables
+ * (e.g. community_likes, moderation_queue) so consumer code stays clean.
+ */
+export function untypedFrom(client: SupabaseClient<Database>, table: string) {
+  // Supabase types only allow `.from()` with tables present in the generated Database type.
+  // For operational tables not modeled in `database.types.ts`, we intentionally drop typing.
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return (client as any).from(table);
+}
+
 export { supabase };

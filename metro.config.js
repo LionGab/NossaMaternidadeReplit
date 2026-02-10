@@ -33,6 +33,13 @@ config.resolver.resolveRequest = (context, moduleName, platform) => {
       type: "sourceFile",
     };
   }
+  // expo-apple-foundation-models is iOS-only; stub on web so bundle succeeds
+  if (platform === "web" && moduleName === "expo-apple-foundation-models") {
+    return {
+      filePath: path.join(__dirname, "src", "ai", "expo-apple-foundation-models.stub.ts"),
+      type: "sourceFile",
+    };
+  }
   // Use default resolution for other modules
   return context.resolveRequest(context, moduleName, platform);
 };
