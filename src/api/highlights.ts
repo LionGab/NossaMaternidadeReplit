@@ -1,6 +1,6 @@
 /**
  * Highlights API - Destaques da Semana
- * 
+ *
  * Ranking algorithm:
  * Score = (likes_count * 2) + (comments_count * 3) + recency_boost
  * recency_boost = max(0, 7 - days_since) * 1.5
@@ -32,8 +32,8 @@ function calculateScore(post: SupabaseHighlightPost): number {
   const createdAt = post.created_at ? new Date(post.created_at) : new Date();
   const daysSince = Math.floor((Date.now() - createdAt.getTime()) / (1000 * 60 * 60 * 24));
   const recencyBoost = Math.max(0, 7 - daysSince) * 1.5;
-  
-  return (likes * 2) + (comments * 3) + recencyBoost;
+
+  return likes * 2 + comments * 3 + recencyBoost;
 }
 
 function mapToPost(data: SupabaseHighlightPost, isLiked: boolean = false): Post {
@@ -73,7 +73,8 @@ export async function fetchWeeklyHighlights(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { data, error } = await (supabase as unknown as { from: (table: string) => any })
       .from("community_posts")
-      .select(`
+      .select(
+        `
         id,
         author_id,
         content,
@@ -85,7 +86,8 @@ export async function fetchWeeklyHighlights(
           name,
           avatar_url
         )
-      `)
+      `
+      )
       .eq("is_hidden", false)
       .gte("created_at", sevenDaysAgo.toISOString())
       .order("created_at", { ascending: false })
@@ -106,15 +108,18 @@ export async function fetchWeeklyHighlights(
         .from("community_likes")
         .select("post_id")
         .eq("user_id", userId)
-        .in("post_id", data.map((p: SupabaseHighlightPost) => p.id));
-      
+        .in(
+          "post_id",
+          data.map((p: SupabaseHighlightPost) => p.id)
+        );
+
       if (likes) {
         likedPostIds = new Set(likes.map((l: { post_id: string }) => l.post_id));
       }
     }
 
     const scoredPosts = (data as SupabaseHighlightPost[])
-      .map(post => ({
+      .map((post) => ({
         post,
         score: calculateScore(post),
       }))
@@ -124,7 +129,6 @@ export async function fetchWeeklyHighlights(
 
     logger.info(`Fetched ${scoredPosts.length} weekly highlights`, CONTEXT);
     return { data: scoredPosts, error: null };
-
   } catch (err) {
     const error = err instanceof Error ? err : new Error(String(err));
     logger.error("Failed to fetch weekly highlights", CONTEXT, error);

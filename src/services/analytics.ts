@@ -76,7 +76,10 @@ async function getAccessToken(): Promise<string | null> {
   return session?.access_token ?? null;
 }
 
-function getAuthorizationHeaders(token: string | null, requireAuthFallback?: boolean): Record<string, string> {
+function getAuthorizationHeaders(
+  token: string | null,
+  requireAuthFallback?: boolean
+): Record<string, string> {
   const headers: Record<string, string> = {};
 
   if (token) {

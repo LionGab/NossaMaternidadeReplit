@@ -35,11 +35,7 @@ import {
   purchasePackage,
   restorePurchases,
 } from "@/services/revenuecat";
-import {
-  trackEvent,
-  trackPaywallExposure,
-  trackPaywallOutcome,
-} from "@/services/analytics";
+import { trackEvent, trackPaywallExposure, trackPaywallOutcome } from "@/services/analytics";
 import { useNathJourneyOnboardingStore } from "@/state/nath-journey-onboarding-store";
 import { usePremiumStore } from "@/state/premium-store";
 import { useAppStore } from "@/state";
@@ -216,7 +212,14 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
     } finally {
       setIsSaving(false);
     }
-  }, [authUserId, data.stage, needsExtraCareFlag, selectedPackage, completeOnboarding, _navigation]);
+  }, [
+    authUserId,
+    data.stage,
+    needsExtraCareFlag,
+    selectedPackage,
+    completeOnboarding,
+    _navigation,
+  ]);
 
   // Start trial / purchase handler
   const handleStartTrial = useCallback(async () => {

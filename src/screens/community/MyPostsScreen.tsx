@@ -299,10 +299,7 @@ export default function MyPostsScreen({ navigation }: RootStackScreenProps<"MyPo
               onRetry={loadMyPosts}
             />
           }
-          contentContainerStyle={[
-            styles.listContent,
-            { paddingBottom: insets.bottom },
-          ]}
+          contentContainerStyle={[styles.listContent, { paddingBottom: insets.bottom }]}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl

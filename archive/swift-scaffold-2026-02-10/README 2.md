@@ -7,6 +7,7 @@ Este projeto foi desenvolvido seguindo as **melhores práticas da Apple** para u
 ## ✨ Características Principais
 
 ### 🏗️ Arquitetura
+
 - **SwiftUI** moderno com Swift Concurrency (async/await)
 - **MVVM** pattern com ObservableObject
 - **Dependency Injection** via Environment Objects
@@ -14,6 +15,7 @@ Este projeto foi desenvolvido seguindo as **melhores práticas da Apple** para u
 - **Type-safe** networking com Codable
 
 ### 🎨 UI/UX
+
 - Interface moderna e fluida
 - Animações suaves com Spring animations
 - Shimmer loading placeholders
@@ -23,6 +25,7 @@ Este projeto foi desenvolvido seguindo as **melhores práticas da Apple** para u
 - Acessibilidade implementada
 
 ### 🔐 Autenticação
+
 - Integração completa com Supabase
 - Login/SignUp com validação
 - Sessão persistente com refresh automático
@@ -30,6 +33,7 @@ Este projeto foi desenvolvido seguindo as **melhores práticas da Apple** para u
 - Tratamento de tokens expirados
 
 ### 🌐 Networking
+
 - Client HTTP robusto e type-safe
 - Retry logic para falhas de rede
 - Timeout configurável
@@ -37,6 +41,7 @@ Este projeto foi desenvolvido seguindo as **melhores práticas da Apple** para u
 - Error handling detalhado
 
 ### ✅ Testes
+
 - **Swift Testing** framework
 - Testes unitários completos
 - Testes de validação
@@ -45,6 +50,7 @@ Este projeto foi desenvolvido seguindo as **melhores práticas da Apple** para u
 - Cobertura de código > 80%
 
 ### 📊 Performance
+
 - Lazy loading com ScrollView otimizado
 - Cache de imagens (quando implementado)
 - Memória otimizada para 8GB RAM
@@ -52,6 +58,7 @@ Este projeto foi desenvolvido seguindo as **melhores práticas da Apple** para u
 - Background task handling
 
 ### 🛡️ Segurança
+
 - Credenciais via Environment Variables
 - Tokens seguros no Keychain (próxima iteração)
 - HTTPS obrigatório
@@ -104,6 +111,7 @@ Adicione as permissões necessárias:
 ### 3. Build Settings para TestFlight
 
 #### Release Configuration:
+
 - **Optimization Level**: `-O` (Optimize for Speed)
 - **Swift Compilation Mode**: `Whole Module Optimization`
 - **Enable Bitcode**: `Yes` (se necessário)
@@ -111,6 +119,7 @@ Adicione as permissões necessárias:
 - **Strip Swift Symbols**: `Yes`
 
 #### App Store Connect:
+
 1. Incremente `CFBundleVersion` a cada build
 2. Configure App Store Connect com:
    - Screenshots
@@ -131,20 +140,24 @@ xcodebuild test -scheme YourAppName -destination 'platform=iOS Simulator,name=iP
 ## 📦 Build para TestFlight
 
 ### 1. Archive o app:
+
 ```
 Product → Archive (⌘ + Shift + B)
 ```
 
 ### 2. Validate App:
+
 - Organize → Validate App
 - Aguarde validação completa
 
 ### 3. Distribute App:
+
 - Organize → Distribute App
 - Escolha "App Store Connect"
 - Upload para TestFlight
 
 ### 4. TestFlight:
+
 - Aguarde processamento (~10-30min)
 - Adicione beta testers
 - Configure feedback automático
@@ -152,6 +165,7 @@ Product → Archive (⌘ + Shift + B)
 ## 🐛 Debugging
 
 ### Logs Estruturados:
+
 ```swift
 #if DEBUG
 print("🚀 Debug message")
@@ -161,6 +175,7 @@ print("🚀 Debug message")
 ```
 
 ### Níveis de Log:
+
 - 🚀 Inicialização
 - ✅ Sucesso
 - ⚠️ Warning
@@ -169,6 +184,7 @@ print("🚀 Debug message")
 ## 🔄 Próximas Melhorias
 
 ### Prioridade Alta:
+
 - [ ] Keychain para armazenamento seguro de tokens
 - [ ] Firebase Crashlytics para crash reporting
 - [ ] Analytics (Firebase/Amplitude)
@@ -176,6 +192,7 @@ print("🚀 Debug message")
 - [ ] Deep linking
 
 ### Prioridade Média:
+
 - [ ] Cache de imagens com Kingfisher/SDWebImage
 - [ ] Offline mode com Core Data/SQLite
 - [ ] Background sync
@@ -183,6 +200,7 @@ print("🚀 Debug message")
 - [ ] Share extension
 
 ### Prioridade Baixa:
+
 - [ ] watchOS companion app
 - [ ] iPad multi-column layout
 - [ ] Handoff support
@@ -199,6 +217,7 @@ print("🚀 Debug message")
 ## 🔐 Privacidade
 
 Este app segue as diretrizes de privacidade da Apple:
+
 - Não coleta dados sem consentimento
 - Dados sensíveis são criptografados
 - Compliance com LGPD/GDPR
@@ -207,6 +226,7 @@ Este app segue as diretrizes de privacidade da Apple:
 ## 📞 Suporte
 
 Para issues relacionados ao TestFlight:
+
 - Email: support@yourapp.com
 - TestFlight feedback integrado
 
@@ -239,6 +259,7 @@ Proprietary - Todos os direitos reservados
 ## 🌟 Qualidade de Código
 
 ### Métricas:
+
 - **Code Coverage**: > 80%
 - **Cyclomatic Complexity**: < 10
 - **Function Length**: < 50 linhas
@@ -246,6 +267,7 @@ Proprietary - Todos os direitos reservados
 - **SwiftLint**: 0 errors, < 5 warnings
 
 ### Boas Práticas:
+
 ✅ Nomes descritivos
 ✅ Funções pequenas e focadas
 ✅ DRY (Don't Repeat Yourself)

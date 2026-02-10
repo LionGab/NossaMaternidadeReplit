@@ -14,4 +14,3 @@ export function isAvailable(): boolean;
  * Throws if Apple Foundation Models are not available.
  */
 export function generate(messages: AIMessage[]): Promise<string>;
-

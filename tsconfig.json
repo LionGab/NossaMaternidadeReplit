@@ -13,51 +13,24 @@
     "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "moduleResolution": "bundler",
-    "lib": [
-      "ES2021",
-      "DOM"
-    ],
+    "lib": ["ES2021", "DOM"],
     "jsx": "react-native",
     "target": "ES2021",
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/screens/*": [
-        "./src/screens/*"
-      ],
-      "@/hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@/utils/*": [
-        "./src/utils/*"
-      ],
-      "@/api/*": [
-        "./src/api/*"
-      ],
-      "@/state/*": [
-        "./src/state/*"
-      ],
-      "@/types/*": [
-        "./src/types/*"
-      ],
-      "@/theme/*": [
-        "./src/theme/*"
-      ],
-      "@/navigation/*": [
-        "./src/navigation/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/screens/*": ["./src/screens/*"],
+      "@/hooks/*": ["./src/hooks/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/api/*": ["./src/api/*"],
+      "@/state/*": ["./src/state/*"],
+      "@/types/*": ["./src/types/*"],
+      "@/theme/*": ["./src/theme/*"],
+      "@/navigation/*": ["./src/navigation/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "nativewind-env.d.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "nativewind-env.d.ts"],
   "exclude": [
     "node_modules",
     "backend/node_modules",

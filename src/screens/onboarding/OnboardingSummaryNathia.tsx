@@ -128,7 +128,10 @@ const SummaryCard = ({
               color={highlight ? nathColors.rosa.DEFAULT : nathColors.text.muted}
               style={styles.cardIcon}
             />
-            <Body weight="semibold" style={[styles.cardTitle, highlight && styles.cardTitleHighlight]}>
+            <Body
+              weight="semibold"
+              style={[styles.cardTitle, highlight && styles.cardTitleHighlight]}
+            >
               {title}
             </Body>
           </View>
@@ -211,9 +214,7 @@ export default function OnboardingSummaryNathia({ navigation }: Props) {
   // Build concerns string
   const concernsText = useMemo(() => {
     if (concerns.length === 0) return null;
-    const labels = concerns
-      .map((c) => CONCERN_LABELS[c as OnboardingConcern])
-      .filter(Boolean);
+    const labels = concerns.map((c) => CONCERN_LABELS[c as OnboardingConcern]).filter(Boolean);
     if (labels.length === 0) return null;
     return labels.join(", ");
   }, [concerns]);

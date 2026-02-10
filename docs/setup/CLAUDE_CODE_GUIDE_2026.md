@@ -186,13 +186,13 @@ paths: src/api/**/*.ts
 
 O `autoCompact` em `.claude/settings.json` (ex.: `triggerTokens: 80000`) compacta contexto antigo quando o limite é atingido. Para aproveitar ao máximo:
 
-| Ação | Quando usar |
-|------|-----------------------------|
-| **Manter autoCompact** | Sempre ativo com `triggerTokens` entre 70k–90k (projeto usa 80k). |
-| **`/clear`** | Ao mudar de tarefa (novo bug, nova feature, novo assunto). |
-| **`/compact`** | Quando a conversa está longa mas ainda no mesmo tema e você quer manter decisões sem zerar. |
-| **Evitar colar blocos enormes** | Preferir referências a arquivos (`@arquivo`) para não inflar tokens. |
-| **Usar skills/agents** | `/nathia`, `/verify`, etc. mantêm o contexto focado e reduzem tokens. |
+| Ação                            | Quando usar                                                                                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------- |
+| **Manter autoCompact**          | Sempre ativo com `triggerTokens` entre 70k–90k (projeto usa 80k).                           |
+| **`/clear`**                    | Ao mudar de tarefa (novo bug, nova feature, novo assunto).                                  |
+| **`/compact`**                  | Quando a conversa está longa mas ainda no mesmo tema e você quer manter decisões sem zerar. |
+| **Evitar colar blocos enormes** | Preferir referências a arquivos (`@arquivo`) para não inflar tokens.                        |
+| **Usar skills/agents**          | `/nathia`, `/verify`, etc. mantêm o contexto focado e reduzem tokens.                       |
 
 - **70k–90k tokens**: faixa configurada no projeto (80k); menos compactações, mais contexto recente preservado.
 

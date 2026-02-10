@@ -38,9 +38,7 @@ export async function fetchCycleData(): Promise<CycleData> {
   };
 }
 
-export async function updateCycleSettings(
-  input: UpdateCycleSettingsInput
-): Promise<CycleSettings> {
+export async function updateCycleSettings(input: UpdateCycleSettingsInput): Promise<CycleSettings> {
   const { data, error } = await saveCycleSettings(input);
 
   if (error) {
@@ -67,4 +65,3 @@ export async function upsertDailyLog(log: DailyLog): Promise<DailyLog> {
 
   return mapDailyLogFromDB(data);
 }
-

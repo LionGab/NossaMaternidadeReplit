@@ -40,7 +40,8 @@ const STATIC_ENV_CACHE: Record<string, string | undefined> = {
   EXPO_PUBLIC_ELEVENLABS_VOICE_ID: process.env.EXPO_PUBLIC_ELEVENLABS_VOICE_ID,
   // Feature flags - Existing
   EXPO_PUBLIC_ENABLE_AI_FEATURES: process.env.EXPO_PUBLIC_ENABLE_AI_FEATURES,
-  EXPO_PUBLIC_ENABLE_APPLE_FOUNDATION_MODELS: process.env.EXPO_PUBLIC_ENABLE_APPLE_FOUNDATION_MODELS,
+  EXPO_PUBLIC_ENABLE_APPLE_FOUNDATION_MODELS:
+    process.env.EXPO_PUBLIC_ENABLE_APPLE_FOUNDATION_MODELS,
   EXPO_PUBLIC_ENABLE_GAMIFICATION: process.env.EXPO_PUBLIC_ENABLE_GAMIFICATION,
   EXPO_PUBLIC_ENABLE_ANALYTICS: process.env.EXPO_PUBLIC_ENABLE_ANALYTICS,
   // Feature flags - Novas (Fase 1)
@@ -363,10 +364,7 @@ export function validateCriticalEnv(): void {
 
   if (!result.success) {
     const issues = result.error.issues
-      .map(
-        (i) =>
-          `  - ${String(i.path.join("."))}: ${i.message}`
-      )
+      .map((i) => `  - ${String(i.path.join("."))}: ${i.message}`)
       .join("\n");
     throw new Error(
       `[env] Critical environment variables are missing or invalid:\n${issues}\n\nCheck your .env file or app.config.js extra config.`

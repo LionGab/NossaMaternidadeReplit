@@ -7,10 +7,10 @@
 
 ## Identificadores do App
 
-| Plataforma          | Identificador                 |
-| ------------------- | ----------------------------- |
-| **iOS Bundle ID**   | `br.com.nossamaternidade.app` |
-| **Android Package** | `com.liongab.nossamaternidade`    |
+| Plataforma          | Identificador                  |
+| ------------------- | ------------------------------ |
+| **iOS Bundle ID**   | `br.com.nossamaternidade.app`  |
+| **Android Package** | `com.liongab.nossamaternidade` |
 
 ---
 

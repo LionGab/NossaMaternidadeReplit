@@ -81,7 +81,8 @@ export default function NewPostScreen({ navigation }: RootStackScreenProps<"NewP
         if (result.moderationStatus === "auto_blocked") {
           Alert.alert(
             "Conteúdo Não Permitido",
-            result.error || "Seu conteúdo não atende às diretrizes da comunidade. Por favor, revise e tente novamente.",
+            result.error ||
+              "Seu conteúdo não atende às diretrizes da comunidade. Por favor, revise e tente novamente.",
             [{ text: "Entendi", style: "cancel" }]
           );
         } else {
@@ -91,10 +92,10 @@ export default function NewPostScreen({ navigation }: RootStackScreenProps<"NewP
       }
 
       // Success - show appropriate message based on moderation status
-      const title = result.moderationStatus === "auto_approved" 
-        ? "Publicado!" 
-        : "Enviado para Revisão";
-      const message = result.message || 
+      const title =
+        result.moderationStatus === "auto_approved" ? "Publicado!" : "Enviado para Revisão";
+      const message =
+        result.message ||
         (result.moderationStatus === "auto_approved"
           ? "Seu post foi publicado com sucesso!"
           : "Seu post foi enviado e será analisado. Você será notificada quando for aprovado.");

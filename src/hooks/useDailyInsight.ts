@@ -1,10 +1,15 @@
 // src/hooks/useDailyInsight.ts
-import { useMemo } from 'react';
-import { format } from 'date-fns';
-import { INSIGHTS, type DailyInsight, getInsightsByJourney, getMaxDayIndex } from '../content/insights';
-import { useDailyInsightStore } from '../state/daily-insight-store';
-import { useAppStore } from '../state/app-store';
-import { LifeJourney } from '../types/expanded-onboarding.types';
+import { useMemo } from "react";
+import { format } from "date-fns";
+import {
+  INSIGHTS,
+  type DailyInsight,
+  getInsightsByJourney,
+  getMaxDayIndex,
+} from "../content/insights";
+import { useDailyInsightStore } from "../state/daily-insight-store";
+import { useAppStore } from "../state/app-store";
+import { LifeJourney } from "../types/expanded-onboarding.types";
 
 interface UseDailyInsightResult {
   insight: DailyInsight | null;
@@ -13,7 +18,7 @@ interface UseDailyInsightResult {
 }
 
 function toISODate(d: Date): string {
-  return format(d, 'yyyy-MM-dd');
+  return format(d, "yyyy-MM-dd");
 }
 
 function clampDayIndex(day: number): number {
@@ -38,7 +43,8 @@ function pickInsight(journey: LifeJourney, dayIndex: number): DailyInsight | nul
 }
 
 export function useDailyInsight(): UseDailyInsightResult {
-  const { lastShownDate, lastInsightId, lastJourney, setDailyInsightCache } = useDailyInsightStore();
+  const { lastShownDate, lastInsightId, lastJourney, setDailyInsightCache } =
+    useDailyInsightStore();
   const user = useAppStore((s) => s.user);
 
   return useMemo(() => {
@@ -46,9 +52,9 @@ export function useDailyInsight(): UseDailyInsightResult {
     const todayISO = toISODate(today);
 
     // Resolver de jornada + data inicial usando dados reais do app
-    const journey = (user as { journey?: LifeJourney })?.journey || 'MATERNIDADE';
+    const journey = (user as { journey?: LifeJourney })?.journey || "MATERNIDADE";
     const startDate = user?.createdAt ? new Date(user.createdAt) : new Date();
-    
+
     const dayIndex = daysBetween(startDate, today);
 
     // Se já escolheu hoje, retorna o mesmo

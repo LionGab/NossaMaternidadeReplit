@@ -9,18 +9,18 @@
 
 ## Nome e Posicionamento
 
-**"Nossa Maternidade"** — com subtitulo: *"O mundo da Nat, pra voce"*
+**"Nossa Maternidade"** — com subtitulo: _"O mundo da Nat, pra voce"_
 
 Nota estrategica: o nome funciona no curto prazo. Se o app expandir alem de maternidade, considerar migrar para "Mundo Nat" ou "Valente" futuramente.
 
 ## Modelo de 4 Camadas
 
-| Camada | Conteudo | Acesso | Receita |
-|---|---|---|---|
-| **1. Aberta** | Feed publico, snippets de IA, rituais basicos | Gratis com cadastro | Ads + funil para premium |
-| **2. Profunda** | IA da Nat (texto + voz), habit tracker guiado | Freemium (limite diario) | Conversao para assinatura |
-| **3. Exclusiva** | Close Friends, comunidade, desafios, bastidores, lives | Premium (assinatura) | R$29,90/mes ou R$249,90/ano |
-| **4. Impacto** | Projetos sociais, transparencia de doacoes | Premium | Reforco de marca + retencao |
+| Camada           | Conteudo                                               | Acesso                   | Receita                     |
+| ---------------- | ------------------------------------------------------ | ------------------------ | --------------------------- |
+| **1. Aberta**    | Feed publico, snippets de IA, rituais basicos          | Gratis com cadastro      | Ads + funil para premium    |
+| **2. Profunda**  | IA da Nat (texto + voz), habit tracker guiado          | Freemium (limite diario) | Conversao para assinatura   |
+| **3. Exclusiva** | Close Friends, comunidade, desafios, bastidores, lives | Premium (assinatura)     | R$29,90/mes ou R$249,90/ano |
+| **4. Impacto**   | Projetos sociais, transparencia de doacoes             | Premium                  | Reforco de marca + retencao |
 
 ## Diferenciais Competitivos
 
@@ -34,14 +34,14 @@ Nota estrategica: o nome funciona no curto prazo. Se o app expandir alem de mate
 
 ### Status de Implementacao
 
-| # | Modulo | Status | Onde no codigo |
-|---|--------|--------|----------------|
-| 1 | Feed Publico ("Nat todo dia") | Futuro | N/A |
-| 2 | IA da Nat (Chat) | Implementado (texto) | `src/screens/assistant/`, `src/config/nathia-prompts.ts` |
-| 3 | Rituais da Nat (Habit Tracker) | Implementado | `src/screens/care/HabitsEnhancedScreen.tsx` |
-| 4 | Mundo da Natalia (Close Friends) | Implementado (parcial) | `src/screens/mundo/` |
-| 5 | Comunidade | Implementado | `src/screens/community/` |
-| 6 | Impacto Social | Futuro | N/A |
+| #   | Modulo                           | Status                 | Onde no codigo                                           |
+| --- | -------------------------------- | ---------------------- | -------------------------------------------------------- |
+| 1   | Feed Publico ("Nat todo dia")    | Futuro                 | N/A                                                      |
+| 2   | IA da Nat (Chat)                 | Implementado (texto)   | `src/screens/assistant/`, `src/config/nathia-prompts.ts` |
+| 3   | Rituais da Nat (Habit Tracker)   | Implementado           | `src/screens/care/HabitsEnhancedScreen.tsx`              |
+| 4   | Mundo da Natalia (Close Friends) | Implementado (parcial) | `src/screens/mundo/`                                     |
+| 5   | Comunidade                       | Implementado           | `src/screens/community/`                                 |
+| 6   | Impacto Social                   | Futuro                 | N/A                                                      |
 
 ### Modulo 1: Feed Publico (futuro)
 
@@ -52,6 +52,7 @@ Conteudo publico da Natalia — clips, carrosseis, textos motivacionais, dicas r
 Chat com IA que "fala" como a Natalia. Atualmente: texto via Gemini 2.0 Flash. Futuro: voz clonada via ElevenLabs.
 
 **Limites**:
+
 - Free: 6 mensagens de texto/dia (reset meia-noite UTC-3)
 - Premium: ilimitado
 
@@ -64,6 +65,7 @@ Tracker de habitos organizado em sessoes de vida.
 **5 Sessoes**: Mae, Mulher, Casa, Trabalho, Amor
 
 **Packs pre-configurados**:
+
 - "Primeiros meses de mae" (0-3 meses)
 - "Retomando a rotina" (3-6 meses)
 - "Mae que corre" (6+ meses)
@@ -127,5 +129,5 @@ Notificacao matinal personalizada
 
 ---
 
-*Fonte: Documento Consolidado App Nat (fev/2026)*
-*Ultima atualizacao: 2026-02-09*
+_Fonte: Documento Consolidado App Nat (fev/2026)_
+_Ultima atualizacao: 2026-02-09_

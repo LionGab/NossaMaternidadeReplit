@@ -16,6 +16,7 @@ nano .env  # ou usar seu editor favorito
 ```
 
 **Adicione suas credenciais:**
+
 ```bash
 SUPABASE_URL=https://seu-projeto.supabase.co
 SUPABASE_ANON_KEY=sua-chave-anon-aqui
@@ -29,6 +30,7 @@ open *.xcodeproj
 ```
 
 **No Xcode:**
+
 1. Selecionar seu Time em "Signing & Capabilities"
 2. Verificar Bundle Identifier é único
 3. Verificar Version (1.0.0) e Build (1)
@@ -44,6 +46,7 @@ open *.xcodeproj
 ```
 
 **Verificar:**
+
 - ✅ Testes passam
 - ✅ App compila sem warnings
 - ✅ UI aparece corretamente
@@ -51,12 +54,14 @@ open *.xcodeproj
 ### 4️⃣ BUILD PARA TESTFLIGHT (1 min)
 
 **Opção A - Script Automático:**
+
 ```bash
 chmod +x build_for_testflight.sh
 ./build_for_testflight.sh
 ```
 
 **Opção B - Manual no Xcode:**
+
 1. Product → Archive (⌘ + Shift + B)
 2. Window → Organizer
 3. Distribute App → App Store Connect
@@ -74,6 +79,7 @@ chmod +x build_for_testflight.sh
 ## 🚀 COMANDOS ÚTEIS
 
 ### Desenvolvimento:
+
 ```bash
 # Limpar build
 ⌘ + Shift + K
@@ -89,6 +95,7 @@ chmod +x build_for_testflight.sh
 ```
 
 ### Terminal:
+
 ```bash
 # Incrementar build number
 xcrun agvtool next-version -all
@@ -108,6 +115,7 @@ rm -rf ~/Library/Developer/Xcode/DerivedData/*
 ## 📋 CHECKLIST RÁPIDO
 
 ### Antes do Build:
+
 - [ ] Version e Build number corretos
 - [ ] Team selecionado
 - [ ] Bundle ID único
@@ -115,6 +123,7 @@ rm -rf ~/Library/Developer/Xcode/DerivedData/*
 - [ ] Zero warnings
 
 ### Depois do Upload:
+
 - [ ] Build apareceu no App Store Connect
 - [ ] Status mudou para "Ready to Submit"
 - [ ] Beta Testing configurado
@@ -126,25 +135,33 @@ rm -rf ~/Library/Developer/Xcode/DerivedData/*
 ## 🆘 PROBLEMAS COMUNS
 
 ### "No signing certificate found"
+
 **Solução:**
+
 1. Xcode → Settings → Accounts
 2. Adicionar Apple ID
 3. Download Manual Profiles
 
 ### "Build failed to upload"
+
 **Solução:**
+
 1. Verificar internet
 2. Tentar novamente
 3. Usar Xcode Organizer (manual)
 
 ### "Archive não aparece no Organizer"
+
 **Solução:**
+
 1. Verificar scheme está em Release
 2. Clean Build Folder (⌘ + Shift + K)
 3. Archive novamente
 
 ### "Tests failing"
+
 **Solução:**
+
 1. Verificar simulador está instalado
 2. Reset simulador: Device → Erase All Content
 3. Rodar testes novamente
@@ -182,6 +199,7 @@ chmod +x build_for_testflight.sh && ./build_for_testflight.sh
 Seu app está no TestFlight em **5 minutos**! 🚀
 
 Agora é só:
+
 1. Aguardar processamento
 2. Adicionar beta testers
 3. Coletar feedback

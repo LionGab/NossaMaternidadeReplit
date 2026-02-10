@@ -124,18 +124,53 @@ function resolveTouchCounters(touchType: TouchType): {
   revenue_cents: number;
 } {
   if (touchType === "impression") {
-    return { impressions: 1, clicks: 0, installs: 0, trials: 0, paid_conversions: 0, revenue_cents: 0 };
+    return {
+      impressions: 1,
+      clicks: 0,
+      installs: 0,
+      trials: 0,
+      paid_conversions: 0,
+      revenue_cents: 0,
+    };
   }
   if (touchType === "install") {
-    return { impressions: 0, clicks: 0, installs: 1, trials: 0, paid_conversions: 0, revenue_cents: 0 };
+    return {
+      impressions: 0,
+      clicks: 0,
+      installs: 1,
+      trials: 0,
+      paid_conversions: 0,
+      revenue_cents: 0,
+    };
   }
   if (touchType === "trial") {
-    return { impressions: 0, clicks: 0, installs: 0, trials: 1, paid_conversions: 0, revenue_cents: 0 };
+    return {
+      impressions: 0,
+      clicks: 0,
+      installs: 0,
+      trials: 1,
+      paid_conversions: 0,
+      revenue_cents: 0,
+    };
   }
   if (touchType === "paid") {
-    return { impressions: 0, clicks: 0, installs: 0, trials: 0, paid_conversions: 1, revenue_cents: 0 };
+    return {
+      impressions: 0,
+      clicks: 0,
+      installs: 0,
+      trials: 0,
+      paid_conversions: 1,
+      revenue_cents: 0,
+    };
   }
-  return { impressions: 0, clicks: 1, installs: 0, trials: 0, paid_conversions: 0, revenue_cents: 0 };
+  return {
+    impressions: 0,
+    clicks: 1,
+    installs: 0,
+    trials: 0,
+    paid_conversions: 0,
+    revenue_cents: 0,
+  };
 }
 
 async function incrementCreatorPerformance(
@@ -172,7 +207,9 @@ async function incrementCreatorPerformance(
   const buildSelector = () =>
     supabaseAdmin
       .from("creator_content_performance")
-      .select("id, impressions, clicks, installs, trials, paid_conversions, revenue_cents, metadata")
+      .select(
+        "id, impressions, clicks, installs, trials, paid_conversions, revenue_cents, metadata"
+      )
       .eq("day_date", dayDate)
       .eq("source", payload.source)
       .eq("campaign", payload.campaign)
@@ -185,8 +222,7 @@ async function incrementCreatorPerformance(
   };
 
   const updateRow = async (row: CreatorPerformanceRow) => {
-    const currentMetadata =
-      row.metadata && typeof row.metadata === "object" ? row.metadata : {};
+    const currentMetadata = row.metadata && typeof row.metadata === "object" ? row.metadata : {};
 
     await supabaseAdmin
       .from("creator_content_performance")
@@ -303,7 +339,7 @@ async function handleAttributionTouch(
         last_touch_at: new Date().toISOString(),
         last_touch_payload: touchPayload,
       })
-        .eq("id", existing.id);
+      .eq("id", existing.id);
   }
 
   await incrementCreatorPerformance(supabaseAdmin, {
@@ -425,9 +461,12 @@ async function requireProfileId(
   return profileId;
 }
 
-function getJourneyMessage(
-  journeyType: JourneyType
-): { notificationType: string; title: string; body: string; priority: number } {
+function getJourneyMessage(journeyType: JourneyType): {
+  notificationType: string;
+  title: string;
+  body: string;
+  priority: number;
+} {
   if (journeyType === "trial") {
     return {
       notificationType: "custom",

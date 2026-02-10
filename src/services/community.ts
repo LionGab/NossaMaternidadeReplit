@@ -1,7 +1,11 @@
 import { supabase } from "../api/supabase";
 import { logger } from "../utils/logger";
 import { CommunityPost, MediaType } from "../types/community";
-import { analyzePost, addToModerationQueue, type AddToModerationQueueParams } from "../api/moderation";
+import {
+  analyzePost,
+  addToModerationQueue,
+  type AddToModerationQueueParams,
+} from "../api/moderation";
 
 /**
  * React Native FormData file interface
@@ -164,9 +168,10 @@ export const communityService = {
 
       // 2. Se auto-bloqueado, não inserir e retornar
       if (moderationDecision.action === "auto_block") {
-        const suggestion = moderationDecision.profanityResult.suggestion || 
+        const suggestion =
+          moderationDecision.profanityResult.suggestion ||
           "Seu conteúdo não atende às diretrizes da comunidade.";
-        
+
         // Registrar na fila para auditoria com dados completos
         const queueParams: AddToModerationQueueParams = {
           userId: user.id,

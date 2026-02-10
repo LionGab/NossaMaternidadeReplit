@@ -22,6 +22,7 @@ Cada build deve ter **apenas 3 bullets** aqui + links:
 <!-- Adicionar novos builds no topo -->
 
 ## 2026-02-10 - iOS ios_testflight
+
 - **Status**: SUCCESS
 - **Objetivo**: Submeter build iOS para TestFlight (Internal) via GitHub Actions
 - **Resultado**: GitHub Actions run `21871151806` (SHA `961b0b3`), ASC build `202602100415` (VALID)

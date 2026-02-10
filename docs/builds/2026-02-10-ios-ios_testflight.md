@@ -2,15 +2,15 @@
 
 ## Metadata
 
-| Campo        | Valor                                                                  |
-| ------------ | ---------------------------------------------------------------------- |
-| Data         | 2026-02-10 11:29 (-04)                                                 |
-| Plataforma   | iOS                                                                    |
-| Profile      | ios_testflight                                                         |
-| Branch       | main                                                                   |
-| Objetivo     | Submeter build iOS para TestFlight (Internal) via GitHub Actions       |
-| Build ID EAS | N/A (workflow usa `eas build --local`)                                 |
-| Auto-submit  | Sim                                                                    |
+| Campo        | Valor                                                            |
+| ------------ | ---------------------------------------------------------------- |
+| Data         | 2026-02-10 11:29 (-04)                                           |
+| Plataforma   | iOS                                                              |
+| Profile      | ios_testflight                                                   |
+| Branch       | main                                                             |
+| Objetivo     | Submeter build iOS para TestFlight (Internal) via GitHub Actions |
+| Build ID EAS | N/A (workflow usa `eas build --local`)                           |
+| Auto-submit  | Sim                                                              |
 
 ## Pre-Build Interview
 
@@ -21,8 +21,8 @@
 
 ## Quality Gate Results
 
-| Check                       | Status    | Observação |
-| --------------------------- | --------- | ---------- |
+| Check                       | Status    | Observação                        |
+| --------------------------- | --------- | --------------------------------- |
 | TypeScript (`tsc --noEmit`) | PASS      | Executado localmente (2026-02-10) |
 | ESLint                      | PASS      | Executado localmente (2026-02-10) |
 | Build readiness             | PASS      | Executado localmente (2026-02-10) |
@@ -53,16 +53,15 @@ N/A (workflow concluiu com sucesso).
 
 ## Resultado Final
 
-| Campo         | Valor                                                                 |
-| ------------- | --------------------------------------------------------------------- |
-| Status        | SUCCESS                                                               |
+| Campo         | Valor                                                                      |
+| ------------- | -------------------------------------------------------------------------- |
+| Status        | SUCCESS                                                                    |
 | URL do Build  | https://github.com/LionGab/NossaMaternidadeReplit/actions/runs/21871151806 |
-| Tempo total   | ~33 min                                                               |
-| Próximo passo | Instalar via TestFlight (Internal) e rodar smoke tests                |
+| Tempo total   | ~33 min                                                                    |
+| Próximo passo | Instalar via TestFlight (Internal) e rodar smoke tests                     |
 
 ## Notas
 
 - App Store Connect (via API): build `202602100415` com `processingState=VALID`.
 - Build ID (ASC): `665ef95c-00d0-4034-b5ea-a87371dea0f7`.
 - Follow-up recomendado: corrigir as violações P0 acima e disparar novo build TestFlight para incluir as correções.
-

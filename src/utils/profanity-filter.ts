@@ -1,6 +1,6 @@
 /**
  * Filtro de Palavrões e Conteúdo Impróprio
- * 
+ *
  * Sistema de moderação automática para comunidade materno-infantil
  * Detecta:
  * - Palavrões e linguagem ofensiva
@@ -9,12 +9,12 @@
  * - Conteúdo potencialmente prejudicial
  */
 
-export type ProfanityCategory = 
-  | "profanity"      // Palavrões
-  | "offensive"      // Conteúdo ofensivo
-  | "spam"           // Spam/links
-  | "sensitive"      // Conteúdo sensível
-  | "harmful";       // Potencialmente prejudicial
+export type ProfanityCategory =
+  | "profanity" // Palavrões
+  | "offensive" // Conteúdo ofensivo
+  | "spam" // Spam/links
+  | "sensitive" // Conteúdo sensível
+  | "harmful"; // Potencialmente prejudicial
 
 export interface ProfanityResult {
   isClean: boolean;
@@ -28,44 +28,100 @@ export interface ProfanityResult {
 // Inclui variações comuns e leetspeak
 const PROFANITY_LIST: string[] = [
   // Palavrões graves
-  "porra", "p0rra", "caralho", "car4lho", "c4r4lh0",
-  "merda", "m3rd4", "bosta", "coco", "foda", "f0d4",
-  "buceta", "buc3t4", "xoxota", "xereca", "pinto",
-  "pau", "rola", "piroca", "cacete", "filha da puta",
-  "filho da puta", "fdp", "pqp", "vsf", "tnc",
-  "viado", "vi4d0", "bicha", "sapatão", "traveco",
-  "vaca", "vagabunda", "piranha", "prostituta", "puta",
-  "arrombado", "cuzão", "cu", "bunda", "idiota",
-  "imbecil", "retardado", "mongol", "débil", "otário",
-  "babaca", "cretino", "desgraça", "desgraçado",
-  
+  "porra",
+  "p0rra",
+  "caralho",
+  "car4lho",
+  "c4r4lh0",
+  "merda",
+  "m3rd4",
+  "bosta",
+  "coco",
+  "foda",
+  "f0d4",
+  "buceta",
+  "buc3t4",
+  "xoxota",
+  "xereca",
+  "pinto",
+  "pau",
+  "rola",
+  "piroca",
+  "cacete",
+  "filha da puta",
+  "filho da puta",
+  "fdp",
+  "pqp",
+  "vsf",
+  "tnc",
+  "viado",
+  "vi4d0",
+  "bicha",
+  "sapatão",
+  "traveco",
+  "vaca",
+  "vagabunda",
+  "piranha",
+  "prostituta",
+  "puta",
+  "arrombado",
+  "cuzão",
+  "cu",
+  "bunda",
+  "idiota",
+  "imbecil",
+  "retardado",
+  "mongol",
+  "débil",
+  "otário",
+  "babaca",
+  "cretino",
+  "desgraça",
+  "desgraçado",
+
   // Insultos direcionados a mães
-  "mãe ruim", "má mãe", "péssima mãe",
-  
+  "mãe ruim",
+  "má mãe",
+  "péssima mãe",
+
   // Termos perigosos
-  "suicídio", "suicida", "se matar", "me matar",
-  "aborto ilegal", "abortar sozinha",
+  "suicídio",
+  "suicida",
+  "se matar",
+  "me matar",
+  "aborto ilegal",
+  "abortar sozinha",
 ];
 
 // Palavras sensíveis que precisam contexto (não bloqueiam automaticamente)
 const SENSITIVE_TERMS: string[] = [
-  "depressão", "ansiedade", "pânico", "tristeza profunda",
-  "não aguento mais", "exausta", "sozinha", "abandonada",
-  "marido", "violência", "agressão", "bater", "machucar",
+  "depressão",
+  "ansiedade",
+  "pânico",
+  "tristeza profunda",
+  "não aguento mais",
+  "exausta",
+  "sozinha",
+  "abandonada",
+  "marido",
+  "violência",
+  "agressão",
+  "bater",
+  "machucar",
 ];
 
 // Padrões de spam
 const SPAM_PATTERNS: RegExp[] = [
-  /https?:\/\/[^\s]+/gi,            // Links HTTP
-  /www\.[^\s]+/gi,                   // Links www
-  /bit\.ly|t\.co|goo\.gl/gi,        // Encurtadores
-  /compre\s+agora/gi,                // Propaganda
+  /https?:\/\/[^\s]+/gi, // Links HTTP
+  /www\.[^\s]+/gi, // Links www
+  /bit\.ly|t\.co|goo\.gl/gi, // Encurtadores
+  /compre\s+agora/gi, // Propaganda
   /clique\s+aqui/gi,
   /promoção\s+imperdível/gi,
   /ganhe\s+dinheiro/gi,
-  /r\$\s*\d+[.,]?\d*/gi,            // Valores monetários
+  /r\$\s*\d+[.,]?\d*/gi, // Valores monetários
   /(\d{2,3}[.\-\s]?\d{3,5}[.\-\s]?\d{4})/gi, // Telefones
-  /@[a-zA-Z0-9_]+/g,                // Menções (@usuario)
+  /@[a-zA-Z0-9_]+/g, // Menções (@usuario)
 ];
 
 // Substitui leetspeak para normalização
@@ -94,7 +150,7 @@ function removeAccents(text: string): string {
 export function analyzeProfanity(text: string): ProfanityResult {
   const normalizedText = normalizeLeetspeak(removeAccents(text));
   const originalLower = text.toLowerCase();
-  
+
   const categories: Set<ProfanityCategory> = new Set();
   const flaggedTerms: string[] = [];
   let score = 0;
@@ -157,7 +213,8 @@ export function analyzeProfanity(text: string): ProfanityResult {
   } else if (categories.has("spam")) {
     suggestion = "Links e promoções não são permitidos na comunidade.";
   } else if (categories.has("sensitive")) {
-    suggestion = "Seu post contém temas sensíveis. Considere buscar apoio profissional se necessário.";
+    suggestion =
+      "Seu post contém temas sensíveis. Considere buscar apoio profissional se necessário.";
   }
 
   return {
@@ -174,14 +231,15 @@ export function analyzeProfanity(text: string): ProfanityResult {
  */
 export function censorProfanity(text: string): string {
   let censored = text;
-  
+
   for (const word of PROFANITY_LIST) {
     const regex = new RegExp(word, "gi");
-    censored = censored.replace(regex, (match) => 
-      match[0] + "*".repeat(match.length - 2) + match[match.length - 1]
+    censored = censored.replace(
+      regex,
+      (match) => match[0] + "*".repeat(match.length - 2) + match[match.length - 1]
     );
   }
-  
+
   return censored;
 }
 

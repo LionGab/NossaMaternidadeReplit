@@ -48,12 +48,12 @@ Registrar as respostas no checkpoint:
 
 Mapeamento rápido (EAS):
 
-| Profile | Distribuição | Uso |
-| --- | --- | --- |
-| `development` | internal | Dev client |
-| `ios_preview` | internal | Testes internos (Ad-hoc) |
-| `ios_testflight` / `testflight` | store | TestFlight |
-| `production` | store | App Store |
+| Profile                         | Distribuição | Uso                      |
+| ------------------------------- | ------------ | ------------------------ |
+| `development`                   | internal     | Dev client               |
+| `ios_preview`                   | internal     | Testes internos (Ad-hoc) |
+| `ios_testflight` / `testflight` | store        | TestFlight               |
+| `production`                    | store        | App Store                |
 
 ### 3) Mostrar evidência P0 (Depois da entrevista)
 
@@ -130,4 +130,3 @@ Para cada build, criar/atualizar:
 - Sempre:
   - Trecho mínimo (erro + ~20 linhas acima/abaixo)
   - Log completo salvo em `docs/builds/logs/` e linkado no checkpoint
-

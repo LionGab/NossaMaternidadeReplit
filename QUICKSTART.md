@@ -30,15 +30,15 @@ npm run quality-gate
 
 ## Comandos essenciais
 
-| Comando | O que faz |
-|---------|-----------|
-| `npm start` | Expo dev server |
-| `npm run quality-gate` | TypeCheck + ESLint + Build check |
-| `npm run typecheck` | TypeScript apenas |
-| `npm run lint:fix` | Auto-fix ESLint |
-| `npm test -- --watch` | Jest em watch mode |
-| `npm run clean` | Limpar caches Metro/Expo |
-| `npm run clean:all` | Nuclear: rm node_modules + reinstala |
+| Comando                | O que faz                            |
+| ---------------------- | ------------------------------------ |
+| `npm start`            | Expo dev server                      |
+| `npm run quality-gate` | TypeCheck + ESLint + Build check     |
+| `npm run typecheck`    | TypeScript apenas                    |
+| `npm run lint:fix`     | Auto-fix ESLint                      |
+| `npm test -- --watch`  | Jest em watch mode                   |
+| `npm run clean`        | Limpar caches Metro/Expo             |
+| `npm run clean:all`    | Nuclear: rm node_modules + reinstala |
 
 ## Build de producao
 

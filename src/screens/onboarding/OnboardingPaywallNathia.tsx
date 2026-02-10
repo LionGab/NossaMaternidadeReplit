@@ -40,11 +40,7 @@ import {
   purchasePackage,
   restorePurchases,
 } from "@/services/revenuecat";
-import {
-  trackEvent,
-  trackPaywallExposure,
-  trackPaywallOutcome,
-} from "@/services/analytics";
+import { trackEvent, trackPaywallExposure, trackPaywallOutcome } from "@/services/analytics";
 
 // Store
 import { useNathJourneyOnboardingStore } from "@/state/nath-journey-onboarding-store";

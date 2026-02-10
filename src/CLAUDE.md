@@ -1,6 +1,7 @@
 # Nossa Maternidade - Frontend Guide
 
 ## Estrutura
+
 - `api/` - Funcoes de API (fetch puro), `queryClient`, query keys e hooks TanStack Query em `api/hooks/`
 - `components/` - Componentes reutilizaveis (`ui/` para primitivos, pastas de dominio para feature components)
 - `providers/` - Context providers (Query, Auth, Theme)
@@ -12,6 +13,7 @@
 - `utils/` - Utilitarios puros
 
 ## Padroes Obrigatorios
+
 - Server state -> TanStack Query (`useQuery`/`useMutation`)
 - Client state/UI state -> Zustand (modals, filters, selecoes, steps de formulario)
 - Listas longas -> `FlashList` com `estimatedItemSize`
@@ -25,6 +27,7 @@
   - contraste alvo WCAG AAA (7:1)
 
 ## Query Key Convention
+
 - Padrao: `['domain', 'operation', ...params]`
 - Exemplos:
   - `['community', 'posts']`
@@ -34,18 +37,21 @@
   - `['habits', 'detail', habitId]`
 
 ## QueryClient Defaults
+
 - `staleTime`: 5 minutos para dados de leitura padrao
 - `gcTime`: 30 minutos (React Query v5)
 - `retry`: 2 para queries (ajustar por caso em hooks especificos)
 - `refetchOnWindowFocus`: `false` no mobile por padrao
 
 ## Hook Pattern (TanStack Query)
+
 - Hooks em `src/api/hooks/`
 - API fetch puro em `src/api/*.ts` ou `src/services/*.ts` conforme fronteira atual
 - Mutations devem invalidar query keys relacionadas no `onSuccess`
 - Evitar query keys hardcoded espalhadas; centralizar convencao
 
 ## Screen Pattern
+
 - Ordem recomendada por tela:
   - hooks de navegacao e tema
   - seletores de store (UI state)
@@ -55,6 +61,7 @@
 - `SafeAreaView` deve vir de `react-native-safe-area-context`
 
 ## Zustand Selector Pattern
+
 - Correto:
   - `const value = useStore((s) => s.value);`
   - `const setValue = useStore((s) => s.setValue);`
@@ -63,6 +70,7 @@
   - `const store = useStore();`
 
 ## Proibicoes
+
 - Fetch de servidor dentro de store Zustand
 - `any` sem necessidade (preferir `unknown` + type guards)
 - Imports relativos profundos (`../../../`) quando ha alias `@/`
@@ -70,6 +78,7 @@
 - Hardcoded colors em componentes e telas
 
 ## Checklist Rapido Antes de Commit
+
 - Server state fora de `src/state/`
 - Sem imports de stores removidos/deprecated
 - Sem hardcoded colors

@@ -7,21 +7,21 @@
 
 ## Dados Biograficos
 
-| Campo | Detalhe |
-|---|---|
-| **Nome completo** | Nathalia Valente Monteiro |
-| **Idade** | 22 anos (nascida 22/03/2003, Sao Paulo/SP) |
-| **Estado civil** | Casada com Yuri Meirelles (civil: 23/ago/2025) |
-| **Filho** | Thales (nascido 09/set/2025) |
-| **Residencia** | Atua entre Brasil e Portugal |
+| Campo             | Detalhe                                        |
+| ----------------- | ---------------------------------------------- |
+| **Nome completo** | Nathalia Valente Monteiro                      |
+| **Idade**         | 22 anos (nascida 22/03/2003, Sao Paulo/SP)     |
+| **Estado civil**  | Casada com Yuri Meirelles (civil: 23/ago/2025) |
+| **Filho**         | Thales (nascido 09/set/2025)                   |
+| **Residencia**    | Atua entre Brasil e Portugal                   |
 
 ## Alcance Digital
 
-| Plataforma | Seguidores | Engajamento |
-|---|---|---|
-| **TikTok** | 25M+ | 1 bilhao+ curtidas |
-| **Instagram** | 6-7M | ~843K interacoes/post |
-| **YouTube** | 1,06M inscritos | Vlogs semanais |
+| Plataforma    | Seguidores      | Engajamento           |
+| ------------- | --------------- | --------------------- |
+| **TikTok**    | 25M+            | 1 bilhao+ curtidas    |
+| **Instagram** | 6-7M            | ~843K interacoes/post |
+| **YouTube**   | 1,06M inscritos | Vlogs semanais        |
 
 ## Publico-Alvo
 
@@ -31,14 +31,14 @@
 
 ## Trajetoria
 
-| Ano | Marco |
-|---|---|
-| 2018 | Miss Teen Universe (Peru) |
-| 2019-2022 | Crescimento organico TikTok (danca, lifestyle) |
-| 2023 | A Fazenda 15 (Record TV) — ganhou notoriedade nacional, conheceu Yuri |
-| 2024 | Transicao de conteudo: de "corpo" para "influencia de valor". Lancamento NAVA Beachwear |
-| 2025 | Noivado (mar), casamento (ago), Thales (set), viagem humanitaria Angola (dez), loja NAVA em Portugal |
-| 2026 | Maternidade ativa, gestao NAVA, producao de conteudo diario |
+| Ano       | Marco                                                                                                |
+| --------- | ---------------------------------------------------------------------------------------------------- |
+| 2018      | Miss Teen Universe (Peru)                                                                            |
+| 2019-2022 | Crescimento organico TikTok (danca, lifestyle)                                                       |
+| 2023      | A Fazenda 15 (Record TV) — ganhou notoriedade nacional, conheceu Yuri                                |
+| 2024      | Transicao de conteudo: de "corpo" para "influencia de valor". Lancamento NAVA Beachwear              |
+| 2025      | Noivado (mar), casamento (ago), Thales (set), viagem humanitaria Angola (dez), loja NAVA em Portugal |
+| 2026      | Maternidade ativa, gestao NAVA, producao de conteudo diario                                          |
 
 ## NAVA Beachwear
 
@@ -71,5 +71,5 @@
 
 ---
 
-*Fonte: Documento Consolidado App Nat (fev/2026)*
-*Ultima atualizacao: 2026-02-09*
+_Fonte: Documento Consolidado App Nat (fev/2026)_
+_Ultima atualizacao: 2026-02-09_
