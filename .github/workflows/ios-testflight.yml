@@ -117,10 +117,27 @@ jobs:
           tar -xzf build.tar.gz -C ios-build
           ls -R ios-build | sed -n '1,200p'
 
+      - name: Package IPA (if needed)
+        run: |
+          # `eas build --local --output build.tar.gz` may contain the *contents* of the IPA
+          # (Payload/...) rather than an actual .ipa file. Package it into a valid IPA for submit.
+          if find ios-build -maxdepth 2 -name '*.ipa' | grep -q .; then
+            echo "IPA already present; skipping packaging."
+            exit 0
+          fi
+
+          if [ ! -d ios-build/Payload ]; then
+            echo "No Payload/ found under ios-build; cannot package IPA."
+            ls -la ios-build || true
+            exit 1
+          fi
+
+          /usr/bin/ditto -c -k --sequesterRsrc --keepParent ios-build/Payload ios-build/NossaMaternidade.ipa
+
       - name: Resolve IPA path
         id: ipa
         run: |
-          IPA_PATH="$(find ios-build -name '*.ipa' | head -n 1)"
+          IPA_PATH="$(find ios-build -maxdepth 2 -name '*.ipa' | head -n 1)"
           if [ -z "$IPA_PATH" ]; then
             echo "No IPA found in ios-build/"
             exit 1
