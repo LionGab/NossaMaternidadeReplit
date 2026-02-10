@@ -26,7 +26,7 @@ module.exports = ({ config }) => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "br.com.nossamaternidade.app",
-      buildNumber: "105",
+      buildNumber: "202602100415",
       // CRÍTICO: Habilitar Sign in with Apple (obrigatório para apps com login social)
       usesAppleSignIn: true,
       // Associated Domains para deep linking e universal links
