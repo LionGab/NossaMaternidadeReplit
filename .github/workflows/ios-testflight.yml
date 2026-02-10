@@ -1,67 +1,131 @@
-name: Build and Submit to TestFlight
+name: iOS - Build and Submit (TestFlight)
 
-on:  
-  workflow_dispatch:  
-    inputs:  
-      profile:  
-        description: 'Choose profile: testflight or production'  
-        required: true  
-        default: 'testflight'
+on:
+  workflow_dispatch:
+    inputs:
+      profile:
+        description: EAS profile to build/submit
+        required: true
+        type: choice
+        default: ios_testflight
+        options:
+          - ios_testflight
+          - testflight
+          - production
 
 jobs:
-  build:
-    runs-on: macOS-latest
+  ios:
+    name: Build and submit iOS
+    runs-on: macos-26
+    concurrency:
+      group: ios-testflight
+      cancel-in-progress: false
 
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v2
+      - name: Check required secrets
+        run: |
+          test -n "${{ secrets.EXPO_TOKEN }}" || (echo "EXPO_TOKEN missing" && exit 1)
+          test -n "${{ secrets.APPLE_ASC_API_KEY_JSON }}" || (echo "APPLE_ASC_API_KEY_JSON missing" && exit 1)
 
-      - name: Configure Node.js
-        uses: actions/setup-node@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '$(cat .nvmrc)'
+          node-version-file: .nvmrc
+          cache: npm
 
-      - name: Install Dependencies
-        run: |
-          yarn install
+      - name: Setup Expo and EAS
+        uses: expo/expo-github-action@v9
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Set up Expo and EAS
-        run: |
-          npm install -g expo-cli eas-cli
-          echo "$EXPO_TOKEN" | eas whoami
-        env:
-          EXPO_TOKEN: ${{ secrets.EXPO_TOKEN }}
+      - name: Enable EAS local build plugin
+        run: npm i -g eas-cli-local-build-plugin
 
-      - name: Build iOS App
-        run: |
-          eas build -p ios --profile ${{ github.event.inputs.profile }} --local --output build.tar.gz
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Extract IPA File
-        id: extract_ipa
+      - name: Setup Xcode 26.3
+        id: xcode263
+        continue-on-error: true
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "26.3"
+
+      - name: Fallback Xcode 26.2
+        if: steps.xcode263.outcome == 'failure'
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "26.2"
+
+      - name: Print Xcode version
+        run: xcodebuild -version
+
+      - name: Prepare App Store Connect API key
         run: |
-          IFS=$'\n' read -d '' -r ipa < <(find . -name '*.ipa' -print -quit)
-          if [ -z "${ipa}" ]; then 
-            echo 'No IPA file found!';
-            exit 1;
+          cat > /tmp/asc-api-key.json <<'JSON'
+          ${{ secrets.APPLE_ASC_API_KEY_JSON }}
+          JSON
+
+          node <<'NODE'
+          const fs = require("fs");
+          const raw = fs.readFileSync("/tmp/asc-api-key.json", "utf8").trim();
+          if (!raw) {
+            throw new Error("APPLE_ASC_API_KEY_JSON is empty");
+          }
+
+          const parsed = JSON.parse(raw);
+          const keyId = parsed.keyId || parsed.key_id;
+          const issuerId = parsed.issuerId || parsed.issuer_id;
+          const privateKey = parsed.privateKey || parsed.private_key || parsed.key;
+
+          if (!keyId || !issuerId || !privateKey) {
+            throw new Error(
+              "APPLE_ASC_API_KEY_JSON must include keyId/key_id, issuerId/issuer_id and privateKey/private_key/key"
+            );
+          }
+
+          const normalizedKey = privateKey.includes("\\n")
+            ? privateKey.replace(/\\n/g, "\n")
+            : privateKey;
+
+          fs.writeFileSync("/tmp/AuthKey.p8", normalizedKey, { mode: 0o600 });
+          fs.appendFileSync(process.env.GITHUB_ENV, "EXPO_ASC_API_KEY_PATH=/tmp/AuthKey.p8\n");
+          fs.appendFileSync(process.env.GITHUB_ENV, `EXPO_ASC_KEY_ID=${keyId}\n`);
+          fs.appendFileSync(process.env.GITHUB_ENV, `EXPO_ASC_ISSUER_ID=${issuerId}\n`);
+          NODE
+
+      - name: Build iOS
+        run: |
+          eas build -p ios \
+            --profile ${{ inputs.profile }} \
+            --local \
+            --output build.tar.gz \
+            --non-interactive
+
+      - name: Extract IPA
+        run: |
+          mkdir -p ios-build
+          tar -xzf build.tar.gz -C ios-build
+          ls -R ios-build | sed -n '1,200p'
+
+      - name: Resolve IPA path
+        id: ipa
+        run: |
+          IPA_PATH="$(find ios-build -name '*.ipa' | head -n 1)"
+          if [ -z "$IPA_PATH" ]; then
+            echo "No IPA found in ios-build/"
+            exit 1
           fi
-          echo "ipa_path=${ipa}" >> $GITHUB_OUTPUT
+          echo "path=$IPA_PATH" >> "$GITHUB_OUTPUT"
 
       - name: Submit to TestFlight
         run: |
-          eas submit -p ios --profile ${{ github.event.inputs.profile }} --path ${{ steps.extract_ipa.outputs.ipa_path }}
-
-      - name: Cache Yarn Dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.yarn/cache
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Cache iOS Pods
-        uses: actions/cache@v2
-        with:
-          path: ios/Pods
-          key: ${{ runner.os }}-ios-pods
-          restore-keys: |
-            ${{ runner.os }}-ios-pods
+          eas submit -p ios \
+            --profile ${{ inputs.profile }} \
+            --path "${{ steps.ipa.outputs.path }}" \
+            --non-interactive
