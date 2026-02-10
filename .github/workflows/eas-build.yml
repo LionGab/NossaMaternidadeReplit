@@ -10,8 +10,6 @@ on:
         type: choice
         options:
           - ios
-          - android
-          - all
       profile:
         description: 'Build profile'
         required: true
@@ -61,12 +59,8 @@ jobs:
           echo "🚀 Starting EAS Build"
           echo "Platform: $PLATFORM"
           echo "Profile: $PROFILE"
-          
-          if [ "$PLATFORM" = "all" ]; then
-            eas build --platform all --profile $PROFILE --non-interactive
-          else
-            eas build --platform $PLATFORM --profile $PROFILE --non-interactive
-          fi
+
+          eas build --platform "$PLATFORM" --profile "$PROFILE" --non-interactive
 
       - name: Build Summary
         if: always()

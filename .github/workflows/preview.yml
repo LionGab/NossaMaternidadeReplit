@@ -175,6 +175,3 @@ jobs:
 
       - name: Build iOS Preview
         run: npx eas-cli build --profile preview --platform ios --non-interactive --no-wait
-
-      - name: Build Android Preview
-        run: npx eas-cli build --profile preview --platform android --non-interactive --no-wait

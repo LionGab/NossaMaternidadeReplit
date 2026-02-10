@@ -243,7 +243,6 @@ jobs:
       - name: Verify EAS configuration
         run: |
           npx eas-cli config --platform ios --profile preview --non-interactive || echo "iOS config check completed"
-          npx eas-cli config --platform android --profile preview --non-interactive || echo "Android config check completed"
 
       - name: Check build readiness
         run: bun run check-build-ready || echo "⚠️ Build readiness check completed"

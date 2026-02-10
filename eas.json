@@ -13,23 +13,19 @@
         "paths": ["node_modules"]
       }
     },
-    "development": {
-      "extends": "base",
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "simulator": false,
-        "resourceClass": "m-medium",
-        "image": "latest"
-      },
-      "android": {
-        "buildType": "apk",
-        "gradleCommand": ":app:assembleDebug"
-      },
-      "env": {
-        "EXPO_PUBLIC_ENV": "development",
-        "CI": "true",
-        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
+	    "development": {
+	      "extends": "base",
+	      "developmentClient": true,
+	      "distribution": "internal",
+	      "ios": {
+	        "simulator": false,
+	        "resourceClass": "m-medium",
+	        "image": "latest"
+	      },
+	      "env": {
+	        "EXPO_PUBLIC_ENV": "development",
+	        "CI": "true",
+	        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
         "EXPO_PUBLIC_ENABLE_GAMIFICATION": "true",
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
@@ -40,21 +36,18 @@
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
       }
     },
-    "development-simulator": {
-      "extends": "base",
-      "developmentClient": true,
-      "distribution": "internal",
-      "ios": {
-        "simulator": true,
-        "resourceClass": "m-medium"
-      },
-      "android": {
-        "buildType": "apk"
-      },
-      "env": {
-        "EXPO_PUBLIC_ENV": "development",
-        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
-        "EXPO_PUBLIC_ENABLE_GAMIFICATION": "true",
+	    "development-simulator": {
+	      "extends": "base",
+	      "developmentClient": true,
+	      "distribution": "internal",
+	      "ios": {
+	        "simulator": true,
+	        "resourceClass": "m-medium"
+	      },
+	      "env": {
+	        "EXPO_PUBLIC_ENV": "development",
+	        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
+	        "EXPO_PUBLIC_ENABLE_GAMIFICATION": "true",
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
         "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
@@ -63,21 +56,18 @@
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
       }
     },
-    "preview": {
-      "extends": "base",
-      "distribution": "store",
-      "ios": {
-        "resourceClass": "m-medium",
-        "image": "latest",
-        "credentialsSource": "remote"
-      },
-      "android": {
-        "buildType": "apk"
-      },
-      "env": {
-        "EXPO_PUBLIC_ENV": "preview",
-        "CI": "true",
-        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
+	    "preview": {
+	      "extends": "base",
+	      "distribution": "store",
+	      "ios": {
+	        "resourceClass": "m-medium",
+	        "image": "latest",
+	        "credentialsSource": "remote"
+	      },
+	      "env": {
+	        "EXPO_PUBLIC_ENV": "preview",
+	        "CI": "true",
+	        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
@@ -137,42 +127,20 @@
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
       }
     },
-    "testflight": {
-      "extends": "ios_testflight"
-    },
-    "android_internal": {
-      "extends": "base",
-      "distribution": "internal",
-      "android": {
-        "buildType": "apk"
-      },
-      "env": {
-        "EXPO_PUBLIC_ENV": "preview",
-        "CI": "true",
-        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
-        "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
-        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
-        "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
-        "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
-        "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
-        "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
-      }
-    },
-    "staging": {
-      "extends": "base",
-      "distribution": "internal",
-      "ios": {
-        "resourceClass": "m-medium",
-        "image": "latest"
-      },
-      "android": {
-        "buildType": "apk"
-      },
-      "env": {
-        "EXPO_PUBLIC_ENV": "staging",
-        "CI": "true",
-        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
+	    "testflight": {
+	      "extends": "ios_testflight"
+	    },
+	    "staging": {
+	      "extends": "base",
+	      "distribution": "internal",
+	      "ios": {
+	        "resourceClass": "m-medium",
+	        "image": "latest"
+	      },
+	      "env": {
+	        "EXPO_PUBLIC_ENV": "staging",
+	        "CI": "true",
+	        "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
         "EXPO_PUBLIC_ENABLE_GAMIFICATION": "true",
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
@@ -183,24 +151,20 @@
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
       }
     },
-    "production": {
-      "extends": "base",
-      "autoIncrement": true,
-      "channel": "production",
-      "ios": {
-        "resourceClass": "m-medium",
-        "credentialsSource": "remote",
-        "image": "latest",
-        "buildConfiguration": "Release"
-      },
-      "android": {
-        "buildType": "app-bundle",
-        "gradleCommand": ":app:bundleRelease"
-      },
-      "env": {
-        "EXPO_PUBLIC_ENV": "production",
-        "CI": "true",
-        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
+	    "production": {
+	      "extends": "base",
+	      "autoIncrement": true,
+	      "channel": "production",
+	      "ios": {
+	        "resourceClass": "m-medium",
+	        "credentialsSource": "remote",
+	        "image": "latest",
+	        "buildConfiguration": "Release"
+	      },
+	      "env": {
+	        "EXPO_PUBLIC_ENV": "production",
+	        "CI": "true",
+	        "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_ENABLE_AI_FEATURES": "true",
         "EXPO_PUBLIC_ENABLE_GAMIFICATION": "true",
         "EXPO_PUBLIC_ENABLE_ANALYTICS": "true",
@@ -228,28 +192,19 @@
         "appleTeamId": "KZPW4S77UH"
       }
     },
-    "production": {
-      "ios": {
-        "appleId": "gabrielvesz_@hotmail.com",
-        "ascAppId": "6756980888",
-        "appleTeamId": "KZPW4S77UH"
-      },
-      "android": {
-        "serviceAccountKeyPath": "./google-play-service-account.json",
-        "track": "internal",
-        "releaseStatus": "draft"
-      }
-    },
-    "staging": {
-      "ios": {
-        "appleId": "gabrielvesz_@hotmail.com",
-        "ascAppId": "6756980888",
-        "appleTeamId": "KZPW4S77UH"
-      },
-      "android": {
-        "serviceAccountKeyPath": "./google-play-service-account.json",
-        "track": "internal"
-      }
-    }
-  }
-}
+	    "production": {
+	      "ios": {
+	        "appleId": "gabrielvesz_@hotmail.com",
+	        "ascAppId": "6756980888",
+	        "appleTeamId": "KZPW4S77UH"
+	      }
+	    },
+	    "staging": {
+	      "ios": {
+	        "appleId": "gabrielvesz_@hotmail.com",
+	        "ascAppId": "6756980888",
+	        "appleTeamId": "KZPW4S77UH"
+	      }
+	    }
+	  }
+	}

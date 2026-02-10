@@ -98,7 +98,7 @@ jobs:
 
     strategy:
       matrix:
-        platform: [ios, android]
+        platform: [ios]
 
     steps:
       - name: Checkout
@@ -128,7 +128,7 @@ jobs:
             --no-wait
 
   submit-staging:
-    name: Submit to Internal Testing
+    name: Submit to TestFlight
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: build-staging
@@ -165,18 +165,5 @@ jobs:
           npx eas-cli submit \
             --profile staging \
             --platform ios \
-            --latest \
-            --non-interactive
-
-      - name: Decode Google Play credentials
-        run: |
-          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}" | base64 -d > google-play-service-account.json
-
-      - name: Submit Android to Internal Testing
-        continue-on-error: true
-        run: |
-          npx eas-cli submit \
-            --profile internal \
-            --platform android \
             --latest \
             --non-interactive

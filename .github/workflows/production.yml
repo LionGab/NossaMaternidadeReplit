@@ -1,5 +1,5 @@
 # Nossa Maternidade - Production Deployment
-# Builds and submits to App Store & Google Play
+# Builds and submits to App Store Connect
 
 name: Production
 
@@ -13,12 +13,10 @@ on:
       platform:
         description: 'Platform to build'
         required: true
-        default: 'all'
+        default: 'ios'
         type: choice
         options:
-          - all
           - ios
-          - android
       submit:
         description: 'Submit to stores after build'
         required: true
@@ -86,7 +84,6 @@ jobs:
 
     if: |
       github.event_name == 'push' ||
-      github.event.inputs.platform == 'all' ||
       github.event.inputs.platform == 'ios'
 
     steps:
@@ -120,53 +117,6 @@ jobs:
         id: build
         run: |
           BUILD_URL=$(npx eas-cli build:list --platform ios --status finished --limit 1 --json | jq -r '.[0].buildUrl // empty')
-          echo "url=$BUILD_URL" >> $GITHUB_OUTPUT
-
-    outputs:
-      build_url: ${{ steps.build.outputs.url }}
-
-  build-android:
-    name: Build Android
-    runs-on: ubuntu-latest
-    timeout-minutes: 60
-    needs: validate
-
-    if: |
-      github.event_name == 'push' ||
-      github.event.inputs.platform == 'all' ||
-      github.event.inputs.platform == 'android'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Setup Expo
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Build Android Production
-        run: |
-          npx eas-cli build \
-            --profile production \
-            --platform android \
-            --non-interactive \
-            --message "Production build ${{ needs.validate.outputs.version }}"
-
-      - name: Get build URL
-        id: build
-        run: |
-          BUILD_URL=$(npx eas-cli build:list --platform android --status finished --limit 1 --json | jq -r '.[0].buildUrl // empty')
           echo "url=$BUILD_URL" >> $GITHUB_OUTPUT
 
     outputs:
@@ -209,52 +159,11 @@ jobs:
             --latest \
             --non-interactive
 
-  submit-android:
-    name: Submit Android to Google Play
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    needs: [validate, build-android]
-
-    if: |
-      (github.event_name == 'push' || github.event.inputs.submit == 'true') &&
-      needs.build-android.result == 'success'
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Setup Expo
-        uses: expo/expo-github-action@v8
-        with:
-          eas-version: latest
-          token: ${{ secrets.EXPO_TOKEN }}
-
-      - name: Decode Google Play credentials
-        run: |
-          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}" | base64 -d > google-play-service-account.json
-
-      - name: Submit to Google Play
-        run: |
-          npx eas-cli submit \
-            --profile production \
-            --platform android \
-            --latest \
-            --non-interactive
-
   notify:
     name: Notify Release
     runs-on: ubuntu-latest
-    needs: [validate, submit-ios, submit-android]
-    if: always() && (needs.submit-ios.result == 'success' || needs.submit-android.result == 'success')
+    needs: [validate, submit-ios]
+    if: always() && needs.submit-ios.result == 'success'
 
     steps:
       - name: Create GitHub Release
@@ -267,7 +176,6 @@ jobs:
 
             ### Deployment Status
             - iOS: ${{ needs.submit-ios.result == 'success' && 'Submitted to App Store Connect' || 'Skipped' }}
-            - Android: ${{ needs.submit-android.result == 'success' && 'Submitted to Google Play' || 'Skipped' }}
 
             ### What's Changed
             See the automatically generated release notes below.
