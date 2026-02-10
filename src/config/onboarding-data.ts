@@ -61,7 +61,7 @@ export const MOMENT_OPTIONS: {
     id: "trying",
     icon: "leaf-outline",
     label: "Tentando engravidar",
-    subtitle: "Cada ciclo é uma nova esperança",
+    subtitle: "Cada mês é uma nova esperança",
   },
   {
     id: "pregnant",

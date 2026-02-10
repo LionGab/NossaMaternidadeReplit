@@ -28,7 +28,7 @@ export const STAGE_CARDS: StageCardData[] = [
   {
     stage: "TENTANTE",
     title: "Tentando engravidar",
-    quote: "Lembro da ansiedade de cada ciclo",
+    quote: "Lembro da ansiedade de cada mês",
     icon: "heart-outline",
     gradient: [maternal.journey.tentando, brand.accent[100]],
     iconColor: brand.accent[500],

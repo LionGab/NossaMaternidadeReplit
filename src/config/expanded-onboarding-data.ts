@@ -107,7 +107,7 @@ export const MATERNITY_STAGE_CARDS: MaternityStageCardData[] = [
   {
     stage: "TENTANTE",
     title: "Tentando engravidar",
-    nathQuote: "A ansiedade de cada ciclo é real. Respira. Cada corpo tem seu tempo.",
+    nathQuote: "A ansiedade de cada mês é real. Respira. Cada corpo tem seu tempo.",
     icon: "heart-outline",
     gradient: [maternal.journey.tentando, brand.accent[100]],
     iconColor: brand.accent[500],

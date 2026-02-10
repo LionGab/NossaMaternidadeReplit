@@ -23,7 +23,7 @@ import Animated, {
   withSequence,
 } from "react-native-reanimated";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { brand, neutral, spacing } from "../theme/tokens";
+import { brand, glass, neutral, spacing } from "../theme/tokens";
 import { MainTabParamList, MainTabScreenProps } from "../types/navigation";
 
 // Avatar da NathIA
@@ -268,7 +268,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     flexDirection: "row",
-    backgroundColor: "rgba(255,255,255,0.96)",
+    backgroundColor: glass.light.strong,
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: neutral[200],
     paddingTop: spacing.sm,
