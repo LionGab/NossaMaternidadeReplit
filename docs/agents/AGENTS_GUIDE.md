@@ -8,6 +8,7 @@ Resumo:
 
 - Claude/Cursor tem ferramentas como `claude mcp` e `mcpServers` na sua configuração local.
 - GitHub Copilot (VS Code) usa: Agent picker (Copilot Chat), Copilot Studio, e arquivos de agente no repositório (`.github/agents/*.agent.md` ou `AGENTS.md`). Não presuma que comandos `claude`/`runSubagent` funcionam em Copilot.
+- Codex Desktop: siga `AGENTS.md` como fonte de verdade e veja `docs/setup/CODEX_DESKTOP_SETUP.md` (quality gate, MCP, Playwright, skills do repo).
 
 2. Agentes personalizados (onde e como)
 

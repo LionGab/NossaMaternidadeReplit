@@ -121,6 +121,7 @@ supabase/.temp/
 
 # Playwright MCP (screenshots temporários)
 .playwright-mcp/
+/.playwright-cli/
 
 # Downloads incompletos
 *.part
