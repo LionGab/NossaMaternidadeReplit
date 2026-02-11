@@ -3,7 +3,7 @@ name: iOS production build
 on:
   push:
     branches:
-      - main
+      - release
 
 jobs:
   build_ios:

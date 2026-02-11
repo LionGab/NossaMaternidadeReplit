@@ -1,5 +1,4 @@
-# Nossa Maternidade - Staging Deployment
-# Builds and deploys to staging/internal testing
+# Nossa Maternidade - Staging Deployment (iOS Only)
 
 name: Staging
 
@@ -11,7 +10,7 @@ on:
   workflow_dispatch:
     inputs:
       build_native:
-        description: 'Build native apps'
+        description: 'Build native iOS app'
         required: true
         default: false
         type: boolean
@@ -44,13 +43,12 @@ jobs:
 
       - name: Quality Gate
         run: |
-          echo "📝 TypeScript check..."
+          echo "TypeScript check..."
           npm run typecheck
-          echo "✅ TypeScript OK"
-          
-          echo "🔧 ESLint check..."
+          echo "TypeScript OK"
+          echo "ESLint check..."
           npm run lint
-          echo "✅ ESLint OK"
+          echo "ESLint OK"
 
       - name: Run tests
         run: npm run test:ci
@@ -81,24 +79,22 @@ jobs:
           token: ${{ secrets.EXPO_TOKEN }}
 
       - name: Publish to Staging
+        env:
+          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
+          FIRST_LINE=$(echo "$COMMIT_MESSAGE" | head -n1)
           npx eas-cli update \
             --branch=staging \
-            --message="Staging: ${{ github.event.head_commit.message }}" \
+            --message="Staging: $FIRST_LINE" \
             --non-interactive
 
   build-staging:
-    name: Build Staging (Native)
+    name: Build Staging (iOS)
     runs-on: ubuntu-latest
     timeout-minutes: 60
     needs: validate
 
-    # Only build native when manually triggered with build_native=true
     if: github.event.inputs.build_native == 'true'
-
-    strategy:
-      matrix:
-        platform: [ios, android]
 
     steps:
       - name: Checkout
@@ -119,16 +115,16 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Build ${{ matrix.platform }}
+      - name: Build iOS
         run: |
           npx eas-cli build \
             --profile staging \
-            --platform ${{ matrix.platform }} \
+            --platform ios \
             --non-interactive \
             --no-wait
 
   submit-staging:
-    name: Submit to Internal Testing
+    name: Submit to TestFlight
     runs-on: ubuntu-latest
     timeout-minutes: 30
     needs: build-staging
@@ -154,9 +150,9 @@ jobs:
           eas-version: latest
           token: ${{ secrets.EXPO_TOKEN }}
 
-      - name: Wait for builds
+      - name: Wait for build
         run: |
-          echo "Waiting for builds to complete..."
+          echo "Waiting for build to complete..."
           sleep 60
 
       - name: Submit iOS to TestFlight
@@ -165,18 +161,5 @@ jobs:
           npx eas-cli submit \
             --profile staging \
             --platform ios \
-            --latest \
-            --non-interactive
-
-      - name: Decode Google Play credentials
-        run: |
-          echo "${{ secrets.GOOGLE_PLAY_SERVICE_ACCOUNT }}" | base64 -d > google-play-service-account.json
-
-      - name: Submit Android to Internal Testing
-        continue-on-error: true
-        run: |
-          npx eas-cli submit \
-            --profile internal \
-            --platform android \
             --latest \
             --non-interactive
