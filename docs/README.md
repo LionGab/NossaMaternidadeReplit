@@ -29,7 +29,27 @@ docs/
 
 ### Desenvolvimento Local
 
+**Setup completo**:
+
+- macOS: [SETUP_MAC.md](SETUP_MAC.md) — Guia completo (Xcode, Cursor, extensões, variáveis)
+- Windows: [SETUP_WINDOWS.md](SETUP_WINDOWS.md)
+- Início rápido: [QUICKSTART.md](../QUICKSTART.md) (10min)
+
+**Cursor IDE**:
+
+- Extensões (8GB RAM): [CURSOR_EXTENSIONS_8GB.md](CURSOR_EXTENSIONS_8GB.md)
+- Setup checklist: [CURSOR_SETUP_CHECKLIST.md](CURSOR_SETUP_CHECKLIST.md)
+- Arquitetura de memória: [CURSOR_MEMORY_ARCHITECTURE.md](CURSOR_MEMORY_ARCHITECTURE.md)
+- Implementação completa: [IMPLEMENTATION_CURSOR_8GB.md](IMPLEMENTATION_CURSOR_8GB.md)
+
 ```bash
+# Instalar extensões Cursor automaticamente
+npm run cursor:install-extensions
+
+# Verificar configuração
+npm run cursor:setup
+
+# Desenvolvimento
 npm install
 npm start           # Expo dev server
 npm run ios         # iOS Simulator

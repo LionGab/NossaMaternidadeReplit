@@ -10,7 +10,7 @@
 
 Aplicativo de saude materna para gravidas e maes no pos-parto no Brasil. Criado por **Nathalia Valente**.
 
-> **Comecar?** [QUICKSTART.md](QUICKSTART.md) (10min) | Setup: [docs/SETUP_WINDOWS.md](docs/SETUP_WINDOWS.md) ou `docs/SETUP_MAC.md`
+> **Comecar?** [QUICKSTART.md](QUICKSTART.md) (10min) | Setup: [SETUP_WINDOWS.md](docs/SETUP_WINDOWS.md) · [SETUP_MAC.md](docs/SETUP_MAC.md)
 
 ## Sobre
 
