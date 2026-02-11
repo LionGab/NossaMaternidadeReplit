@@ -1,0 +1,90 @@
+{
+  // ============================================
+  // MACBOOK 2020 REAL CONFIG (8-16GB RAM)
+  // HONESTO E FUNCIONAL
+  // ============================================
+
+  // TypeScript Server - REALISTA para MacBook 2020
+  "typescript.tsserver.maxTsServerMemory": 2048, // 2GB max (8GB total)
+  "typescript.tsserver.watchOptions": {
+    "excludeDirectories": [
+      "**/node_modules",
+      "**/.expo",
+      "**/dist",
+      "**/build",
+      "**/ios/Pods",
+      "**/android/.gradle",
+      "**/.agent/**",
+      "**/.codebuddy/**",
+      "**/.codex/**",
+      "**/.continue/**",
+      "**/.gemini/**",
+      "**/.kiro/**",
+      "**/.opencode/**",
+      "**/.qoder/**",
+      "**/.roo/**",
+      "**/.trae/**",
+      "**/.windsurf/**"
+    ]
+  },
+
+  // DESABILITA features pesadas
+  "editor.minimap.enabled": false, // Minimap consome RAM
+  "editor.suggest.maxVisibleSuggestions": 8, // Reduz de 15
+  "editor.maxTokenizationLineLength": 5000, // Reduz de 10000
+  "editor.inlayHints.enabled": "offUnlessPressed", // TypeScript hints só quando pressionar
+  
+  // Desabilita IntelliSense agressivo
+  "typescript.inlayHints.parameterNames.enabled": "none",
+  "typescript.inlayHints.parameterTypes.enabled": false,
+  "typescript.inlayHints.variableTypes.enabled": false,
+  "typescript.inlayHints.propertyDeclarationTypes.enabled": false,
+  "typescript.inlayHints.functionLikeReturnTypes.enabled": false,
+  "typescript.referencesCodeLens.enabled": false,
+  "typescript.implementationsCodeLens.enabled": false,
+
+  // CRUCIAL: Limita workers
+  "typescript.tsserver.experimental.enableProjectDiagnostics": false,
+  "editor.semanticTokenColorCustomizations": {
+    "enabled": false // Reduz processamento
+  },
+
+  // Metro Bundler otimizado
+  "terminal.integrated.env.osx": {
+    "EXPO_NO_METRO_LAZY": "true",
+    "EXPO_METRO_MAX_WORKERS": "2", // 2 workers max
+    "NODE_OPTIONS": "--max-old-space-size=2048" // 2GB Node.js
+  },
+
+  // Git otimizado
+  "git.autofetch": false, // Desliga autofetch
+  "git.autorefresh": false,
+
+  // DESLIGA features não essenciais
+  "workbench.localHistory.enabled": false,
+  "editor.bracketPairColorization.enabled": false,
+  "editor.guides.bracketPairs": false,
+
+  // CRÍTICO: Indexação
+  "search.followSymlinks": false,
+  "search.seedOnFocus": false,
+  "search.searchOnType": false,
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/node_modules/**": true,
+    "**/.expo/**": true,
+    "**/ios/Pods/**": true,
+    "**/ios/build/**": true,
+    "**/.agent/**": true,
+    "**/.codebuddy/**": true,
+    "**/.codex/**": true,
+    "**/.continue/**": true,
+    "**/.gemini/**": true,
+    "**/.kiro/**": true,
+    "**/.opencode/**": true,
+    "**/.qoder/**": true,
+    "**/.roo/**": true,
+    "**/.trae/**": true,
+    "**/.windsurf/**": true
+  }
+}
