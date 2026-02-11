@@ -34,7 +34,7 @@
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
@@ -57,7 +57,7 @@
         "EXPO_PUBLIC_ENABLE_GAMIFICATION": "true",
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
@@ -81,7 +81,7 @@
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
@@ -103,7 +103,7 @@
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
@@ -130,7 +130,7 @@
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
@@ -152,7 +152,7 @@
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
@@ -176,7 +176,7 @@
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "SENTRY_DISABLE_AUTO_UPLOAD": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"
@@ -205,7 +205,7 @@
         "EXPO_PUBLIC_ENABLE_ANALYTICS": "true",
         "EXPO_PUBLIC_SOCIAL_LOGIN_ENABLED": "true",
         "EXPO_PUBLIC_SUPABASE_URL": "https://lqahkqfpynypbmhtffyi.supabase.co",
-        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "***REMOVED***",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc",
         "EXPO_PUBLIC_SUPABASE_FUNCTIONS_URL": "https://lqahkqfpynypbmhtffyi.supabase.co/functions/v1",
         "EXPO_PUBLIC_REVENUECAT_IOS_KEY": "appl_qYAhdJlewUtgaKBDWEAmZsCRIqK",
         "EXPO_PUBLIC_REVENUECAT_ANDROID_KEY": "goog_YSHALitkRyhugtDvYVVQVmqrqDu"

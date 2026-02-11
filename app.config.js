@@ -9,7 +9,7 @@ const isProduction = process.env.EXPO_PUBLIC_ENV === "production";
 const isDev = process.env.NODE_ENV === "development";
 const DEV_SUPABASE_URL = "https://lqahkqfpynypbmhtffyi.supabase.co";
 const DEV_SUPABASE_ANON_KEY =
-  "***REMOVED***";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxxYWhrcWZweW55cGJtaHRmZnlpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjU1NzcyMTQsImV4cCI6MjA4MTE1MzIxNH0.NBDr1-eUGnOeQIYnWOwxTBZwCzA7E7M_V88iRndajYc";
 const DEV_SUPABASE_FUNCTIONS_URL = `${DEV_SUPABASE_URL}/functions/v1`;
 
 module.exports = ({ config }) => {
