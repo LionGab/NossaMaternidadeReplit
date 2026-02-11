@@ -168,7 +168,7 @@ module.exports = ({ config }) => {
       checkAutomatically: isProduction ? "NEVER" : "ON_ERROR_RECOVERY",
       // fallbackToCacheTimeout: 0 = usa embedded bundle imediatamente se cache falhar
       fallbackToCacheTimeout: 0,
-      url: "https://u.expo.dev/f4a40c9e-0c58-49a4-a48a-001353a23df4",
+      url: "https://u.expo.dev/ec07a024-3e98-4023-af9b-1c5ecb9df2af",
       requestHeaders: {
         "expo-platform": "ios",
       },
