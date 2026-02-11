@@ -111,6 +111,7 @@
     },
     "ios_testflight": {
       "extends": "base",
+      "autoIncrement": true,
       "distribution": "store",
       "channel": "testflight",
       "ios": {
