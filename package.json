@@ -82,6 +82,7 @@
     "ios:17pro": "bash scripts/run-ios-simulator.sh \"iPhone 17 Pro\"",
     "check:disk": "bash scripts/check-disk-usage.sh",
     "reduce:ram": "bash scripts/reduce-ram-usage.sh",
+    "ram:quick-clean": "bash scripts/quick-ram-clean.sh",
     "clean:ram-safe": "bash scripts/safe-ram-cleanup.sh",
     "clean:ram-no-sudo": "bash scripts/clean-ram-no-sudo.sh",
     "optimize:macbook": "bash scripts/optimize-macbook.sh",
