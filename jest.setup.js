@@ -9,8 +9,38 @@
 // This fixes "ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG" on Node.js v25+
 global.__DEV__ = false;
 
-// Setup react-native-reanimated mock
+// Mock react-native-worklets BEFORE importing reanimated (order matters)
+// Reanimated imports many functions from worklets; mock the full surface to avoid WorkletsError
+jest.mock("react-native-worklets", () => ({
+  Worklets: {
+    defaultContext: {
+      createRunAsync: jest.fn(),
+      createRunOnJS: jest.fn(),
+    },
+    createContext: jest.fn(),
+    createRunAsync: jest.fn(),
+    createRunOnJS: jest.fn(),
+    createSharedValue: jest.fn(),
+  },
+  createSerializable: jest.fn((v) => v),
+  serializableMappingCache: new Map(),
+  makeShareable: jest.fn((v) => v),
+  isWorkletFunction: jest.fn(() => false),
+  callMicrotasks: jest.fn(),
+  scheduleOnUI: jest.fn((fn) => fn),
+  scheduleOnRN: jest.fn((fn) => fn),
+  RuntimeKind: { UI: "UI", RN: "RN" },
+  makeShareableCloneRecursive: jest.fn((v) => v),
+  shareableMappingFlag: Symbol("shareableMappingFlag"),
+}));
+
+// Setup react-native-reanimated mock (after worklets mock is in place)
 require("react-native-reanimated").setUpTests();
+
+// Provide _getAnimationTimestamp for reanimated animation functions (withTiming, withSequence, etc.)
+if (typeof global._getAnimationTimestamp !== "function") {
+  global._getAnimationTimestamp = () => Date.now();
+}
 
 // Silence act() warnings from React 19
 global.IS_REACT_ACT_ENVIRONMENT = true;
