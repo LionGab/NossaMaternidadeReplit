@@ -13,7 +13,7 @@
 │   ├── release/      # deploy-testflight, deploy-android
 │   ├── quality/      # pre-commit, fix-types, verify, review
 │   ├── domain/       # nathia
-│   └── workflow/     # gates
+│   └── workflow/     # gates, commit-commands
 ├── agents/           # Agents especializados (legacy)
 ├── commands/         # Slash commands customizados
 ├── hooks/            # Event hooks
@@ -34,6 +34,7 @@
 | Review         | `/review`            | Code review               |
 | NathIA         | `/nathia`            | Especialista na IA do app |
 | Gates          | `/gates`             | Scoreboard de release     |
+| Commit commands| `/commit-commands`  | Workflow commit/push/PR (quality gate + atômico) |
 | Superdesign    | `/superdesign`       | UI/UX design agent (drafts, init)    |
 
 **Hot-reload**: Modificações em skills são carregadas automaticamente.

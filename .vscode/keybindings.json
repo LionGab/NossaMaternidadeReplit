@@ -274,7 +274,7 @@
   },
 
   // ============================================
-  // GIT
+  // GIT + COMMIT COMMANDS (quality gate antes de commit)
   // ============================================
   {
     "key": "ctrl+shift+g g",
@@ -289,6 +289,13 @@
   {
     "key": "ctrl+shift+g s",
     "command": "git.sync",
+    "when": "scmRepository"
+  },
+  // Safe Commit Flow: quality gate depois lembrete para commit (task "Safe Commit Flow")
+  {
+    "key": "ctrl+shift+g c",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Safe Commit Flow",
     "when": "scmRepository"
   },
 

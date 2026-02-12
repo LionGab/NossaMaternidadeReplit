@@ -1,0 +1,38 @@
+---
+description: "Workflow obrigatório para commit, push e PR — quality gate antes de commit, mensagens atômicas e convencionais"
+alwaysApply: true
+priority: high
+globs: []
+---
+
+# Git Commit Workflow — Nossa Maternidade
+
+Ao executar **commit**, **push** ou **criar PR** (via comando, plugin Commit commands ou MCP GitKraken), seguir sempre este fluxo.
+
+## Obrigatório antes de commit
+
+1. **Quality gate passou**: `npm run quality-gate` (ou `/verify`). Se falhar, **não** commitar até corrigir.
+2. **Commit atômico**: Um commit = um propósito. Não misturar feat + fix + docs no mesmo commit.
+3. **Mensagem no padrão**: Imperativo, português, prefixo convencional.
+
+## Formato da mensagem de commit
+
+- **Assunto**: até 72 caracteres, sem ponto final.
+- **Prefixos**: `feat:`, `fix:`, `docs:`, `refactor:`, `style:`, `test:`, `chore:`.
+- **Exemplos**:
+  - `feat: adiciona componente PremiumCard`
+  - `fix: corrige animação em FloatingBubbles`
+  - `docs: atualiza CONTRIBUTING.md`
+
+## Sequência recomendada
+
+1. Rodar `npm run quality-gate`.
+2. Fazer `git add` apenas dos arquivos do mesmo propósito.
+3. Fazer `git commit -m "tipo: descrição"`.
+4. Se for enviar: `git push`; para PR, orientar título/descrição conforme CONTRIBUTING.md.
+
+## Referências
+
+- Skill completa: `.claude/skills/workflow/commit-commands.md`
+- Comando: `/commit` (roda verify e guia o commit)
+- Convenção de branches: CONTRIBUTING.md § Git Workflow

@@ -17,6 +17,17 @@
       }
     },
     {
+      "label": "Safe Commit Flow",
+      "type": "shell",
+      "command": "npm run quality-gate && echo [Commit Commands] Se passou: use Ctrl+Shift+G G para commit ou /commit no chat.",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "focus": false
+      }
+    },
+    {
       "label": "TypeCheck",
       "type": "shell",
       "command": "npm run typecheck",

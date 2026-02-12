@@ -38,6 +38,8 @@ Skills são a forma preferida de estender Claude Code. Carregam sob demanda com 
 | `/review`            | Code review completo       |
 | `/nathia`            | Especialista NathIA        |
 | `/gates`             | Release gates (G1-G7)      |
+| `/commit-commands`   | Workflow commit/push/PR (quality gate + atômico) |
+| `/commit`            | Verify + guia commit atômico (uso com plugin Commit commands) |
 
 **Hot-reload**: Skills em `.claude/skills/` recarregam automaticamente.
 
@@ -165,7 +167,8 @@ const isPremium = useIsPremium();
 
 | Comando                  | Propósito                |
 | ------------------------ | ------------------------ |
-| `npm run quality-gate`   | TypeCheck + Lint + Build |
+| `npm run quality-gate`   | TypeCheck + Lint + Build (obrigatório antes de commit/PR) |
+| `/commit`               | Verify + guia commit atômico (mensagem convencional) |
 | `npm start`              | Expo dev server          |
 | `npm test -- --watch`    | Jest watch mode          |
 | `npm run generate-types` | Regenerar tipos Supabase |
@@ -208,6 +211,7 @@ npm run generate-types         # Schema changed
 | [memory-guide.md](docs/claude/memory-guide.md)                    | Gerenciamento de memória |
 | [architecture.md](docs/claude/architecture.md)                    | Navigation, stores       |
 | [design-system.md](docs/claude/design-system.md)                  | Tokens, cores            |
+| [COMMIT_COMMANDS_SETUP.md](docs/setup/COMMIT_COMMANDS_SETUP.md)   | Workflow commit/push/PR (plugin Commit commands) |
 
 ### Produto (`docs/product/`)
 
@@ -226,7 +230,7 @@ npm run generate-types         # Schema changed
 | Release   | `deploy-testflight`, `deploy-android`         |
 | Quality   | `pre-commit`, `fix-types`, `verify`, `review` |
 | Domain    | `nathia`                                      |
-| Workflow  | `gates`                                       |
+| Workflow  | `gates`, `commit-commands`                    |
 
 ### Agents (Legacy)
 

@@ -93,7 +93,8 @@
     "review": ".claude/skills/quality/review.md",
     "verify": ".claude/skills/quality/verify.md",
     "nathia": ".claude/skills/domain/nathia.md",
-    "gates": ".claude/skills/workflow/gates.md"
+    "gates": ".claude/skills/workflow/gates.md",
+    "commit-commands": ".claude/skills/workflow/commit-commands.md"
   },
 
   "agents": {
@@ -119,7 +120,8 @@
     "gates": ".claude/commands/gates.md",
     "db-types": ".claude/commands/db-types.md",
     "db-migrate": ".claude/commands/db-migrate.md",
-    "rules": ".claude/commands/rules.md"
+    "rules": ".claude/commands/rules.md",
+    "commit": ".claude/commands/commit.md"
   },
 
   "hooks": {
