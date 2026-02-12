@@ -1,23 +1,30 @@
 /**
- * Design Tokens 2025 - Nossa Maternidade
- * "Pink Clean + Blue Clean" - Cores vibrantes e Instagram-worthy ✨
+ * Design Tokens 2026 - Nossa Maternidade
+ * "Pink Clean + Blue Clean" - Cores vibrantes e Instagram-worthy
  *
- * FONTE ÚNICA DE VERDADE para cores, tipografia, espaçamento.
+ * FONTE UNICA DE VERDADE para cores, tipografia, espacamento.
  *
- * Princípios:
- * - Blue Clean: Céu limpo, água cristalina, frescor digital
+ * Principios:
+ * - Blue Clean: Ceu limpo, agua cristalina, frescor digital
  * - Pink Clean: Flores frescas, blush natural, feminilidade moderna
  * - Paleta Instagram-worthy, perfeita para influenciadoras
- * - WCAG AAA por padrão, accessibility-first
+ * - WCAG AAA por padrao, accessibility-first
  *
  * Hierarquia:
  * - brand.primary = Blue Clean (#1AB8FF) - sky blue vibrante
  * - brand.accent = Pink Clean (#FF5C94) - rosa fresco e moderno
- * - brand.secondary = Lilás suave (apoio)
+ * - brand.secondary = Lilas suave (apoio)
+ *
+ * Tipografia:
+ * - Display/Brand: Poppins (SemiBold 600 + Medium 500)
+ * - Body/UI: System font (sem fontFamily no iOS; sans-serif no Android)
+ * - Data: System font + fontVariant tabular-nums
  *
  * @see https://developer.apple.com/design/human-interface-guidelines
  * @see https://m3.material.io
  */
+
+import { Platform } from "react-native";
 
 // ===========================================
 // BRAND TOKENS - Light Blue Clean (Flo + I Am inspired) ✨
@@ -501,8 +508,8 @@ export const text = {
     secondary: "#6B7280",
     /** Tertiary: hints, placeholders (contraste ~3.5:1) */
     tertiary: "#9CA3AF",
-    /** Muted: desabilitado (apenas decorativo) */
-    muted: "#D1D5DB",
+    /** Muted: disabled/decorative text (contraste ~2.2:1 — legivel mas suave) */
+    muted: "#B0B8C1",
     /** Inverse: texto em fundo escuro */
     inverse: "#F9FAFB",
     /** Accent: texto rosa (links CTA) */
@@ -691,7 +698,19 @@ export const typography = {
    * - Uso: ONLY for display/hero text (large decorative titles)
    */
   fontFamily: {
-    // ===== SANS-SERIF (Manrope) - Primary font for all UI =====
+    // ===== POPPINS (Display/Brand) - Headlines + CTAs =====
+    /** SemiBold (600) - H1, H2 headlines, display titles */
+    poppinsDisplay: "Poppins_600SemiBold",
+    /** Medium (500) - Buttons, labels, brand elements */
+    poppinsLabel: "Poppins_500Medium",
+
+    // ===== SYSTEM FONT (Body/UI) - Maximum legibility =====
+    /** System default - body text, descriptions (best native rendering) */
+    system: Platform.select({ android: "sans-serif", default: undefined }),
+    /** System medium - body emphasis */
+    systemMedium: Platform.select({ android: "sans-serif-medium", default: undefined }),
+
+    // ===== MANROPE (Legacy sans-serif) - Kept for backward compat =====
     /** Regular (400) - body text, descriptions */
     base: "Manrope_400Regular",
     /** Medium (500) - body emphasis, important inline text */
@@ -716,13 +735,26 @@ export const typography = {
     display: "DMSerifDisplay_400Regular",
   },
 
-  // ===== DISPLAY STYLES (use with fontFamily.display/serif) =====
-  /** Hero titles, splash screens - FONT: DMSerifDisplay (serif) */
-  displayLarge: { fontSize: 28, lineHeight: 34, fontWeight: "400" as const },
-  /** Section hero, onboarding titles - FONT: DMSerifDisplay (serif) */
-  displayMedium: { fontSize: 24, lineHeight: 30, fontWeight: "400" as const },
-  /** Card hero titles - FONT: DMSerifDisplay (serif) */
-  displaySmall: { fontSize: 22, lineHeight: 28, fontWeight: "400" as const },
+  /**
+   * Cross-platform letterSpacing helper.
+   * iOS handles negative letterSpacing well; Android can break kerning.
+   */
+  letterSpacing: {
+    /** Tight - display/headlines (iOS: -0.5, Android: -0.2) */
+    tight: Platform.select({ ios: -0.5, default: -0.2 }),
+    /** Normal - body text */
+    normal: 0,
+    /** Wide - labels, buttons (iOS: 0.3, Android: 0.5) */
+    wide: Platform.select({ ios: 0.3, default: 0.5 }),
+  },
+
+  // ===== DISPLAY STYLES (use with fontFamily.poppinsDisplay) =====
+  /** Hero titles, splash screens - FONT: Poppins SemiBold */
+  displayLarge: { fontSize: 28, lineHeight: 34, fontWeight: "600" as const },
+  /** Section hero, onboarding titles - FONT: Poppins SemiBold */
+  displayMedium: { fontSize: 24, lineHeight: 30, fontWeight: "600" as const },
+  /** Card hero titles - FONT: Poppins SemiBold */
+  displaySmall: { fontSize: 22, lineHeight: 28, fontWeight: "600" as const },
 
   // ===== HEADLINE STYLES (use with fontFamily.bold/semibold) =====
   /** H1 - Page titles, main sections - WEIGHT: 700 (bold) */
@@ -758,9 +790,17 @@ export const typography = {
   /** Small labels, badges - WEIGHT: 600 (semibold) */
   labelSmall: { fontSize: 12, lineHeight: 16, fontWeight: "600" as const },
 
-  // ===== CAPTION STYLES (use with fontFamily.base) =====
+  // ===== CAPTION STYLES (use with fontFamily.system) =====
   /** Captions, hints, timestamps - WEIGHT: 400 (regular) */
   caption: { fontSize: 12, lineHeight: 16, fontWeight: "400" as const },
+
+  // ===== DATA STYLES (use with fontFamily.system + tabular-nums) =====
+  /** Large metrics, stats - system font with tabular figures */
+  dataLarge: { fontSize: 24, lineHeight: 30, fontWeight: "600" as const },
+  /** Default data display, counters - system font with tabular figures */
+  dataMedium: { fontSize: 16, lineHeight: 22, fontWeight: "500" as const },
+  /** Compact data, timestamps, badges - system font with tabular figures */
+  dataSmall: { fontSize: 13, lineHeight: 18, fontWeight: "500" as const },
 } as const;
 
 // ===========================================
