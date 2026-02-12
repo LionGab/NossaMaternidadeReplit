@@ -6,7 +6,7 @@ name: EAS Update
 on:
   push:
     branches:
-      - main
+      - develop
     paths-ignore:
       - '**.md'
       - '.github/**'

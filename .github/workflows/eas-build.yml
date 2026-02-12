@@ -1,7 +1,7 @@
 name: EAS Build
 
 on:
-  push:
+  pull_request:
     branches: [main]
   workflow_dispatch:
     inputs:
@@ -59,15 +59,17 @@ jobs:
         run: |
           PLATFORM="${{ github.event.inputs.platform || 'ios' }}"
           PROFILE="${{ github.event.inputs.profile || 'preview' }}"
+          IOS_BUILD_NUMBER="$(date +%Y%m%d%H%M)"
           
           echo "🚀 Starting EAS Build"
           echo "Platform: $PLATFORM"
           echo "Profile: $PROFILE"
+          echo "iOS Build Number: $IOS_BUILD_NUMBER"
           
           if [ "$PLATFORM" = "all" ]; then
-            eas build --platform all --profile $PROFILE --non-interactive
+            IOS_BUILD_NUMBER="$IOS_BUILD_NUMBER" eas build --platform all --profile $PROFILE --non-interactive
           else
-            eas build --platform $PLATFORM --profile $PROFILE --non-interactive
+            IOS_BUILD_NUMBER="$IOS_BUILD_NUMBER" eas build --platform $PLATFORM --profile $PROFILE --non-interactive
           fi
 
       - name: Build Summary
@@ -79,4 +81,4 @@ jobs:
           echo "- **Profile:** ${{ github.event.inputs.profile || 'preview' }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Triggered by:** ${{ github.actor }}" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "🔗 [View builds on Expo](https://expo.dev/accounts/nossa-maternidade/projects/nossamaternidade-3gmjtcwmjxn4ec-nzlri/builds)" >> $GITHUB_STEP_SUMMARY
+          echo "🔗 [View builds on Expo](https://expo.dev/accounts/liongab/projects/nossamaternidade/builds)" >> $GITHUB_STEP_SUMMARY

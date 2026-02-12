@@ -31,7 +31,8 @@ module.exports = ({ config }) => {
     ios: {
       supportsTablet: true,
       bundleIdentifier: "br.com.nossamaternidade.app",
-      buildNumber: "202602102130",
+      // Build number vem do CI (timestamp) e evita duplicidade no App Store Connect.
+      buildNumber: process.env.IOS_BUILD_NUMBER ?? "1",
       // CRÍTICO: Habilitar Sign in with Apple (obrigatório para apps com login social)
       usesAppleSignIn: true,
       // Associated Domains para deep linking e universal links
@@ -133,10 +134,7 @@ module.exports = ({ config }) => {
         "READ_MEDIA_IMAGES",
       ],
     },
-    web: {
-      favicon: "./assets/favicon.png",
-      bundler: "metro",
-    },
+    // Web desabilitado: foco iOS/Android; privacidade/suporte em pasta separada (legal-pages, archive/privacy-support)
     plugins: [
       // SDK 55: plugins list must be declared manually because this is a dynamic (JS) config.
       "@react-native-community/datetimepicker",
@@ -189,19 +187,13 @@ module.exports = ({ config }) => {
       checkAutomatically: isProduction ? "NEVER" : "ON_ERROR_RECOVERY",
       // fallbackToCacheTimeout: 0 = usa embedded bundle imediatamente se cache falhar
       fallbackToCacheTimeout: 0,
-      url: "https://u.expo.dev/f4a40c9e-0c58-49a4-a48a-001353a23df4",
+      url: "https://u.expo.dev/ec07a024-3e98-4023-af9b-1c5ecb9df2af",
       requestHeaders: {
         "expo-platform": "ios",
       },
     },
-    // CRÍTICO: runtimeVersion deve ser igual em todos os builds do mesmo native code
-    // Sem mudar native code, manter mesmo runtimeVersion para updates funcionarem
-    // Mitigação de crash no startup (expo-updates / ErrorRecovery):
-    // ao bump de runtimeVersion, o app ignora updates OTA/caches antigos incompatíveis
-    // e volta a iniciar com o bundle embutido.
-    // HOTFIX: Bump de runtimeVersion força app a ignorar cache OTA antigo
-    // 1.0.3 → 2.0.0: Build 48 - Reset definitivo + expo-updates desabilitado no nativo
-    // 2.0.1 → 3.0.0: SDK 55 / RN 0.83.x (mudança de runtime nativo)
+    // Mantido fixo temporariamente para previsibilidade durante estabilização pós SDK 55.
+    // Política final (appVersion/fingerprint) será definida em etapa posterior.
     runtimeVersion: "3.0.0",
     extra: {
       eas: {

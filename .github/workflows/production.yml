@@ -110,7 +110,8 @@ jobs:
 
       - name: Build iOS Production
         run: |
-          npx eas-cli build \
+          IOS_BUILD_NUMBER="$(date +%Y%m%d%H%M)"
+          IOS_BUILD_NUMBER="$IOS_BUILD_NUMBER" npx eas-cli build \
             --profile production \
             --platform ios \
             --non-interactive \

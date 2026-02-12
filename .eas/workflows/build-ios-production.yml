@@ -2,8 +2,8 @@ name: iOS production build
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*.*.*
 
 jobs:
   build_ios:
@@ -16,5 +16,4 @@ jobs:
     type: submit
     needs: [build_ios]
     params:
-      platform: ios
-      profile: production
+      build_id: ${{ needs.build_ios.outputs.build_id }}

@@ -2,8 +2,8 @@ name: Android production build
 
 on:
   push:
-    branches:
-      - main
+    tags:
+      - v*.*.*
 
 jobs:
   build_android:
@@ -16,5 +16,4 @@ jobs:
     type: submit
     needs: [build_android]
     params:
-      platform: android
-      profile: production
+      build_id: ${{ needs.build_android.outputs.build_id }}

@@ -33,15 +33,25 @@ check_file() {
     fi
 }
 
-# Função para validar JSON
+# Função para validar JSON (usa Node para funcionar no Windows sem python3)
 validate_json() {
-    if python3 -m json.tool "$1" > /dev/null 2>&1; then
+    local err
+    err=$(node -e "
+        try {
+            JSON.parse(require('fs').readFileSync(process.argv[1], 'utf8'));
+            process.exit(0);
+        } catch (e) {
+            console.error(e.message || String(e));
+            process.exit(1);
+        }
+    " "$1" 2>&1)
+    if [ $? -eq 0 ]; then
         echo -e "${GREEN}✅${NC} JSON válido"
         ((PASSED++))
         return 0
     else
         echo -e "${RED}❌${NC} JSON inválido"
-        echo "   Erro: $(python3 -m json.tool "$1" 2>&1 | head -1)"
+        echo "   Erro: $(echo "$err" | head -1)"
         ((FAILED++))
         return 1
     fi
@@ -213,7 +223,7 @@ echo ""
 echo "💡 Comandos úteis:"
 echo ""
 echo "  Validar JSON:"
-echo "    cat $MCP_CONFIG | python3 -m json.tool"
+echo "    node -e \"JSON.parse(require('fs').readFileSync('$MCP_CONFIG','utf8'))\""
 echo ""
 echo "  Testar Filesystem MCP Inspector:"
 echo "    npx -y @modelcontextprotocol/inspector npx @modelcontextprotocol/server-filesystem /Users/lion/Documents/Lion/NossaMaternidade"

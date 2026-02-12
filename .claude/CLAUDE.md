@@ -34,6 +34,7 @@
 | Review         | `/review`            | Code review               |
 | NathIA         | `/nathia`            | Especialista na IA do app |
 | Gates          | `/gates`             | Scoreboard de release     |
+| Superdesign    | `/superdesign`       | UI/UX design agent (drafts, init)    |
 
 **Hot-reload**: Modificações em skills são carregadas automaticamente.
 

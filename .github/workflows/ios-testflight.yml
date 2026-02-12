@@ -105,7 +105,8 @@ jobs:
 
       - name: Build iOS
         run: |
-          eas build -p ios \
+          IOS_BUILD_NUMBER="$(date +%Y%m%d%H%M)"
+          IOS_BUILD_NUMBER="$IOS_BUILD_NUMBER" eas build -p ios \
             --profile ${{ inputs.profile }} \
             --local \
             --output build.tar.gz \

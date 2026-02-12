@@ -29,6 +29,9 @@ expo-env.d.ts
 # Metro
 .metro-health-check*
 
+# Superdesign (generated UI context)
+.superdesign/
+
 # debug
 npm-debug.*
 yarn-debug.*
@@ -167,3 +170,4 @@ replit.md
 nul
 NossaMaternidade_backup_*/
 NossaMaternidade/
+/~/
