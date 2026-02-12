@@ -1,10 +1,11 @@
 import { NavigationContainer } from "@react-navigation/native";
+import { useFonts, Poppins_500Medium, Poppins_600SemiBold } from "@expo-google-fonts/poppins";
 import * as Sentry from "@sentry/react-native";
 import Constants from "expo-constants";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { Platform, Text, View } from "react-native";
+import { Platform } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { supabase } from "./src/api/supabase";
@@ -21,7 +22,6 @@ import { navigationRef } from "./src/navigation/navigationRef";
 import RootNavigator from "./src/navigation/RootNavigator";
 import { QueryProvider } from "./src/providers/QueryProvider";
 import { usePremiumStore } from "./src/state/premium-store";
-import { brand, maternal, nathAccent, text } from "./src/theme/tokens";
 import { validateCriticalEnv } from "./src/config/env";
 import { startSession, trackEvent } from "./src/services/analytics";
 import { isExpoGo } from "./src/utils/expo";
@@ -66,54 +66,9 @@ if (sentryDsn && !__DEV__) {
   logger.info("Sentry initialized", "App");
 }
 
-// Simple splash screen - NO reanimated, NO complex animations
-// This is the failsafe that ALWAYS works
-function SafeSplashScreen({ onFinish }: { onFinish: () => void }) {
-  useEffect(() => {
-    // Hide native splash immediately
-    SplashScreen.hideAsync().catch(() => {});
-    // Exit after 800ms - enough time to see the branding but quick enough
-    const timer = setTimeout(onFinish, 800);
-    return () => clearTimeout(timer);
-  }, [onFinish]);
-
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: maternal.warmth.cream,
-        padding: 24,
-      }}
-    >
-      {/* Simple static logo */}
-      <View
-        style={{
-          width: 200,
-          height: 200,
-          borderRadius: 100,
-          backgroundColor: brand.accent[50],
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 24,
-          shadowColor: nathAccent.rose,
-          shadowOffset: { width: 0, height: 8 },
-          shadowOpacity: 0.3,
-          shadowRadius: 16,
-        }}
-      >
-        <Text style={{ fontSize: 80 }}>👩‍👶</Text>
-      </View>
-      <Text style={{ fontSize: 24, fontWeight: "700", color: brand.accent[500], marginBottom: 8 }}>
-        Nossa Maternidade
-      </Text>
-      <Text style={{ fontSize: 14, color: text.light.secondary, textAlign: "center" }}>
-        Carregando...
-      </Text>
-    </View>
-  );
-}
+// Hold native splash until fonts are loaded or timeout fires.
+// This MUST be called before the first render (module scope).
+SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function AppRuntimeEffects() {
   // Runtime effects - future hooks can be added here
@@ -126,14 +81,52 @@ Example: process.env.EXPO_PUBLIC_SUPABASE_URL
 */
 
 function App() {
-  // EMERGENCY FIX: Removed useFonts() as it was hanging in production builds
-  // The app now uses system fonts which are always available
-  // Previous code was:
-  // const [fontsLoaded] = useFonts({ Manrope_*, DMSans_*, DMSerifDisplay_* });
-  // But fontsLoaded never became true in TestFlight builds, causing infinite splash
+  // ── Font Loading with Hard Timeout ──
+  // Loads ONLY Poppins (2 weights) for display/brand text.
+  // Body/UI uses system font — does NOT depend on font loading.
+  // If Poppins fails or times out, UI remains legible with system fallback;
+  // display/label degrade gracefully to system font.
+  const [fontsLoaded, fontError] = useFonts({
+    Poppins_500Medium,
+    Poppins_600SemiBold,
+  });
 
-  const [isSplashVisible, setIsSplashVisible] = useState(true);
+  const [fontTimedOut, setFontTimedOut] = useState(false);
 
+  // Hard timeout: 3s max for font loading. Prevents infinite splash in production.
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setFontTimedOut(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // App is ready when fonts load, font loading errors out, or timeout fires.
+  const isAppReady = fontsLoaded || !!fontError || fontTimedOut;
+
+  // Hide native splash screen once ready.
+  useEffect(() => {
+    if (isAppReady) {
+      SplashScreen.hideAsync().catch(() => {});
+    }
+  }, [isAppReady]);
+
+  // Log font status for diagnostics.
+  useEffect(() => {
+    if (fontError) {
+      logger.warn("Poppins font loading failed, using system fallback", "App", {
+        error: fontError.message,
+      });
+    }
+    if (fontTimedOut && !fontsLoaded) {
+      logger.warn("Font loading timed out after 3s, proceeding with system fallback", "App");
+    }
+    if (fontsLoaded) {
+      logger.debug("Poppins fonts loaded successfully", "App");
+    }
+  }, [fontsLoaded, fontError, fontTimedOut]);
+
+  // ── Analytics bootstrap (fire-and-forget, never blocks startup) ──
   useEffect(() => {
     const bootstrapAnalytics = async () => {
       try {
@@ -157,27 +150,6 @@ function App() {
       // Intentionally ignored: analytics must never block app startup.
     });
   }, []);
-
-  useEffect(() => {
-    SplashScreen.hideAsync().catch((error) => {
-      logger.warn("Falha ao ocultar splash nativo", "App", {
-        error: error instanceof Error ? error.message : String(error),
-      });
-    });
-  }, []);
-
-  // Force splash screen to close after 3 seconds (prevents infinite loading)
-  // CRITICAL: This is the ultimate fallback - app MUST start within 3s
-  useEffect(() => {
-    const splashTimeout = setTimeout(() => {
-      if (isSplashVisible) {
-        logger.warn("Splash screen timeout - forcing close after 3s", "App");
-        setIsSplashVisible(false);
-      }
-    }, 3000);
-
-    return () => clearTimeout(splashTimeout);
-  }, [isSplashVisible]);
 
   // Monitor network status for offline banner
   const { isOffline, isChecking, retry } = useNetworkStatus();
@@ -264,11 +236,10 @@ function App() {
     }
   }, [syncWithRevenueCat]);
 
-  // EMERGENCY FIX: Always use SafeSplashScreen for ALL builds
-  // Previous builds were hanging because useFonts() never returned true in production
-  // This simple splash screen works reliably on all devices
-  if (isSplashVisible) {
-    return <SafeSplashScreen onFinish={() => setIsSplashVisible(false)} />;
+  // Gate: keep native splash visible until fonts load or timeout.
+  // Returns null so React renders nothing — the native splash covers this period.
+  if (!isAppReady) {
+    return null;
   }
 
   return (

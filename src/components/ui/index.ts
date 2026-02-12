@@ -7,7 +7,16 @@ export { Button } from "./Button";
 export { Card } from "./Card";
 
 // Nathia Design System Components (2026)
-export { NathText, Title, Subtitle, Body, Caption, Label } from "./NathTypography";
+export {
+  NathText,
+  Title,
+  Subtitle,
+  Body,
+  Caption,
+  Label,
+  DataText,
+  Typography,
+} from "./NathTypography";
 export { NathCard } from "./NathCard";
 export { NathBadge } from "./NathBadge";
 export { NathProgressBar } from "./NathProgressBar";
