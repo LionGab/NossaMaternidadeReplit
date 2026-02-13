@@ -121,7 +121,8 @@
     "db-types": ".claude/commands/db-types.md",
     "db-migrate": ".claude/commands/db-migrate.md",
     "rules": ".claude/commands/rules.md",
-    "commit": ".claude/commands/commit.md"
+    "commit": ".claude/commands/commit.md",
+    "compact-stats": ".claude/commands/compact-stats.md"
   },
 
   "hooks": {
@@ -189,6 +190,22 @@
             "type": "command",
             "command": "bash .claude/hooks/prompt-context.sh",
             "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-compact-save-decisions.sh",
+            "timeout": 10
+          },
+          {
+            "type": "command",
+            "command": "bash .claude/hooks/pre-compact-metrics.sh",
+            "timeout": 10
           }
         ]
       }

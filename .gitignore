@@ -136,6 +136,12 @@ coverage/
 .claude/hookify.always-ralph.local.md
 .claude/**/ralph-loop.local.md
 
+# Claude Code - Compaction hooks (local-only logs)
+.claude/decisions.log
+.claude/compact-metrics.jsonl
+.claude/context.db
+.claude/context.db-*
+
 # CLAUDE.local.md (preferências pessoais, não compartilhar)
 CLAUDE.local.md
 **/CLAUDE.local.md

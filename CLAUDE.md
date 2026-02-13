@@ -28,17 +28,17 @@ import { useAppStore } from "@/state";
 
 Skills são a forma preferida de estender Claude Code. Carregam sob demanda com progressive disclosure.
 
-| Skill                | Propósito                  |
-| -------------------- | -------------------------- |
-| `/deploy-testflight` | Deploy iOS para TestFlight |
-| `/deploy-android`    | Deploy Android para Play   |
-| `/pre-commit`        | Quality gate rápido        |
-| `/fix-types`         | Resolver erros TypeScript  |
-| `/verify`            | Quality gate completo      |
-| `/review`            | Code review completo       |
-| `/nathia`            | Especialista NathIA        |
-| `/gates`             | Release gates (G1-G7)      |
-| `/commit-commands`   | Workflow commit/push/PR (quality gate + atômico) |
+| Skill                | Propósito                                                     |
+| -------------------- | ------------------------------------------------------------- |
+| `/deploy-testflight` | Deploy iOS para TestFlight                                    |
+| `/deploy-android`    | Deploy Android para Play                                      |
+| `/pre-commit`        | Quality gate rápido                                           |
+| `/fix-types`         | Resolver erros TypeScript                                     |
+| `/verify`            | Quality gate completo                                         |
+| `/review`            | Code review completo                                          |
+| `/nathia`            | Especialista NathIA                                           |
+| `/gates`             | Release gates (G1-G7)                                         |
+| `/commit-commands`   | Workflow commit/push/PR (quality gate + atômico)              |
 | `/commit`            | Verify + guia commit atômico (uso com plugin Commit commands) |
 
 **Hot-reload**: Skills em `.claude/skills/` recarregam automaticamente.
@@ -165,14 +165,14 @@ const isPremium = useIsPremium();
 
 ## COMMANDS
 
-| Comando                  | Propósito                |
-| ------------------------ | ------------------------ |
+| Comando                  | Propósito                                                 |
+| ------------------------ | --------------------------------------------------------- |
 | `npm run quality-gate`   | TypeCheck + Lint + Build (obrigatório antes de commit/PR) |
-| `/commit`               | Verify + guia commit atômico (mensagem convencional) |
-| `npm start`              | Expo dev server          |
-| `npm test -- --watch`    | Jest watch mode          |
-| `npm run generate-types` | Regenerar tipos Supabase |
-| `npm run build:prod:ios` | Build produção iOS       |
+| `/commit`                | Verify + guia commit atômico (mensagem convencional)      |
+| `npm start`              | Expo dev server                                           |
+| `npm test -- --watch`    | Jest watch mode                                           |
+| `npm run generate-types` | Regenerar tipos Supabase                                  |
+| `npm run build:prod:ios` | Build produção iOS                                        |
 
 ---
 
@@ -205,12 +205,12 @@ npm run generate-types         # Schema changed
 
 ### Setup e Arquitetura
 
-| Docs                                                              | Conteúdo                 |
-| ----------------------------------------------------------------- | ------------------------ |
-| [CLAUDE_CODE_GUIDE_2026.md](docs/setup/CLAUDE_CODE_GUIDE_2026.md) | Best practices 2026      |
-| [memory-guide.md](docs/claude/memory-guide.md)                    | Gerenciamento de memória |
-| [architecture.md](docs/claude/architecture.md)                    | Navigation, stores       |
-| [design-system.md](docs/claude/design-system.md)                  | Tokens, cores            |
+| Docs                                                              | Conteúdo                                         |
+| ----------------------------------------------------------------- | ------------------------------------------------ |
+| [CLAUDE_CODE_GUIDE_2026.md](docs/setup/CLAUDE_CODE_GUIDE_2026.md) | Best practices 2026                              |
+| [memory-guide.md](docs/claude/memory-guide.md)                    | Gerenciamento de memória                         |
+| [architecture.md](docs/claude/architecture.md)                    | Navigation, stores                               |
+| [design-system.md](docs/claude/design-system.md)                  | Tokens, cores                                    |
 | [COMMIT_COMMANDS_SETUP.md](docs/setup/COMMIT_COMMANDS_SETUP.md)   | Workflow commit/push/PR (plugin Commit commands) |
 
 ### Produto (`docs/product/`)
@@ -247,6 +247,37 @@ npm run generate-types         # Schema changed
 | `console.log`          | `logger.*`               |
 | `any` types            | `unknown` + guards       |
 | Hardcoded colors       | `Tokens.*`               |
+
+---
+
+## SUMMARY INSTRUCTIONS FOR COMPACTION
+
+Quando compactar contexto (autoCompact ou `/compact`), Claude deve focar em preservar:
+
+### Preservar SEMPRE (Alta Prioridade)
+
+1. **NathIA Personality Decisions** - Refinamentos em `src/ai/nathiaPrompt.ts`, tom, disclaimers médicos
+2. **Supabase Schema Changes** - Estruturas de tabelas, RLS policies, migrations SQL
+3. **Premium/IAP Integration** - RevenueCat configs, lógica de subscription, gates de paywall
+4. **Navigation Flow Changes** - Rotas, padrões de navegação, deep links
+5. **Design System Decisions** - Uso de tokens, esquemas de cores, regras de acessibilidade
+6. **TypeScript Patterns** - Resoluções de erros de tipo, type guards, padrões imutáveis
+7. **Build & Release Decisions** - Configurações de EAS, gates de release (G1-G7), versioning
+
+### Omitir (Baixa Prioridade)
+
+- Logs verbosos de Expo/Metro bundler
+- Explorações repetidas de arquivos (sem mudanças)
+- Tentativas de build falhadas (manter só a bem-sucedida)
+- Etapas intermediárias de debugging (manter só causa raiz e solução)
+- Outputs de ferramentas sem ação subsequente
+
+### Contexto do Projeto
+
+- **Domínio**: Saúde materna, AI companion (NathIA), mobile-first iOS/Android
+- **Stack**: Expo SDK 55, React Native 0.83, TypeScript strict, Supabase, RevenueCat
+- **Arquitetura**: Zustand stores, React Navigation, NativeWind styling, Gemini AI
+- **Qualidade**: Zero `any`, zero `console.log`, zero hardcoded colors, WCAG AAA accessibility
 
 ---
 

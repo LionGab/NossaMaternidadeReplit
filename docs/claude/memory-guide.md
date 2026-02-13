@@ -394,6 +394,93 @@ Memory files loaded:
 
 ---
 
+## 💰 Token Optimization Strategies
+
+### Use Skills para Contexto Focado
+
+Skills economizam tokens ao focar apenas no necessário, evitando exploração manual excessiva:
+
+| Skill            | Tokens Economizados | Quando Usar                                                           |
+| ---------------- | ------------------- | --------------------------------------------------------------------- |
+| `/verify`        | ~5k-10k             | Antes de PR (em vez de explorar manualmente todos os arquivos)        |
+| `/nathia`        | ~3k-8k              | Mudanças no prompt da NathIA (em vez de ler todo histórico)           |
+| `/gates`         | ~2k-5k              | Status de release (em vez de verificar manualmente cada gate)         |
+| `/pre-commit`    | ~4k-8k              | Quality gate rápido (em vez de rodar tudo manualmente)                |
+| `/compact-stats` | ~1k-2k              | Ver métricas de compactação (em vez de explorar logs)                 |
+| `/fix-types`     | ~3k-6k              | Resolver erros TypeScript (foco apenas nos erros, não em todo código) |
+
+**Economia média:** 30-40% de tokens por sessão quando skills são usados proativamente.
+
+### Padrão: @arquivo em vez de Colar
+
+❌ **Evitar:**
+
+```
+User: [cola 1000 linhas de código]
+Claude: [processa tudo, infla contexto permanentemente]
+```
+
+✅ **Preferir:**
+
+```
+User: @src/screens/HomeScreen.tsx
+Claude: [lê sob demanda, não infla contexto permanentemente]
+```
+
+**Por quê?** O padrão `@arquivo` é lido dinamicamente e não fica permanentemente no contexto como texto colado.
+
+### Quando Forçar /compact
+
+Use `/compact` manualmente nestes cenários:
+
+- Após explorar **>10 arquivos** sem mudanças concretas
+- Depois de debugging extensivo com **muitos logs**
+- Antes de mudar de fase: **exploração → implementação**
+- Quando `/cost` mostrar **>50k tokens** usados
+- Após corrigir **>2 tentativas** do mesmo problema (evita "rabbit holes")
+
+### Quando Forçar /clear
+
+Use `/clear` para reset completo:
+
+- **Entre tarefas não relacionadas** (ex: feature A → feature B)
+- **Após 3+ correções sem sucesso** no mesmo problema → /clear + prompt melhor
+- **Mudança de contexto completa** (ex: frontend → backend)
+- **Kitchen sink session** (quando você fez "um pouco de tudo")
+
+### Monitorar Uso de Tokens
+
+```bash
+# Ver uso da sessão atual
+> /cost
+
+# Ver estatísticas de compactação
+> /compact-stats
+
+# Ver memória carregada
+> /memory
+```
+
+### Hooks Automáticos (Configurados)
+
+O projeto já tem hooks PreCompact configurados que:
+
+1. **Salvam decisões** críticas antes de compactar (`.claude/decisions.log`)
+2. **Registram métricas** de cada compactação (`.claude/compact-metrics.jsonl`)
+
+**Benefício:** Histórico completo de decisões mesmo após múltiplas compactações.
+
+### Summary Instructions
+
+O arquivo `CLAUDE.md` raiz tem uma seção "Summary Instructions for Compaction" que guia o Claude sobre:
+
+- **O que preservar** (decisões NathIA, schema Supabase, configs Premium/IAP, etc.)
+- **O que omitir** (logs verbosos, explorações sem mudanças, builds falhados)
+
+Isso garante que decisões importantes sejam mantidas mesmo com autoCompact.
+
+---
+
 ## 🔧 Gerenciamento de Sessões
 
 ### Nomear Sessões
