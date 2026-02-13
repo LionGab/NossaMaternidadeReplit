@@ -45,7 +45,7 @@
     "validate-secrets": "node scripts/validate-secrets.js",
     "generate-webhook-secret": "node scripts/generate-webhook-secret.js",
     "generate-types": "bash scripts/generate-supabase-types.sh",
-    "validate-launch": "node scripts/validate-launch-config.js",
+    "validate-launch": "node scripts/build/validate-launch-config.js",
     "setup-credentials": "bash scripts/setup-launch-credentials.sh",
     "organize-credentials": "bash scripts/organize-credentials.sh",
     "setup-revenuecat": "bash scripts/setup-revenuecat-secrets.sh",
