@@ -115,8 +115,20 @@ bash scripts/reset-ios-simulator.sh
 # Rodar no simulador específico
 npm run ios:16e
 # ou
-bash scripts/run-ios-simulator.sh "iPhone 16e"
+bash scripts/ci/run-ios-simulator.sh "iPhone 16e"
 ```
+
+### Erro: "No code signing certificates are available to use"
+
+O Xcode precisa de um **Development Team** configurado mesmo para simulador:
+
+1. Abra o **Xcode**
+2. **Xcode > Settings** (ou Preferences) > **Accounts**
+3. Adicione seu **Apple ID** (gratuito)
+4. Selecione a conta > **Manage Certificates** > **+** > **Apple Development**
+5. Ou no projeto: abra `ios/NossaMaternidade.xcworkspace` no Xcode, selecione o target **NossaMaternidade** > **Signing & Capabilities** > marque **Automatically manage signing** e escolha seu **Team**
+
+Depois rode novamente: `npm run ios`
 
 ### Erro: "Unknown arguments: --simulator"
 
@@ -124,8 +136,10 @@ O Expo não aceita `--simulator` diretamente. Use:
 
 ```bash
 # Método 1: Script helper (recomendado)
+npm run ios
+# ou simulador específico:
 npm run ios:16e
-bash scripts/run-ios-simulator.sh "iPhone 16e"
+npm run ios:17pro
 
 # Método 2: Usar flag -d do Expo
 npx expo run:ios -d "iPhone 16e"
