@@ -13,13 +13,13 @@ Quando algo (Claude Code, Cursor, terminal) chama `python3`, o Windows pode most
 
 1. Abra a pasta:
    ```
-   C:\Users\User\AppData\Local\Programs\Python\Python312\
+   C:\Users\User\AppData\Local\Programs\Python\Python313\
    ```
 2. Crie um arquivo de texto chamado **`python3.cmd`** com este conteúdo:
 
    ```batch
    @echo off
-   "C:\Users\User\AppData\Local\Programs\Python\Python312\python.exe" %*
+   "C:\Users\User\AppData\Local\Programs\Python\Python313\python.exe" %*
    ```
 
    (Ou copie o arquivo `.claude/hooks/python3.cmd` do projeto para essa pasta.)
@@ -33,8 +33,8 @@ Assim o Windows acha `python3.cmd` antes do script do Git:
 3. Em **Variáveis do sistema** (ou do usuário), edite **Path**
 4. Adicione no **topo** da lista:
    ```
-   C:\Users\User\AppData\Local\Programs\Python\Python312
-   C:\Users\User\AppData\Local\Programs\Python\Python312\Scripts
+   C:\Users\User\AppData\Local\Programs\Python\Python313
+   C:\Users\User\AppData\Local\Programs\Python\Python313\Scripts
    ```
 5. **OK** em tudo e **feche e reabra** o Cursor/Claude Code.
 
@@ -46,7 +46,7 @@ No **PowerShell** ou **cmd** (não precisa ser Git Bash):
 python3 --version
 ```
 
-Deve mostrar a versão do Python (ex.: `Python 3.12.7`) sem abrir nenhum diálogo.
+Deve mostrar a versão do Python (ex.: `Python 3.13.x`) sem abrir nenhum diálogo.
 
 ---
 
@@ -62,4 +62,5 @@ Se o Claude Code/Cursor estiver configurado para usar **Git Bash** como shell do
 ## Referência
 
 - Launcher de backup no projeto: `.claude/hooks/python3.cmd`
+- Shim Bash no projeto (Git Bash): `scripts/python3-shim.sh` — aponta para Python 3.13; log opcional via `PYTHON_SHIM_DEBUG_LOG`.
 - Script Bash que costuma causar o problema (não é do projeto): algo como `#!/bin/bash` + `exec "/c/Users/.../python.exe" "$@"` em uma pasta do Git no PATH.
