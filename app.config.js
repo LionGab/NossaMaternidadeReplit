@@ -8,8 +8,7 @@ const isProduction = process.env.EXPO_PUBLIC_ENV === "production";
 // Fallback para dev local quando .env não existe (valores do projeto, anon key é pública)
 const isDev = process.env.NODE_ENV === "development";
 const DEV_SUPABASE_URL = "https://lqahkqfpynypbmhtffyi.supabase.co";
-const DEV_SUPABASE_ANON_KEY =
-  "***REMOVED***";
+const DEV_SUPABASE_ANON_KEY = "***REMOVED***";
 const DEV_SUPABASE_FUNCTIONS_URL = `${DEV_SUPABASE_URL}/functions/v1`;
 
 module.exports = ({ config }) => {
@@ -138,7 +137,13 @@ module.exports = ({ config }) => {
     plugins: [
       // SDK 55: plugins list must be declared manually because this is a dynamic (JS) config.
       "@react-native-community/datetimepicker",
-      "@sentry/react-native",
+      [
+        "@sentry/react-native/expo",
+        {
+          organization: process.env.SENTRY_ORG || "",
+          project: process.env.SENTRY_PROJECT || "",
+        },
+      ],
       "expo-asset",
       "expo-audio",
       "expo-font",
@@ -213,6 +218,8 @@ module.exports = ({ config }) => {
       revenueCatAndroidKey: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY || "",
       sentry: {
         dsn: process.env.EXPO_PUBLIC_SENTRY_DSN || "",
+        organization: process.env.SENTRY_ORG || "",
+        project: process.env.SENTRY_PROJECT || "",
       },
       safeBoot: process.env.EXPO_PUBLIC_SAFE_BOOT || "false",
       enableAIFeatures: process.env.EXPO_PUBLIC_ENABLE_AI_FEATURES,
