@@ -79,34 +79,27 @@ function checkAppConfig() {
 
   let allGood = true;
 
-  // Verificar owner
-  if (content.includes('owner: "nossamaternidade"')) {
-    log('✅ owner: "nossamaternidade"', COLORS.green);
+  // Verificar owner (conta EAS: liongab)
+  if (content.includes('owner: "liongab"')) {
+    log('✅ owner: "liongab"', COLORS.green);
   } else {
-    log("❌ owner incorreto", COLORS.red);
+    log("❌ owner incorreto (esperado: liongab)", COLORS.red);
     allGood = false;
   }
 
-  // Verificar projectId
-  if (content.includes('projectId: "e7e5a772-e745-4cff-9824-7c8523e78c54"')) {
+  // Verificar projectId (EAS project ID)
+  if (content.includes('projectId: "ec07a024-3e98-4023-af9b-1c5ecb9df2af"')) {
     log("✅ projectId correto", COLORS.green);
   } else {
     log("❌ projectId incorreto", COLORS.red);
     allGood = false;
   }
 
-  // Verificar SDK version
-  if (content.includes("compileSdkVersion: 34") && content.includes("targetSdkVersion: 34")) {
-    log("✅ SDK 34 configurado", COLORS.green);
+  // Verificar SDK version (SDK 55 / RN 0.83.1 requer 36)
+  if (content.includes("compileSdkVersion: 36") && content.includes("targetSdkVersion: 36")) {
+    log("✅ Android SDK 36 configurado", COLORS.green);
   } else {
-    log("⚠️  SDK pode não estar em 34", COLORS.yellow);
-  }
-
-  // Verificar Kotlin version
-  if (content.includes('kotlinVersion: "2.0.0"')) {
-    log("✅ Kotlin 2.0.0 configurado", COLORS.green);
-  } else {
-    log("⚠️  Kotlin version pode não estar em 2.0.0", COLORS.yellow);
+    log("⚠️  Android SDK pode não estar em 36", COLORS.yellow);
   }
 
   return allGood;

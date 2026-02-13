@@ -1,6 +1,7 @@
 {
   // ============================================
-  // PERFORMANCE & MEMORY - MacBook Air 2020 8GB
+  // PERFORMANCE & MEMORY - Dual-Platform
+  // MacBook Air M1 2020 8GB + Windows Ryzen 5 7600X 32GB
   // Otimizado para Cursor + Claude Code IDE
   // ============================================
 
@@ -291,6 +292,7 @@
   "terminal.integrated.smoothScrolling": true,
   "terminal.integrated.defaultLocation": "view",
   "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.defaultProfile.windows": "Git Bash",
 
   // ============================================
   // EXTENSIONS SPECIFIC

@@ -48,6 +48,16 @@
       }
     },
     {
+      "label": "Lint Fix",
+      "type": "shell",
+      "command": "npm run lint:fix",
+      "problemMatcher": "$eslint-stylish",
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated"
+      }
+    },
+    {
       "label": "Start Expo",
       "type": "shell",
       "command": "npm start",
@@ -61,7 +71,7 @@
     {
       "label": "Start Expo (Optimized)",
       "type": "shell",
-      "command": "set EXPO_NO_METRO_LAZY=true && set EXPO_METRO_MAX_WORKERS=4 && npm start",
+      "command": "npm run start:optimized",
       "isBackground": true,
       "problemMatcher": [],
       "presentation": {
@@ -72,7 +82,7 @@
     {
       "label": "Clean All Caches",
       "type": "shell",
-      "command": "npx expo start --clear && npm cache clean --force && rd /s /q node_modules\\.cache",
+      "command": "npm run clean",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
@@ -102,7 +112,7 @@
     {
       "label": "Build Both Platforms (Parallel)",
       "type": "shell",
-      "command": "start /b npm run build:preview:ios && npm run build:preview:android",
+      "command": "npx concurrently \"npm run build:preview:ios\" \"npm run build:preview:android\"",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

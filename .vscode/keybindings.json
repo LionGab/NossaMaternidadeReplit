@@ -1,8 +1,11 @@
 [
   // ============================================
   // CURSOR AI + CLAUDE CODE SHORTCUTS
-  // Otimizado para MacBook Air 2020 + Ultrathink
+  // Dual-Platform: MacBook Air M1 + Windows Ryzen 5 7600X
+  // macOS: cmd+ | Windows: ctrl+
   // ============================================
+
+  // --- Chat Open (macOS) ---
   {
     "key": "cmd+l",
     "command": "workbench.action.chat.open",
@@ -18,7 +21,24 @@
     "command": "workbench.action.chat.open",
     "when": "!terminalFocus"
   },
-  // Claude Code específicos
+  // --- Chat Open (Windows) ---
+  {
+    "key": "ctrl+l",
+    "command": "workbench.action.chat.open",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "ctrl+shift+a",
+    "command": "workbench.action.chat.open",
+    "when": "!terminalFocus"
+  },
+  {
+    "key": "ctrl+shift+c",
+    "command": "workbench.action.chat.open",
+    "when": "!terminalFocus"
+  },
+
+  // --- Claude Code (macOS) ---
   {
     "key": "cmd+shift+i",
     "command": "claude-code.openInlineChat",
@@ -29,9 +49,20 @@
     "command": "claude-code.explainCode",
     "when": "editorHasSelection"
   },
+  // --- Claude Code (Windows) ---
+  {
+    "key": "ctrl+shift+i",
+    "command": "claude-code.openInlineChat",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "ctrl+k ctrl+c",
+    "command": "claude-code.explainCode",
+    "when": "editorHasSelection"
+  },
 
   // ============================================
-  // QUICK OPEN & NAVIGATION
+  // QUICK OPEN & NAVIGATION (defaults — cross-platform)
   // ============================================
   {
     "key": "cmd+p",
@@ -62,7 +93,7 @@
   },
 
   // ============================================
-  // EDITOR OPERATIONS
+  // EDITOR OPERATIONS (defaults — cross-platform)
   // ============================================
   {
     "key": "cmd+d",
@@ -111,7 +142,7 @@
   },
 
   // ============================================
-  // MULTI-CURSOR
+  // MULTI-CURSOR (defaults — cross-platform)
   // ============================================
   {
     "key": "cmd+shift+l",
@@ -130,7 +161,7 @@
   },
 
   // ============================================
-  // LAYOUT & UI
+  // LAYOUT & UI (defaults — cross-platform)
   // ============================================
   {
     "key": "cmd+b",
@@ -162,27 +193,45 @@
   },
 
   // ============================================
-  // TASKS & SCRIPTS
+  // TASKS & SCRIPTS (custom — dual-platform)
   // ============================================
+  // macOS
   {
     "key": "cmd+shift+t",
     "command": "workbench.action.tasks.runTask",
-    "args": "🔍 Typecheck"
+    "args": "TypeCheck"
   },
   {
     "key": "cmd+shift+l",
     "command": "workbench.action.tasks.runTask",
-    "args": "✨ Lint Fix",
+    "args": "Lint Fix",
     "when": "!editorFocus"
   },
   {
     "key": "cmd+shift+q",
     "command": "workbench.action.tasks.runTask",
-    "args": "✅ Quality Gate"
+    "args": "Quality Gate"
+  },
+  // Windows
+  {
+    "key": "ctrl+shift+t",
+    "command": "workbench.action.tasks.runTask",
+    "args": "TypeCheck"
+  },
+  {
+    "key": "ctrl+shift+l",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Lint Fix",
+    "when": "!editorFocus"
+  },
+  {
+    "key": "ctrl+shift+q",
+    "command": "workbench.action.tasks.runTask",
+    "args": "Quality Gate"
   },
 
   // ============================================
-  // TERMINAL
+  // TERMINAL (defaults — cross-platform)
   // ============================================
   {
     "key": "ctrl+`",
@@ -193,13 +242,17 @@
     "command": "workbench.action.terminal.new"
   },
   {
+    "key": "ctrl+shift+`",
+    "command": "workbench.action.terminal.new"
+  },
+  {
     "key": "cmd+k",
     "command": "workbench.action.terminal.clear",
     "when": "terminalFocus"
   },
 
   // ============================================
-  // FILE OPERATIONS + MEMORY SAVING
+  // FILE OPERATIONS + MEMORY SAVING (defaults + custom)
   // ============================================
   {
     "key": "cmd+n",
@@ -225,19 +278,27 @@
     "key": "cmd+k cmd+shift+w",
     "command": "workbench.action.closeAllGroups"
   },
-  // Memory saving - fechar editores não salvos
+  // Memory saving — fechar editores nao salvos (custom — dual-platform)
   {
     "key": "cmd+alt+w",
     "command": "workbench.action.closeUnmodifiedEditors"
   },
-  // Reload para liberar memória
+  {
+    "key": "ctrl+alt+w",
+    "command": "workbench.action.closeUnmodifiedEditors"
+  },
+  // Reload para liberar memoria (custom — dual-platform)
   {
     "key": "cmd+alt+r",
     "command": "workbench.action.reloadWindow"
   },
+  {
+    "key": "ctrl+alt+r",
+    "command": "workbench.action.reloadWindow"
+  },
 
   // ============================================
-  // FORMATTING
+  // FORMATTING (defaults — cross-platform)
   // ============================================
   {
     "key": "shift+alt+f",
@@ -251,7 +312,7 @@
   },
 
   // ============================================
-  // SEARCH & REPLACE
+  // SEARCH & REPLACE (defaults — cross-platform)
   // ============================================
   {
     "key": "cmd+f",
@@ -274,7 +335,7 @@
   },
 
   // ============================================
-  // GIT + COMMIT COMMANDS (quality gate antes de commit)
+  // GIT + COMMIT COMMANDS (ctrl+ — cross-platform nativo)
   // ============================================
   {
     "key": "ctrl+shift+g g",
@@ -291,7 +352,6 @@
     "command": "git.sync",
     "when": "scmRepository"
   },
-  // Safe Commit Flow: quality gate depois lembrete para commit (task "Safe Commit Flow")
   {
     "key": "ctrl+shift+g c",
     "command": "workbench.action.tasks.runTask",
@@ -300,7 +360,7 @@
   },
 
   // ============================================
-  // DEBUGGING
+  // DEBUGGING (F-keys — cross-platform nativo)
   // ============================================
   {
     "key": "f5",
