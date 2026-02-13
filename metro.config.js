@@ -23,26 +23,8 @@ config.resolver.useWatchman = true;
 // Fix for import.meta errors - disable package exports to avoid ESM issues
 config.resolver.unstable_enablePackageExports = false;
 
-// Resolve react-native-web for web platform
-config.resolver.platforms = ["native", "web", "ios", "android"];
-config.resolver.resolveRequest = (context, moduleName, platform) => {
-  // Auto-resolve react-native to react-native-web on web platform
-  if (platform === "web" && moduleName === "react-native") {
-    return {
-      filePath: require.resolve("react-native-web"),
-      type: "sourceFile",
-    };
-  }
-  // expo-apple-foundation-models is iOS-only; stub on web so bundle succeeds
-  if (platform === "web" && moduleName === "expo-apple-foundation-models") {
-    return {
-      filePath: path.join(__dirname, "src", "ai", "expo-apple-foundation-models.stub.ts"),
-      type: "sourceFile",
-    };
-  }
-  // Use default resolution for other modules
-  return context.resolveRequest(context, moduleName, platform);
-};
+// Mobile-only: no web platform (react-native-web not installed)
+config.resolver.platforms = ["native", "ios", "android"];
 
 // Get environment variables for Metro cache configuration.
 // Auto-versioning: invalidates cache on package.json version bump
