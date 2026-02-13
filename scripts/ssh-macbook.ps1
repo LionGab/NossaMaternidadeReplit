@@ -24,13 +24,13 @@ if ($Args.Count -eq 0) {
     Write-Host "  Host: macbook"
     Write-Host "  IP: 192.168.2.2"
     Write-Host "  User: lion"
-    Write-Host "  Project: ~/Applications/NossaMaternidade-1"
+    Write-Host "  Project: ~/NossaMaternidadeReplit"
     Write-Host ""
     exit 0
 }
 
 $command = $Args -join " "
-$projectDir = "~/Applications/NossaMaternidade-1"
+$projectDir = "~/NossaMaternidadeReplit"
 
 # Executar comando no MacBook via SSH
 ssh macbook "cd $projectDir && $command"
