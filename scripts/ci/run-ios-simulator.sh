@@ -13,7 +13,18 @@ CYAN='\033[0;36m'
 RED='\033[0;31m'
 NC='\033[0m'
 
-SIMULATOR_NAME=${1:-"iPhone 16e"}
+# Se nenhum nome passado, usa o primeiro iPhone disponível
+if [ -z "$1" ]; then
+    # Formato: "    iPhone 17 Pro (UUID) (Booted)" - extrair nome antes do primeiro (UUID)
+SIMULATOR_NAME=$(xcrun simctl list devices available | grep -i "iphone" | head -1 | awk -F'[()]' '{print $1}' | xargs)
+    if [ -z "$SIMULATOR_NAME" ]; then
+        echo "${RED}❌ Nenhum simulador iPhone encontrado. Instale o Xcode e crie um simulador.${NC}"
+        exit 1
+    fi
+    echo "${CYAN}📱 Usando primeiro simulador disponível: ${SIMULATOR_NAME}${NC}"
+else
+    SIMULATOR_NAME="$1"
+fi
 
 echo ""
 echo "${CYAN}📱 Iniciando app no simulador: ${SIMULATOR_NAME}${NC}"
@@ -26,8 +37,9 @@ if [ -z "$SIMULATOR_UUID" ]; then
     echo "${RED}❌ Simulador '${SIMULATOR_NAME}' não encontrado${NC}"
     echo ""
     echo "${CYAN}💡 Simuladores disponíveis:${NC}"
-    xcrun simctl list devices available | grep -i "iphone" | head -5 | sed 's/^/   /'
+    xcrun simctl list devices available | grep -i "iphone" | head -10 | sed 's/^/   /'
     echo ""
+    echo "${CYAN}   Use: npm run ios:16e ou npm run ios:17pro${NC}"
     exit 1
 fi
 
@@ -48,5 +60,5 @@ sleep 3
 echo "${BLUE}3. Rodando app no simulador...${NC}"
 echo ""
 
-# Expo aceita -d ou --device para especificar simulador
-npx expo run:ios -d "$SIMULATOR_NAME"
+# Usar UUID (não nome) para garantir que Expo não confunda com dispositivo físico conectado
+npx expo run:ios -d "$SIMULATOR_UUID"
