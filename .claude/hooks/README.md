@@ -1,38 +1,51 @@
 # Claude Code Hooks
 
-Este diretório contém scripts que são executados automaticamente durante o ciclo de vida do Claude Code.
+Este diretorio contem scripts executados automaticamente durante o ciclo de vida do Claude Code.
 
-## Hooks Disponíveis
+## Hooks Ativos (9)
 
-### `validate-sensitive-files.py`
+### SessionStart
 
-**Evento:** `PreToolUse` (Edit|Write)
+| Hook               | Proposito                              |
+| ------------------ | -------------------------------------- |
+| `session-start.sh` | Valida ambiente, versoes, dependencias |
 
-Bloqueia edições em arquivos sensíveis:
+### PreToolUse
 
-- `.env*` (variáveis de ambiente)
-- `secrets/`, `credentials/`
-- `.git/`, `node_modules/`
-- Configs de build sensíveis
+| Hook                          | Matcher       | Proposito                                             |
+| ----------------------------- | ------------- | ----------------------------------------------------- |
+| `validate-bash.sh`            | `Bash`        | Bloqueia comandos perigosos (rm -rf, force push, etc) |
+| `pre-edit-check.sh`           | `Write\|Edit` | Valida edicoes de arquivos                            |
+| `validate-sensitive-files.py` | `Write\|Edit` | Bloqueia .env, secrets, credentials                   |
 
-**Exit codes:**
+### PostToolUse
 
-- `0`: Permite operação
-- `2`: Bloqueia operação (retorna erro para Claude)
+| Hook                  | Matcher       | Proposito                               |
+| --------------------- | ------------- | --------------------------------------- |
+| `post-edit-format.sh` | `Write\|Edit` | Auto-format com Prettier (TS, JSON, MD) |
 
-### `auto-format.sh`
+### UserPromptSubmit
 
-**Evento:** `PostToolUse` (Edit|Write)
+| Hook                | Proposito                           |
+| ------------------- | ----------------------------------- |
+| `prompt-context.sh` | Injeta contexto baseado em keywords |
 
-Formata automaticamente arquivos após edição:
+### Stop
 
-- TypeScript/JavaScript: Prettier
-- JSON: Prettier
-- Markdown: Prettier
+| Hook                | Proposito                   |
+| ------------------- | --------------------------- |
+| `pre-stop-check.sh` | Typecheck antes de encerrar |
+
+### PreCompact
+
+| Hook                            | Proposito                          |
+| ------------------------------- | ---------------------------------- |
+| `pre-compact-save-decisions.sh` | Salva git state antes de compactar |
+| `pre-compact-metrics.sh`        | Metricas de compactacao            |
 
 ## Como Funciona
 
-Os hooks recebem input JSON via stdin com informações da operação:
+Os hooks recebem input JSON via stdin com informacoes da operacao:
 
 ```json
 {
@@ -44,26 +57,18 @@ Os hooks recebem input JSON via stdin com informações da operação:
 }
 ```
 
+**Exit codes:**
+
+- `0`: Permite operacao
+- `2`: Bloqueia operacao (retorna erro para Claude)
+
 ## Adicionar Novo Hook
 
 1. Crie o script em `.claude/hooks/`
-2. Torne executável: `chmod +x script.sh`
-3. Registre em `.claude/settings.json`:
+2. Torne executavel: `chmod +x script.sh`
+3. Registre em `.claude/settings.json` no bloco `hooks`
 
-```json
-{
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [{ "type": "command", "command": ".claude/hooks/seu-script.sh" }]
-      }
-    ]
-  }
-}
-```
+## Referencia
 
-## Referência
-
-- [Hooks Guide](https://code.claude.com/docs/en/hooks-guide.md)
-- [Hooks Reference](https://code.claude.com/docs/en/hooks.md)
+- Configuracao: `.claude/settings.json` (bloco `hooks`)
+- [Claude Code Hooks Guide](https://docs.anthropic.com/en/docs/claude-code/hooks)

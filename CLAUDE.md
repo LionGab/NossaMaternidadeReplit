@@ -40,6 +40,8 @@ Skills são a forma preferida de estender Claude Code. Carregam sob demanda com 
 | `/gates`             | Release gates (G1-G7)                                         |
 | `/commit-commands`   | Workflow commit/push/PR (quality gate + atômico)              |
 | `/commit`            | Verify + guia commit atômico (uso com plugin Commit commands) |
+| `/superdesign`       | UI/UX design agent (drafts, iterações, flows)                 |
+| `/ui-ux-pro-max`     | Design intelligence (67 estilos, 96 paletas, 57 font pairs)   |
 
 **Hot-reload**: Skills em `.claude/skills/` recarregam automaticamente.
 
@@ -231,10 +233,12 @@ npm run generate-types         # Schema changed
 | Quality   | `pre-commit`, `fix-types`, `verify`, `review` |
 | Domain    | `nathia`                                      |
 | Workflow  | `gates`, `commit-commands`                    |
+| Design    | `superdesign`, `ui-ux-pro-max`                |
 
-### Agents (Legacy)
+### Agents Ativos (10)
 
-`mobile-deployer` · `mobile-debugger` · `type-checker` · `code-reviewer`
+**Core**: `mobile-debugger` · `performance` · `database` · `frontend-architect`
+**Frontend**: `design-ui` · `accessibility-auditor` · `animation-specialist` · `component-builder` · `responsive-layout` · `theme-migrator`
 
 ---
 

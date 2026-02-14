@@ -9,7 +9,7 @@
       },
       "description": "Supabase MCP — queries, migrations, RLS"
     },
-    "expo-mcp": {
+    "expo": {
       "url": "https://mcp.expo.dev/mcp",
       "description": "Expo MCP — EAS Build, submit, docs"
     },
@@ -18,7 +18,7 @@
       "args": ["-y", "@upstash/context7-mcp@latest"],
       "description": "Documentacao atualizada de bibliotecas"
     },
-    "xcode-mcp": {
+    "xcode": {
       "command": "npx",
       "args": ["-y", "xcodebuildmcp@latest"],
       "description": "Xcode — simuladores, projetos iOS (macOS only)"
