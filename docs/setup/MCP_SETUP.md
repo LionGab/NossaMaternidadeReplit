@@ -15,6 +15,8 @@ Este documento define o baseline oficial de MCPs do repositório para macOS/Unix
   - `.mcp.json`
   - `scripts/setup/setup-mcps-mac.sh`
 
+> Tooling: use `npm run sync:mcp-config` to keep `.mcp.json` and `.claude/mcp-config.json` in sync (creates the missing file or fails if they differ).
+
 ## Escopo e plataforma
 
 - Escopo: somente arquivos versionados do repositório.
@@ -103,6 +105,8 @@ Reinicie o Cursor para recarregar os MCPs.
 ```bash
 node -e "JSON.parse(require('fs').readFileSync('.mcp.json','utf8'))"
 node -e "JSON.parse(require('fs').readFileSync('.claude/mcp-config.json','utf8'))"
+# Sincronize e valide equivalência
+npm run sync:mcp-config
 ```
 
 ### 2. Semântica mínima do baseline

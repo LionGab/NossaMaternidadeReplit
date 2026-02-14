@@ -102,6 +102,19 @@ fi
 # Validar JSON
 validate_json "$MCP_CONFIG"
 
+# Se existir .mcp.json (compatibilidade), garanta que esteja em sincronia com a fonte canônica
+if [ -f ".mcp.json" ]; then
+    echo "\n🔁 Verificando sincronia com .mcp.json..."
+    node -e "const a=JSON.stringify(JSON.parse(require('fs').readFileSync('.claude/mcp-config.json','utf8'))); const b=JSON.stringify(JSON.parse(require('fs').readFileSync('.mcp.json','utf8'))); if(a!==b) { console.error('DIFFER'); process.exit(1); }" 2>/dev/null
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅${NC} .mcp.json está sincronizado com .claude/mcp-config.json"
+        ((PASSED++))
+    else
+        echo -e "${RED}❌${NC} .mcp.json difere de .claude/mcp-config.json — execute: npm run sync:mcp-config to reconcile"
+        ((FAILED++))
+    fi
+fi
+
 echo ""
 echo "🔧 Verificando servidores MCP configurados..."
 echo ""
