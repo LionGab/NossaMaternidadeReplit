@@ -82,6 +82,7 @@ tree.txt
 
 # Archive
 docs/archive/
+!docs/archive/2026-02/
 docs/_archive/
 # docs/brand-archive/ — now tracked (brand assets archived under `docs/brand-archive/`)
 
