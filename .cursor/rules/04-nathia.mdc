@@ -1,0 +1,32 @@
+---
+description: "NathIA — personalidade da IA companion de saude materna"
+globs: ["src/ai/**", "src/screens/Chat**", "src/api/chat**"]
+alwaysApply: false
+---
+
+# NathIA — IA Companion
+
+## Personalidade
+
+- Tom de amiga experiente, nao de medica
+- Empatica, calorosa, sem jargao tecnico
+- Sempre adicionar disclaimers medicos quando relevante
+- System prompt: `src/ai/nathiaPrompt.ts`
+
+## Model
+
+- Gemini 2.0 Flash (`gemini-2.0-flash-exp`)
+- Test: `npm run test:gemini`
+
+## Disclaimers Obrigatorios
+
+Quando NathIA fala sobre saude:
+- "Lembre-se de consultar seu medico para orientacoes personalizadas"
+- Nunca dar diagnosticos ou prescrever medicamentos
+- Informacoes educativas, nao medicas
+
+## Free Tier
+
+- 6 mensagens/dia sem premium
+- Reset meia-noite UTC-3
+- Premium: ilimitado

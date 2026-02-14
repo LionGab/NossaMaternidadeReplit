@@ -1,0 +1,94 @@
+---
+description: "Use when fixing TypeScript errors, type guards, strict mode issues, or resolving type problems"
+globs: ["*.ts", "*.tsx"]
+---
+
+# Fix TypeScript Errors
+
+Resolver erros de TypeScript mantendo zero `any` e zero `@ts-ignore`.
+
+## Diagnostico
+
+```bash
+npm run typecheck
+```
+
+## Workflow
+
+1. `npm run typecheck` → Lista erros
+2. Agrupar por tipo → Priorizar criticos
+3. Corrigir minimo → Preservar logica
+4. `npm run typecheck` → Validar fix
+
+## Regras
+
+| Evitar | Usar |
+|--------|------|
+| `any` | `unknown` + type guard |
+| `@ts-ignore` | Corrigir raiz |
+| `as Type` sem validar | Type guard primeiro |
+| `!` excessivo | Optional chaining `?.` |
+
+## Patterns de Correcao
+
+### Object is possibly 'null'
+
+```typescript
+// ERRADO
+const name = user.profile.name;
+
+// CERTO
+const name = user?.profile?.name;
+```
+
+### Type 'X' is not assignable to type 'Y'
+
+```typescript
+const validStatuses = ["active", "inactive"] as const;
+type Status = (typeof validStatuses)[number];
+
+function isValidStatus(s: string): s is Status {
+  return validStatuses.includes(s as Status);
+}
+```
+
+### Property 'X' does not exist
+
+```typescript
+function isUser(obj: unknown): obj is User {
+  return typeof obj === "object" && obj !== null && "name" in obj;
+}
+```
+
+### Implicit 'any'
+
+```typescript
+// ERRADO
+function process(data) { return data.value; }
+
+// CERTO
+function process(data: DataWithValue): string { return data.value; }
+```
+
+### Error Handling
+
+```typescript
+// ERRADO
+catch (error: any) { console.log(error.message); }
+
+// CERTO
+catch (error) {
+  if (error instanceof Error) { console.log(error.message); }
+}
+```
+
+## Tipos do Supabase
+
+```bash
+npm run generate-types
+```
+
+```typescript
+import { Database } from "@/types/database.types";
+type User = Database["public"]["Tables"]["users"]["Row"];
+```

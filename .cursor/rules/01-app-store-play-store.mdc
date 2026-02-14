@@ -1,0 +1,45 @@
+---
+description: "Foco em publicação App Store e Google Play — máximo de sucesso"
+globs: ["**/eas.json", "**/app.config.js", "**/app.json", "docs/builds/**"]
+alwaysApply: false
+---
+
+# App Store & Google Play — Build Máximo
+
+## Objetivo
+
+Garantir builds de produção sem erros e submissões bem-sucedidas nas lojas.
+
+## Fluxo Obrigatório antes de Build
+
+1. `npm run quality-gate` — PASS obrigatório
+2. Validar P0 (console.log, cores, copy onboarding)
+3. `npm run release:preflight:ios-testflight` (iOS)
+4. EAS Build → Submit
+
+## Profiles EAS
+
+| Profile | Distribuição | Uso |
+|---------|--------------|-----|
+| `development` | internal | Dev client |
+| `ios_preview` | internal | Testes internos |
+| `ios_testflight` | store | TestFlight |
+| `production` | store | App Store / Play Store |
+
+## Comandos EAS
+
+```bash
+# Build produção
+eas build --platform ios --profile ios_testflight
+eas build --platform android --profile production
+
+# Submit
+eas submit --platform ios --profile ios_testflight --latest
+eas submit --platform android --profile production --latest
+```
+
+## Persistência
+
+- Checkpoint: `docs/builds/YYYY-MM-DD-{platform}-{profile}.md`
+- Logs: `docs/builds/logs/{build-id}.txt`
+- NUNCA colar logs completos no chat — apenas trecho mínimo

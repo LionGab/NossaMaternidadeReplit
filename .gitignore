@@ -83,10 +83,14 @@ tree.txt
 # Archive
 docs/archive/
 docs/_archive/
+docs/brand-archive/
 
-# Claude/Cursor local (exceto config MCP compartilhada)
+# Claude/Cursor local (exceto configs compartilhadas)
 .cursor/*
 !.cursor/mcp.json
+!.cursor/hooks.json
+!.cursor/rules/
+!.cursor/commands/
 core
 
 # SSH Keys (private keys should never be committed)

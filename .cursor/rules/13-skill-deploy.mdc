@@ -1,0 +1,53 @@
+---
+description: "Use when building or deploying iOS/Android, TestFlight, Play Store, EAS builds"
+globs: ["eas.json", "app.config.*", "app.json"]
+---
+
+# Deploy iOS & Android
+
+## iOS (TestFlight)
+
+```bash
+npm run build:prod:ios && npm run submit:prod:ios
+```
+
+| Acao | Comando |
+|------|---------|
+| Build iOS | `npm run build:prod:ios` |
+| Submit | `npm run submit:prod:ios` |
+| Listar builds | `eas build:list --limit 5` |
+| Credentials | `eas credentials --platform ios` |
+
+## Android (Google Play)
+
+```bash
+npm run build:prod:android && npm run submit:prod:android
+```
+
+| Acao | Comando |
+|------|---------|
+| Preview (APK) | `npm run build:preview:android` |
+| Production | `npm run build:prod:android` |
+| Submit | `npm run submit:prod:android` |
+
+## Checklist Pre-Deploy
+
+- [ ] `npm run quality-gate` passa
+- [ ] Versao incrementada em `app.json`
+- [ ] Secrets configurados no EAS
+- [ ] Git status limpo
+
+## Regras Criticas
+
+1. **NUNCA** build sem `npm run typecheck` passar
+2. **SEMPRE** incrementar versao antes de build production
+3. **SEMPRE** usar `--non-interactive` em CI/CD
+
+## Diferencas iOS vs Android
+
+| Aspecto | iOS | Android |
+|---------|-----|---------|
+| Store | TestFlight → App Store | Google Play Console |
+| Build | .ipa | .aab / .apk |
+| Versioning | CFBundleVersion | versionCode |
+| Review | 24-48h | 2-7 dias |

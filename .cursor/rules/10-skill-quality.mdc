@@ -1,0 +1,38 @@
+---
+description: "Use when running quality checks, before commits, PRs, or validating code quality"
+---
+
+# Quality Gate
+
+Verificacao completa de qualidade. **Obrigatorio** antes de commits, PRs e builds.
+
+## Quick Run
+
+```bash
+npm run quality-gate
+```
+
+## O Que Verifica
+
+1. **TypeScript** — `npx tsc --noEmit` (zero `any`, zero `@ts-ignore`)
+2. **ESLint** — `npx eslint src/ --max-warnings 0`
+3. **Console Logs** — Busca `console.log` residual em `src/`
+4. **Build Check** — `npx expo-doctor`
+
+## Comandos Rapidos
+
+```bash
+npm run quality-gate    # Completo
+npm run typecheck       # Apenas TS
+npm run lint            # Apenas lint
+npm run lint:fix        # Auto-fix ESLint + Prettier
+```
+
+## Se Falhar
+
+| Erro | Solucao |
+|------|---------|
+| TypeScript errors | `npm run typecheck` → corrigir com type guards |
+| ESLint errors | `npm run lint:fix` |
+| console.log | Substituir por `logger.*` de `@/utils/logger` |
+| Build errors | Verificar `app.json` e dependencias |

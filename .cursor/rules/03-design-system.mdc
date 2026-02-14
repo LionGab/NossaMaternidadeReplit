@@ -1,0 +1,48 @@
+---
+description: "Design system — tokens, cores, acessibilidade WCAG AAA"
+globs: ["src/components/**", "src/screens/**", "src/theme/**"]
+alwaysApply: false
+---
+
+# Design System — Nossa Maternidade
+
+## Tokens
+
+Sempre usar tokens, nunca cores hardcoded:
+
+```typescript
+import { Tokens } from "@/theme/tokens";
+import { useThemeColors } from "@/hooks/useTheme";
+
+// CORRETO
+const colors = useThemeColors();
+<View style={{ backgroundColor: colors.background }}>
+
+// ERRADO
+<View style={{ backgroundColor: "#FFFFFF" }}>
+<View style={{ backgroundColor: "white" }}>
+```
+
+## Acessibilidade (WCAG AAA)
+
+- Contraste minimo 7:1 para texto normal
+- Tap targets >= 44pt
+- Todos os elementos interativos: `accessibilityLabel`
+- VoiceOver/TalkBack: ordem de leitura logica
+
+## Componentes
+
+- `Pressable` (nunca `TouchableOpacity`)
+- `FlashList` para listas longas
+- `FlatList` para listas curtas
+
+## Premium/IAP
+
+```typescript
+const isPremium = useIsPremium();
+<PremiumGate>{/* conteudo premium */}</PremiumGate>
+```
+
+- Products: `nossa_maternidade_monthly`, `nossa_maternidade_yearly`
+- Entitlement: `premium`
+- Free tier: 6 mensagens IA/dia

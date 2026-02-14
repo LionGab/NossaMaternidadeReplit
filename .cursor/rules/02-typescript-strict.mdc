@@ -1,0 +1,39 @@
+---
+description: "TypeScript strict — sem any, tipos explicitos, type guards"
+globs: ["**/*.ts", "**/*.tsx"]
+alwaysApply: false
+---
+
+# TypeScript Strict
+
+## Regras
+
+- Tipos explicitos em returns de funcoes exportadas
+- `unknown` + type guards em vez de `any`
+- `@ts-ignore` / `@ts-expect-error` so com justificativa em comentario
+- Proibido `: any` sem necessidade
+
+## Type Guards
+
+```typescript
+function isUser(data: unknown): data is User {
+  return typeof data === "object" && data !== null && "id" in data;
+}
+```
+
+## Zustand Typing (CRITICO)
+
+```typescript
+// CORRETO — selector atomico
+const user = useAppStore((s) => s.user);
+
+// ERRADO — cria objeto novo todo render = loop infinito
+const { user } = useAppStore((s) => ({ user: s.user }));
+```
+
+## Comandos
+
+```bash
+npm run typecheck     # tsc --noEmit
+npm run quality-gate  # typecheck + lint + build
+```

@@ -1,0 +1,30 @@
+---
+description: "Supabase — banco de dados, RLS, migrations"
+globs: ["src/api/**", "supabase/**", "src/types/database**"]
+alwaysApply: false
+---
+
+# Supabase
+
+## Projeto
+
+- Project ID: `lqahkqfpynypbmhtffyi`
+- Tipos: `src/types/database.types.ts`
+
+## Regras
+
+- Toda tabela DEVE ter RLS (Row Level Security)
+- Migrations em `supabase/migrations/`
+- Regenerar tipos apos mudancas: `npm run generate-types`
+- Nunca expor `SUPABASE_SERVICE_ROLE_KEY` em client
+
+## Queries
+
+```typescript
+import { supabase } from "@/api/supabase";
+
+const { data, error } = await supabase
+  .from("posts")
+  .select("*")
+  .eq("user_id", userId);
+```

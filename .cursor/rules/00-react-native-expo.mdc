@@ -1,0 +1,74 @@
+---
+description: "Regras core React Native + Expo — Nossa Maternidade"
+alwaysApply: true
+priority: critical
+---
+
+# React Native & Expo — Nossa Maternidade
+
+> App de saude materna com IA companion (NathIA). Mobile-first iOS/Android.
+
+## Stack
+
+- **Expo SDK 55** + React Native 0.83 + React 19
+- **TypeScript strict** — sem `any`, sem `@ts-ignore` sem justificativa
+- **NativeWind** — design tokens em `src/theme/tokens.ts`
+- **Zustand** (UI) + **TanStack Query** (server state)
+- **Supabase** backend + **RevenueCat** IAP
+- **Gemini 2.0 Flash** para NathIA
+
+## Path Alias
+
+```typescript
+import { X } from "@/components/ui/X"; // @/* -> src/*
+```
+
+## Comandos
+
+| Antes de | Comando |
+|----------|---------|
+| PR / commit | `npm run quality-gate` |
+| Build iOS | `npm run build:prod:ios` |
+| TestFlight | `npm run submit:prod:ios` |
+
+## Proibicoes Absolutas
+
+1. `console.log` em `src/` — use `logger.*` de `src/utils/logger.ts`
+2. `: any` — use `unknown` + type guards
+3. Cores hardcoded (`#xxx`, `white`) — use `Tokens.*` ou `useThemeColors()`
+4. `ScrollView` + `.map()` para listas — use `FlashList` ou `FlatList`
+5. `TouchableOpacity` — use `Pressable`
+6. Imports relativos profundos (`../../../`) — use `@/`
+
+## Zustand (CRITICO — previne loops infinitos)
+
+```typescript
+// CORRETO
+const user = useAppStore((s) => s.user);
+
+// ERRADO — cria nova ref todo render
+const { user } = useAppStore((s) => ({ user: s.user }));
+```
+
+## Constantes Imutaveis
+
+- Bundle ID iOS: `br.com.nossamaternidade.app`
+- Bundle ID Android: `com.liongab.nossamaternidade`
+- Apple Team ID: `KZPW4S77UH`
+- RevenueCat Entitlement: `premium`
+- Supabase Project: `lqahkqfpynypbmhtffyi`
+
+## Estrutura
+
+```
+src/
+├── api/          # Supabase, chat, transcribe
+├── ai/           # nathiaPrompt.ts
+├── components/   # UI components (ui/ = atoms)
+├── hooks/        # Custom hooks
+├── navigation/   # React Navigation
+├── screens/      # Screen components
+├── state/        # Zustand stores
+├── theme/        # Design tokens
+└── utils/        # Utilities (logger, cn)
+```
