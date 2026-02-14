@@ -83,7 +83,7 @@ tree.txt
 # Archive
 docs/archive/
 docs/_archive/
-docs/brand-archive/
+# docs/brand-archive/ — now tracked (brand assets archived under `docs/brand-archive/`)
 
 # Claude/Cursor local (exceto configs compartilhadas)
 .cursor/*
