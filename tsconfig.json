@@ -45,7 +45,8 @@
     "nossamaternidade-*/**/*",
     ".eas/**/*",
     "archive/**/*",
-    "NossaMaternidade_backup_*/**/*"
+    "NossaMaternidade_backup_*/**/*",
+    "NossaMaternidadeReplit/**/*"
   ],
   "extends": "expo/tsconfig.base"
 }

@@ -1,5 +1,14 @@
 {
   "mcpServers": {
+    "supabase": {
+      "command": "npx",
+      "args": ["-y", "@supabase/mcp-server"],
+      "env": {
+        "SUPABASE_DB_URL": "${SUPABASE_DB_URL}",
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
+      },
+      "description": "Supabase MCP — queries, migrations, RLS"
+    },
     "expo-mcp": {
       "url": "https://mcp.expo.dev/mcp",
       "description": "Expo MCP — EAS Build, submit, docs"
