@@ -1,0 +1,66 @@
+---
+description: State management patterns — Zustand + TanStack Query
+globs: src/state/**/*.ts, src/api/hooks/**/*.ts
+alwaysApply: false
+---
+
+# State Management — Nossa Maternidade
+
+## Architecture
+- **Server state** (API data): TanStack Query v5
+- **Client/UI state** (local): Zustand with AsyncStorage persistence
+- **Offline-first state** (local-first + sync): Zustand with debounced auto-sync
+
+## Zustand — CRITICAL Pattern
+
+```typescript
+// CORRECT: Individual selectors (stable references)
+const user = useAppStore((s) => s.user);
+const setUser = useAppStore((s) => s.setUser);
+
+// WRONG: Object destructuring creates new ref every render → infinite loops
+const { user, setUser } = useAppStore((s) => ({ user: s.user, setUser: s.setUser }));
+```
+
+## TanStack Query — When to Use
+
+Use TanStack Query for **fetch-first** data (server is source of truth):
+- Community posts, comments, likes → `usePosts()`, `useComments()`
+- User profile from API
+- Search results
+
+Do NOT use for **offline-first** or **local-only** data:
+- Cycle tracking (offline-first + debounced sync) → Zustand
+- Habits (100% local) → Zustand
+- Theme, UI state → Zustand
+
+## Query Keys
+Always use the factory in `src/api/queryKeys.ts`:
+```typescript
+import { communityKeys, userKeys } from "@/api/queryKeys";
+
+// Posts list
+queryKey: communityKeys.posts({ limit, offset })
+
+// Single post
+queryKey: communityKeys.post(postId)
+
+// Comments for a post
+queryKey: communityKeys.comments(postId)
+```
+
+## Mutations
+- Use `useMutation` with `onSuccess` to invalidate related queries
+- Use optimistic updates (`onMutate`) for instant UI feedback
+- Always handle rollback in `onError`
+
+## Stores Location
+All stores in `src/state/`:
+| Store | Persisted | Pattern |
+|-------|-----------|---------|
+| useAppStore | Yes | Client state |
+| useChatStore | Yes | Client state |
+| useCycleStore | Yes | Offline-first + sync |
+| useHabitsStore | Yes | Local-only |
+| usePremiumStore | Yes | Client state |
+| useCommunityStore | No | UI state only (server state in TanStack Query) |

@@ -1,0 +1,92 @@
+---
+description: TypeScript strict mode conventions
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# TypeScript — Nossa Maternidade
+
+## Strict Mode
+- `strict: true` enabled in tsconfig.json
+- `isolatedModules: true` for Metro bundler compatibility
+
+## Zero Tolerance
+- NEVER use `any` — use `unknown` + type guards
+- NEVER use `@ts-ignore` or `@ts-expect-error` without justification comment
+- NEVER use type assertions (`as`) unless absolutely necessary
+
+## Type Guards
+```typescript
+// CORRECT: Type guard for unknown
+function isUser(value: unknown): value is User {
+  return typeof value === "object" && value !== null && "id" in value;
+}
+
+// CORRECT: Narrowing
+if (error instanceof Error) {
+  logger.error(error.message, "Context");
+}
+```
+
+## Interfaces vs Types
+- Use `interface` for object shapes (component props, store state)
+- Use `type` for unions, intersections, mapped types
+
+```typescript
+// Props
+interface ButtonProps {
+  label: string;
+  onPress: () => void;
+  variant?: "primary" | "secondary";
+}
+
+// Union type
+type Theme = "light" | "dark";
+```
+
+## Zod Validation (v4)
+```typescript
+import { z } from "zod";
+
+// Schema definition
+const userSchema = z.object({
+  email: z.string().email(),
+  name: z.string().min(2),
+});
+
+// Infer types from schema
+type User = z.infer<typeof userSchema>;
+
+// IMPORTANT: Zod v4 uses `error` property (not `errorMap` or `message`)
+z.enum(["a", "b"], { error: "Invalid value" });
+
+// IMPORTANT: Don't annotate $ZodIssue callback params manually — let TS infer
+```
+
+## Logging
+```typescript
+// CORRECT: Use structured logger
+import { logger } from "@/utils/logger";
+logger.info("User logged in", "AuthService", { userId });
+logger.error("Failed to fetch", "API", error);
+
+// WRONG: Never use console.log in production
+console.log("debug"); // NO — use logger.debug()
+```
+
+## Supabase Types
+- Regenerate after schema changes: `npm run generate-types`
+- Types live in `src/types/supabase.ts` (auto-generated)
+- Always type Supabase queries with `Database` generic
+
+## API Pattern
+All services return `{ data, error }`:
+```typescript
+const { data, error } = await supabase
+  .from("users")
+  .select("*")
+  .eq("id", userId)
+  .single();
+
+if (error) throw error;
+```

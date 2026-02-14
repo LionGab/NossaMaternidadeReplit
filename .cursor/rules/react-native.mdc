@@ -1,0 +1,53 @@
+---
+description: React Native & Expo conventions for Nossa Maternidade
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# React Native & Expo — Nossa Maternidade
+
+## Stack
+- Expo SDK 54 + React Native 0.81 + TypeScript strict
+- New Architecture enabled (Fabric, TurboModules)
+- Path alias: `@/*` maps to `src/*`
+
+## Components
+- Functional components only (no class components)
+- Use `Pressable` instead of `TouchableOpacity`
+- Use `FlashList` from `@shopify/flash-list` for all lists — NEVER `ScrollView + map()` or `FlatList`
+  - FlashList v2: do NOT pass `estimatedItemSize` (removed in v2)
+- Use `expo-image` (not RN `Image`) for optimized image loading
+- Use `SafeAreaView` from `react-native-safe-area-context`
+- Animations: `react-native-reanimated` (worklets on UI thread)
+- Gestures: `react-native-gesture-handler`
+
+## Files
+- Max 250 lines per file — extract subcomponents/hooks if larger
+- Co-locate tests: `Component.test.tsx` next to `Component.tsx`
+- Screen components in `src/screens/`, reusable UI in `src/components/ui/`
+
+## Imports
+```typescript
+// Correct order: external → @/ alias → relative
+import React from "react";
+import { View, Text } from "react-native";
+import { FlashList } from "@shopify/flash-list";
+
+import { Tokens } from "@/theme/tokens";
+import { useTheme } from "@/hooks/useTheme";
+import { logger } from "@/utils/logger";
+
+import { LocalComponent } from "./LocalComponent";
+```
+
+## Performance
+- `React.memo` for list item components
+- `useCallback` for handlers passed as props
+- `useMemo` for expensive derived data
+- Never create objects/arrays inline in JSX props (breaks memoization)
+
+## Accessibility
+- Tap targets >= 44pt (padding if needed)
+- `accessibilityLabel` + `accessibilityRole` on all interactive elements
+- High contrast: WCAG AAA preferred (7:1 ratio)
+- 8pt grid system for spacing

@@ -1,0 +1,64 @@
+---
+description: Design system tokens, colors, and styling conventions
+globs: src/**/*.{ts,tsx}
+alwaysApply: false
+---
+
+# Design System — Calm FemTech
+
+## Theme: "Calm FemTech"
+Blue base (#4A90D9) + Pink accents (#F43F68). Soft, trustworthy, feminine.
+
+## Colors — NEVER Hardcode
+
+```typescript
+// CORRECT: Use tokens
+import { Tokens } from "@/theme/tokens";
+import { useThemeColors } from "@/hooks/useTheme";
+
+const bg = isDark ? Tokens.neutral[900] : Tokens.neutral[50];
+const accent = Tokens.brand.accent[500];
+
+// WRONG: Never use raw values
+const bg = "#FFFFFF";        // NO
+const text = "black";        // NO
+const pink = "rgba(244,63,104,1)"; // NO
+```
+
+## Token Structure (`src/theme/tokens.ts`)
+```
+Tokens.brand.primary[50-900]    — Blue palette
+Tokens.brand.accent[50-900]     — Pink palette
+Tokens.brand.secondary[50-900]  — Purple palette
+Tokens.brand.teal[50-900]       — Teal palette
+Tokens.neutral[0-900]           — Gray scale (0=white, 900=near-black)
+```
+
+## Spacing (8pt grid)
+```typescript
+import { spacing } from "@/theme/tokens";
+// spacing.xs=4, spacing.sm=8, spacing.md=12, spacing.lg=16, spacing.xl=24, spacing["2xl"]=32
+```
+
+## Dark Mode
+Always support both themes:
+```typescript
+const { isDark } = useTheme();
+const bgColor = isDark ? Tokens.neutral[900] : Tokens.neutral[50];
+```
+
+## Styling
+- Use NativeWind (`className`) with `cn()` helper when possible
+- Fallback to `StyleSheet.create()` for complex styles
+- Use `radius` tokens for border-radius
+- Use `shadows` tokens for elevation
+
+## Typography
+```typescript
+import { typography } from "@/theme/tokens";
+// typography.fontFamily.regular, .medium, .semibold, .bold
+```
+
+## Tap Targets
+- Minimum 44pt for all interactive elements
+- Use padding to increase hit area, not the visual element size
