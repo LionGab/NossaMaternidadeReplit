@@ -2,7 +2,14 @@
 # PreCompact Metrics Hook - Registra métricas de compactação
 # Formato JSONL (JSON Lines) para análise posterior
 
-METRICS_FILE=".claude/compact-metrics.jsonl"
+# Resolve repo root (git-aware fallback)
+if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then
+  ROOT_DIR="$(git rev-parse --show-toplevel)"
+else
+  ROOT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+fi
+
+METRICS_FILE="$ROOT_DIR/.claude/compact-metrics.jsonl"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # Criar arquivo se não existir
