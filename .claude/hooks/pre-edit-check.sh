@@ -4,6 +4,13 @@
 
 set -e
 
+# Resolve repo root (git-aware fallback)
+if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then
+  ROOT_DIR="$(git rev-parse --show-toplevel)"
+else
+  ROOT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+fi
+
 INPUT=$(cat)
 
 # Extrair file_path do JSON
@@ -11,6 +18,15 @@ FILE_PATH=$(echo "$INPUT" | grep -o '"file_path":"[^"]*"' | cut -d'"' -f4 | head
 
 if [ -z "$FILE_PATH" ]; then
   exit 0  # Sem file_path, não há o que validar
+fi
+
+# Normalizar para caminho absoluto/relativo ao repo
+if [ -f "$FILE_PATH" ]; then
+  RESOLVED_PATH="$FILE_PATH"
+elif [ -f "$ROOT_DIR/$FILE_PATH" ]; then
+  RESOLVED_PATH="$ROOT_DIR/$FILE_PATH"
+else
+  RESOLVED_PATH="$FILE_PATH" # keep original (some hooks pass virtual paths)
 fi
 
 # Extrair extensão

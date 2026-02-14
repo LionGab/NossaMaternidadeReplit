@@ -21,6 +21,8 @@
    - `PreCompact` hooks não funcionam fora do Composer
    - `Stop` hooks são limitados
 
+**Workaround / cross-platform**: hooks resolvem automaticamente o `repo root` via `git rev-parse --show-toplevel` (compatível com macOS, Linux, Git Bash/WSL). Para pular a validação do `validate-bash.sh` em operações manuais documentadas, use `CLAUDE_SKIP_VALIDATE_BASH=1 <command>` — use com cautela e registre a razão no PR/log.
+
 4. **MCPs em Produção**
    - Supabase MCP é experimental e instável
    - Memory Keeper é beta e exigente

@@ -4,6 +4,13 @@
 
 set -e
 
+# Resolve repo root (git-aware fallback)
+if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then
+  ROOT_DIR="$(git rev-parse --show-toplevel)"
+else
+  ROOT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+fi
+
 INPUT=$(cat)
 
 # Extrair file_path
@@ -13,8 +20,12 @@ if [ -z "$FILE_PATH" ]; then
   exit 0
 fi
 
-# Verificar se arquivo existe
-if [ ! -f "$FILE_PATH" ]; then
+# Normalize path: accept absolute or repo-relative paths
+if [ -f "$FILE_PATH" ]; then
+  TARGET_PATH="$FILE_PATH"
+elif [ -f "$ROOT_DIR/$FILE_PATH" ]; then
+  TARGET_PATH="$ROOT_DIR/$FILE_PATH"
+else
   exit 0
 fi
 

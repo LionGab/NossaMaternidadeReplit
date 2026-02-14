@@ -2,7 +2,14 @@
 # PreCompact Hook - Salva decisões críticas antes de compactar
 # Executado automaticamente quando autoCompact é acionado
 
-DECISION_LOG=".claude/decisions.log"
+# Resolve repo root (git-aware fallback)
+if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then
+  ROOT_DIR="$(git rev-parse --show-toplevel)"
+else
+  ROOT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+fi
+
+DECISION_LOG="$ROOT_DIR/.claude/decisions.log"
 TIMESTAMP=$(date +"%Y-%m-%d %H:%M:%S")
 
 # Criar arquivo se não existir

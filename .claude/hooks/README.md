@@ -57,6 +57,20 @@ Os hooks recebem input JSON via stdin com informacoes da operacao:
 }
 ```
 
+**Repo-root & cross-platform**: hooks agora resolvem automaticamente o `repo root` via `git rev-parse --show-toplevel` e degradam para o diretório atual quando `git` não está disponível (compatibilidade macOS / Linux / Git Bash / WSL).
+
+**Bypass seguro (quando necessário)**: `validate-bash.sh` pode ser pulado explicitamente com a variável de ambiente `CLAUDE_SKIP_VALIDATE_BASH=1` — use isso só para operações manuais e documentadas.
+
+```json
+{
+  "tool_name": "Edit",
+  "tool_input": {
+    "file_path": "src/components/Button.tsx",
+    "content": "..."
+  }
+}
+```
+
 **Exit codes:**
 
 - `0`: Permite operacao

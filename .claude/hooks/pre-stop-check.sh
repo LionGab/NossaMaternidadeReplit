@@ -4,8 +4,13 @@
 
 set -e
 
-PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-.}"
-cd "$PROJECT_ROOT"
+# Resolve project root robustly (git-aware, fallback to CLAUDE_PROJECT_DIR or cwd)
+if command -v git >/dev/null 2>&1 && git rev-parse --show-toplevel >/dev/null 2>&1; then
+  PROJECT_ROOT="$(git rev-parse --show-toplevel)"
+else
+  PROJECT_ROOT="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+fi
+cd "$PROJECT_ROOT" || exit 1
 
 # Verificar se há arquivos TypeScript/JavaScript modificados
 if git diff --name-only 2>/dev/null | grep -qE '\.(ts|tsx|js|jsx)$'; then
