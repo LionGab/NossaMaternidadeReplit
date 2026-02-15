@@ -182,3 +182,5 @@ nul
 NossaMaternidade_backup_*/
 NossaMaternidade/
 /~/
+# Embedded repositories (backups)
+NossaMaternidadeReplit/
