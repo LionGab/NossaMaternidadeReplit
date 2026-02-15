@@ -160,7 +160,7 @@ export default function OnboardingPaywall({ navigation: _navigation }: Props) {
     }).catch(() => {
       // Exposure telemetry should never block onboarding.
     });
-  }, [needsExtraCareFlag, hasMonthlyPackage]);
+  }, [needsExtraCareFlag, hasMonthlyPackage, selectedPackage]);
 
   // Get display price
   const getMonthlyPrice = useCallback(() => {

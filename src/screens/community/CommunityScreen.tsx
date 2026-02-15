@@ -323,7 +323,7 @@ export default function CommunityScreen({ navigation }: Props) {
         <WeeklyHighlights onPostPress={handlePostPress} onLike={handleLike} />
       </View>
     ),
-    [isDark, nathColors, handleOpenComposer, isCreating, handlePostPress, handleLike]
+    [isDark, nathColors, handleOpenComposer, isCreating, handlePostPress, handleLike, stats]
   );
 
   // Footer component (ChallengeCard + spacing)
