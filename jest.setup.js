@@ -10,7 +10,14 @@
 global.__DEV__ = false;
 
 // Setup react-native-reanimated mock
-require("react-native-reanimated").setUpTests();
+jest.mock("react-native-reanimated", () => {
+  const Reanimated = require("react-native-reanimated/mock");
+
+  // The mock for `call` immediately calls the callback which is incorrect
+  Reanimated.default.call = () => {};
+
+  return Reanimated;
+});
 
 // Silence act() warnings from React 19
 global.IS_REACT_ACT_ENVIRONMENT = true;

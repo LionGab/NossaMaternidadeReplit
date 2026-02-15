@@ -1,70 +1,70 @@
 - generic [active] [ref=e1]:
-  - banner "App Store Connect" [ref=e3]:
-    - generic [ref=e4]:
-      - heading "App Store Connect" [level=1] [ref=e6]:
-        - link "App Store Connect" [ref=e7] [cursor=pointer]:
-          - /url: /
-      - navigation "Global" [ref=e8]:
-        - list [ref=e10]:
-          - listitem [ref=e11]:
-            - link "Apps" [ref=e12] [cursor=pointer]:
-              - /url: /apps
-          - listitem [ref=e13]:
-            - link "Análise" [ref=e14] [cursor=pointer]:
-              - /url: /analytics
-          - listitem [ref=e15]:
-            - link "Tendências" [ref=e16] [cursor=pointer]:
-              - /url: /trends
-          - listitem [ref=e17]:
-            - link "Relatórios" [ref=e18] [cursor=pointer]:
-              - /url: /itc/payments_and_financial_reports
-          - listitem [ref=e19]:
-            - link "Negócios" [ref=e20] [cursor=pointer]:
-              - /url: /business
-      - button "Gabriel Vesz Gabriel Vesz Account name menu" [ref=e24] [cursor=pointer]:
+    - banner "App Store Connect" [ref=e3]:
+        - generic [ref=e4]:
+            - heading "App Store Connect" [level=1] [ref=e6]:
+                - link "App Store Connect" [ref=e7] [cursor=pointer]:
+                    - /url: /
+            - navigation "Global" [ref=e8]:
+                - list [ref=e10]:
+                    - listitem [ref=e11]:
+                        - link "Apps" [ref=e12] [cursor=pointer]:
+                            - /url: /apps
+                    - listitem [ref=e13]:
+                        - link "Análise" [ref=e14] [cursor=pointer]:
+                            - /url: /analytics
+                    - listitem [ref=e15]:
+                        - link "Tendências" [ref=e16] [cursor=pointer]:
+                            - /url: /trends
+                    - listitem [ref=e17]:
+                        - link "Relatórios" [ref=e18] [cursor=pointer]:
+                            - /url: /itc/payments_and_financial_reports
+                    - listitem [ref=e19]:
+                        - link "Negócios" [ref=e20] [cursor=pointer]:
+                            - /url: /business
+            - button "Gabriel Vesz Gabriel Vesz Account name menu" [ref=e24] [cursor=pointer]:
+                - generic:
+                    - generic: Gabriel Vesz
+                    - generic: Gabriel Vesz
+                    - img [ref=e25]
+    - generic [ref=e30]:
+        - button "Menu de apps, Nossa Maternidade, selecionado" [ref=e35] [cursor=pointer]:
+            - generic [ref=e36]:
+                - generic "Nossa Maternidade" [ref=e37]:
+                    - img "Nossa Maternidade" [ref=e38]
+                - generic [ref=e40]: Nossa Maternidade
+            - img [ref=e42]
+        - navigation "Apps" [ref=e45]:
+            - list [ref=e46]:
+                - listitem [ref=e47]:
+                    - link "Distribuição" [ref=e48] [cursor=pointer]:
+                        - /url: /apps/6756980888/distribution
+                - listitem [ref=e49]:
+                    - link "TestFlight" [ref=e50] [cursor=pointer]:
+                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight
+                - listitem [ref=e51]:
+                    - link "Xcode Cloud" [ref=e52] [cursor=pointer]:
+                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/ci
+    - generic [ref=e53]:
         - generic:
-          - generic: Gabriel Vesz
-          - generic: Gabriel Vesz
-          - img [ref=e25]
-  - generic [ref=e30]:
-    - button "Menu de apps, Nossa Maternidade, selecionado" [ref=e35] [cursor=pointer]:
-      - generic [ref=e36]:
-        - generic "Nossa Maternidade" [ref=e37]:
-          - img "Nossa Maternidade" [ref=e38]
-        - generic [ref=e40]: Nossa Maternidade
-      - img [ref=e42]
-    - navigation "Apps" [ref=e45]:
-      - list [ref=e46]:
-        - listitem [ref=e47]:
-          - link "Distribuição" [ref=e48] [cursor=pointer]:
-            - /url: /apps/6756980888/distribution
-        - listitem [ref=e49]:
-          - link "TestFlight" [ref=e50] [cursor=pointer]:
-            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight
-        - listitem [ref=e51]:
-          - link "Xcode Cloud" [ref=e52] [cursor=pointer]:
-            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/ci
-  - generic [ref=e53]:
-    - generic:
-      - generic:
-        - generic:
-          - main
-  - contentinfo [ref=e55]:
-    - generic [ref=e56]:
-      - list [ref=e57]:
-        - listitem [ref=e58]:
-          - link "App Store Connect" [ref=e59] [cursor=pointer]:
-            - /url: /apps
-      - list [ref=e60]:
-        - listitem [ref=e61]: Copyright © 2026 Apple Inc. Todos os direitos reservados. |
-        - listitem [ref=e62]:
-          - link "Termos de serviço" [ref=e63] [cursor=pointer]:
-            - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
-          - text: "|"
-        - listitem [ref=e64]:
-          - link "Política de privacidade" [ref=e65] [cursor=pointer]:
-            - /url: https://www.apple.com/legal/privacy
-          - text: "|"
-        - listitem [ref=e66]:
-          - link "Fale conosco" [ref=e67] [cursor=pointer]:
-            - /url: /contact-us
+            - generic:
+                - generic:
+                    - main
+    - contentinfo [ref=e55]:
+        - generic [ref=e56]:
+            - list [ref=e57]:
+                - listitem [ref=e58]:
+                    - link "App Store Connect" [ref=e59] [cursor=pointer]:
+                        - /url: /apps
+            - list [ref=e60]:
+                - listitem [ref=e61]: Copyright © 2026 Apple Inc. Todos os direitos reservados. |
+                - listitem [ref=e62]:
+                    - link "Termos de serviço" [ref=e63] [cursor=pointer]:
+                        - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+                    - text: "|"
+                - listitem [ref=e64]:
+                    - link "Política de privacidade" [ref=e65] [cursor=pointer]:
+                        - /url: https://www.apple.com/legal/privacy
+                    - text: "|"
+                - listitem [ref=e66]:
+                    - link "Fale conosco" [ref=e67] [cursor=pointer]:
+                        - /url: /contact-us

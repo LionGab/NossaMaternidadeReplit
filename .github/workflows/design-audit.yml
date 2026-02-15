@@ -3,10 +3,10 @@ name: Design System Excellence
 on:
   pull_request:
     paths:
-      - 'src/**/*.tsx'
-      - 'src/**/*.ts'
-      - 'src/theme/**'
-      - 'scripts/**'
+      - "src/**/*.tsx"
+      - "src/**/*.ts"
+      - "src/theme/**"
+      - "scripts/**"
 
 permissions:
   contents: read
@@ -24,8 +24,8 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
 
       - name: Install Dependencies
         run: npm ci

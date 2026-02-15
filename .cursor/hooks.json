@@ -1,14 +1,8 @@
 {
   "version": 1,
   "hooks": {
-    "beforeShellExecution": [
-      { "command": "bash .claude/hooks/validate-bash.sh" }
-    ],
-    "afterFileEdit": [
-      { "command": "bash .claude/hooks/post-edit-format.sh" }
-    ],
-    "stop": [
-      { "command": "bash .claude/hooks/pre-stop-check.sh" }
-    ]
+    "beforeShellExecution": [{ "command": "bash .claude/hooks/validate-bash.sh" }],
+    "afterFileEdit": [{ "command": "bash .claude/hooks/post-edit-format.sh" }],
+    "stop": [{ "command": "bash .claude/hooks/pre-stop-check.sh" }]
   }
 }

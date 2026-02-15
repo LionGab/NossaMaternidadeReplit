@@ -30,13 +30,13 @@ git gc --prune=now
 
 ### 3.1 Qual comando usar onde
 
-| Objetivo              | Onde rodar              | Comando / script                      |
-|-----------------------|-------------------------|---------------------------------------|
-| Quality gate          | **PowerShell**          | `npm run quality-gate:win`            |
-| Typecheck + lint      | Qualquer                | `npm run typecheck`, `npm run lint`   |
-| Scripts `.sh`         | **Git Bash** ou **WSL** | `./scripts/quality-gate.sh` etc.      |
-| Expo / Metro          | PowerShell ou Git Bash  | `npm start`                           |
-| EAS Build             | PowerShell ou Git Bash  | `npx eas build ...`                   |
+| Objetivo         | Onde rodar              | Comando / script                    |
+| ---------------- | ----------------------- | ----------------------------------- |
+| Quality gate     | **PowerShell**          | `npm run quality-gate:win`          |
+| Typecheck + lint | Qualquer                | `npm run typecheck`, `npm run lint` |
+| Scripts `.sh`    | **Git Bash** ou **WSL** | `./scripts/quality-gate.sh` etc.    |
+| Expo / Metro     | PowerShell ou Git Bash  | `npm start`                         |
+| EAS Build        | PowerShell ou Git Bash  | `npx eas build ...`                 |
 
 ### 3.2 Quality gate (obrigatório antes de PR/build)
 
@@ -69,14 +69,14 @@ Inclui: Git, Node, Bun, Android Studio/SDK, variáveis de ambiente, WSL (opciona
 
 ### 4.1 Código
 
-| Regra           | Fazer                         | Evitar                    |
-|-----------------|-------------------------------|----------------------------|
-| TypeScript      | `unknown` + type guards       | `any`, `@ts-ignore`       |
-| Logging         | `logger.*` (de `@/utils/logger`) | `console.log` em `src/` |
-| Cores           | `Tokens.*`, `useThemeColors()` | `#xxx`, `'white'`, `rgba` |
-| Listas          | `FlashList` / `FlatList`      | `ScrollView` + `map()`    |
-| Toques          | `Pressable`                   | `TouchableOpacity`        |
-| Zustand         | `useStore(s => s.valor)`      | `useStore(s => ({ ... }))` |
+| Regra      | Fazer                            | Evitar                     |
+| ---------- | -------------------------------- | -------------------------- |
+| TypeScript | `unknown` + type guards          | `any`, `@ts-ignore`        |
+| Logging    | `logger.*` (de `@/utils/logger`) | `console.log` em `src/`    |
+| Cores      | `Tokens.*`, `useThemeColors()`   | `#xxx`, `'white'`, `rgba`  |
+| Listas     | `FlashList` / `FlatList`         | `ScrollView` + `map()`     |
+| Toques     | `Pressable`                      | `TouchableOpacity`         |
+| Zustand    | `useStore(s => s.valor)`         | `useStore(s => ({ ... }))` |
 
 ### 4.2 Workflow
 
@@ -154,4 +154,4 @@ docs/             # Documentação (este guia em docs/setup/)
 
 ---
 
-*Atualizado após pull em `chore/expo-sdk-55` — ambiente Windows.*
+_Atualizado após pull em `chore/expo-sdk-55` — ambiente Windows._

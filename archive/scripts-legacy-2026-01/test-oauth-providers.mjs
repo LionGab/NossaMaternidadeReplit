@@ -110,7 +110,7 @@ async function runTests() {
     results[provider.name] = { enabled: isEnabled, action };
 
     const name = provider.displayName.padEnd(14);
-    const statusPad = (isEnabled ? "✅ ATIVO    " : "❌ INATIVO  ");
+    const statusPad = isEnabled ? "✅ ATIVO    " : "❌ INATIVO  ";
     const actionPad = action.padEnd(32);
 
     console.log(`│ ${name} │ ${statusPad} │ ${actionPad} │`);
@@ -140,14 +140,18 @@ async function runTests() {
       if (provider.name === "google") {
         console.log("      1. Google Cloud Console: https://console.cloud.google.com");
         console.log("      2. Criar OAuth 2.0 Client ID (Web application)");
-        console.log("      3. Redirect URI: https://lqahkqfpynypbmhtffyi.supabase.co/auth/v1/callback");
+        console.log(
+          "      3. Redirect URI: https://lqahkqfpynypbmhtffyi.supabase.co/auth/v1/callback"
+        );
         console.log("      4. Copiar Client ID e Secret para Supabase\n");
       }
 
       if (provider.name === "apple") {
         console.log("      1. Apple Developer: https://developer.apple.com");
         console.log("      2. Criar Services ID com Sign in with Apple");
-        console.log("      3. Configurar Return URL: https://lqahkqfpynypbmhtffyi.supabase.co/auth/v1/callback");
+        console.log(
+          "      3. Configurar Return URL: https://lqahkqfpynypbmhtffyi.supabase.co/auth/v1/callback"
+        );
         console.log("      4. Gerar Key (.p8) e copiar para Supabase\n");
       }
     }

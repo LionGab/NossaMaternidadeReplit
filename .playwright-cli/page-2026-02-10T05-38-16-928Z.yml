@@ -1,147 +1,147 @@
 - generic [active] [ref=e1]:
-  - generic [ref=e1764]:
-    - log
-    - log
-  - banner "App Store Connect" [ref=e3]:
-    - generic [ref=e4]:
-      - heading "App Store Connect" [level=1] [ref=e6]:
-        - link "App Store Connect" [ref=e7] [cursor=pointer]:
-          - /url: /
-      - navigation "Global" [ref=e8]:
-        - list [ref=e10]:
-          - listitem [ref=e11]:
-            - link "Apps" [ref=e12] [cursor=pointer]:
-              - /url: /apps
-          - listitem [ref=e13]:
-            - link "Análise" [ref=e14] [cursor=pointer]:
-              - /url: /analytics
-          - listitem [ref=e15]:
-            - link "Tendências" [ref=e16] [cursor=pointer]:
-              - /url: /trends
-          - listitem [ref=e17]:
-            - link "Relatórios" [ref=e18] [cursor=pointer]:
-              - /url: /itc/payments_and_financial_reports
-          - listitem [ref=e19]:
-            - link "Negócios" [ref=e20] [cursor=pointer]:
-              - /url: /business
-      - button "Gabriel Vesz Gabriel Vesz Account name menu" [ref=e24] [cursor=pointer]:
-        - generic:
-          - generic: Gabriel Vesz
-          - generic: Gabriel Vesz
-          - img [ref=e25]
-  - generic [ref=e30]:
-    - button "Menu de apps, Nossa Maternidade, selecionado" [ref=e35] [cursor=pointer]:
-      - generic [ref=e36]:
-        - generic "Nossa Maternidade" [ref=e37]:
-          - img "Nossa Maternidade" [ref=e38]
-        - generic [ref=e40]: Nossa Maternidade
-      - img [ref=e42]
-    - navigation "Apps" [ref=e45]:
-      - list [ref=e46]:
-        - listitem [ref=e47]:
-          - link "Distribuição" [ref=e48] [cursor=pointer]:
-            - /url: /apps/6756980888/distribution
-        - listitem [ref=e49]:
-          - link "TestFlight" [ref=e50] [cursor=pointer]:
-            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight
-        - listitem [ref=e51]:
-          - link "Xcode Cloud" [ref=e52] [cursor=pointer]:
-            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/ci
-  - main [ref=e71]:
-    - generic [ref=e3585]:
-      - generic [ref=e3589]:
-        - link "Compilações do iOS" [ref=e3593] [cursor=pointer]:
-          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios
-          - img [ref=e3594]
-          - text: Compilações do iOS
-        - generic [ref=e3596]:
-          - heading "1.0.1 (110)" [level=2] [ref=e3597]
-          - generic [ref=e3598]:
-            - button "Expirar compilação" [ref=e3599] [cursor=pointer]
-            - button "Salvar" [disabled] [ref=e3600]
-      - generic [ref=e3601]:
-        - tablist [ref=e3602]:
-          - tab "Informações de teste" [selected] [ref=e3603] [cursor=pointer]:
-            - generic [ref=e3604]: Informações de teste
-          - tab "Metadados da compilação" [ref=e3605] [cursor=pointer]:
-            - generic [ref=e3606]: Metadados da compilação
-        - generic [ref=e3607]:
-          - generic [ref=e3609]:
-            - heading "Detalhes do teste" [level=3] [ref=e3611]
-            - button "Português (Brasil)" [disabled] [ref=e3616]
-          - generic [ref=e3617]:
-            - generic [ref=e3619]:
-              - generic [ref=e3620]: O que testar
-              - button "Mais informações" [ref=e3622] [cursor=pointer]: "?"
-            - paragraph [ref=e3623]: Informe seus testers sobre o que gostaria que testassem nessa compilação. Essas informações estarão disponíveis para testers de todos os grupos que têm acesso a esta compilação.
-            - textbox "O que testar" [ref=e3625]
-            - status "Caracteres restantes" [ref=e3627]: "4.000"
-        - separator [ref=e3628]
-        - generic [ref=e3629]:
-          - generic [ref=e3632]:
-            - generic [ref=e3636]:
-              - heading "Grupos (2)" [level=3] [ref=e3637]
-              - button "Adicionar grupo" [ref=e3638] [cursor=pointer]:
-                - img [ref=e3639]
-            - generic [ref=e3642]:
-              - paragraph [ref=e3644]: Adicione grupos a esta compilação. Todos os testers desses grupos terão acesso a esta compilação.
-              - grid "Grupos (2)" [ref=e3649]:
-                - rowgroup [ref=e3650]:
-                  - row "Nome do grupo Tipo de grupo Testers Ações" [ref=e3651]:
-                    - columnheader "Nome do grupo" [ref=e3652]:
-                      - button "Nome do grupo" [ref=e3653] [cursor=pointer]:
-                        - generic [ref=e3654]:
-                          - generic [ref=e3655]: Nome do grupo
-                          - img [ref=e3657]
-                    - columnheader "Tipo de grupo" [ref=e3659]:
-                      - generic [ref=e3662]: Tipo de grupo
-                    - columnheader "Testers" [ref=e3663]:
-                      - generic [ref=e3666]: Testers
-                    - columnheader "Ações" [ref=e3667]
-                - rowgroup [ref=e3668]:
-                  - row "QA Interno - Canary Interno 1" [ref=e3669]:
-                    - rowheader "QA Interno - Canary" [ref=e3670]:
-                      - link "QA Interno - Canary" [ref=e3672] [cursor=pointer]:
-                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/groups/bbbaf41a-b59a-4081-a5a7-9da031bb53b6
-                        - generic [ref=e3673]: QA Interno - Canary
-                    - rowheader "Interno" [ref=e3674]:
-                      - paragraph [ref=e3676]: Interno
-                    - rowheader "1" [ref=e3677]:
-                      - paragraph [ref=e3679]: "1"
-                    - gridcell [ref=e3680]
-                  - row "Stakeholders - Beta Interno 1" [ref=e3681]:
-                    - rowheader "Stakeholders - Beta" [ref=e3682]:
-                      - link "Stakeholders - Beta" [ref=e3684] [cursor=pointer]:
-                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/groups/2717ce07-28b6-4dc5-8ec2-de37b1dddc03
-                        - generic [ref=e3685]: Stakeholders - Beta
-                    - rowheader "Interno" [ref=e3686]:
-                      - paragraph [ref=e3688]: Interno
-                    - rowheader "1" [ref=e3689]:
-                      - paragraph [ref=e3691]: "1"
-                    - gridcell [ref=e3692]
-          - generic [ref=e3695]:
-            - generic [ref=e3699]:
-              - heading "Testers individuais (0)" [level=3] [ref=e3700]
-              - button "Adicionar testers" [ref=e3702] [cursor=pointer]:
-                - img [ref=e3703]
-            - paragraph [ref=e3707]: Adicione um tester individual a esta compilação específica.
-            - paragraph [ref=e3710]: Nenhum tester foi adicionado a esta compilação.
-  - contentinfo [ref=e55]:
-    - generic [ref=e56]:
-      - list [ref=e57]:
-        - listitem [ref=e915]:
-          - link "App Store Connect" [ref=e916] [cursor=pointer]:
-            - /url: /apps
-      - list [ref=e60]:
-        - listitem [ref=e61]: Copyright © 2026 Apple Inc. Todos os direitos reservados. |
-        - listitem [ref=e62]:
-          - link "Termos de serviço" [ref=e63] [cursor=pointer]:
-            - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
-          - text: "|"
-        - listitem [ref=e64]:
-          - link "Política de privacidade" [ref=e65] [cursor=pointer]:
-            - /url: https://www.apple.com/legal/privacy
-          - text: "|"
-        - listitem [ref=e66]:
-          - link "Fale conosco" [ref=e67] [cursor=pointer]:
-            - /url: /contact-us
+    - generic [ref=e1764]:
+        - log
+        - log
+    - banner "App Store Connect" [ref=e3]:
+        - generic [ref=e4]:
+            - heading "App Store Connect" [level=1] [ref=e6]:
+                - link "App Store Connect" [ref=e7] [cursor=pointer]:
+                    - /url: /
+            - navigation "Global" [ref=e8]:
+                - list [ref=e10]:
+                    - listitem [ref=e11]:
+                        - link "Apps" [ref=e12] [cursor=pointer]:
+                            - /url: /apps
+                    - listitem [ref=e13]:
+                        - link "Análise" [ref=e14] [cursor=pointer]:
+                            - /url: /analytics
+                    - listitem [ref=e15]:
+                        - link "Tendências" [ref=e16] [cursor=pointer]:
+                            - /url: /trends
+                    - listitem [ref=e17]:
+                        - link "Relatórios" [ref=e18] [cursor=pointer]:
+                            - /url: /itc/payments_and_financial_reports
+                    - listitem [ref=e19]:
+                        - link "Negócios" [ref=e20] [cursor=pointer]:
+                            - /url: /business
+            - button "Gabriel Vesz Gabriel Vesz Account name menu" [ref=e24] [cursor=pointer]:
+                - generic:
+                    - generic: Gabriel Vesz
+                    - generic: Gabriel Vesz
+                    - img [ref=e25]
+    - generic [ref=e30]:
+        - button "Menu de apps, Nossa Maternidade, selecionado" [ref=e35] [cursor=pointer]:
+            - generic [ref=e36]:
+                - generic "Nossa Maternidade" [ref=e37]:
+                    - img "Nossa Maternidade" [ref=e38]
+                - generic [ref=e40]: Nossa Maternidade
+            - img [ref=e42]
+        - navigation "Apps" [ref=e45]:
+            - list [ref=e46]:
+                - listitem [ref=e47]:
+                    - link "Distribuição" [ref=e48] [cursor=pointer]:
+                        - /url: /apps/6756980888/distribution
+                - listitem [ref=e49]:
+                    - link "TestFlight" [ref=e50] [cursor=pointer]:
+                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight
+                - listitem [ref=e51]:
+                    - link "Xcode Cloud" [ref=e52] [cursor=pointer]:
+                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/ci
+    - main [ref=e71]:
+        - generic [ref=e3585]:
+            - generic [ref=e3589]:
+                - link "Compilações do iOS" [ref=e3593] [cursor=pointer]:
+                    - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios
+                    - img [ref=e3594]
+                    - text: Compilações do iOS
+                - generic [ref=e3596]:
+                    - heading "1.0.1 (110)" [level=2] [ref=e3597]
+                    - generic [ref=e3598]:
+                        - button "Expirar compilação" [ref=e3599] [cursor=pointer]
+                        - button "Salvar" [disabled] [ref=e3600]
+            - generic [ref=e3601]:
+                - tablist [ref=e3602]:
+                    - tab "Informações de teste" [selected] [ref=e3603] [cursor=pointer]:
+                        - generic [ref=e3604]: Informações de teste
+                    - tab "Metadados da compilação" [ref=e3605] [cursor=pointer]:
+                        - generic [ref=e3606]: Metadados da compilação
+                - generic [ref=e3607]:
+                    - generic [ref=e3609]:
+                        - heading "Detalhes do teste" [level=3] [ref=e3611]
+                        - button "Português (Brasil)" [disabled] [ref=e3616]
+                    - generic [ref=e3617]:
+                        - generic [ref=e3619]:
+                            - generic [ref=e3620]: O que testar
+                            - button "Mais informações" [ref=e3622] [cursor=pointer]: "?"
+                        - paragraph [ref=e3623]: Informe seus testers sobre o que gostaria que testassem nessa compilação. Essas informações estarão disponíveis para testers de todos os grupos que têm acesso a esta compilação.
+                        - textbox "O que testar" [ref=e3625]
+                        - status "Caracteres restantes" [ref=e3627]: "4.000"
+                - separator [ref=e3628]
+                - generic [ref=e3629]:
+                    - generic [ref=e3632]:
+                        - generic [ref=e3636]:
+                            - heading "Grupos (2)" [level=3] [ref=e3637]
+                            - button "Adicionar grupo" [ref=e3638] [cursor=pointer]:
+                                - img [ref=e3639]
+                        - generic [ref=e3642]:
+                            - paragraph [ref=e3644]: Adicione grupos a esta compilação. Todos os testers desses grupos terão acesso a esta compilação.
+                            - grid "Grupos (2)" [ref=e3649]:
+                                - rowgroup [ref=e3650]:
+                                    - row "Nome do grupo Tipo de grupo Testers Ações" [ref=e3651]:
+                                        - columnheader "Nome do grupo" [ref=e3652]:
+                                            - button "Nome do grupo" [ref=e3653] [cursor=pointer]:
+                                                - generic [ref=e3654]:
+                                                    - generic [ref=e3655]: Nome do grupo
+                                                    - img [ref=e3657]
+                                        - columnheader "Tipo de grupo" [ref=e3659]:
+                                            - generic [ref=e3662]: Tipo de grupo
+                                        - columnheader "Testers" [ref=e3663]:
+                                            - generic [ref=e3666]: Testers
+                                        - columnheader "Ações" [ref=e3667]
+                                - rowgroup [ref=e3668]:
+                                    - row "QA Interno - Canary Interno 1" [ref=e3669]:
+                                        - rowheader "QA Interno - Canary" [ref=e3670]:
+                                            - link "QA Interno - Canary" [ref=e3672] [cursor=pointer]:
+                                                - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/groups/bbbaf41a-b59a-4081-a5a7-9da031bb53b6
+                                                - generic [ref=e3673]: QA Interno - Canary
+                                        - rowheader "Interno" [ref=e3674]:
+                                            - paragraph [ref=e3676]: Interno
+                                        - rowheader "1" [ref=e3677]:
+                                            - paragraph [ref=e3679]: "1"
+                                        - gridcell [ref=e3680]
+                                    - row "Stakeholders - Beta Interno 1" [ref=e3681]:
+                                        - rowheader "Stakeholders - Beta" [ref=e3682]:
+                                            - link "Stakeholders - Beta" [ref=e3684] [cursor=pointer]:
+                                                - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/groups/2717ce07-28b6-4dc5-8ec2-de37b1dddc03
+                                                - generic [ref=e3685]: Stakeholders - Beta
+                                        - rowheader "Interno" [ref=e3686]:
+                                            - paragraph [ref=e3688]: Interno
+                                        - rowheader "1" [ref=e3689]:
+                                            - paragraph [ref=e3691]: "1"
+                                        - gridcell [ref=e3692]
+                    - generic [ref=e3695]:
+                        - generic [ref=e3699]:
+                            - heading "Testers individuais (0)" [level=3] [ref=e3700]
+                            - button "Adicionar testers" [ref=e3702] [cursor=pointer]:
+                                - img [ref=e3703]
+                        - paragraph [ref=e3707]: Adicione um tester individual a esta compilação específica.
+                        - paragraph [ref=e3710]: Nenhum tester foi adicionado a esta compilação.
+    - contentinfo [ref=e55]:
+        - generic [ref=e56]:
+            - list [ref=e57]:
+                - listitem [ref=e915]:
+                    - link "App Store Connect" [ref=e916] [cursor=pointer]:
+                        - /url: /apps
+            - list [ref=e60]:
+                - listitem [ref=e61]: Copyright © 2026 Apple Inc. Todos os direitos reservados. |
+                - listitem [ref=e62]:
+                    - link "Termos de serviço" [ref=e63] [cursor=pointer]:
+                        - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+                    - text: "|"
+                - listitem [ref=e64]:
+                    - link "Política de privacidade" [ref=e65] [cursor=pointer]:
+                        - /url: https://www.apple.com/legal/privacy
+                    - text: "|"
+                - listitem [ref=e66]:
+                    - link "Fale conosco" [ref=e67] [cursor=pointer]:
+                        - /url: /contact-us

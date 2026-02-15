@@ -15,12 +15,12 @@
  *   TEST_PASSWORD=TesteSenha123!
  */
 
-import { config } from 'dotenv';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { config } from "dotenv";
+import { resolve, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const envPath = resolve(__dirname, '../.env.local');
+const envPath = resolve(__dirname, "../.env.local");
 
 // Load .env.local
 config({ path: envPath });
@@ -35,7 +35,9 @@ const TEST_PASSWORD = process.env.TEST_PASSWORD;
 
 // Validation
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-  console.error("❌ Erro: Defina EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY em .env.local");
+  console.error(
+    "❌ Erro: Defina EXPO_PUBLIC_SUPABASE_URL e EXPO_PUBLIC_SUPABASE_ANON_KEY em .env.local"
+  );
   console.error("   Veja: .env.example\n");
   process.exit(1);
 }
@@ -64,7 +66,7 @@ async function getAuthToken() {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "apikey": SUPABASE_ANON_KEY,
+      apikey: SUPABASE_ANON_KEY,
     },
     body: JSON.stringify({
       email: TEST_EMAIL,
@@ -74,7 +76,9 @@ async function getAuthToken() {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(`Auth falhou: ${error.msg || error.error_description}\nCrie o usuário: scripts/create-test-user.md`);
+    throw new Error(
+      `Auth falhou: ${error.msg || error.error_description}\nCrie o usuário: scripts/create-test-user.md`
+    );
   }
 
   const data = await response.json();
@@ -91,7 +95,7 @@ async function callAI(payload, description = "") {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": `Bearer ${authToken}`,
+      Authorization: `Bearer ${authToken}`,
     },
     body: JSON.stringify(payload),
   });
@@ -113,7 +117,7 @@ async function callAI(payload, description = "") {
 }
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // ============================================
@@ -124,21 +128,22 @@ async function test2_ClaudeDefault() {
   console.log("📋 TESTE 2: 200 com JWT válido (Claude padrão)\n");
 
   const result = await callAI({
-    messages: [
-      { role: "user", content: "Responda apenas 'Oi, mãe!' e nada mais." }
-    ],
+    messages: [{ role: "user", content: "Responda apenas 'Oi, mãe!' e nada mais." }],
     provider: "claude",
   });
 
-  const passed = result.status === 200 &&
-                 result.json?.provider === "claude" &&
-                 result.json?.content;
+  const passed =
+    result.status === 200 && result.json?.provider === "claude" && result.json?.content;
 
   console.log(`   Status: ${result.status}`);
   console.log(`   Provider: ${result.json?.provider}`);
-  console.log(`   Content: ${result.json?.content?.substring(0, 100) || result.text.substring(0, 100)}`);
+  console.log(
+    `   Content: ${result.json?.content?.substring(0, 100) || result.text.substring(0, 100)}`
+  );
   console.log(`   Latency: ${result.json?.latency}ms`);
-  console.log(`   Tokens: input=${result.json?.usage?.promptTokens}, output=${result.json?.usage?.completionTokens}, total=${result.json?.usage?.totalTokens}`);
+  console.log(
+    `   Tokens: input=${result.json?.usage?.promptTokens}, output=${result.json?.usage?.completionTokens}, total=${result.json?.usage?.totalTokens}`
+  );
   console.log(`   Fallback: ${result.json?.fallback || false}`);
   console.log(`\n   ${passed ? "✅ PASSOU" : "❌ FALHOU"}\n`);
 
@@ -149,21 +154,20 @@ async function test4_GeminiGrounding() {
   console.log("📋 TESTE 4: Gemini grounding + citations\n");
 
   const result = await callAI({
-    messages: [
-      { role: "user", content: "O que é pré-eclâmpsia? Cite fontes médicas confiáveis." }
-    ],
+    messages: [{ role: "user", content: "O que é pré-eclâmpsia? Cite fontes médicas confiáveis." }],
     provider: "gemini",
     grounding: true,
   });
 
-  const hasCitations = result.json?.grounding?.citations && result.json.grounding.citations.length > 0;
-  const passed = result.status === 200 &&
-                 result.json?.provider === "gemini" &&
-                 hasCitations;
+  const hasCitations =
+    result.json?.grounding?.citations && result.json.grounding.citations.length > 0;
+  const passed = result.status === 200 && result.json?.provider === "gemini" && hasCitations;
 
   console.log(`   Status: ${result.status}`);
   console.log(`   Provider: ${result.json?.provider}`);
-  console.log(`   Content (primeiros 200 chars): ${result.json?.content?.substring(0, 200) || result.text.substring(0, 200)}...`);
+  console.log(
+    `   Content (primeiros 200 chars): ${result.json?.content?.substring(0, 200) || result.text.substring(0, 200)}...`
+  );
   console.log(`   Latency: ${result.json?.latency}ms`);
   console.log(`   Citations: ${result.json?.grounding?.citations?.length || 0}`);
 
@@ -269,8 +273,8 @@ async function runTests() {
     console.log(`   Teste 4 (Gemini grounding): ${formatResult(results.test4)}`);
     console.log(`   Teste 3 (Rate limit 429):   ${formatResult(results.test3)}\n`);
 
-    const passedCount = Object.values(results).filter(r => r === true).length;
-    const totalCount = Object.values(results).filter(r => r !== null).length;
+    const passedCount = Object.values(results).filter((r) => r === true).length;
+    const totalCount = Object.values(results).filter((r) => r !== null).length;
 
     console.log(`   RESULTADO FINAL: ${passedCount}/${totalCount} testes passaram`);
     console.log("=".repeat(60));
@@ -282,7 +286,6 @@ async function runTests() {
       console.log("\n⚠️ Alguns testes falharam. Revisar logs acima.\n");
       process.exit(1);
     }
-
   } catch (error) {
     console.error("\n❌ ERRO CRÍTICO:", error.message);
     console.error("\n   Stack trace:");

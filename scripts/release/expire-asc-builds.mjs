@@ -167,7 +167,10 @@ function loadCredentials() {
     if (typeof privateKey === "string" && privateKey.includes("\\n")) {
       privateKey = privateKey.replace(/\\n/g, "\n");
     }
-    if (!String(privateKey).includes("-----BEGIN PRIVATE KEY-----") || String(privateKey).length < 200) {
+    if (
+      !String(privateKey).includes("-----BEGIN PRIVATE KEY-----") ||
+      String(privateKey).length < 200
+    ) {
       throw new Error("privateKey inválida. Forneça o conteúdo completo do arquivo .p8.");
     }
     return { keyId, issuerId, privateKey };
@@ -308,7 +311,9 @@ async function main() {
       console.log(`Expirada: ${build.appVersion} (${build.buildNumber}) [${build.id}]`);
     } catch (error) {
       failed.push({ build, error: error.message });
-      console.error(`Falha ao expirar ${build.appVersion} (${build.buildNumber}) [${build.id}]: ${error.message}`);
+      console.error(
+        `Falha ao expirar ${build.appVersion} (${build.buildNumber}) [${build.id}]: ${error.message}`
+      );
     }
   }
 

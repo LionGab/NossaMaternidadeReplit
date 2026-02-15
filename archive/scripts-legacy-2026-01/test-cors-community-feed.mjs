@@ -19,12 +19,9 @@
  *   EXPO_PUBLIC_SUPABASE_ANON_KEY ou SUPABASE_ANON_KEY
  */
 
-const ALLOWED_ORIGINS = [
-  'https://app.nossamaternidade.com',
-  'https://admin.nossamaternidade.com',
-];
+const ALLOWED_ORIGINS = ["https://app.nossamaternidade.com", "https://admin.nossamaternidade.com"];
 
-const DISALLOWED_ORIGIN = 'https://malicious-site.com';
+const DISALLOWED_ORIGIN = "https://malicious-site.com";
 
 function getEnv(name) {
   return process.env[name] && String(process.env[name]).trim();
@@ -35,11 +32,11 @@ function requireEnvOneOf(names) {
     const v = getEnv(n);
     if (v) return v;
   }
-  throw new Error(`Missing required env. Provide one of: ${names.join(' | ')}`);
+  throw new Error(`Missing required env. Provide one of: ${names.join(" | ")}`);
 }
 
 function normalizeBaseUrl(url) {
-  return url.replace(/\/+$/, '');
+  return url.replace(/\/+$/, "");
 }
 
 function headerGet(headers, name) {
@@ -47,11 +44,11 @@ function headerGet(headers, name) {
 }
 
 function redactSecrets(text, secrets) {
-  let out = String(text ?? '');
+  let out = String(text ?? "");
   for (const s of secrets) {
     if (!s) continue;
     // Replace exact secret and also "Bearer <secret>" occurrences
-    out = out.split(s).join('<REDACTED>');
+    out = out.split(s).join("<REDACTED>");
   }
   return out;
 }
@@ -61,13 +58,13 @@ function expect(cond, message) {
 }
 
 function fmt(val) {
-  if (val == null) return '(null)';
+  if (val == null) return "(null)";
   return String(val);
 }
 
 async function doPostJson({ url, origin, anonKey, body }) {
   const headers = {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
     // supabase edge functions commonly accept both headers; keep both to avoid false negatives
     Authorization: `Bearer ${anonKey}`,
     apikey: anonKey,
@@ -76,7 +73,7 @@ async function doPostJson({ url, origin, anonKey, body }) {
   if (origin) headers.Origin = origin;
 
   const res = await fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers,
     body: JSON.stringify(body),
   });
@@ -89,12 +86,12 @@ async function doPreflightOptions({ url, origin }) {
   // Simula preflight real do browser: não envia token.
   const headers = {
     Origin: origin,
-    'Access-Control-Request-Method': 'POST',
-    'Access-Control-Request-Headers': 'authorization,content-type,apikey',
+    "Access-Control-Request-Method": "POST",
+    "Access-Control-Request-Headers": "authorization,content-type,apikey",
   };
 
   const res = await fetch(url, {
-    method: 'OPTIONS',
+    method: "OPTIONS",
     headers,
   });
 
@@ -103,7 +100,7 @@ async function doPreflightOptions({ url, origin }) {
 }
 
 async function testScenario({ name, fnUrl, origin, expectStatus, expectAllowOrigin, anonKey }) {
-  const payload = { page: 1, limit: 10, type: 'feed' };
+  const payload = { page: 1, limit: 10, type: "feed" };
 
   const res = await doPostJson({
     url: fnUrl,
@@ -112,21 +109,21 @@ async function testScenario({ name, fnUrl, origin, expectStatus, expectAllowOrig
     body: payload,
   });
 
-  const allowOrigin = headerGet(res.headers, 'access-control-allow-origin');
+  const allowOrigin = headerGet(res.headers, "access-control-allow-origin");
 
   const statusOk =
-    typeof expectStatus === 'function' ? expectStatus(res.status) : res.status === expectStatus;
+    typeof expectStatus === "function" ? expectStatus(res.status) : res.status === expectStatus;
 
   const safeBody = redactSecrets(res.text.slice(0, 300), [anonKey]);
 
   expect(statusOk, `[${name}] Status inesperado: got ${res.status}. Body: ${safeBody}`);
 
-  if (expectAllowOrigin === 'absent') {
+  if (expectAllowOrigin === "absent") {
     expect(
       !allowOrigin,
       `[${name}] Esperava não ter access-control-allow-origin, mas veio: ${fmt(allowOrigin)}`
     );
-  } else if (typeof expectAllowOrigin === 'string') {
+  } else if (typeof expectAllowOrigin === "string") {
     expect(
       allowOrigin === expectAllowOrigin,
       `[${name}] access-control-allow-origin inválido: got ${fmt(allowOrigin)} expected ${expectAllowOrigin}`
@@ -142,22 +139,22 @@ async function testPreflight({ name, fnUrl, origin, expectStatus, expectAllowOri
     origin,
   });
 
-  const allowOrigin = headerGet(res.headers, 'access-control-allow-origin');
+  const allowOrigin = headerGet(res.headers, "access-control-allow-origin");
 
   const statusOk =
-    typeof expectStatus === 'function' ? expectStatus(res.status) : res.status === expectStatus;
+    typeof expectStatus === "function" ? expectStatus(res.status) : res.status === expectStatus;
 
   expect(
     statusOk,
     `[${name}] (OPTIONS) Status inesperado: got ${res.status}. Body: ${res.text.slice(0, 200)}`
   );
 
-  if (expectAllowOrigin === 'absent') {
+  if (expectAllowOrigin === "absent") {
     expect(
       !allowOrigin,
       `[${name}] (OPTIONS) Esperava não ter access-control-allow-origin, mas veio: ${fmt(allowOrigin)}`
     );
-  } else if (typeof expectAllowOrigin === 'string') {
+  } else if (typeof expectAllowOrigin === "string") {
     expect(
       allowOrigin === expectAllowOrigin,
       `[${name}] (OPTIONS) access-control-allow-origin inválido: got ${fmt(allowOrigin)} expected ${expectAllowOrigin}`
@@ -168,22 +165,26 @@ async function testPreflight({ name, fnUrl, origin, expectStatus, expectAllowOri
 }
 
 async function main() {
-  if (typeof fetch !== 'function') {
-    throw new Error('Global fetch is not available. Use Node.js 18+ to run this script.');
+  if (typeof fetch !== "function") {
+    throw new Error("Global fetch is not available. Use Node.js 18+ to run this script.");
   }
 
   const supabaseUrl = normalizeBaseUrl(
-    requireEnvOneOf(['EXPO_PUBLIC_SUPABASE_URL', 'NEXT_PUBLIC_SUPABASE_URL', 'SUPABASE_URL'])
+    requireEnvOneOf(["EXPO_PUBLIC_SUPABASE_URL", "NEXT_PUBLIC_SUPABASE_URL", "SUPABASE_URL"])
   );
 
-  const anonKey = requireEnvOneOf(['EXPO_PUBLIC_SUPABASE_ANON_KEY', 'NEXT_PUBLIC_SUPABASE_ANON_KEY', 'SUPABASE_ANON_KEY']);
+  const anonKey = requireEnvOneOf([
+    "EXPO_PUBLIC_SUPABASE_ANON_KEY",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+    "SUPABASE_ANON_KEY",
+  ]);
 
   const fnUrl = `${supabaseUrl}/functions/v1/community-feed`;
 
-  console.log('🔎 Testing CORS for community-feed');
+  console.log("🔎 Testing CORS for community-feed");
   console.log(`- fnUrl: ${fnUrl}`);
-  console.log(`- allowed origins: ${ALLOWED_ORIGINS.join(', ')}`);
-  console.log('');
+  console.log(`- allowed origins: ${ALLOWED_ORIGINS.join(", ")}`);
+  console.log("");
 
   // Allowed origins: accept 2xx or 401 (401 means CORS passed but auth failed - expected without JWT)
   for (const origin of ALLOWED_ORIGINS) {
@@ -214,7 +215,7 @@ async function main() {
     origin: DISALLOWED_ORIGIN,
     anonKey,
     expectStatus: 403,
-    expectAllowOrigin: 'absent',
+    expectAllowOrigin: "absent",
   });
 
   await testPreflight({
@@ -223,25 +224,25 @@ async function main() {
     origin: DISALLOWED_ORIGIN,
     // Accept any 4xx (ideally 403), but must not leak allow-origin.
     expectStatus: (s) => s >= 400 && s < 500,
-    expectAllowOrigin: 'absent',
+    expectAllowOrigin: "absent",
   });
 
   // No origin: allow server-to-server, but no CORS header
   // 2xx = success, 401 = CORS passed but auth required (expected without user JWT)
   await testScenario({
-    name: 'POST without Origin header',
+    name: "POST without Origin header",
     fnUrl,
     origin: undefined,
     anonKey,
     expectStatus: (s) => (s >= 200 && s < 300) || s === 401,
-    expectAllowOrigin: 'absent',
+    expectAllowOrigin: "absent",
   });
 
-  console.log('');
-  console.log('🎉 CORS checks passed.');
+  console.log("");
+  console.log("🎉 CORS checks passed.");
 }
 
 main().catch((err) => {
-  console.error('❌ CORS checks failed:', err?.message || err);
+  console.error("❌ CORS checks failed:", err?.message || err);
   process.exit(1);
 });

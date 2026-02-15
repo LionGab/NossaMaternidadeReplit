@@ -1,422 +1,501 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nathália Valente App - V4 Rosa Flor + Azul Sereno</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@500;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Dancing+Script:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(160deg, #fdf5f7 0%, #f5f0f8 50%, #edf4f8 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .phone-frame {
+        width: 375px;
+        height: 812px;
+        background: linear-gradient(180deg, #fffbfc 0%, #fefeff 100%);
+        border-radius: 40px;
+        box-shadow: 0 30px 80px rgba(180, 160, 200, 0.2);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .status-bar {
+        height: 44px;
+        padding: 14px 24px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #5a5065;
+      }
+
+      .status-icons {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .onboarding-container {
+        height: calc(100% - 44px);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .float-item {
+        position: absolute;
+        animation: floatUp 4s ease-in-out infinite;
+      }
+
+      .float-1 {
+        top: 12%;
+        left: 8%;
+        animation-delay: 0s;
+        font-size: 26px;
+      }
+      .float-2 {
+        top: 22%;
+        right: 10%;
+        animation-delay: 0.5s;
+        font-size: 20px;
+      }
+      .float-3 {
+        top: 42%;
+        left: 5%;
+        animation-delay: 1s;
+        font-size: 22px;
+      }
+      .float-4 {
+        top: 55%;
+        right: 6%;
+        animation-delay: 1.5s;
+        font-size: 18px;
+      }
+      .float-5 {
+        bottom: 38%;
+        left: 12%;
+        animation-delay: 2s;
+        font-size: 20px;
+      }
+
+      @keyframes floatUp {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0.7;
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(160deg, #FDF5F7 0%, #F5F0F8 50%, #EDF4F8 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        50% {
+          transform: translateY(-12px) rotate(8deg);
+          opacity: 1;
         }
+      }
 
-        .phone-frame {
-            width: 375px;
-            height: 812px;
-            background: linear-gradient(180deg, #FFFBFC 0%, #FEFEFF 100%);
-            border-radius: 40px;
-            box-shadow: 0 30px 80px rgba(180, 160, 200, 0.2);
-            overflow: hidden;
-            position: relative;
+      .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px 24px 24px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .back-btn {
+        width: 44px;
+        height: 44px;
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #f5e8ec;
+        border-radius: 14px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        box-shadow: 0 4px 15px rgba(200, 180, 210, 0.12);
+      }
+
+      .step-indicator {
+        background: linear-gradient(135deg, #f8d4dc 0%, #d4e4f7 100%);
+        color: #6b5a70;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+      }
+
+      .illustration-area {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .main-illustration {
+        width: 260px;
+        height: 260px;
+        background: linear-gradient(145deg, #fef0f3 0%, #f0f4fa 100%);
+        border-radius: 130px 130px 60px 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        box-shadow:
+          0 20px 50px rgba(200, 180, 220, 0.2),
+          inset 0 -10px 30px rgba(255, 255, 255, 0.6);
+        border: 2px solid rgba(248, 212, 220, 0.3);
+      }
+
+      .illustration-icon {
+        font-size: 100px;
+        margin-top: -20px;
+      }
+
+      .sparkle {
+        position: absolute;
+        font-size: 20px;
+        animation: sparkle 2s ease-in-out infinite;
+      }
+
+      .sparkle-1 {
+        top: 20px;
+        left: 30px;
+        animation-delay: 0s;
+      }
+      .sparkle-2 {
+        top: 40px;
+        right: 25px;
+        animation-delay: 0.3s;
+      }
+      .sparkle-3 {
+        bottom: 50px;
+        left: 40px;
+        animation-delay: 0.6s;
+      }
+
+      @keyframes sparkle {
+        0%,
+        100% {
+          transform: scale(1);
+          opacity: 0.7;
         }
-
-        .status-bar {
-            height: 44px;
-            padding: 14px 24px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: #5A5065;
+        50% {
+          transform: scale(1.3);
+          opacity: 1;
         }
+      }
 
-        .status-icons {
-            display: flex;
-            gap: 5px;
-            align-items: center;
-        }
+      .text-section {
+        text-align: center;
+        margin-bottom: 24px;
+      }
 
-        .onboarding-container {
-            height: calc(100% - 44px);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-        }
+      .handwritten-intro {
+        font-family: "Dancing Script", cursive;
+        font-size: 24px;
+        color: #7ba3c9;
+        margin-bottom: 8px;
+      }
 
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
+      .main-title {
+        font-size: 28px;
+        font-weight: 700;
+        color: #4a4055;
+        line-height: 1.3;
+        margin-bottom: 12px;
+      }
 
-        .float-item {
-            position: absolute;
-            animation: floatUp 4s ease-in-out infinite;
-        }
+      .main-title .highlight {
+        background: linear-gradient(90deg, #fde8ed 0%, #e8f0f8 100%);
+        padding: 2px 10px;
+        border-radius: 8px;
+        color: #8b6b80;
+      }
 
-        .float-1 { top: 12%; left: 8%; animation-delay: 0s; font-size: 26px; }
-        .float-2 { top: 22%; right: 10%; animation-delay: 0.5s; font-size: 20px; }
-        .float-3 { top: 42%; left: 5%; animation-delay: 1s; font-size: 22px; }
-        .float-4 { top: 55%; right: 6%; animation-delay: 1.5s; font-size: 18px; }
-        .float-5 { bottom: 38%; left: 12%; animation-delay: 2s; font-size: 20px; }
+      .description {
+        font-size: 14px;
+        color: #8a8095;
+        line-height: 1.7;
+        max-width: 285px;
+        margin: 0 auto;
+      }
 
-        @keyframes floatUp {
-            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
-            50% { transform: translateY(-12px) rotate(8deg); opacity: 1; }
-        }
+      .features-preview {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+        margin-bottom: 28px;
+      }
 
-        .content-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 20px 24px 24px;
-            position: relative;
-            z-index: 2;
-        }
+      .feature-chip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: white;
+        padding: 10px 14px;
+        border-radius: 25px;
+        font-size: 11px;
+        font-weight: 500;
+        color: #5a5065;
+        box-shadow: 0 4px 15px rgba(200, 180, 210, 0.1);
+        border: 1px solid #f8eef2;
+      }
 
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+      .feature-chip span {
+        font-size: 14px;
+      }
 
-        .back-btn {
-            width: 44px;
-            height: 44px;
-            background: rgba(255, 255, 255, 0.9);
-            border: 1px solid #F5E8EC;
-            border-radius: 14px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(200, 180, 210, 0.12);
-        }
+      .progress-dots {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
 
-        .step-indicator {
-            background: linear-gradient(135deg, #F8D4DC 0%, #D4E4F7 100%);
-            color: #6B5A70;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-        }
+      .p-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #f0e8ec;
+        transition: all 0.3s ease;
+      }
 
-        .illustration-area {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+      .p-dot.active {
+        width: 32px;
+        border-radius: 5px;
+        background: linear-gradient(90deg, #f5c6d0 0%, #a8c8e8 100%);
+      }
 
-        .main-illustration {
-            width: 260px;
-            height: 260px;
-            background: linear-gradient(145deg, #FEF0F3 0%, #F0F4FA 100%);
-            border-radius: 130px 130px 60px 60px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            box-shadow:
-                0 20px 50px rgba(200, 180, 220, 0.2),
-                inset 0 -10px 30px rgba(255, 255, 255, 0.6);
-            border: 2px solid rgba(248, 212, 220, 0.3);
-        }
+      .action-section {
+        padding-bottom: 20px;
+      }
 
-        .illustration-icon {
-            font-size: 100px;
-            margin-top: -20px;
-        }
+      .primary-button {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #f8d4dc 0%, #b8d4f0 100%);
+        border: none;
+        border-radius: 20px;
+        font-family: "Poppins", sans-serif;
+        font-size: 16px;
+        font-weight: 600;
+        color: #5a4a60;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(200, 180, 220, 0.3);
+        transition: all 0.3s ease;
+        margin-bottom: 16px;
+      }
 
-        .sparkle {
-            position: absolute;
-            font-size: 20px;
-            animation: sparkle 2s ease-in-out infinite;
-        }
+      .primary-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 40px rgba(200, 180, 220, 0.4);
+      }
 
-        .sparkle-1 { top: 20px; left: 30px; animation-delay: 0s; }
-        .sparkle-2 { top: 40px; right: 25px; animation-delay: 0.3s; }
-        .sparkle-3 { bottom: 50px; left: 40px; animation-delay: 0.6s; }
+      .btn-arrow {
+        background: rgba(255, 255, 255, 0.5);
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 14px;
+      }
 
-        @keyframes sparkle {
-            0%, 100% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.3); opacity: 1; }
-        }
+      .alternative-actions {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+      }
 
-        .text-section {
-            text-align: center;
-            margin-bottom: 24px;
-        }
+      .alt-link {
+        font-size: 13px;
+        color: #a8a0b0;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
 
-        .handwritten-intro {
-            font-family: 'Dancing Script', cursive;
-            font-size: 24px;
-            color: #7BA3C9;
-            margin-bottom: 8px;
-        }
+      .alt-link:hover {
+        color: #8ba8c8;
+      }
 
-        .main-title {
-            font-size: 28px;
-            font-weight: 700;
-            color: #4A4055;
-            line-height: 1.3;
-            margin-bottom: 12px;
-        }
-
-        .main-title .highlight {
-            background: linear-gradient(90deg, #FDE8ED 0%, #E8F0F8 100%);
-            padding: 2px 10px;
-            border-radius: 8px;
-            color: #8B6B80;
-        }
-
-        .description {
-            font-size: 14px;
-            color: #8A8095;
-            line-height: 1.7;
-            max-width: 285px;
-            margin: 0 auto;
-        }
-
-        .features-preview {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 28px;
-        }
-
-        .feature-chip {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background: white;
-            padding: 10px 14px;
-            border-radius: 25px;
-            font-size: 11px;
-            font-weight: 500;
-            color: #5A5065;
-            box-shadow: 0 4px 15px rgba(200, 180, 210, 0.1);
-            border: 1px solid #F8EEF2;
-        }
-
-        .feature-chip span {
-            font-size: 14px;
-        }
-
-        .progress-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .p-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #F0E8EC;
-            transition: all 0.3s ease;
-        }
-
-        .p-dot.active {
-            width: 32px;
-            border-radius: 5px;
-            background: linear-gradient(90deg, #F5C6D0 0%, #A8C8E8 100%);
-        }
-
-        .action-section {
-            padding-bottom: 20px;
-        }
-
-        .primary-button {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #F8D4DC 0%, #B8D4F0 100%);
-            border: none;
-            border-radius: 20px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 16px;
-            font-weight: 600;
-            color: #5A4A60;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 10px 30px rgba(200, 180, 220, 0.3);
-            transition: all 0.3s ease;
-            margin-bottom: 16px;
-        }
-
-        .primary-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(200, 180, 220, 0.4);
-        }
-
-        .btn-arrow {
-            background: rgba(255, 255, 255, 0.5);
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 14px;
-        }
-
-        .alternative-actions {
-            display: flex;
-            justify-content: center;
-            gap: 24px;
-        }
-
-        .alt-link {
-            font-size: 13px;
-            color: #A8A0B0;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .alt-link:hover {
-            color: #8BA8C8;
-        }
-
-        .screen-label {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #F8D4DC 0%, #A8C8E8 100%);
-            color: #5A4A60;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
+      .screen-label {
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #f8d4dc 0%, #a8c8e8 100%);
+        color: #5a4a60;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
     </style>
-</head>
-<body>
-    <div style="position: relative;">
-        <div class="screen-label">V4 - ROSA FLOR + AZUL SERENO</div>
-        <div class="phone-frame">
-            <div class="status-bar">
-                <span>9:41</span>
-                <div class="status-icons">
-                    <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
-                        <path d="M1 4.5C1 3.67 1.67 3 2.5 3H3.5C4.33 3 5 3.67 5 4.5V10.5C5 11.33 4.33 12 3.5 12H2.5C1.67 12 1 11.33 1 10.5V4.5Z" fill="#5A5065"/>
-                        <path d="M6 3C6 2.17 6.67 1.5 7.5 1.5H8.5C9.33 1.5 10 2.17 10 3V10.5C10 11.33 9.33 12 8.5 12H7.5C6.67 12 6 11.33 6 10.5V3Z" fill="#5A5065"/>
-                        <path d="M11 1.5C11 0.67 11.67 0 12.5 0H13.5C14.33 0 15 0.67 15 1.5V10.5C15 11.33 14.33 12 13.5 12H12.5C11.67 12 11 11.33 11 10.5V1.5Z" fill="#5A5065"/>
-                    </svg>
-                    <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
-                        <path d="M7.5 2.5C9.433 2.5 11.15 3.32 12.35 4.62L13.78 3.19C12.21 1.52 10 0.5 7.5 0.5C5 0.5 2.79 1.52 1.22 3.19L2.65 4.62C3.85 3.32 5.567 2.5 7.5 2.5Z" fill="#5A5065"/>
-                        <path d="M4.1 6.07C4.97 5.12 6.17 4.5 7.5 4.5C8.83 4.5 10.03 5.12 10.9 6.07L12.33 4.64C11.1 3.33 9.4 2.5 7.5 2.5C5.6 2.5 3.9 3.33 2.67 4.64L4.1 6.07Z" fill="#5A5065"/>
-                        <path d="M7.5 6.5C6.57 6.5 5.74 6.93 5.17 7.6L7.5 10.5L9.83 7.6C9.26 6.93 8.43 6.5 7.5 6.5Z" fill="#5A5065"/>
-                    </svg>
-                    <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
-                        <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#5A5065"/>
-                        <rect x="2" y="2" width="16" height="8" rx="1" fill="#5A5065"/>
-                        <path d="M23 4V8C24.1 7.5 24.1 4.5 23 4Z" fill="#5A5065"/>
-                    </svg>
-                </div>
-            </div>
-
-            <div class="onboarding-container">
-                <div class="floating-elements">
-                    <span class="float-item float-1">🌸</span>
-                    <span class="float-item float-2">💙</span>
-                    <span class="float-item float-3">🦋</span>
-                    <span class="float-item float-4">🌷</span>
-                    <span class="float-item float-5">✨</span>
-                </div>
-
-                <div class="content-wrapper">
-                    <div class="header-section">
-                        <button class="back-btn">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M12.5 15L7.5 10L12.5 5" stroke="#5A5065" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                        <div class="step-indicator">Passo 1 de 4</div>
-                    </div>
-
-                    <div class="illustration-area">
-                        <div class="main-illustration">
-                            <span class="sparkle sparkle-1">✨</span>
-                            <span class="sparkle sparkle-2">💕</span>
-                            <span class="sparkle sparkle-3">🌟</span>
-                            <span class="illustration-icon">👶</span>
-                        </div>
-                    </div>
-
-                    <div class="text-section">
-                        <p class="handwritten-intro">Olá, mamãe!</p>
-                        <h1 class="main-title">
-                            Você não está <span class="highlight">sozinha</span> nessa jornada
-                        </h1>
-                        <p class="description">
-                            Junte-se a milhões de mulheres que compartilham experiências, dúvidas e conquistas na maternidade.
-                        </p>
-                    </div>
-
-                    <div class="features-preview">
-                        <div class="feature-chip">
-                            <span>👩‍👧‍👦</span>
-                            Comunidade
-                        </div>
-                        <div class="feature-chip">
-                            <span>📚</span>
-                            Conteúdo
-                        </div>
-                        <div class="feature-chip">
-                            <span>💬</span>
-                            Suporte
-                        </div>
-                    </div>
-
-                    <div class="progress-dots">
-                        <div class="p-dot active"></div>
-                        <div class="p-dot"></div>
-                        <div class="p-dot"></div>
-                        <div class="p-dot"></div>
-                    </div>
-
-                    <div class="action-section">
-                        <button class="primary-button">
-                            Vamos começar
-                            <span class="btn-arrow">→</span>
-                        </button>
-
-                        <div class="alternative-actions">
-                            <a href="#" class="alt-link">Já tenho conta</a>
-                            <a href="#" class="alt-link">Saber mais</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  </head>
+  <body>
+    <div style="position: relative">
+      <div class="screen-label">V4 - ROSA FLOR + AZUL SERENO</div>
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+              <path
+                d="M1 4.5C1 3.67 1.67 3 2.5 3H3.5C4.33 3 5 3.67 5 4.5V10.5C5 11.33 4.33 12 3.5 12H2.5C1.67 12 1 11.33 1 10.5V4.5Z"
+                fill="#5A5065"
+              />
+              <path
+                d="M6 3C6 2.17 6.67 1.5 7.5 1.5H8.5C9.33 1.5 10 2.17 10 3V10.5C10 11.33 9.33 12 8.5 12H7.5C6.67 12 6 11.33 6 10.5V3Z"
+                fill="#5A5065"
+              />
+              <path
+                d="M11 1.5C11 0.67 11.67 0 12.5 0H13.5C14.33 0 15 0.67 15 1.5V10.5C15 11.33 14.33 12 13.5 12H12.5C11.67 12 11 11.33 11 10.5V1.5Z"
+                fill="#5A5065"
+              />
+            </svg>
+            <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+              <path
+                d="M7.5 2.5C9.433 2.5 11.15 3.32 12.35 4.62L13.78 3.19C12.21 1.52 10 0.5 7.5 0.5C5 0.5 2.79 1.52 1.22 3.19L2.65 4.62C3.85 3.32 5.567 2.5 7.5 2.5Z"
+                fill="#5A5065"
+              />
+              <path
+                d="M4.1 6.07C4.97 5.12 6.17 4.5 7.5 4.5C8.83 4.5 10.03 5.12 10.9 6.07L12.33 4.64C11.1 3.33 9.4 2.5 7.5 2.5C5.6 2.5 3.9 3.33 2.67 4.64L4.1 6.07Z"
+                fill="#5A5065"
+              />
+              <path
+                d="M7.5 6.5C6.57 6.5 5.74 6.93 5.17 7.6L7.5 10.5L9.83 7.6C9.26 6.93 8.43 6.5 7.5 6.5Z"
+                fill="#5A5065"
+              />
+            </svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
+              <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#5A5065" />
+              <rect x="2" y="2" width="16" height="8" rx="1" fill="#5A5065" />
+              <path d="M23 4V8C24.1 7.5 24.1 4.5 23 4Z" fill="#5A5065" />
+            </svg>
+          </div>
         </div>
+
+        <div class="onboarding-container">
+          <div class="floating-elements">
+            <span class="float-item float-1">🌸</span>
+            <span class="float-item float-2">💙</span>
+            <span class="float-item float-3">🦋</span>
+            <span class="float-item float-4">🌷</span>
+            <span class="float-item float-5">✨</span>
+          </div>
+
+          <div class="content-wrapper">
+            <div class="header-section">
+              <button class="back-btn">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M12.5 15L7.5 10L12.5 5"
+                    stroke="#5A5065"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <div class="step-indicator">Passo 1 de 4</div>
+            </div>
+
+            <div class="illustration-area">
+              <div class="main-illustration">
+                <span class="sparkle sparkle-1">✨</span>
+                <span class="sparkle sparkle-2">💕</span>
+                <span class="sparkle sparkle-3">🌟</span>
+                <span class="illustration-icon">👶</span>
+              </div>
+            </div>
+
+            <div class="text-section">
+              <p class="handwritten-intro">Olá, mamãe!</p>
+              <h1 class="main-title">
+                Você não está <span class="highlight">sozinha</span> nessa jornada
+              </h1>
+              <p class="description">
+                Junte-se a milhões de mulheres que compartilham experiências, dúvidas e conquistas
+                na maternidade.
+              </p>
+            </div>
+
+            <div class="features-preview">
+              <div class="feature-chip">
+                <span>👩‍👧‍👦</span>
+                Comunidade
+              </div>
+              <div class="feature-chip">
+                <span>📚</span>
+                Conteúdo
+              </div>
+              <div class="feature-chip">
+                <span>💬</span>
+                Suporte
+              </div>
+            </div>
+
+            <div class="progress-dots">
+              <div class="p-dot active"></div>
+              <div class="p-dot"></div>
+              <div class="p-dot"></div>
+              <div class="p-dot"></div>
+            </div>
+
+            <div class="action-section">
+              <button class="primary-button">
+                Vamos começar
+                <span class="btn-arrow">→</span>
+              </button>
+
+              <div class="alternative-actions">
+                <a href="#" class="alt-link">Já tenho conta</a>
+                <a href="#" class="alt-link">Saber mais</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>
