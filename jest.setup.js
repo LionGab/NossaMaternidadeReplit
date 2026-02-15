@@ -9,16 +9,6 @@
 // This fixes "ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING_FLAG" on Node.js v25+
 global.__DEV__ = false;
 
-// Setup react-native-reanimated mock
-jest.mock("react-native-reanimated", () => {
-  const Reanimated = require("react-native-reanimated/mock");
-
-  // The mock for `call` immediately calls the callback which is incorrect
-  Reanimated.default.call = () => {};
-
-  return Reanimated;
-});
-
 // Silence act() warnings from React 19
 global.IS_REACT_ACT_ENVIRONMENT = true;
 
