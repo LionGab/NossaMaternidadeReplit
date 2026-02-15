@@ -205,3 +205,122 @@ npm run test:coverage       # Relatorio de cobertura
 **Desenvolvido para mulheres que buscam acompanhar sua saude com carinho**
 
 # NossaMaternidadeSLC
+=======
+# 👶 Nossa Maternidade
+
+<div align="center">
+
+![Version](https://img.shields.io/badge/version-1.0.0-blue)
+![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey)
+![React Native](https://img.shields.io/badge/React_Native-0.81-61DAFB?logo=react)
+![Expo](https://img.shields.io/badge/Expo-54-000020?logo=expo)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)
+[![Code Quality](https://img.shields.io/badge/code_quality-A+-brightgreen)](#)
+
+**Aplicativo de saúde materna para grávidas e mães no pós-parto no Brasil.**
+
+[Features](#-features) • [Quick Start](#-quick-start) • [Docs](#-documentação) • [Contributing](#-contributing)
+
+</div>
+
+---
+
+## ✨ Features
+
+### 🤖 **NathIA**
+Assistente de IA personalizada powered by Gemini 2.0 Flash
+
+### 👥 **Comunidade Mães Valente**
+Rede social moderada para mães
+
+### 🎥 **Mundo da Nath**
+Conteúdo exclusivo da Nathalia Valente
+
+### 💖 **Meus Cuidados**
+Rastreamento de humor, hábitos e bem-estar
+
+### 📅 **Ciclo Menstrual**
+Calendário com previsão de fertilidade
+
+### 💎 **Premium**
+Assinatura via RevenueCat (mensal/anual)
+
+---
+
+## 🚀 Quick Start
+```bash
+# Clone o repositório
+git clone https://github.com/LionGab/NossaMaternidadeReplit.git
+
+# Entre na pasta
+cd NossaMaternidadeReplit
+
+# Instale as dependências
+npm install
+
+# Inicie o Expo
+npm start
+```
+
+📚 **Setup Completo**: Ver `QUICKSTART.md` (10min)
+
+---
+
+## 📚 Documentação
+
+| Documento | Descrição |
+|-----------|-----------|
+| [QUICKSTART.md](QUICKSTART.md) | Setup em 10 minutos |
+| [CLAUDE.md](CLAUDE.md) | Regras para AI/Claude Code |
+| [Design System](docs/DESIGN_SYSTEM_CALM_FEMTECH.md) | Calm FemTech UI/UX |
+| [TestFlight Guide](docs/release/TESTFLIGHT_BUILD_GUIDE.md) | Build & Release iOS |
+| [Gates](docs/release/TESTFLIGHT_GATES_v1.md) | Release Gates |
+| [Premium Setup](docs/PREMIUM_IAP_SETUP.md) | RevenueCat Config |
+
+---
+
+## 🛠️ Tech Stack
+
+| Categoria | Tecnologia |
+|-----------|------------|
+| Framework | Expo SDK 54 + React Native 0.81 |
+| Linguagem | TypeScript (strict mode) |
+| Backend | Supabase (Auth, DB, Edge Functions, Storage) |
+| Estilos | NativeWind v4 (TailwindCSS) |
+| Estado | Zustand + AsyncStorage |
+| Navegação | React Navigation 7 |
+| Animações | Reanimated v3 + Gesture Handler |
+| Pagamentos | RevenueCat |
+| IA | Google Gemini 2.0 Flash |
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Por favor, leia nosso [Contributing Guide](CONTRIBUTING.md) antes de submeter PRs.
+
+### Quality Gate ✅
+```bash
+npm run quality-gate
+```
+
+Antes de criar um PR, certifique-se de que:
+- ✅ TypeScript sem erros
+- ✅ ESLint sem warnings
+- ✅ Testes passando
+- ✅ Build funcionando
+
+---
+
+## 📄 Licença
+
+Este projeto é privado e confidencial.
+
+---
+
+<div align="center">
+
+**Desenvolvido com ❤️ para mulheres que buscam acompanhar sua saúde com carinho**
+
+</div>
+>>>>>>> 99fb501 (chore: adiciona templates de issue/PR, workflows CI e CONTRIBUTING)

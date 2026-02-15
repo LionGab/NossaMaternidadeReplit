@@ -1,6 +1,6 @@
 # Nossa Maternidade - CI Workflow
 # Validates PRs with typecheck, lint, format check, build readiness, and tests
-# Optimized for speed (<5 min) with parallel jobs and aggressive caching
+# Optimized for speed with parallel jobs and caching
 
 name: CI
 
@@ -15,8 +15,8 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: '20.11.1'
-  BUN_VERSION: 'latest'
+  NODE_VERSION: "20.11.1"
+  BUN_VERSION: "latest"
 
 jobs:
   # ============================================

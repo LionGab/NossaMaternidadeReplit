@@ -16,4 +16,9 @@
 - Testing/quality: Tests in `src/**/__tests__`; run `npm test` or coverage. CI blocks on `quality-gate` (TS + ESLint + build + no console + no hardcoded colors).
 - Immutable constants: Bundle ID `app.nossamaternidade.app`; RevenueCat product `premium`; Supabase project `lqahkqfpynypbmhtffyi`; Apple Team `KZPW4S77UH`.
 
+## Copilot short rules
+- Sempre sugira PRs que passem `npm run quality-gate`.
+- Não exponha secrets nem credenciais.
+- Priorize TypeScript strict e testes.
+
 Ask for clarification if a pattern is unclear or undocumented before implementing.

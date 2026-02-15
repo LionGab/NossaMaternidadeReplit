@@ -1,25 +1,36 @@
 ---
-name: Feature Request
-about: Sugira uma nova funcionalidade
-title: "[Feature]: "
+name: "✨ Feature Request"
+about: "Sugerir uma nova funcionalidade"
+title: "[FEATURE] "
 labels: enhancement
+assignees: ''
 ---
 
-## Problema
+## ✨ Descrição da Feature
+Descrição clara da funcionalidade proposta.
 
-Que problema essa feature resolve?
+## 🎯 Problema que Resolve
+Qual problema esta feature resolve?
 
-## Solução Proposta
+## 💡 Solução Proposta
+Como você imagina que isso funcione?
 
-Como você imagina a solução?
+## 🔁 Alternativas Consideradas
+Liste outras abordagens avaliadas.
 
-## Alternativas Consideradas
-
-Já pensou em outras abordagens?
-
-## Impacto
-
+## 📈 Impacto
 - [ ] UI/UX
 - [ ] Performance
 - [ ] Backend
 - [ ] Mobile
+
+## 📋 Tarefas
+- [ ] Tarefa 1
+- [ ] Tarefa 2
+- [ ] Tarefa 3
+
+## 🏷️ Labels Sugeridas
+- [ ] NathIA
+- [ ] Comunidade
+- [ ] Premium
+- [ ] UI/UX
