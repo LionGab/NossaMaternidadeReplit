@@ -1,10 +1,10 @@
 # Nossa Maternidade
 
-[![CI](https://github.com/LionGab/NossaMaternidade/actions/workflows/ci.yml/badge.svg)](https://github.com/LionGab/NossaMaternidade/actions/workflows/ci.yml)
-[![codecov](https://codecov.io/gh/LionGab/NossaMaternidade/graph/badge.svg)](https://codecov.io/gh/LionGab/NossaMaternidade)
+[![CI](https://github.com/LionGab/NossaMaternidadeReplit/actions/workflows/ci.yml/badge.svg)](https://github.com/LionGab/NossaMaternidadeReplit/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/LionGab/NossaMaternidadeReplit/graph/badge.svg)](https://codecov.io/gh/LionGab/NossaMaternidadeReplit)
 ![TypeScript](https://img.shields.io/badge/TypeScript-100%25%20Strict-blue?logo=typescript)
-![React Native](https://img.shields.io/badge/React%20Native-0.81-61DAFB?logo=react)
-![Expo](https://img.shields.io/badge/Expo-SDK%2054-000020?logo=expo)
+![React Native](https://img.shields.io/badge/React%20Native-0.83-61DAFB?logo=react)
+![Expo](https://img.shields.io/badge/Expo-SDK%2055-000020?logo=expo)
 ![Tests](https://img.shields.io/badge/Tests-300%2B%20passing-brightgreen)
 ![License](https://img.shields.io/badge/License-Proprietary-red)
 
@@ -27,7 +27,7 @@ Nossa Maternidade oferece:
 
 | Categoria  | Tecnologia                                   |
 | ---------- | -------------------------------------------- |
-| Framework  | Expo SDK 54 + React Native 0.81              |
+| Framework  | Expo SDK 55 + React Native 0.83              |
 | Linguagem  | TypeScript (strict mode)                     |
 | Backend    | Supabase (Auth, DB, Edge Functions, Storage) |
 | Estilos    | NativeWind v4 (TailwindCSS)                  |
@@ -205,15 +205,17 @@ npm run test:coverage       # Relatorio de cobertura
 **Desenvolvido para mulheres que buscam acompanhar sua saude com carinho**
 
 # NossaMaternidadeSLC
+
 =======
+
 # 👶 Nossa Maternidade
 
 <div align="center">
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue)
 ![Platform](https://img.shields.io/badge/platform-iOS%20%7C%20Android-lightgrey)
-![React Native](https://img.shields.io/badge/React_Native-0.81-61DAFB?logo=react)
-![Expo](https://img.shields.io/badge/Expo-54-000020?logo=expo)
+![React Native](https://img.shields.io/badge/React_Native-0.83-61DAFB?logo=react)
+![Expo](https://img.shields.io/badge/Expo-55-000020?logo=expo)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?logo=typescript)
 [![Code Quality](https://img.shields.io/badge/code_quality-A+-brightgreen)](#)
 
@@ -228,26 +230,33 @@ npm run test:coverage       # Relatorio de cobertura
 ## ✨ Features
 
 ### 🤖 **NathIA**
+
 Assistente de IA personalizada powered by Gemini 2.0 Flash
 
 ### 👥 **Comunidade Mães Valente**
+
 Rede social moderada para mães
 
 ### 🎥 **Mundo da Nath**
+
 Conteúdo exclusivo da Nathalia Valente
 
 ### 💖 **Meus Cuidados**
+
 Rastreamento de humor, hábitos e bem-estar
 
 ### 📅 **Ciclo Menstrual**
+
 Calendário com previsão de fertilidade
 
 ### 💎 **Premium**
+
 Assinatura via RevenueCat (mensal/anual)
 
 ---
 
 ## 🚀 Quick Start
+
 ```bash
 # Clone o repositório
 git clone https://github.com/LionGab/NossaMaternidadeReplit.git
@@ -268,30 +277,30 @@ npm start
 
 ## 📚 Documentação
 
-| Documento | Descrição |
-|-----------|-----------|
-| [QUICKSTART.md](QUICKSTART.md) | Setup em 10 minutos |
-| [CLAUDE.md](CLAUDE.md) | Regras para AI/Claude Code |
-| [Design System](docs/DESIGN_SYSTEM_CALM_FEMTECH.md) | Calm FemTech UI/UX |
-| [TestFlight Guide](docs/release/TESTFLIGHT_BUILD_GUIDE.md) | Build & Release iOS |
-| [Gates](docs/release/TESTFLIGHT_GATES_v1.md) | Release Gates |
-| [Premium Setup](docs/PREMIUM_IAP_SETUP.md) | RevenueCat Config |
+| Documento                                                  | Descrição                  |
+| ---------------------------------------------------------- | -------------------------- |
+| [QUICKSTART.md](QUICKSTART.md)                             | Setup em 10 minutos        |
+| [CLAUDE.md](CLAUDE.md)                                     | Regras para AI/Claude Code |
+| [Design System](docs/DESIGN_SYSTEM_CALM_FEMTECH.md)        | Calm FemTech UI/UX         |
+| [TestFlight Guide](docs/release/TESTFLIGHT_BUILD_GUIDE.md) | Build & Release iOS        |
+| [Gates](docs/release/TESTFLIGHT_GATES_v1.md)               | Release Gates              |
+| [Premium Setup](docs/PREMIUM_IAP_SETUP.md)                 | RevenueCat Config          |
 
 ---
 
 ## 🛠️ Tech Stack
 
-| Categoria | Tecnologia |
-|-----------|------------|
-| Framework | Expo SDK 54 + React Native 0.81 |
-| Linguagem | TypeScript (strict mode) |
-| Backend | Supabase (Auth, DB, Edge Functions, Storage) |
-| Estilos | NativeWind v4 (TailwindCSS) |
-| Estado | Zustand + AsyncStorage |
-| Navegação | React Navigation 7 |
-| Animações | Reanimated v3 + Gesture Handler |
-| Pagamentos | RevenueCat |
-| IA | Google Gemini 2.0 Flash |
+| Categoria  | Tecnologia                                   |
+| ---------- | -------------------------------------------- |
+| Framework  | Expo SDK 55 + React Native 0.83              |
+| Linguagem  | TypeScript (strict mode)                     |
+| Backend    | Supabase (Auth, DB, Edge Functions, Storage) |
+| Estilos    | NativeWind v4 (TailwindCSS)                  |
+| Estado     | Zustand + AsyncStorage                       |
+| Navegação  | React Navigation 7                           |
+| Animações  | Reanimated v3 + Gesture Handler              |
+| Pagamentos | RevenueCat                                   |
+| IA         | Google Gemini 2.0 Flash                      |
 
 ---
 
@@ -300,11 +309,13 @@ npm start
 Contributions are welcome! Por favor, leia nosso [Contributing Guide](CONTRIBUTING.md) antes de submeter PRs.
 
 ### Quality Gate ✅
+
 ```bash
 npm run quality-gate
 ```
 
 Antes de criar um PR, certifique-se de que:
+
 - ✅ TypeScript sem erros
 - ✅ ESLint sem warnings
 - ✅ Testes passando

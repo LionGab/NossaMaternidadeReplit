@@ -1,6 +1,6 @@
 # GitHub Copilot Instructions — Nossa Maternidade (2026-01-26)
 
-- Stack: React Native 0.81 + Expo SDK 54 + TS strict + Supabase; purpose: maternal health app (pt-BR), hospital-grade reliability.
+- Stack: React Native 0.83 + Expo SDK 55 + TS strict + Supabase; purpose: maternal health app (pt-BR), hospital-grade reliability.
 - Workflow: Explore → Plan → Implement → Verify; always run `npm run quality-gate` before PR; common commands `npm start`, `npm test -- --watch`, `npm run typecheck`, `npm run lint`, `npm run generate-types`, `npm run deploy-functions`, `npm run test:gemini`.
 - Path alias: `@/*` → `src/*` (use for all imports).
 - Architecture: Navigation flow Auth → NotificationPermission → Onboarding → MainTabs (5 tabs); see [docs/claude/architecture.md](docs/claude/architecture.md) for route map and store inventory.
@@ -14,9 +14,10 @@
 - Navigation/types: Use typed props from navigation types (see [docs/claude/architecture.md](docs/claude/architecture.md)); keep screens small and route-safe.
 - Performance: Lists virtualized; prefer `React.memo` for heavy cells; use code-splitting (`React.lazy`) for 200+ line screens; avoid extra renders by stable selectors.
 - Testing/quality: Tests in `src/**/__tests__`; run `npm test` or coverage. CI blocks on `quality-gate` (TS + ESLint + build + no console + no hardcoded colors).
-- Immutable constants: Bundle ID `app.nossamaternidade.app`; RevenueCat product `premium`; Supabase project `lqahkqfpynypbmhtffyi`; Apple Team `KZPW4S77UH`.
+- Immutable constants: Bundle ID iOS `br.com.nossamaternidade.app`; Bundle ID Android `com.liongab.nossamaternidade`; Apple Team ID `KZPW4S77UH`; RevenueCat entitlement `premium`; Supabase project `lqahkqfpynypbmhtffyi`.
 
 ## Copilot short rules
+
 - Sempre sugira PRs que passem `npm run quality-gate`.
 - Não exponha secrets nem credenciais.
 - Priorize TypeScript strict e testes.

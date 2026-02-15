@@ -15,8 +15,8 @@ Obrigado pelo seu interesse em contribuir com o Nossa Maternidade! 💜
 
 ```bash
 # Clone o repositório
-git clone https://github.com/LionGab/NossaMaternidade.git
-cd NossaMaternidade
+git clone https://github.com/LionGab/NossaMaternidadeReplit.git
+cd NossaMaternidadeReplit
 
 # Instale as dependências
 npm install

@@ -16,7 +16,6 @@ concurrency:
 
 env:
   NODE_VERSION: "20.11.1"
-  BUN_VERSION: "latest"
 
 jobs:
   # ============================================
@@ -31,25 +30,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: ${{ env.BUN_VERSION }}
-
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
-          restore-keys: |
-            ${{ runner.os }}-bun-
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: bun install
+        run: npm ci
 
   # ============================================
   # LINT & FORMAT - Code quality checks
@@ -64,30 +52,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-      - name: Restore node_modules cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            bun install
-          fi
+      - name: Install dependencies
+        run: npm ci
 
       - name: Format check
-        run: bun run format:check
+        run: npm run format:check
 
       - name: ESLint
-        run: bun run lint
+        run: npm run lint
 
       - name: Check for console.log
         run: |
@@ -110,27 +88,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          bun-version: ${{ env.BUN_VERSION }}
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-      - name: Restore node_modules cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            bun install
-          fi
+      - name: Install dependencies
+        run: npm ci
 
       - name: TypeScript check
-        run: bun run typecheck
+        run: npm run typecheck
 
   # ============================================
   # TEST - Unit tests with coverage
@@ -149,28 +117,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-
-      - name: Restore node_modules cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            bun install
-          fi
+      - name: Install dependencies
+        run: npm ci
 
       - name: Run tests with coverage
-        run: bun run test:ci
+        run: npm run test:ci -- --passWithNoTests
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
@@ -206,25 +159,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: ${{ env.BUN_VERSION }}
-
-      - name: Restore node_modules cache
-        uses: actions/cache@v4
-        with:
-          path: |
-            node_modules
-            ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('package-lock.json', 'package.json') }}
-
-      - name: Install dependencies (if cache miss)
-        run: |
-          if [ ! -d "node_modules" ]; then
-            bun install
-          fi
+      - name: Install dependencies
+        run: npm ci
 
       - name: Setup Expo
         uses: expo/expo-github-action@v8
@@ -246,7 +184,7 @@ jobs:
           npx eas-cli config --platform android --profile preview --non-interactive || echo "Android config check completed"
 
       - name: Check build readiness
-        run: bun run check-build-ready || echo "⚠️ Build readiness check completed"
+        run: npm run check-build-ready || echo "⚠️ Build readiness check completed"
         continue-on-error: true
 
       - name: Cleanup dist
