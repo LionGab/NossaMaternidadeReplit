@@ -318,6 +318,7 @@ eas build --platform ios --profile development --local
 **Causa**: Xcode Command Line Tools desconfigurado.
 
 **Solução**:
+
 ```bash
 sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer
 sudo xcodebuild -license accept
@@ -328,6 +329,7 @@ sudo xcodebuild -license accept
 **Causa**: CocoaPods não instalado (necessário para iOS).
 
 **Solução**:
+
 ```bash
 sudo gem install cocoapods
 pod --version
@@ -338,6 +340,7 @@ pod --version
 **Causa**: Rosetta 2 overhead ou RAM limitada.
 
 **Solução**:
+
 ```bash
 # 1. Verificar se Node está rodando nativo (não Rosetta)
 file $(which node)
@@ -353,6 +356,7 @@ npm run start:memory
 ### 13.4 Simulador não abre
 
 **Solução**:
+
 ```bash
 # Reset simulador
 xcrun simctl erase all
@@ -366,6 +370,7 @@ open -a Simulator
 **Causa**: Certificados iOS não configurados.
 
 **Solução** (usar EAS):
+
 ```bash
 eas build --platform ios --profile development
 # EAS gerencia certificados automaticamente

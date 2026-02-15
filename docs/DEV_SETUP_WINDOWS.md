@@ -46,6 +46,7 @@ git config --global init.defaultBranch main
 1. **Download**: https://nodejs.org/en/download/
 2. **Instalar** Node.js **v20.x LTS** (versão recomendada)
 3. **Verificar**:
+
    ```bash
    node --version
    # ✅ v20.19.4 (ou superior v20.x)
@@ -217,6 +218,7 @@ git push origin feat/minha-feature
 **Causa**: Paths com backslashes (`\`) vs forward slashes (`/`).
 
 **Solução**: Sempre usar **forward slashes** no Git Bash:
+
 ```bash
 # ✅ Correto
 cd /c/Users/User/project
@@ -230,6 +232,7 @@ cd C:\Users\User\project
 **Causa**: Git Bash sem permissões de admin.
 
 **Solução**:
+
 - Rodar **Git Bash como Administrador**
 - OU ajustar permissões de pasta no Windows Explorer
 
@@ -238,6 +241,7 @@ cd C:\Users\User\project
 **Causa**: Windows Defender scannin `node_modules/`.
 
 **Solução**:
+
 1. **Windows Security** → **Virus & threat protection**
 2. **Manage settings** → **Exclusions**
 3. **Add exclusion** → `C:\Users\<User>\Documents\NossaMaternidadeReplit`
@@ -247,6 +251,7 @@ cd C:\Users\User\project
 **Problema**: Git converte line endings automaticamente.
 
 **Solução**:
+
 ```bash
 git config --global core.autocrlf input
 # Força LF (Unix-style) em commits
@@ -257,6 +262,7 @@ git config --global core.autocrlf input
 **Problema**: Windows path limit (260 chars).
 
 **Solução**:
+
 ```bash
 # Habilitar long paths (PowerShell como Admin)
 New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem" `

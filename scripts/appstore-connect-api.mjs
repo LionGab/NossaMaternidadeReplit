@@ -64,7 +64,9 @@ function loadCredentials() {
       privateKey = privateKey.replace(/\\n/g, "\n");
     }
     if (!privateKey.includes("-----BEGIN PRIVATE KEY-----") || privateKey.length < 200) {
-      throw new Error("privateKey deve ser o conteúdo completo do arquivo .p8 (PEM), não um placeholder.");
+      throw new Error(
+        "privateKey deve ser o conteúdo completo do arquivo .p8 (PEM), não um placeholder."
+      );
     }
     return { keyId, issuerId, privateKey };
   }

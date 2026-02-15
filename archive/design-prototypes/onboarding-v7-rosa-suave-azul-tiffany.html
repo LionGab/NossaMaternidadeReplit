@@ -1,501 +1,593 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nathália Valente App - V7 Rosa Suave + Azul Tiffany</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(160deg, #fef8f9 0%, #f2fafa 100%);
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+      }
+
+      .phone-frame {
+        width: 375px;
+        height: 812px;
+        background: #ffffff;
+        border-radius: 40px;
+        box-shadow: 0 35px 90px rgba(130, 190, 200, 0.15);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .status-bar {
+        height: 44px;
+        padding: 14px 24px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: #4a5d65;
+      }
+
+      .status-icons {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      .onboarding-container {
+        height: calc(100% - 44px);
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        overflow: hidden;
+      }
+
+      /* Tiffany accent stripe */
+      .tiffany-stripe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #ffe4e8 0%, #81d4d8 50%, #a8e6e8 100%);
+      }
+
+      .floating-elements {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        overflow: hidden;
+        z-index: 1;
+      }
+
+      .float-item {
+        position: absolute;
+        animation: floatDance 4s ease-in-out infinite;
+      }
+
+      .float-1 {
+        top: 10%;
+        left: 8%;
+        animation-delay: 0s;
+        font-size: 24px;
+      }
+      .float-2 {
+        top: 20%;
+        right: 10%;
+        animation-delay: 0.7s;
+        font-size: 20px;
+      }
+      .float-3 {
+        top: 40%;
+        left: 5%;
+        animation-delay: 1.4s;
+        font-size: 18px;
+      }
+      .float-4 {
+        top: 55%;
+        right: 7%;
+        animation-delay: 2.1s;
+        font-size: 22px;
+      }
+      .float-5 {
+        bottom: 35%;
+        left: 12%;
+        animation-delay: 2.8s;
+        font-size: 16px;
+      }
+
+      @keyframes floatDance {
+        0%,
+        100% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 0.6;
         }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(160deg, #FEF8F9 0%, #F2FAFA 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+        25% {
+          transform: translateY(-8px) rotate(3deg);
         }
-
-        .phone-frame {
-            width: 375px;
-            height: 812px;
-            background: #FFFFFF;
-            border-radius: 40px;
-            box-shadow: 0 35px 90px rgba(130, 190, 200, 0.15);
-            overflow: hidden;
-            position: relative;
+        50% {
+          transform: translateY(-12px) rotate(-2deg);
+          opacity: 1;
         }
-
-        .status-bar {
-            height: 44px;
-            padding: 14px 24px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: #4A5D65;
+        75% {
+          transform: translateY(-6px) rotate(2deg);
         }
+      }
 
-        .status-icons {
-            display: flex;
-            gap: 5px;
-            align-items: center;
+      .content-wrapper {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 24px 26px 26px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .back-btn {
+        width: 42px;
+        height: 42px;
+        background: linear-gradient(135deg, #fff5f6 0%, #f0fafa 100%);
+        border: 1px solid #e8f4f5;
+        border-radius: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+      }
+
+      .step-pills {
+        display: flex;
+        gap: 6px;
+      }
+
+      .pill {
+        width: 24px;
+        height: 6px;
+        background: #e8f0f0;
+        border-radius: 3px;
+      }
+
+      .pill.active {
+        width: 36px;
+        background: linear-gradient(90deg, #ffd5dc 0%, #81d4d8 100%);
+      }
+
+      .illustration-area {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .card-stack {
+        position: relative;
+        width: 260px;
+        height: 280px;
+      }
+
+      .card {
+        position: absolute;
+        width: 220px;
+        height: 240px;
+        border-radius: 24px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .card-back {
+        background: linear-gradient(145deg, #e8f8f8 0%, #d8f0f0 100%);
+        top: 20px;
+        left: 40px;
+        transform: rotate(6deg);
+        opacity: 0.6;
+      }
+
+      .card-middle {
+        background: linear-gradient(145deg, #fff0f2 0%, #ffe8ec 100%);
+        top: 10px;
+        left: 25px;
+        transform: rotate(3deg);
+        opacity: 0.8;
+      }
+
+      .card-front {
+        background: linear-gradient(145deg, #fffbfc 0%, #f8fdfd 100%);
+        top: 0;
+        left: 10px;
+        box-shadow: 0 15px 40px rgba(130, 190, 200, 0.2);
+        border: 2px solid rgba(129, 212, 216, 0.2);
+      }
+
+      .card-front .illustration-icon {
+        font-size: 80px;
+        margin-bottom: 12px;
+      }
+
+      .card-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: #81d4d8;
+        letter-spacing: 1px;
+      }
+
+      .sparkles {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+      }
+
+      .sparkle {
+        position: absolute;
+        animation: twinkle 1.5s ease-in-out infinite;
+      }
+
+      .sparkle-1 {
+        top: -10px;
+        right: 20px;
+        font-size: 16px;
+        animation-delay: 0s;
+      }
+      .sparkle-2 {
+        top: 30px;
+        left: 5px;
+        font-size: 14px;
+        animation-delay: 0.3s;
+      }
+      .sparkle-3 {
+        bottom: 30px;
+        right: 10px;
+        font-size: 18px;
+        animation-delay: 0.6s;
+      }
+      .sparkle-4 {
+        bottom: 60px;
+        left: 15px;
+        font-size: 12px;
+        animation-delay: 0.9s;
+      }
+
+      @keyframes twinkle {
+        0%,
+        100% {
+          transform: scale(1) rotate(0deg);
+          opacity: 0.5;
         }
-
-        .onboarding-container {
-            height: calc(100% - 44px);
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
+        50% {
+          transform: scale(1.2) rotate(15deg);
+          opacity: 1;
         }
+      }
 
-        /* Tiffany accent stripe */
-        .tiffany-stripe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: linear-gradient(90deg, #FFE4E8 0%, #81D4D8 50%, #A8E6E8 100%);
-        }
+      .text-section {
+        text-align: center;
+        margin-bottom: 20px;
+      }
 
-        .floating-elements {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            overflow: hidden;
-            z-index: 1;
-        }
+      .intro-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background: linear-gradient(135deg, #fff0f2 0%, #e8fafa 100%);
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        color: #6ba8ad;
+        margin-bottom: 16px;
+        border: 1px solid rgba(129, 212, 216, 0.2);
+      }
 
-        .float-item {
-            position: absolute;
-            animation: floatDance 4s ease-in-out infinite;
-        }
+      .main-title {
+        font-family: "Playfair Display", serif;
+        font-size: 30px;
+        font-weight: 600;
+        color: #3d4d55;
+        line-height: 1.3;
+        margin-bottom: 12px;
+      }
 
-        .float-1 { top: 10%; left: 8%; animation-delay: 0s; font-size: 24px; }
-        .float-2 { top: 20%; right: 10%; animation-delay: 0.7s; font-size: 20px; }
-        .float-3 { top: 40%; left: 5%; animation-delay: 1.4s; font-size: 18px; }
-        .float-4 { top: 55%; right: 7%; animation-delay: 2.1s; font-size: 22px; }
-        .float-5 { bottom: 35%; left: 12%; animation-delay: 2.8s; font-size: 16px; }
+      .title-rosa {
+        color: #e8a0b0;
+      }
 
-        @keyframes floatDance {
-            0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.6; }
-            25% { transform: translateY(-8px) rotate(3deg); }
-            50% { transform: translateY(-12px) rotate(-2deg); opacity: 1; }
-            75% { transform: translateY(-6px) rotate(2deg); }
-        }
+      .title-tiffany {
+        color: #5dbdc2;
+      }
 
-        .content-wrapper {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            padding: 24px 26px 26px;
-            position: relative;
-            z-index: 2;
-        }
+      .description {
+        font-size: 14px;
+        color: #7a8a90;
+        line-height: 1.7;
+        max-width: 290px;
+        margin: 0 auto;
+      }
 
-        .header-section {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-        }
+      .benefits-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-bottom: 24px;
+      }
 
-        .back-btn {
-            width: 42px;
-            height: 42px;
-            background: linear-gradient(135deg, #FFF5F6 0%, #F0FAFA 100%);
-            border: 1px solid #E8F4F5;
-            border-radius: 12px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-        }
+      .benefit-tag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 10px 14px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 500;
+      }
 
-        .step-pills {
-            display: flex;
-            gap: 6px;
-        }
+      .benefit-tag.rosa {
+        background: #fff5f7;
+        color: #c88090;
+        border: 1px solid #ffe8ec;
+      }
 
-        .pill {
-            width: 24px;
-            height: 6px;
-            background: #E8F0F0;
-            border-radius: 3px;
-        }
+      .benefit-tag.tiffany {
+        background: #f0fafa;
+        color: #5dbdc2;
+        border: 1px solid #d8f0f0;
+      }
 
-        .pill.active {
-            width: 36px;
-            background: linear-gradient(90deg, #FFD5DC 0%, #81D4D8 100%);
-        }
+      .benefit-tag span {
+        font-size: 14px;
+      }
 
-        .illustration-area {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
+      .action-section {
+        padding-bottom: 16px;
+      }
 
-        .card-stack {
-            position: relative;
-            width: 260px;
-            height: 280px;
-        }
+      .primary-button {
+        width: 100%;
+        padding: 18px;
+        background: linear-gradient(135deg, #81d4d8 0%, #6bc4c8 100%);
+        border: none;
+        border-radius: 16px;
+        font-family: "Poppins", sans-serif;
+        font-size: 15px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 0 12px 30px rgba(129, 212, 216, 0.4);
+        transition: all 0.3s ease;
+        margin-bottom: 12px;
+      }
 
-        .card {
-            position: absolute;
-            width: 220px;
-            height: 240px;
-            border-radius: 24px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.3s ease;
-        }
+      .primary-button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 40px rgba(129, 212, 216, 0.5);
+      }
 
-        .card-back {
-            background: linear-gradient(145deg, #E8F8F8 0%, #D8F0F0 100%);
-            top: 20px;
-            left: 40px;
-            transform: rotate(6deg);
-            opacity: 0.6;
-        }
+      .btn-icon {
+        background: rgba(255, 255, 255, 0.3);
+        width: 26px;
+        height: 26px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+      }
 
-        .card-middle {
-            background: linear-gradient(145deg, #FFF0F2 0%, #FFE8EC 100%);
-            top: 10px;
-            left: 25px;
-            transform: rotate(3deg);
-            opacity: 0.8;
-        }
+      .secondary-row {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+      }
 
-        .card-front {
-            background: linear-gradient(145deg, #FFFBFC 0%, #F8FDFD 100%);
-            top: 0;
-            left: 10px;
-            box-shadow: 0 15px 40px rgba(130, 190, 200, 0.2);
-            border: 2px solid rgba(129, 212, 216, 0.2);
-        }
+      .text-btn {
+        padding: 12px 20px;
+        background: none;
+        border: 1.5px solid #e8f0f0;
+        border-radius: 12px;
+        font-family: "Poppins", sans-serif;
+        font-size: 13px;
+        font-weight: 500;
+        color: #7a8a90;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
 
-        .card-front .illustration-icon {
-            font-size: 80px;
-            margin-bottom: 12px;
-        }
+      .text-btn:hover {
+        background: #f8fdfd;
+        border-color: #81d4d8;
+        color: #5dbdc2;
+      }
 
-        .card-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: #81D4D8;
-            letter-spacing: 1px;
-        }
+      .text-btn.rosa:hover {
+        background: #fff8f9;
+        border-color: #ffd5dc;
+        color: #e8a0b0;
+      }
 
-        .sparkles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .sparkle {
-            position: absolute;
-            animation: twinkle 1.5s ease-in-out infinite;
-        }
-
-        .sparkle-1 { top: -10px; right: 20px; font-size: 16px; animation-delay: 0s; }
-        .sparkle-2 { top: 30px; left: 5px; font-size: 14px; animation-delay: 0.3s; }
-        .sparkle-3 { bottom: 30px; right: 10px; font-size: 18px; animation-delay: 0.6s; }
-        .sparkle-4 { bottom: 60px; left: 15px; font-size: 12px; animation-delay: 0.9s; }
-
-        @keyframes twinkle {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.5; }
-            50% { transform: scale(1.2) rotate(15deg); opacity: 1; }
-        }
-
-        .text-section {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .intro-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: linear-gradient(135deg, #FFF0F2 0%, #E8FAFA 100%);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 500;
-            color: #6BA8AD;
-            margin-bottom: 16px;
-            border: 1px solid rgba(129, 212, 216, 0.2);
-        }
-
-        .main-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 30px;
-            font-weight: 600;
-            color: #3D4D55;
-            line-height: 1.3;
-            margin-bottom: 12px;
-        }
-
-        .title-rosa {
-            color: #E8A0B0;
-        }
-
-        .title-tiffany {
-            color: #5DBDC2;
-        }
-
-        .description {
-            font-size: 14px;
-            color: #7A8A90;
-            line-height: 1.7;
-            max-width: 290px;
-            margin: 0 auto;
-        }
-
-        .benefits-row {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-bottom: 24px;
-        }
-
-        .benefit-tag {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            padding: 10px 14px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 500;
-        }
-
-        .benefit-tag.rosa {
-            background: #FFF5F7;
-            color: #C88090;
-            border: 1px solid #FFE8EC;
-        }
-
-        .benefit-tag.tiffany {
-            background: #F0FAFA;
-            color: #5DBDC2;
-            border: 1px solid #D8F0F0;
-        }
-
-        .benefit-tag span {
-            font-size: 14px;
-        }
-
-        .action-section {
-            padding-bottom: 16px;
-        }
-
-        .primary-button {
-            width: 100%;
-            padding: 18px;
-            background: linear-gradient(135deg, #81D4D8 0%, #6BC4C8 100%);
-            border: none;
-            border-radius: 16px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 15px;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 12px 30px rgba(129, 212, 216, 0.4);
-            transition: all 0.3s ease;
-            margin-bottom: 12px;
-        }
-
-        .primary-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 16px 40px rgba(129, 212, 216, 0.5);
-        }
-
-        .btn-icon {
-            background: rgba(255, 255, 255, 0.3);
-            width: 26px;
-            height: 26px;
-            border-radius: 8px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 12px;
-        }
-
-        .secondary-row {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .text-btn {
-            padding: 12px 20px;
-            background: none;
-            border: 1.5px solid #E8F0F0;
-            border-radius: 12px;
-            font-family: 'Poppins', sans-serif;
-            font-size: 13px;
-            font-weight: 500;
-            color: #7A8A90;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .text-btn:hover {
-            background: #F8FDFD;
-            border-color: #81D4D8;
-            color: #5DBDC2;
-        }
-
-        .text-btn.rosa:hover {
-            background: #FFF8F9;
-            border-color: #FFD5DC;
-            color: #E8A0B0;
-        }
-
-        /* Screen indicator */
-        .screen-label {
-            position: absolute;
-            top: -40px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, #FFD5DC 0%, #81D4D8 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            white-space: nowrap;
-        }
+      /* Screen indicator */
+      .screen-label {
+        position: absolute;
+        top: -40px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, #ffd5dc 0%, #81d4d8 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+      }
     </style>
-</head>
-<body>
-    <div style="position: relative;">
-        <div class="screen-label">V7 - ROSA SUAVE + AZUL TIFFANY</div>
-        <div class="phone-frame">
-            <div class="status-bar">
-                <span>9:41</span>
-                <div class="status-icons">
-                    <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
-                        <path d="M1 4.5C1 3.67 1.67 3 2.5 3H3.5C4.33 3 5 3.67 5 4.5V10.5C5 11.33 4.33 12 3.5 12H2.5C1.67 12 1 11.33 1 10.5V4.5Z" fill="#4A5D65"/>
-                        <path d="M6 3C6 2.17 6.67 1.5 7.5 1.5H8.5C9.33 1.5 10 2.17 10 3V10.5C10 11.33 9.33 12 8.5 12H7.5C6.67 12 6 11.33 6 10.5V3Z" fill="#4A5D65"/>
-                        <path d="M11 1.5C11 0.67 11.67 0 12.5 0H13.5C14.33 0 15 0.67 15 1.5V10.5C15 11.33 14.33 12 13.5 12H12.5C11.67 12 11 11.33 11 10.5V1.5Z" fill="#4A5D65"/>
-                    </svg>
-                    <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
-                        <path d="M7.5 2.5C9.433 2.5 11.15 3.32 12.35 4.62L13.78 3.19C12.21 1.52 10 0.5 7.5 0.5C5 0.5 2.79 1.52 1.22 3.19L2.65 4.62C3.85 3.32 5.567 2.5 7.5 2.5Z" fill="#4A5D65"/>
-                        <path d="M4.1 6.07C4.97 5.12 6.17 4.5 7.5 4.5C8.83 4.5 10.03 5.12 10.9 6.07L12.33 4.64C11.1 3.33 9.4 2.5 7.5 2.5C5.6 2.5 3.9 3.33 2.67 4.64L4.1 6.07Z" fill="#4A5D65"/>
-                        <path d="M7.5 6.5C6.57 6.5 5.74 6.93 5.17 7.6L7.5 10.5L9.83 7.6C9.26 6.93 8.43 6.5 7.5 6.5Z" fill="#4A5D65"/>
-                    </svg>
-                    <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
-                        <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#4A5D65"/>
-                        <rect x="2" y="2" width="16" height="8" rx="1" fill="#4A5D65"/>
-                        <path d="M23 4V8C24.1 7.5 24.1 4.5 23 4Z" fill="#4A5D65"/>
-                    </svg>
-                </div>
-            </div>
-
-            <div class="onboarding-container">
-                <div class="tiffany-stripe"></div>
-
-                <div class="floating-elements">
-                    <span class="float-item float-1">🌸</span>
-                    <span class="float-item float-2">💎</span>
-                    <span class="float-item float-3">🦋</span>
-                    <span class="float-item float-4">🌷</span>
-                    <span class="float-item float-5">✨</span>
-                </div>
-
-                <div class="content-wrapper">
-                    <div class="header-section">
-                        <button class="back-btn">
-                            <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
-                                <path d="M12.5 15L7.5 10L12.5 5" stroke="#5DBDC2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                        </button>
-                        <div class="step-pills">
-                            <div class="pill active"></div>
-                            <div class="pill"></div>
-                            <div class="pill"></div>
-                            <div class="pill"></div>
-                        </div>
-                    </div>
-
-                    <div class="illustration-area">
-                        <div class="card-stack">
-                            <div class="sparkles">
-                                <span class="sparkle sparkle-1">✨</span>
-                                <span class="sparkle sparkle-2">💕</span>
-                                <span class="sparkle sparkle-3">🌟</span>
-                                <span class="sparkle sparkle-4">💫</span>
-                            </div>
-                            <div class="card card-back"></div>
-                            <div class="card card-middle"></div>
-                            <div class="card card-front">
-                                <span class="illustration-icon">🤰</span>
-                                <span class="card-label">MATERNIDADE</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="text-section">
-                        <div class="intro-label">
-                            <span>🎀</span>
-                            Exclusivo para você
-                        </div>
-                        <h1 class="main-title">
-                            <span class="title-rosa">Amor</span> e <span class="title-tiffany">conexão</span> em cada momento
-                        </h1>
-                        <p class="description">
-                            Faça parte de uma comunidade especial criada pela Nathália Valente para mulheres como você.
-                        </p>
-                    </div>
-
-                    <div class="benefits-row">
-                        <div class="benefit-tag rosa">
-                            <span>💕</span>
-                            Acolhimento
-                        </div>
-                        <div class="benefit-tag tiffany">
-                            <span>📚</span>
-                            Conteúdo
-                        </div>
-                        <div class="benefit-tag rosa">
-                            <span>👩‍👧</span>
-                            Comunidade
-                        </div>
-                    </div>
-
-                    <div class="action-section">
-                        <button class="primary-button">
-                            Entrar na comunidade
-                            <span class="btn-icon">→</span>
-                        </button>
-
-                        <div class="secondary-row">
-                            <button class="text-btn rosa">Já sou membro</button>
-                            <button class="text-btn">Saber mais</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+  </head>
+  <body>
+    <div style="position: relative">
+      <div class="screen-label">V7 - ROSA SUAVE + AZUL TIFFANY</div>
+      <div class="phone-frame">
+        <div class="status-bar">
+          <span>9:41</span>
+          <div class="status-icons">
+            <svg width="18" height="12" viewBox="0 0 18 12" fill="none">
+              <path
+                d="M1 4.5C1 3.67 1.67 3 2.5 3H3.5C4.33 3 5 3.67 5 4.5V10.5C5 11.33 4.33 12 3.5 12H2.5C1.67 12 1 11.33 1 10.5V4.5Z"
+                fill="#4A5D65"
+              />
+              <path
+                d="M6 3C6 2.17 6.67 1.5 7.5 1.5H8.5C9.33 1.5 10 2.17 10 3V10.5C10 11.33 9.33 12 8.5 12H7.5C6.67 12 6 11.33 6 10.5V3Z"
+                fill="#4A5D65"
+              />
+              <path
+                d="M11 1.5C11 0.67 11.67 0 12.5 0H13.5C14.33 0 15 0.67 15 1.5V10.5C15 11.33 14.33 12 13.5 12H12.5C11.67 12 11 11.33 11 10.5V1.5Z"
+                fill="#4A5D65"
+              />
+            </svg>
+            <svg width="15" height="11" viewBox="0 0 15 11" fill="none">
+              <path
+                d="M7.5 2.5C9.433 2.5 11.15 3.32 12.35 4.62L13.78 3.19C12.21 1.52 10 0.5 7.5 0.5C5 0.5 2.79 1.52 1.22 3.19L2.65 4.62C3.85 3.32 5.567 2.5 7.5 2.5Z"
+                fill="#4A5D65"
+              />
+              <path
+                d="M4.1 6.07C4.97 5.12 6.17 4.5 7.5 4.5C8.83 4.5 10.03 5.12 10.9 6.07L12.33 4.64C11.1 3.33 9.4 2.5 7.5 2.5C5.6 2.5 3.9 3.33 2.67 4.64L4.1 6.07Z"
+                fill="#4A5D65"
+              />
+              <path
+                d="M7.5 6.5C6.57 6.5 5.74 6.93 5.17 7.6L7.5 10.5L9.83 7.6C9.26 6.93 8.43 6.5 7.5 6.5Z"
+                fill="#4A5D65"
+              />
+            </svg>
+            <svg width="25" height="12" viewBox="0 0 25 12" fill="none">
+              <rect x="0.5" y="0.5" width="21" height="11" rx="2.5" stroke="#4A5D65" />
+              <rect x="2" y="2" width="16" height="8" rx="1" fill="#4A5D65" />
+              <path d="M23 4V8C24.1 7.5 24.1 4.5 23 4Z" fill="#4A5D65" />
+            </svg>
+          </div>
         </div>
+
+        <div class="onboarding-container">
+          <div class="tiffany-stripe"></div>
+
+          <div class="floating-elements">
+            <span class="float-item float-1">🌸</span>
+            <span class="float-item float-2">💎</span>
+            <span class="float-item float-3">🦋</span>
+            <span class="float-item float-4">🌷</span>
+            <span class="float-item float-5">✨</span>
+          </div>
+
+          <div class="content-wrapper">
+            <div class="header-section">
+              <button class="back-btn">
+                <svg width="18" height="18" viewBox="0 0 20 20" fill="none">
+                  <path
+                    d="M12.5 15L7.5 10L12.5 5"
+                    stroke="#5DBDC2"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <div class="step-pills">
+                <div class="pill active"></div>
+                <div class="pill"></div>
+                <div class="pill"></div>
+                <div class="pill"></div>
+              </div>
+            </div>
+
+            <div class="illustration-area">
+              <div class="card-stack">
+                <div class="sparkles">
+                  <span class="sparkle sparkle-1">✨</span>
+                  <span class="sparkle sparkle-2">💕</span>
+                  <span class="sparkle sparkle-3">🌟</span>
+                  <span class="sparkle sparkle-4">💫</span>
+                </div>
+                <div class="card card-back"></div>
+                <div class="card card-middle"></div>
+                <div class="card card-front">
+                  <span class="illustration-icon">🤰</span>
+                  <span class="card-label">MATERNIDADE</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="text-section">
+              <div class="intro-label">
+                <span>🎀</span>
+                Exclusivo para você
+              </div>
+              <h1 class="main-title">
+                <span class="title-rosa">Amor</span> e <span class="title-tiffany">conexão</span> em
+                cada momento
+              </h1>
+              <p class="description">
+                Faça parte de uma comunidade especial criada pela Nathália Valente para mulheres
+                como você.
+              </p>
+            </div>
+
+            <div class="benefits-row">
+              <div class="benefit-tag rosa">
+                <span>💕</span>
+                Acolhimento
+              </div>
+              <div class="benefit-tag tiffany">
+                <span>📚</span>
+                Conteúdo
+              </div>
+              <div class="benefit-tag rosa">
+                <span>👩‍👧</span>
+                Comunidade
+              </div>
+            </div>
+
+            <div class="action-section">
+              <button class="primary-button">
+                Entrar na comunidade
+                <span class="btn-icon">→</span>
+              </button>
+
+              <div class="secondary-row">
+                <button class="text-btn rosa">Já sou membro</button>
+                <button class="text-btn">Saber mais</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-</body>
+  </body>
 </html>

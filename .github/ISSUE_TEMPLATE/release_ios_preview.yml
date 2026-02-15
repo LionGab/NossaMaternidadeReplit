@@ -10,7 +10,7 @@ body:
       value: |
         ## 🎯 Objetivo
         Criar um build iOS Ad Hoc (preview) para distribuição interna e teste com influenciadora.
-        
+
         **IMPORTANTE**: Este build NÃO será publicado na App Store. É apenas para testes internos.
 
   - type: input
@@ -106,10 +106,10 @@ body:
         ```bash
         # Verificar configuração
         npm run prepare-ios-preview
-        
+
         # Executar build no EAS
         eas build --platform ios --profile ios_preview
-        
+
         # Após aprovação, build para TestFlight
         # eas build --platform ios --profile ios_testflight
         ```
@@ -177,7 +177,7 @@ body:
       value: |
         ---
         ## 📚 Documentação de Referência
-        
+
         - [RELEASE_PACKET.md](../docs/RELEASE_PACKET.md) - Template completo de release
         - [IOS_PREVIEW_INFLUENCER.md](../docs/IOS_PREVIEW_INFLUENCER.md) - Guia de instalação
         - [EAS Documentation](https://docs.expo.dev/build/introduction/)

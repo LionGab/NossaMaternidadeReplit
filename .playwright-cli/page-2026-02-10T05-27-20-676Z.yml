@@ -1,32 +1,32 @@
 - generic [ref=e2]:
-  - banner [ref=e5]:
-    - navigation:
-      - generic:  
-  - iframe [active] [ref=e10]:
-    - main "App Store Connect" [ref=f1e2]:
-      - generic [ref=f1e12]:
-        - heading "App Store Connect" [level=2] [ref=f1e14]
-        - generic [ref=f1e15]:
-          - generic [ref=f1e18]:
-            - generic [ref=f1e21]:
-              - textbox "E-mail ou número de telefone" [active] [ref=f1e22]
-              - generic: E-mail ou número de telefone
-            - textbox [ref=f1e23]
-            - generic: Senha
-          - button "Continuar" [disabled]:
-            - generic: 
-        - link "Esqueceu a senha?  Abre em uma nova janela." [ref=f1e28] [cursor=pointer]:
-          - /url: https://iforgot.apple.com/password/verify/appleid
-          - text: Esqueceu a senha? 
-          - generic [ref=f1e29]: Abre em uma nova janela.
-  - generic [ref=e13]:
-    - link "Apple.com" [ref=e14] [cursor=pointer]:
-      - /url: http://www.apple.com
-    - list [ref=e17]:
-      - listitem [ref=e18]: Copyright © 2026 Apple Inc. Todos os direitos reservados.
-      - listitem [ref=e19]:
-        - link "Termos de serviço" [ref=e20] [cursor=pointer]:
-          - /url: /olympus/v1/terms/ASC
-      - listitem [ref=e21]:
-        - link "Política de privacidade" [ref=e22] [cursor=pointer]:
-          - /url: http://www.apple.com/br/legal/privacy/
+    - banner [ref=e5]:
+        - navigation:
+            - generic:  
+    - iframe [active] [ref=e10]:
+        - main "App Store Connect" [ref=f1e2]:
+            - generic [ref=f1e12]:
+                - heading "App Store Connect" [level=2] [ref=f1e14]
+                - generic [ref=f1e15]:
+                    - generic [ref=f1e18]:
+                        - generic [ref=f1e21]:
+                            - textbox "E-mail ou número de telefone" [active] [ref=f1e22]
+                            - generic: E-mail ou número de telefone
+                        - textbox [ref=f1e23]
+                        - generic: Senha
+                    - button "Continuar" [disabled]:
+                        - generic: 
+                - link "Esqueceu a senha?  Abre em uma nova janela." [ref=f1e28] [cursor=pointer]:
+                    - /url: https://iforgot.apple.com/password/verify/appleid
+                    - text: Esqueceu a senha? 
+                    - generic [ref=f1e29]: Abre em uma nova janela.
+    - generic [ref=e13]:
+        - link "Apple.com" [ref=e14] [cursor=pointer]:
+            - /url: http://www.apple.com
+        - list [ref=e17]:
+            - listitem [ref=e18]: Copyright © 2026 Apple Inc. Todos os direitos reservados.
+            - listitem [ref=e19]:
+                - link "Termos de serviço" [ref=e20] [cursor=pointer]:
+                    - /url: /olympus/v1/terms/ASC
+            - listitem [ref=e21]:
+                - link "Política de privacidade" [ref=e22] [cursor=pointer]:
+                    - /url: http://www.apple.com/br/legal/privacy/

@@ -6,18 +6,18 @@ on:
   workflow_dispatch:
     inputs:
       platform:
-        description: 'Platform to build'
+        description: "Platform to build"
         required: true
-        default: 'ios'
+        default: "ios"
         type: choice
         options:
           - ios
           - android
           - all
       profile:
-        description: 'Build profile'
+        description: "Build profile"
         required: true
-        default: 'preview'
+        default: "preview"
         type: choice
         options:
           - development
@@ -43,8 +43,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.11.1'
-          cache: 'npm'
+          node-version: "20.19.4"
+          cache: "npm"
 
       - name: Setup Expo and EAS
         uses: expo/expo-github-action@v8
@@ -60,12 +60,12 @@ jobs:
           PLATFORM="${{ github.event.inputs.platform || 'ios' }}"
           PROFILE="${{ github.event.inputs.profile || 'preview' }}"
           IOS_BUILD_NUMBER="$(date +%Y%m%d%H%M)"
-          
+
           echo "🚀 Starting EAS Build"
           echo "Platform: $PLATFORM"
           echo "Profile: $PROFILE"
           echo "iOS Build Number: $IOS_BUILD_NUMBER"
-          
+
           if [ "$PLATFORM" = "all" ]; then
             IOS_BUILD_NUMBER="$IOS_BUILD_NUMBER" eas build --platform all --profile $PROFILE --non-interactive
           else

@@ -23,8 +23,7 @@ const rootDir = join(__dirname, "..");
 const PROJECT_REF = "lqahkqfpynypbmhtffyi";
 const DEFAULT_URL = `https://${PROJECT_REF}.supabase.co`;
 // Anon key pública (igual test-ai-edge-function.mjs) – fallback quando .env.local não existe
-const FALLBACK_ANON_KEY =
-  "***REMOVED***";
+const FALLBACK_ANON_KEY = "***REMOVED***";
 
 function loadEnvLocal() {
   const path = join(rootDir, ".env.local");

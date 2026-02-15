@@ -41,7 +41,9 @@ const projectRef = process.env.SUPABASE_PROJECT_REF?.trim();
 if (projectRef) {
   args.push("--project-ref", projectRef);
 } else {
-  console.log("ℹ️  SUPABASE_PROJECT_REF não definido. Se o CLI pedir project ref, defina essa env var para evitar prompts.");
+  console.log(
+    "ℹ️  SUPABASE_PROJECT_REF não definido. Se o CLI pedir project ref, defina essa env var para evitar prompts."
+  );
 }
 
 console.log("🚀 Deploying Edge Function: community-feed");

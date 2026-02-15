@@ -1,101 +1,67 @@
-## Resumo
+## 📝 Descrição
 
-<!-- Descreva o que esta PR faz em 2-3 frases -->
+Descrição clara das mudanças implementadas (2–3 frases).
 
-## Tipo de Mudança
+## 🎯 Issue Relacionada
 
-- [ ] `feat` — Nova feature
-- [ ] `fix` — Correção de bug
-- [ ] `docs` — Documentação
-- [ ] `refactor` — Refatoração
-- [ ] `perf` — Performance
-- [ ] `test` — Testes
-- [ ] `chore` — Manutenção
+Closes #(número da issue)
 
-## Mudanças
+## 🔄 Tipo de Mudança
 
-<!-- Liste as principais mudanças -->
+- [ ] 🐛 Bug fix
+- [ ] ✨ Nova feature
+- [ ] 🔧 Melhoria
+- [ ] 📚 Documentação
+- [ ] 🎨 UI/UX
+- [ ] ⚡ Performance
+- [ ] 🔒 Segurança
+
+## Mudanças Principais
 
 -
 -
 
-## Screenshots (se UI)
+## ✅ Checklist P0 (Obrigatório)
 
-<!-- Adicione screenshots antes/depois se aplicável -->
-
-## Checklist de Governança
-
-### Investigação
-
-- [ ] Li os arquivos relacionados antes de modificar
-- [ ] Verifiquei se já existe solução similar no codebase
-- [ ] Segui os padrões existentes
-
-### Qualidade
-
+- [ ] Zero `console.log` (usar `logger.*`)
+- [ ] Zero `any` types (usar `unknown` + guards)
+- [ ] Zero cores hardcoded (usar `Tokens.*` ou `useThemeColors()`)
 - [ ] `npm run quality-gate` passou
-- [ ] Zero `any` / `@ts-ignore` sem justificativa
-- [ ] Zero `console.log` (usando `logger.*`)
 
-### Design System (se UI)
+## ✅ Checklist de Quality Gate
 
-- [ ] Usando tokens de `src/theme/tokens.ts`
-- [ ] Zero cores hardcoded
-- [ ] NativeWind para estilos (sem `StyleSheet.create`)
+- [ ] TypeScript sem erros
+- [ ] ESLint sem warnings
+- [ ] Testes adicionados/atualizados
+- [ ] Documentação atualizada
+- [ ] Testado em iOS
+- [ ] Testado em Android
+- [ ] CLAUDE.md seguido (se aplicável)
 
-### Acessibilidade (se UI)
+## 🧪 Como Testar
 
-- [ ] Tap targets >= 44pt
-- [ ] `accessibilityLabel` em elementos interativos
-- [ ] Contraste adequado
+1. Passo 1
+2. Passo 2
+3. Passo 3
 
-### Performance (se listas)
+## Design / Acessibilidade / Performance (se aplicável)
 
-- [ ] Usando `FlashList` ou `FlatList` (nunca `ScrollView + map`)
-- [ ] Componentes memoizados (`useCallback`, `useMemo`, `memo`)
-- [ ] `keyExtractor` estável
+- Tokens usados: `src/theme/tokens.ts`
+- Tap targets >= 44pt
+- Listas: `FlashList`/`FlatList`
 
-### Documentação
+## 📸 Screenshots/GIFs
 
-- [ ] Decisões importantes documentadas
-- [ ] Atualizado `claude.md` se mudou regras
-- [ ] Atualizado `CHANGELOG.md` com mudanças
+(Adicione se houver mudanças visuais)
 
-## Como Testar
+## 📋 Notas Adicionais
 
-<!-- Passos para testar esta PR -->
+Contexto, trade-offs, pontos de atenção.
 
-1.
-2.
-3.
+## 📚 Antes de Merge
 
-## Deploy Notes
-
-<!-- Preencha se houver ações necessárias pós-merge -->
-
-### Supabase Secrets (se aplicável)
-
-<!-- Exemplo:
-```
-ALLOWED_ORIGINS=https://app.nossamaternidade.com,https://admin.nossamaternidade.com
-```
--->
-
-### Deploy de Edge Functions (se aplicável)
-
-<!-- Exemplo:
-```bash
-npx supabase functions deploy community-feed
-```
--->
-
-### Outras Ações Pós-Deploy
-
-<!-- Migrações, seeds, configurações, etc. -->
-
-## Notas para Revisores
-
-<!-- Contexto adicional, pontos de atenção, trade-offs -->
+- [ ] Consultar [AGENTS.md](./.agents/AGENTS.md) para fluxo de agentes (se aplicável)
+- [ ] Build iOS testado (se mudou código nativo ou config)
 
 ---
 

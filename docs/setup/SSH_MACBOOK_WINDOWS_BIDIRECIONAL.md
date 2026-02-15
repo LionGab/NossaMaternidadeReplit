@@ -158,24 +158,24 @@ ssh macbook "echo 'Mac conectado!'"
 
 ## Resumo rápido
 
-| Onde você está | O que fazer |
-|----------------|-------------|
-| **Mac** | `bash scripts/ssh/preparar-ssh-macbook-para-windows.sh` |
-| **Windows** | `.\scripts\configurar-ssh-windows-completo.ps1` e `.\scripts\configurar-ssh-windows.ps1` |
-| **Mac** | Editar `~/.ssh/config` com host `windows-remoto` |
-| **Windows** | Editar `C:\Users\SEU_USUARIO\.ssh\config` com host `macbook` |
+| Onde você está | O que fazer                                                                              |
+| -------------- | ---------------------------------------------------------------------------------------- |
+| **Mac**        | `bash scripts/ssh/preparar-ssh-macbook-para-windows.sh`                                  |
+| **Windows**    | `.\scripts\configurar-ssh-windows-completo.ps1` e `.\scripts\configurar-ssh-windows.ps1` |
+| **Mac**        | Editar `~/.ssh/config` com host `windows-remoto`                                         |
+| **Windows**    | Editar `C:\Users\SEU_USUARIO\.ssh\config` com host `macbook`                             |
 
 ---
 
 ## Scripts disponíveis
 
-| Script | Uso |
-|--------|-----|
-| `scripts/ssh/preparar-ssh-macbook-para-windows.sh` | Mac – prepara chave e opcionalmente config |
-| `scripts/configurar-ssh-windows-completo.ps1` | Windows – instala/configura OpenSSH Server |
-| `scripts/configurar-ssh-windows.ps1` | Windows – adiciona chave do Mac ao `authorized_keys` |
-| `scripts/ssh-macbook.ps1` | Windows – roda comando no Mac via SSH |
-| `scripts/ssh-macbook.sh` | Git Bash – roda comando no Mac via SSH |
+| Script                                             | Uso                                                  |
+| -------------------------------------------------- | ---------------------------------------------------- |
+| `scripts/ssh/preparar-ssh-macbook-para-windows.sh` | Mac – prepara chave e opcionalmente config           |
+| `scripts/configurar-ssh-windows-completo.ps1`      | Windows – instala/configura OpenSSH Server           |
+| `scripts/configurar-ssh-windows.ps1`               | Windows – adiciona chave do Mac ao `authorized_keys` |
+| `scripts/ssh-macbook.ps1`                          | Windows – roda comando no Mac via SSH                |
+| `scripts/ssh-macbook.sh`                           | Git Bash – roda comando no Mac via SSH               |
 
 ---
 

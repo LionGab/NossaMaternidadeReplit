@@ -1,0 +1,30 @@
+name: "🤖 Copilot Code Review"
+
+# Note: GitHub Copilot Code Review is configured via repository Settings > Copilot, not via Actions.
+# This workflow serves as a placeholder to document this setup requirement.
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  placeholder:
+    name: Copilot Code Review Setup Info
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "ℹ️ Copilot Code Review Info"
+        run: |
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "🤖 GitHub Copilot Code Review"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo ""
+          echo "Copilot Code Review é configurado via Settings do repositório,"
+          echo "não através de GitHub Actions workflows."
+          echo ""
+          echo "Para habilitar:"
+          echo "1. Acesse Settings > Copilot"
+          echo "2. Ative 'Code Review' para pull requests"
+          echo "3. Configure os gatilhos e preferências desejadas"
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

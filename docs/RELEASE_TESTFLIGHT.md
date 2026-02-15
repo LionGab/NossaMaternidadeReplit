@@ -52,13 +52,13 @@ eas build --platform ios --profile testflight
 
 **Profiles disponíveis** (ver `eas.json`):
 
-| Profile          | Distribuição | Uso                        | Auto-increment |
-| ---------------- | ------------ | -------------------------- | -------------- |
-| `development`    | internal     | Dev client (Expo Go)       | ❌             |
-| `ios_preview`    | internal     | Ad-hoc testing             | ❌             |
-| `ios_testflight` | store        | **TestFlight** (produção)  | ✅             |
-| `testflight`     | store        | Alias de `ios_testflight`  | ✅             |
-| `production`     | store        | App Store (release final)  | ✅             |
+| Profile          | Distribuição | Uso                       | Auto-increment |
+| ---------------- | ------------ | ------------------------- | -------------- |
+| `development`    | internal     | Dev client (Expo Go)      | ❌             |
+| `ios_preview`    | internal     | Ad-hoc testing            | ❌             |
+| `ios_testflight` | store        | **TestFlight** (produção) | ✅             |
+| `testflight`     | store        | Alias de `ios_testflight` | ✅             |
+| `production`     | store        | App Store (release final) | ✅             |
 
 ### 3. Submit para TestFlight
 
@@ -88,6 +88,7 @@ eas submit --platform ios --profile ios_testflight --latest
 3. Testadores recebem email com link para App TestFlight
 
 **Requisito**: Testadores internos precisam estar no **App Store Connect** com role de:
+
 - Admin, App Manager, Developer, ou Marketing
 
 #### 4.2 Testadores Externos (Até 10.000)
@@ -145,22 +146,22 @@ eas credentials --platform ios
 {
   "ios_testflight": {
     "extends": "base",
-    "distribution": "store",           // Required for TestFlight
-    "channel": "testflight",            // OTA update channel
-    "autoIncrement": true,              // Auto-bump build number
+    "distribution": "store", // Required for TestFlight
+    "channel": "testflight", // OTA update channel
+    "autoIncrement": true, // Auto-bump build number
     "ios": {
-      "resourceClass": "m-medium",      // Build performance
-      "credentialsSource": "remote",    // EAS manages certs
-      "image": "latest",                // Latest Xcode
-      "buildConfiguration": "Release"   // Production build
+      "resourceClass": "m-medium", // Build performance
+      "credentialsSource": "remote", // EAS manages certs
+      "image": "latest", // Latest Xcode
+      "buildConfiguration": "Release", // Production build
     },
     "env": {
-      "EAS_NO_UPDATES": "true",         // Prevent startup crashes
-      "EXPO_PUBLIC_ENV": "production",  // Production mode
-      "EXPO_PUBLIC_SAFE_BOOT": "true"   // Skip dangerous startup code
+      "EAS_NO_UPDATES": "true", // Prevent startup crashes
+      "EXPO_PUBLIC_ENV": "production", // Production mode
+      "EXPO_PUBLIC_SAFE_BOOT": "true", // Skip dangerous startup code
       // ... other env vars
-    }
-  }
+    },
+  },
 }
 ```
 
@@ -169,7 +170,7 @@ eas credentials --platform ios
 ```json
 {
   "name": "nossa-maternidade",
-  "version": "1.0.1"  // Semantic version (user-facing)
+  "version": "1.0.1" // Semantic version (user-facing)
 }
 ```
 

@@ -17,9 +17,7 @@ const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY;
 const USER_JWT = process.env.USER_JWT;
 
 if (!SUPABASE_URL || !SUPABASE_ANON_KEY || !USER_JWT) {
-  console.error(
-    "❌ Missing env. Required: SUPABASE_URL, SUPABASE_ANON_KEY, USER_JWT"
-  );
+  console.error("❌ Missing env. Required: SUPABASE_URL, SUPABASE_ANON_KEY, USER_JWT");
   console.error("\nExample:");
   console.error('  SUPABASE_URL="https://xxx.supabase.co" \\');
   console.error('  SUPABASE_ANON_KEY="eyJ..." \\');

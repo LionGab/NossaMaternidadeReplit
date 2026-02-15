@@ -1,157 +1,157 @@
 - generic [active] [ref=e1]:
-  - generic [ref=e1764]:
-    - log
-    - log
-  - banner "App Store Connect" [ref=e3]:
-    - generic [ref=e4]:
-      - heading "App Store Connect" [level=1] [ref=e6]:
-        - link "App Store Connect" [ref=e7] [cursor=pointer]:
-          - /url: /
-      - navigation "Global" [ref=e8]:
-        - list [ref=e10]:
-          - listitem [ref=e11]:
-            - link "Apps" [ref=e12] [cursor=pointer]:
-              - /url: /apps
-          - listitem [ref=e13]:
-            - link "Análise" [ref=e14] [cursor=pointer]:
-              - /url: /analytics
-          - listitem [ref=e15]:
-            - link "Tendências" [ref=e16] [cursor=pointer]:
-              - /url: /trends
-          - listitem [ref=e17]:
-            - link "Relatórios" [ref=e18] [cursor=pointer]:
-              - /url: /itc/payments_and_financial_reports
-          - listitem [ref=e19]:
-            - link "Negócios" [ref=e20] [cursor=pointer]:
-              - /url: /business
-      - button "Gabriel Vesz Gabriel Vesz Account name menu" [ref=e24] [cursor=pointer]:
-        - generic:
-          - generic: Gabriel Vesz
-          - generic: Gabriel Vesz
-          - img [ref=e25]
-  - generic [ref=e30]:
-    - button "Menu de apps, Nossa Maternidade, selecionado" [ref=e35] [cursor=pointer]:
-      - generic [ref=e36]:
-        - generic "Nossa Maternidade" [ref=e37]:
-          - img "Nossa Maternidade" [ref=e38]
-        - generic [ref=e40]: Nossa Maternidade
-      - img [ref=e42]
-    - navigation "Apps" [ref=e45]:
-      - list [ref=e46]:
-        - listitem [ref=e47]:
-          - link "Distribuição" [ref=e48] [cursor=pointer]:
-            - /url: /apps/6756980888/distribution
-        - listitem [ref=e49]:
-          - link "TestFlight" [ref=e50] [cursor=pointer]:
-            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight
-        - listitem [ref=e51]:
-          - link "Xcode Cloud" [ref=e52] [cursor=pointer]:
-            - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/ci
-  - main [ref=e71]:
-    - generic [ref=e1891]:
-      - generic [ref=e1895]:
-        - link "Compilações do iOS" [ref=e1899] [cursor=pointer]:
-          - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios
-          - img [ref=e1900]
-          - text: Compilações do iOS
-        - heading "1.0.1 (110)" [level=2] [ref=e1903]
-      - generic [ref=e1904]:
-        - tablist [ref=e1905]:
-          - tab "Informações de teste" [ref=e1906] [cursor=pointer]:
-            - generic [ref=e1907]: Informações de teste
-          - tab "Metadados da compilação" [selected] [ref=e1908] [cursor=pointer]:
-            - generic [ref=e1909]: Metadados da compilação
-        - generic [ref=e1910]:
-          - heading "Informações gerais" [level=3] [ref=e1914]
-          - generic [ref=e1916]:
-            - term [ref=e1917]: Nome do app
-            - definition [ref=e1918]: Nossa Maternidade
-            - term [ref=e1919]: Estado do binário
-            - definition [ref=e1920]: Validado
-            - term [ref=e1921]: Sequência da versão curta do pacote
-            - definition [ref=e1922]: 1.0.1
-            - term [ref=e1923]: Data do carregamento
-            - definition [ref=e1924]: 10 de fev. de 2026 às 00:43
-            - term [ref=e1925]: SDK da compilação
-            - definition [ref=e1926]: 23C53
-            - term [ref=e1927]: Sequência da versão do pacote
-            - definition [ref=e1928]: "110"
-            - term [ref=e1929]: Nome do arquivo original
-            - definition [ref=e1930]: 382eaafb-f3a7-4871-a073-7d2c63831565.ipa
-            - term [ref=e1931]: Plataforma da compilação
-            - definition [ref=e1932]: 23C53
-            - term [ref=e1933]: ID do pacote
-            - definition [ref=e1934]: br.com.nossamaternidade.app
-            - term [ref=e1935]: Tamanho do arquivo comprimido
-            - definition [ref=e1936]:
-              - text: 59,6 MB |
-              - button "Tamanho dos arquivos" [ref=e1937] [cursor=pointer]
-            - term [ref=e1938]: Recursos sob demanda
-            - definition [ref=e1939]: Não
-            - term [ref=e1940]: Inclui símbolos
-            - definition [ref=e1941]: Sim
-            - term [ref=e1942]: Criptografia não isenta
-            - definition [ref=e1943]: Não
-            - term [ref=e1944]: SiriKit
-            - definition [ref=e1945]: Não
-            - term [ref=e1946]: App apenas para Apple Watch
-            - definition [ref=e1947]: Não
-        - generic [ref=e1948]:
-          - heading "App para iMessage" [level=3] [ref=e1952]
-          - generic [ref=e1954]:
-            - term [ref=e1955]: Inclui app para iMessage
-            - definition [ref=e1956]: Não
-            - term [ref=e1957]: Inclui stickers
-            - definition [ref=e1958]: Não
-            - term [ref=e1959]: Ícone do app oculto
-            - definition [ref=e1960]: Não
-        - generic [ref=e1961]:
-          - heading "Requisitos do dispositivo" [level=3] [ref=e1965]
-          - generic [ref=e1967]:
-            - term [ref=e1968]: Versão mínima do iOS
-            - definition [ref=e1969]: "15.1"
-            - term [ref=e1970]: Versão mínima do macOS
-            - definition [ref=e1971]: "12.0"
-            - term [ref=e1972]: Versão mínima do visionOS
-            - definition [ref=e1973]: "1.0"
-            - term [ref=e1974]: Versão mínima do sistema LS
-            - definition [ref=e1975]: "12.0"
-            - term [ref=e1976]: Arquiteturas compatíveis
-            - definition [ref=e1977]: arm64
-            - term [ref=e1978]: Protocolos do dispositivo
-            - definition [ref=e1979]: "-"
-            - term [ref=e1980]: Família de dispositivos
-            - definition [ref=e1981]: iPhone, iPad
-            - term [ref=e1982]: Recursos necessários
-            - definition [ref=e1983]: arm64
-        - generic [ref=e1984]:
-          - heading "Informações na loja" [level=3] [ref=e1988]
-          - generic [ref=e1990]:
-            - term [ref=e1991]: Idiomas
-            - definition [ref=e1992]: inglês
-            - term [ref=e1993]: Autorizações
-            - definition [ref=e1994]:
-              - generic [ref=e1995]: "NossaMaternidade.app/NossaMaternidade application-identifier: KZPW4S77UH.br.com.nossamaternidade.app com.apple.developer.applesignin: ( \"Default\" ) beta-reports-active: true get-task-allow: false com.apple.developer.team-identifier: KZPW4S77UH aps-environment: production"
-            - term [ref=e1996]: App Banca
-            - definition [ref=e1997]: Não
-            - term [ref=e1998]: Sinalizador de ícone pré-renderizado
-            - definition [ref=e1999]: Sim
-  - contentinfo [ref=e55]:
-    - generic [ref=e56]:
-      - list [ref=e57]:
-        - listitem [ref=e915]:
-          - link "App Store Connect" [ref=e916] [cursor=pointer]:
-            - /url: /apps
-      - list [ref=e60]:
-        - listitem [ref=e61]: Copyright © 2026 Apple Inc. Todos os direitos reservados. |
-        - listitem [ref=e62]:
-          - link "Termos de serviço" [ref=e63] [cursor=pointer]:
-            - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
-          - text: "|"
-        - listitem [ref=e64]:
-          - link "Política de privacidade" [ref=e65] [cursor=pointer]:
-            - /url: https://www.apple.com/legal/privacy
-          - text: "|"
-        - listitem [ref=e66]:
-          - link "Fale conosco" [ref=e67] [cursor=pointer]:
-            - /url: /contact-us
+    - generic [ref=e1764]:
+        - log
+        - log
+    - banner "App Store Connect" [ref=e3]:
+        - generic [ref=e4]:
+            - heading "App Store Connect" [level=1] [ref=e6]:
+                - link "App Store Connect" [ref=e7] [cursor=pointer]:
+                    - /url: /
+            - navigation "Global" [ref=e8]:
+                - list [ref=e10]:
+                    - listitem [ref=e11]:
+                        - link "Apps" [ref=e12] [cursor=pointer]:
+                            - /url: /apps
+                    - listitem [ref=e13]:
+                        - link "Análise" [ref=e14] [cursor=pointer]:
+                            - /url: /analytics
+                    - listitem [ref=e15]:
+                        - link "Tendências" [ref=e16] [cursor=pointer]:
+                            - /url: /trends
+                    - listitem [ref=e17]:
+                        - link "Relatórios" [ref=e18] [cursor=pointer]:
+                            - /url: /itc/payments_and_financial_reports
+                    - listitem [ref=e19]:
+                        - link "Negócios" [ref=e20] [cursor=pointer]:
+                            - /url: /business
+            - button "Gabriel Vesz Gabriel Vesz Account name menu" [ref=e24] [cursor=pointer]:
+                - generic:
+                    - generic: Gabriel Vesz
+                    - generic: Gabriel Vesz
+                    - img [ref=e25]
+    - generic [ref=e30]:
+        - button "Menu de apps, Nossa Maternidade, selecionado" [ref=e35] [cursor=pointer]:
+            - generic [ref=e36]:
+                - generic "Nossa Maternidade" [ref=e37]:
+                    - img "Nossa Maternidade" [ref=e38]
+                - generic [ref=e40]: Nossa Maternidade
+            - img [ref=e42]
+        - navigation "Apps" [ref=e45]:
+            - list [ref=e46]:
+                - listitem [ref=e47]:
+                    - link "Distribuição" [ref=e48] [cursor=pointer]:
+                        - /url: /apps/6756980888/distribution
+                - listitem [ref=e49]:
+                    - link "TestFlight" [ref=e50] [cursor=pointer]:
+                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight
+                - listitem [ref=e51]:
+                    - link "Xcode Cloud" [ref=e52] [cursor=pointer]:
+                        - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/ci
+    - main [ref=e71]:
+        - generic [ref=e1891]:
+            - generic [ref=e1895]:
+                - link "Compilações do iOS" [ref=e1899] [cursor=pointer]:
+                    - /url: /teams/f483d4df-0161-497b-8936-729c4674d1ab/apps/6756980888/testflight/ios
+                    - img [ref=e1900]
+                    - text: Compilações do iOS
+                - heading "1.0.1 (110)" [level=2] [ref=e1903]
+            - generic [ref=e1904]:
+                - tablist [ref=e1905]:
+                    - tab "Informações de teste" [ref=e1906] [cursor=pointer]:
+                        - generic [ref=e1907]: Informações de teste
+                    - tab "Metadados da compilação" [selected] [ref=e1908] [cursor=pointer]:
+                        - generic [ref=e1909]: Metadados da compilação
+                - generic [ref=e1910]:
+                    - heading "Informações gerais" [level=3] [ref=e1914]
+                    - generic [ref=e1916]:
+                        - term [ref=e1917]: Nome do app
+                        - definition [ref=e1918]: Nossa Maternidade
+                        - term [ref=e1919]: Estado do binário
+                        - definition [ref=e1920]: Validado
+                        - term [ref=e1921]: Sequência da versão curta do pacote
+                        - definition [ref=e1922]: 1.0.1
+                        - term [ref=e1923]: Data do carregamento
+                        - definition [ref=e1924]: 10 de fev. de 2026 às 00:43
+                        - term [ref=e1925]: SDK da compilação
+                        - definition [ref=e1926]: 23C53
+                        - term [ref=e1927]: Sequência da versão do pacote
+                        - definition [ref=e1928]: "110"
+                        - term [ref=e1929]: Nome do arquivo original
+                        - definition [ref=e1930]: 382eaafb-f3a7-4871-a073-7d2c63831565.ipa
+                        - term [ref=e1931]: Plataforma da compilação
+                        - definition [ref=e1932]: 23C53
+                        - term [ref=e1933]: ID do pacote
+                        - definition [ref=e1934]: br.com.nossamaternidade.app
+                        - term [ref=e1935]: Tamanho do arquivo comprimido
+                        - definition [ref=e1936]:
+                            - text: 59,6 MB |
+                            - button "Tamanho dos arquivos" [ref=e1937] [cursor=pointer]
+                        - term [ref=e1938]: Recursos sob demanda
+                        - definition [ref=e1939]: Não
+                        - term [ref=e1940]: Inclui símbolos
+                        - definition [ref=e1941]: Sim
+                        - term [ref=e1942]: Criptografia não isenta
+                        - definition [ref=e1943]: Não
+                        - term [ref=e1944]: SiriKit
+                        - definition [ref=e1945]: Não
+                        - term [ref=e1946]: App apenas para Apple Watch
+                        - definition [ref=e1947]: Não
+                - generic [ref=e1948]:
+                    - heading "App para iMessage" [level=3] [ref=e1952]
+                    - generic [ref=e1954]:
+                        - term [ref=e1955]: Inclui app para iMessage
+                        - definition [ref=e1956]: Não
+                        - term [ref=e1957]: Inclui stickers
+                        - definition [ref=e1958]: Não
+                        - term [ref=e1959]: Ícone do app oculto
+                        - definition [ref=e1960]: Não
+                - generic [ref=e1961]:
+                    - heading "Requisitos do dispositivo" [level=3] [ref=e1965]
+                    - generic [ref=e1967]:
+                        - term [ref=e1968]: Versão mínima do iOS
+                        - definition [ref=e1969]: "15.1"
+                        - term [ref=e1970]: Versão mínima do macOS
+                        - definition [ref=e1971]: "12.0"
+                        - term [ref=e1972]: Versão mínima do visionOS
+                        - definition [ref=e1973]: "1.0"
+                        - term [ref=e1974]: Versão mínima do sistema LS
+                        - definition [ref=e1975]: "12.0"
+                        - term [ref=e1976]: Arquiteturas compatíveis
+                        - definition [ref=e1977]: arm64
+                        - term [ref=e1978]: Protocolos do dispositivo
+                        - definition [ref=e1979]: "-"
+                        - term [ref=e1980]: Família de dispositivos
+                        - definition [ref=e1981]: iPhone, iPad
+                        - term [ref=e1982]: Recursos necessários
+                        - definition [ref=e1983]: arm64
+                - generic [ref=e1984]:
+                    - heading "Informações na loja" [level=3] [ref=e1988]
+                    - generic [ref=e1990]:
+                        - term [ref=e1991]: Idiomas
+                        - definition [ref=e1992]: inglês
+                        - term [ref=e1993]: Autorizações
+                        - definition [ref=e1994]:
+                            - generic [ref=e1995]: 'NossaMaternidade.app/NossaMaternidade application-identifier: KZPW4S77UH.br.com.nossamaternidade.app com.apple.developer.applesignin: ( "Default" ) beta-reports-active: true get-task-allow: false com.apple.developer.team-identifier: KZPW4S77UH aps-environment: production'
+                        - term [ref=e1996]: App Banca
+                        - definition [ref=e1997]: Não
+                        - term [ref=e1998]: Sinalizador de ícone pré-renderizado
+                        - definition [ref=e1999]: Sim
+    - contentinfo [ref=e55]:
+        - generic [ref=e56]:
+            - list [ref=e57]:
+                - listitem [ref=e915]:
+                    - link "App Store Connect" [ref=e916] [cursor=pointer]:
+                        - /url: /apps
+            - list [ref=e60]:
+                - listitem [ref=e61]: Copyright © 2026 Apple Inc. Todos os direitos reservados. |
+                - listitem [ref=e62]:
+                    - link "Termos de serviço" [ref=e63] [cursor=pointer]:
+                        - /url: /WebObjects/iTunesConnect.woa/wa/termsOfService
+                    - text: "|"
+                - listitem [ref=e64]:
+                    - link "Política de privacidade" [ref=e65] [cursor=pointer]:
+                        - /url: https://www.apple.com/legal/privacy
+                    - text: "|"
+                - listitem [ref=e66]:
+                    - link "Fale conosco" [ref=e67] [cursor=pointer]:
+                        - /url: /contact-us

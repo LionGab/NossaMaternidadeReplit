@@ -9,11 +9,11 @@
 
 **Regra de ouro:** Windows = trabalho pesado. Mac = iOS quando necessário. Builds = nuvem (EAS).
 
-| Máquina | Papel |
-| ------- | ----- |
+| Máquina                | Papel                                                                              |
+| ---------------------- | ---------------------------------------------------------------------------------- |
 | **Windows 32GB + RTX** | Desenvolvimento, TypeScript, Android Emulator, Claude Code, Cursor (IDE principal) |
-| **Mac Air 8GB** | iOS Simulator, validação UI, Expo Go no iPhone |
-| **EAS Cloud** | Builds iOS/Android — **não precisa do Mac** para builds |
+| **Mac Air 8GB**        | iOS Simulator, validação UI, Expo Go no iPhone                                     |
+| **EAS Cloud**          | Builds iOS/Android — **não precisa do Mac** para builds                            |
 
 ---
 
@@ -48,6 +48,7 @@ claude   # abre sessão
 ```
 
 **Primeiro acesso no Windows:**
+
 1. `git clone` feito
 2. `npm install`
 3. `.env.local` configurado
@@ -80,13 +81,13 @@ cp .env.example .env.local
 
 ### 4. Otimização RAM (8GB) — **OBRIGATÓRIO**
 
-| Evitar | Fazer |
-| ------ | ----- |
-| Build local no Mac (`eas build --local`) | Sempre EAS cloud |
-| Metro + Simulator + Cursor + Chrome juntos | Fechar o que não está usando |
-| Simulator aberto quando não testando | Fechar Simulator |
-| — | `sudo purge` a cada 2–3 horas |
-| — | Preferir Expo Go no iPhone (menos RAM) |
+| Evitar                                     | Fazer                                  |
+| ------------------------------------------ | -------------------------------------- |
+| Build local no Mac (`eas build --local`)   | Sempre EAS cloud                       |
+| Metro + Simulator + Cursor + Chrome juntos | Fechar o que não está usando           |
+| Simulator aberto quando não testando       | Fechar Simulator                       |
+| —                                          | `sudo purge` a cada 2–3 horas          |
+| —                                          | Preferir Expo Go no iPhone (menos RAM) |
 
 Guia completo: [OTIMIZACAO_RAM_M1_8GB.md](OTIMIZACAO_RAM_M1_8GB.md)
 
@@ -94,12 +95,12 @@ Guia completo: [OTIMIZACAO_RAM_M1_8GB.md](OTIMIZACAO_RAM_M1_8GB.md)
 
 ## Workflow diário
 
-| Hora | Máquina | Ação |
-| ---- | ------- | ---- |
-| Manhã | **Windows** | Desenvolver, `npm run quality-gate` |
-| Teste iOS | **Mac** | `git pull && npm start` → Simulator |
-| Release | **Windows** | `eas build --platform all --profile production` |
-| Submit | **Windows** | `eas submit --platform ios --latest` (e Android) |
+| Hora      | Máquina     | Ação                                             |
+| --------- | ----------- | ------------------------------------------------ |
+| Manhã     | **Windows** | Desenvolver, `npm run quality-gate`              |
+| Teste iOS | **Mac**     | `git pull && npm start` → Simulator              |
+| Release   | **Windows** | `eas build --platform all --profile production`  |
+| Submit    | **Windows** | `eas submit --platform ios --latest` (e Android) |
 
 ### Sincronização via Git
 
@@ -115,19 +116,19 @@ Mac (iOS test)    ←  git pull  ←  GitHub
 
 ### Skills (11)
 
-| Skill | Comando | Uso |
-| ----- | ------- | --- |
-| Deploy iOS | `/deploy-testflight` | TestFlight |
-| Deploy Android | `/deploy-android` | Play Store |
-| Pre-commit | `/pre-commit` | Quality gate rápido |
-| Fix Types | `/fix-types` | Erros TypeScript |
-| Verify | `/verify` | Quality gate completo |
-| Review | `/review` | Code review |
-| NathIA | `/nathia` | Especialista IA |
-| Gates | `/gates` | Release G1–G7 |
-| Commit | `/commit` | Quality gate + commit atômico |
-| Superdesign | `/superdesign` | UI/UX design |
-| UI/UX Pro Max | `/ui-ux-pro-max` | Design intelligence |
+| Skill          | Comando              | Uso                           |
+| -------------- | -------------------- | ----------------------------- |
+| Deploy iOS     | `/deploy-testflight` | TestFlight                    |
+| Deploy Android | `/deploy-android`    | Play Store                    |
+| Pre-commit     | `/pre-commit`        | Quality gate rápido           |
+| Fix Types      | `/fix-types`         | Erros TypeScript              |
+| Verify         | `/verify`            | Quality gate completo         |
+| Review         | `/review`            | Code review                   |
+| NathIA         | `/nathia`            | Especialista IA               |
+| Gates          | `/gates`             | Release G1–G7                 |
+| Commit         | `/commit`            | Quality gate + commit atômico |
+| Superdesign    | `/superdesign`       | UI/UX design                  |
+| UI/UX Pro Max  | `/ui-ux-pro-max`     | Design intelligence           |
 
 ### Regras Cursor (11)
 
@@ -210,10 +211,10 @@ Config: `.claude/mcp-config.json` (Claude) e `.cursor/mcp.json` (Cursor)
 
 ## Docs relacionados
 
-| Doc | Conteúdo |
-| --- | -------- |
-| [SETUP_WINDOWS.md](SETUP_WINDOWS.md) | Setup Windows detalhado |
-| [GUIA_HIBRIDO_MAC_WINDOWS.md](GUIA_HIBRIDO_MAC_WINDOWS.md) | Estratégia híbrida |
-| [OTIMIZACAO_RAM_M1_8GB.md](OTIMIZACAO_RAM_M1_8GB.md) | Mac 8GB |
-| [CURSOR_CLAUDE_SETUP_PRAGMATICO.md](CURSOR_CLAUDE_SETUP_PRAGMATICO.md) | O que realmente funciona |
-| [CLAUDE_CODE_GUIDE_2026.md](CLAUDE_CODE_GUIDE_2026.md) | Best practices Claude Code |
+| Doc                                                                    | Conteúdo                   |
+| ---------------------------------------------------------------------- | -------------------------- |
+| [SETUP_WINDOWS.md](SETUP_WINDOWS.md)                                   | Setup Windows detalhado    |
+| [GUIA_HIBRIDO_MAC_WINDOWS.md](GUIA_HIBRIDO_MAC_WINDOWS.md)             | Estratégia híbrida         |
+| [OTIMIZACAO_RAM_M1_8GB.md](OTIMIZACAO_RAM_M1_8GB.md)                   | Mac 8GB                    |
+| [CURSOR_CLAUDE_SETUP_PRAGMATICO.md](CURSOR_CLAUDE_SETUP_PRAGMATICO.md) | O que realmente funciona   |
+| [CLAUDE_CODE_GUIDE_2026.md](CLAUDE_CODE_GUIDE_2026.md)                 | Best practices Claude Code |

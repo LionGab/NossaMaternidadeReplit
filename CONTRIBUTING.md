@@ -7,7 +7,7 @@ Obrigado pelo seu interesse em contribuir com o Nossa Maternidade! 💜
 ### Pré-requisitos
 
 - Node.js 18+
-- npm ou Bun
+- npm
 - Expo CLI
 - Git configurado
 
@@ -15,8 +15,8 @@ Obrigado pelo seu interesse em contribuir com o Nossa Maternidade! 💜
 
 ```bash
 # Clone o repositório
-git clone https://github.com/LionGab/NossaMaternidade.git
-cd NossaMaternidade
+git clone https://github.com/LionGab/NossaMaternidadeReplit.git
+cd NossaMaternidadeReplit
 
 # Instale as dependências
 npm install
@@ -67,35 +67,19 @@ npm start
 - Respeite safe area: `SafeAreaView` de `react-native-safe-area-context`
 - Animações: use `useOptimizedAnimation` hook, respeite `useReducedMotion`
 
-## 🔧 Comandos Úteis
-
-```bash
-# Qualidade
-npm run quality-gate        # Roda todos os checks (obrigatório antes de PR)
-npm run typecheck           # TypeScript check
-npm run lint                # ESLint
-npm run lint:fix            # Auto-fix ESLint
-npm run test                # Testes
-npm run test:watch          # Testes em modo watch
-
-# Builds
-npm run build:preview       # Build preview
-npm run build:prod          # Build de produção (após quality-gate)
-```
-
 ## 🌳 Git Workflow
 
 ### Branches
 
 - `main` - produção
-- `dev` - desenvolvimento
+- `dev` - desenvolvimento (se existir)
 - `feature/nome-da-feature` - novas features
 - `fix/nome-do-fix` - correções
 - `copilot/*` - branches do GitHub Copilot
 
 ### Commits
 
-Use commits descritivos e concisos:
+Use commits descritivos e concisos (Conventional Commits):
 
 ```
 feat: adiciona componente PremiumCard
@@ -103,23 +87,6 @@ fix: corrige animação em FloatingBubbles
 docs: atualiza CONTRIBUTING.md
 refactor: melhora performance do onboarding
 ```
-
-## 🐛 Antes de Reportar um Bug
-
-Sempre sincronize e valide antes de abrir uma issue:
-
-```bash
-git pull origin main && npm run typecheck
-```
-
-**Checklist minimo:**
-
-- [ ] Executei `git pull origin main` antes de reportar
-- [ ] Executei `npm run typecheck` e o erro persiste
-- [ ] Branch atual: **\_\_\_\_**
-- [ ] Ultimo commit: **\_\_\_\_**
-
-> **Por que isso importa?** Erros de TypeScript podem ja ter sido corrigidos em commits recentes. Sincronizar evita reports duplicados.
 
 ## ✅ Checklist Antes de PR
 
@@ -144,12 +111,6 @@ git pull origin main && npm run typecheck
 - [React Native](https://reactnative.dev/)
 - [NativeWind](https://www.nativewind.dev/)
 - [Reanimated v4](https://docs.swmansion.com/react-native-reanimated/)
-
-## 💡 Precisa de Ajuda?
-
-- Abra uma issue no GitHub
-- Consulte a documentação em `docs/`
-- Verifique `claude.md` e `docs/AI_GOVERNANCE.md` para regras de governança
 
 ---
 

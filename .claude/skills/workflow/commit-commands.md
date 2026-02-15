@@ -21,9 +21,11 @@ Fluxo obrigatório para **commit**, **push** e **criação de PR** no Nossa Mate
 ## 1. Antes de QUALQUER commit
 
 1. **Rodar quality gate** (obrigatório):
+
    ```bash
    npm run quality-gate
    ```
+
    Se falhar: **NÃO** fazer commit. Corrigir erros e rodar de novo.
 
 2. **Confirmar escopo atômico**:
@@ -36,17 +38,18 @@ Fluxo obrigatório para **commit**, **push** e **criação de PR** no Nossa Mate
 
 Sempre **imperativo**, **curto** no assunto (< 72 caracteres), em **português**:
 
-| Tipo      | Prefixo | Exemplo |
-| --------- | ------- | ------- |
-| Feature   | `feat:` | `feat: adiciona PremiumCard na paywall` |
-| Correção  | `fix:`  | `fix: corrige animação em FloatingBubbles` |
-| Docs      | `docs:` | `docs: atualiza CONTRIBUTING.md` |
-| Refactor  | `refactor:` | `refactor: extrai hook useCyclePhase` |
-| Estilo    | `style:` | `style: aplica tokens em MeusCuidadosScreen` |
-| Teste     | `test:` | `test: adiciona testes para messageCount` |
-| Chore     | `chore:` | `chore: atualiza dependência X` |
+| Tipo     | Prefixo     | Exemplo                                      |
+| -------- | ----------- | -------------------------------------------- |
+| Feature  | `feat:`     | `feat: adiciona PremiumCard na paywall`      |
+| Correção | `fix:`      | `fix: corrige animação em FloatingBubbles`   |
+| Docs     | `docs:`     | `docs: atualiza CONTRIBUTING.md`             |
+| Refactor | `refactor:` | `refactor: extrai hook useCyclePhase`        |
+| Estilo   | `style:`    | `style: aplica tokens em MeusCuidadosScreen` |
+| Teste    | `test:`     | `test: adiciona testes para messageCount`    |
+| Chore    | `chore:`    | `chore: atualiza dependência X`              |
 
 **Regras:**
+
 - Sem ponto final no assunto.
 - Corpo opcional: linha em branco + detalhes (se necessário).
 

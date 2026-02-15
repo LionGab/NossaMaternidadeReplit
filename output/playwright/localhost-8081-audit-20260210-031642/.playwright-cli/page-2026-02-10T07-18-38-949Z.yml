@@ -1,15 +1,15 @@
 - generic [ref=e16]:
-  - generic "NathIA - Sua companheira de maternidade" [ref=e20]:
-    - img "NathIA - Sua companheira de maternidade" [ref=e22]
-  - generic [ref=e23]:
-    - generic [ref=e25]: Bem-vinda ao Nossa Maternidade 🩵
-    - generic [ref=e27]: Vou te acompanhar em cada momento dessa jornada incrível da maternidade
-  - generic [ref=e29]:
-    - button "Continuar com Google" [ref=e31] [cursor=pointer]:
-      - generic [ref=e35]: Continuar com Google
-    - generic [ref=e38]: ou
-    - button "Continuar com e-mail" [ref=e41] [cursor=pointer]:
-      - generic [ref=e42]:
-        - generic [ref=e43]: 
-        - generic [ref=e44]: Continuar com e-mail
-  - generic [ref=e46]: Ao continuar, você concorda com nossos Termos e Privacidade
+    - generic "NathIA - Sua companheira de maternidade" [ref=e20]:
+        - img "NathIA - Sua companheira de maternidade" [ref=e22]
+    - generic [ref=e23]:
+        - generic [ref=e25]: Bem-vinda ao Nossa Maternidade 🩵
+        - generic [ref=e27]: Vou te acompanhar em cada momento dessa jornada incrível da maternidade
+    - generic [ref=e29]:
+        - button "Continuar com Google" [ref=e31] [cursor=pointer]:
+            - generic [ref=e35]: Continuar com Google
+        - generic [ref=e38]: ou
+        - button "Continuar com e-mail" [ref=e41] [cursor=pointer]:
+            - generic [ref=e42]:
+                - generic [ref=e43]: 
+                - generic [ref=e44]: Continuar com e-mail
+    - generic [ref=e46]: Ao continuar, você concorda com nossos Termos e Privacidade

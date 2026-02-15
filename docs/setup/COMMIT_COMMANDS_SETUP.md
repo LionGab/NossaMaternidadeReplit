@@ -6,25 +6,25 @@ Workflow de **commit**, **push** e **PR** integrado ao quality gate e ao plugin 
 
 ## O que está configurado
 
-| Item | Onde | Uso |
-|------|------|-----|
-| **Skill** | `.claude/skills/workflow/commit-commands.md` | `/commit-commands` — fluxo completo commit/push/PR |
-| **Comando** | `.claude/commands/commit.md` | `/commit` — verify + guia commit atômico |
-| **Regra** | `.claude/rules/always/git-commit-workflow.mdc` | Sempre aplicada em qualquer ação de commit/PR |
-| **Task** | `.vscode/tasks.json` | "Safe Commit Flow" — quality gate + lembrete |
-| **Atalhos** | `.vscode/keybindings.json` | Git + Safe Commit Flow |
+| Item        | Onde                                           | Uso                                                |
+| ----------- | ---------------------------------------------- | -------------------------------------------------- |
+| **Skill**   | `.claude/skills/workflow/commit-commands.md`   | `/commit-commands` — fluxo completo commit/push/PR |
+| **Comando** | `.claude/commands/commit.md`                   | `/commit` — verify + guia commit atômico           |
+| **Regra**   | `.claude/rules/always/git-commit-workflow.mdc` | Sempre aplicada em qualquer ação de commit/PR      |
+| **Task**    | `.vscode/tasks.json`                           | "Safe Commit Flow" — quality gate + lembrete       |
+| **Atalhos** | `.vscode/keybindings.json`                     | Git + Safe Commit Flow                             |
 
 ---
 
 ## Atalhos de teclado
 
-| Atalho | Ação |
-|--------|------|
-| `Ctrl+Shift+G G` | Abrir commit (git) |
-| `Ctrl+Shift+G P` | Push |
-| `Ctrl+Shift+G S` | Sync (pull + push) |
+| Atalho           | Ação                                                                   |
+| ---------------- | ---------------------------------------------------------------------- |
+| `Ctrl+Shift+G G` | Abrir commit (git)                                                     |
+| `Ctrl+Shift+G P` | Push                                                                   |
+| `Ctrl+Shift+G S` | Sync (pull + push)                                                     |
 | `Ctrl+Shift+G C` | **Safe Commit Flow** — roda quality gate e mostra lembrete para commit |
-| `Ctrl+Shift+Q` | Quality Gate (task) |
+| `Ctrl+Shift+Q`   | Quality Gate (task)                                                    |
 
 ---
 

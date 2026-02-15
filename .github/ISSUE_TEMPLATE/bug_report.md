@@ -1,54 +1,52 @@
 ---
-name: Bug report
-about: Reporte um erro com informações mínimas para reprodução
-title: "[Bug]: "
+name: "🐛 Bug Report"
+about: "Relatar um bug no Nossa Maternidade"
+title: "[BUG] "
 labels: bug
+assignees: ""
 ---
 
-## Pré-requisitos
+## ✅ Pré-requisitos
 
-Antes de reportar, confirme que você:
-
-- [ ] Executei `git pull origin main` antes de reportar
-- [ ] Executei `npm run typecheck` e o erro persiste
+- [ ] Já executei `git pull origin main` e `npm run typecheck`
 - [ ] Branch atual: **\_\_\_\_**
 - [ ] Último commit (hash): **\_\_\_\_**
 
-> **Importante:** Erros de TypeScript podem já ter sido corrigidos. Sincronize antes de reportar.
+> **Importante:** Sincronize antes de reportar — erros de TypeScript podem já estar corrigidos.
 
-## Descrição
+## 🐛 Descrição do Bug
 
-Descreva o problema de forma objetiva.
+Descrição objetiva e concisa do problema.
 
-## Passos para reproduzir
+## 📱 Como Reproduzir
 
-1.
-2.
-3.
+1. ...
+2. ...
+3. ...
 
-## Comportamento esperado
+## ✅ Comportamento esperado
 
-O que deveria acontecer?
+O que deveria acontecer.
 
-## Comportamento atual
+## ❌ Comportamento atual
 
-O que está acontecendo?
+O que está acontecendo.
 
-## Evidências
+## 📸 Evidências
 
-Logs, prints, mensagens de erro, etc.
+Adicione logs, prints ou mensagens de erro:
 
+```text
+cole aqui logs ou mensagens de erro
 ```
-Cole aqui logs ou mensagens de erro
-```
 
-## Ambiente
+## 📱 Ambiente
 
-- **OS:** (Windows 11 / macOS / Linux)
-- **Node:** (ex: v22.21.0)
-- **Expo:** (ex: ~54.0)
-- **Dispositivo:** (ex: iPhone 15 Simulator, Pixel 8 emulator)
+- OS: (Windows 11 / macOS / Linux)
+- Node: (ex: v22.21.0)
+- Expo: (ex: ~54.0)
+- Device: (ex: iPhone 15 Pro / Pixel 8)
 
-## Contexto adicional
+## 🔎 Contexto adicional
 
 Informações extras que podem ajudar na investigação.

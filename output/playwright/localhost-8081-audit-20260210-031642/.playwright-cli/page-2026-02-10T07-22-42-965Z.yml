@@ -1,50 +1,50 @@
 - generic [ref=e54] [cursor=pointer]:
-  - button "Voltar" [ref=e56]:
-    - generic [ref=e57]: 
-  - generic [ref=e58]:
-    - generic [ref=e59]:
-      - generic [ref=e60]: Crie sua conta
-      - generic [ref=e61]: Preencha os dados para começar
-    - switch "Modo cadastro ativo. Toque para fazer login" [active] [ref=e100]:
-      - generic [ref=e65]:
-        - generic [ref=e66]: Entrar
-        - generic [ref=e67]: Criar conta
-    - generic [ref=e68]:
-      - generic [ref=e102]:
-        - generic [ref=e103]: Nome
-        - generic [ref=e104]:
-          - generic [ref=e105]: 
-          - textbox "Nome completo" [ref=e106]:
-            - /placeholder: Seu nome
-      - generic [ref=e70]:
-        - generic [ref=e71]: E-mail
-        - generic [ref=e72]:
-          - generic [ref=e73]: 
-          - textbox "Endereço de e-mail" [ref=e74]:
-            - /placeholder: seu@email.com
-            - text: test@example.com
-      - generic [ref=e76]:
-        - generic [ref=e77]: Senha
-        - generic [ref=e78]:
-          - generic [ref=e79]: 
-          - textbox "Senha" [ref=e80]:
-            - /placeholder: Mínimo 6 caracteres
-            - text: "123456"
-          - button "Mostrar senha" [ref=e81]:
-            - generic [ref=e82]: 
-      - generic [ref=e108]:
-        - generic [ref=e109]: Confirmar senha
-        - generic [ref=e110]:
-          - generic [ref=e111]: 
-          - textbox "Confirmar senha" [ref=e112]:
-            - /placeholder: Repita sua senha
-          - button "Mostrar senha" [ref=e113]:
-            - generic [ref=e114]: 
-    - generic [ref=e87]:
-      - button "Criar conta" [disabled]:
-        - generic [ref=e98]: Criar conta
-        - generic [ref=e99]: 
-    - generic [ref=e90]:
-      - generic [ref=e91]: Já tem uma conta?
-      - button "Fazer login" [ref=e115]:
-        - generic [ref=e93]: Fazer login
+    - button "Voltar" [ref=e56]:
+        - generic [ref=e57]: 
+    - generic [ref=e58]:
+        - generic [ref=e59]:
+            - generic [ref=e60]: Crie sua conta
+            - generic [ref=e61]: Preencha os dados para começar
+        - switch "Modo cadastro ativo. Toque para fazer login" [active] [ref=e100]:
+            - generic [ref=e65]:
+                - generic [ref=e66]: Entrar
+                - generic [ref=e67]: Criar conta
+        - generic [ref=e68]:
+            - generic [ref=e102]:
+                - generic [ref=e103]: Nome
+                - generic [ref=e104]:
+                    - generic [ref=e105]: 
+                    - textbox "Nome completo" [ref=e106]:
+                        - /placeholder: Seu nome
+            - generic [ref=e70]:
+                - generic [ref=e71]: E-mail
+                - generic [ref=e72]:
+                    - generic [ref=e73]: 
+                    - textbox "Endereço de e-mail" [ref=e74]:
+                        - /placeholder: seu@email.com
+                        - text: test@example.com
+            - generic [ref=e76]:
+                - generic [ref=e77]: Senha
+                - generic [ref=e78]:
+                    - generic [ref=e79]: 
+                    - textbox "Senha" [ref=e80]:
+                        - /placeholder: Mínimo 6 caracteres
+                        - text: "123456"
+                    - button "Mostrar senha" [ref=e81]:
+                        - generic [ref=e82]: 
+            - generic [ref=e108]:
+                - generic [ref=e109]: Confirmar senha
+                - generic [ref=e110]:
+                    - generic [ref=e111]: 
+                    - textbox "Confirmar senha" [ref=e112]:
+                        - /placeholder: Repita sua senha
+                    - button "Mostrar senha" [ref=e113]:
+                        - generic [ref=e114]: 
+        - generic [ref=e87]:
+            - button "Criar conta" [disabled]:
+                - generic [ref=e98]: Criar conta
+                - generic [ref=e99]: 
+        - generic [ref=e90]:
+            - generic [ref=e91]: Já tem uma conta?
+            - button "Fazer login" [ref=e115]:
+                - generic [ref=e93]: Fazer login
