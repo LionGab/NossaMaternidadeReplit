@@ -21,7 +21,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  NODE_VERSION: "20.11.1"
+  NODE_VERSION: "20.19.4"
 
 jobs:
   validate:
